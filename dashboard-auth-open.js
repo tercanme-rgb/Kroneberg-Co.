@@ -1,7 +1,3 @@
-// dashboard-auth-open.js
-// Drop-in script to make the dashboard readable without requiring auth.
-// Auth is only enforced for protected actions like save, billing, and profile.
-
 window.currentUser = null;
 
 function openAuthModal() {
@@ -47,12 +43,8 @@ function wireProtectedDashboardActions() {
   }
 }
 
-// IMPORTANT:
-// Replace any old auth guard like:
-//   if (!user) window.location.href = "index.html#signin";
-// with the logic below.
-function initDashboardWithoutAuthLock(firebaseAuthInstance, loadDashboard) {
-  if (!firebaseAuthInstance || typeof firebaseAuthInstance.onAuthStateChanged !== "function") {
+function initDashboardWithoutAuthLock(auth, loadDashboard) {
+  if (!auth || typeof auth.onAuthStateChanged !== "function") {
     window.currentUser = null;
     if (typeof loadDashboard === "function") loadDashboard();
     wireProtectedDashboardActions();
@@ -60,7 +52,7 @@ function initDashboardWithoutAuthLock(firebaseAuthInstance, loadDashboard) {
     return;
   }
 
-  firebaseAuthInstance.onAuthStateChanged((user) => {
+  auth.onAuthStateChanged((user) => {
     window.currentUser = user || null;
     if (typeof loadDashboard === "function") loadDashboard();
     wireProtectedDashboardActions();

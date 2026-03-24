@@ -1,2003 +1,235 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NicheLab — Market Intelligence for Serious Builders</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,500;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-:root{
-  --bg:#07080C;--s1:#0B0D15;--s2:#10131E;--s3:#161B28;
-  --b1:#1D2136;--b2:#252B44;--b3:#2E3558;
-  --t1:#ECF0F8;--t2:#8892B0;--t3:#505878;
-  --gold:#C8861A;--gold-l:#E8A832;
-  --gold-bg:rgba(200,134,26,.07);--gold-br:rgba(200,134,26,.22);
-  --cyan:#0BB8D4;--cyan-bg:rgba(11,184,212,.07);--cyan-br:rgba(11,184,212,.2);
-  --green:#22C55E;--green-bg:rgba(34,197,94,.07);--green-br:rgba(34,197,94,.2);
-  --red:#EF4444;--red-bg:rgba(239,68,68,.07);--red-br:rgba(239,68,68,.2);
-  --amber:#F59E0B;--amber-bg:rgba(245,158,11,.07);--amber-br:rgba(245,158,11,.2);
-  --display:'Cormorant Garamond',Georgia,serif;
-  --body:'Plus Jakarta Sans',sans-serif;
-  --mono:'IBM Plex Mono',monospace;
-  --r:8px;--r-lg:12px;--r-xl:16px;--r-2xl:20px;
-}
-body{font-family:var(--body);background:var(--bg);color:var(--t1);line-height:1.6;font-size:15px;overflow-x:hidden}
-body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");opacity:.018;pointer-events:none;z-index:9999}
-a{color:inherit;text-decoration:none}
-
-/* NAV */
-nav{position:sticky;top:0;z-index:100;background:rgba(7,8,12,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--b1);padding:0 40px;display:flex;align-items:center;height:60px;gap:32px}
-.nav-logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:15px;letter-spacing:-.2px;margin-right:auto}
-.logo-mark{width:30px;height:30px;background:var(--gold);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;font-weight:500;color:#FFFDF7;flex-shrink:0}
-.nav-links{display:flex;gap:2px}
-.nav-link{padding:6px 14px;border-radius:var(--r);font-size:13px;color:var(--t2);transition:.15s;cursor:pointer;font-weight:500}
-.nav-link:hover,.nav-link.active{color:var(--t1)}
-.btn{padding:8px 18px;border-radius:var(--r);font-size:13px;font-weight:600;border:none;cursor:pointer;transition:.15s;font-family:var(--body)}
-.btn-ghost{background:transparent;color:var(--t2);border:1px solid var(--b2)}
-.btn-ghost:hover{color:var(--t1);border-color:var(--b3)}
-.btn-gold{background:var(--gold);color:#FFFDF7}
-.btn-gold:hover{background:var(--gold-l)}
-.btn-lg{padding:12px 26px;font-size:14px;border-radius:var(--r-lg)}
-
-/* HERO */
-.hero{padding:100px 40px 80px;max-width:1160px;margin:0 auto;text-align:center;position:relative}
-.hero::before{content:'';position:absolute;top:-60px;left:50%;transform:translateX(-50%);width:800px;height:600px;background:radial-gradient(ellipse at 50% 0%,rgba(200,134,26,.09),transparent 70%);pointer-events:none}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;padding:5px 14px;background:var(--gold-bg);border:1px solid var(--gold-br);border-radius:20px;font-size:11px;font-family:var(--mono);color:var(--gold-l);margin-bottom:30px;letter-spacing:.3px}
-.eyebrow-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
-
-.search-hero-wrap{max-width:760px;margin:0 auto 24px}
-.search-hero-label{font-family:var(--mono);font-size:11px;color:var(--t3);letter-spacing:.8px;text-transform:uppercase;margin-bottom:10px}
-.search-hero-bar{display:flex;align-items:center;gap:9px;background:#F6F2E9;border:1px solid rgba(255,255,255,.14);border-radius:999px;padding:12px 16px;text-align:left;min-height:52px;box-shadow:0 0 0 1px rgba(255,255,255,.03), 0 10px 30px rgba(232,168,50,.08)}
-.search-hero-icon{font-size:14px;line-height:1;color:#6B665D;flex-shrink:0}
-.search-hero-text{font-size:15px;line-height:1.35;font-weight:500;letter-spacing:-.1px;color:#111111;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.search-hero-caret{display:inline-block;width:8px;height:1em;border-right:2px solid var(--gold);vertical-align:-0.12em;margin-left:3px;animation:blink 1s steps(1,end) infinite}
-@keyframes blink{50%{opacity:0}}
-.hero-context{font-size:17px;color:var(--t2);max-width:760px;margin:0 auto 42px;line-height:1.8;font-weight:400}
-.hero-context strong{color:var(--t1);font-weight:600}
-@media (max-width: 760px){
-  .search-hero-wrap{max-width:100%}
-  .search-hero-bar{padding:11px 14px;min-height:48px}
-  .search-hero-text{font-size:14px}
-  .search-hero-icon{font-size:15px}
-}
-
-
-.top-banner-headline{
-  display:block;
-  font-family:var(--mono);
-  font-size:12px;
-  letter-spacing:.8px;
-  text-transform:uppercase;
-  color:var(--gold-l);
-  margin-bottom:18px;
-}
-
-.hero h1{font-family:var(--display);font-size:clamp(48px,7.5vw,86px);font-weight:700;letter-spacing:-1px;line-height:1.04;margin-bottom:26px;color:var(--t1)}
-.hero h1 em{font-style:italic;color:var(--gold-l)}
-.hero-sub{font-size:17px;color:var(--t2);max-width:580px;margin:0 auto 42px;line-height:1.75;font-weight:400}
-.hero-sub strong{color:var(--t1);font-weight:600}
-.hero-actions{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:54px;flex-wrap:wrap}
-.hero-stats{display:flex;align-items:center;justify-content:center;flex-wrap:wrap}
-.hstat{padding:0 28px;border-right:1px solid var(--b1);text-align:center}
-.hstat:last-child{border-right:none}
-.hstat-v{font-family:var(--mono);font-size:20px;font-weight:500;color:var(--t1);display:block;margin-bottom:4px}
-.hstat-l{font-size:11px;color:var(--t3);font-weight:500;letter-spacing:.3px;text-transform:uppercase}
-
-/* TICKER */
-.ticker{border-top:1px solid var(--b1);border-bottom:1px solid var(--b1);background:var(--s1);overflow:hidden;padding:12px 0}
-.ticker-inner{display:flex;animation:tick 44s linear infinite;width:max-content}
-.ticker-inner:hover{animation-play-state:paused}
-@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-.tick-item{display:flex;align-items:center;gap:8px;padding:0 28px;font-family:var(--mono);font-size:11px;white-space:nowrap;color:var(--t3);border-right:1px solid var(--b1)}
-.tick-up{color:var(--green);font-weight:500}
-.tick-label{color:var(--t2)}
-.tick-sub{color:var(--t3);font-size:10px}
-
-/* PROBLEM */
-.problem-section{padding:72px 40px;background:var(--s1);border-top:1px solid var(--b1);border-bottom:1px solid var(--b1)}
-.problem-inner{max-width:1160px;margin:0 auto}
-.problem-lede{text-align:center;margin-bottom:48px}
-.problem-lede h2{font-family:var(--display);font-size:clamp(34px,4.5vw,56px);font-weight:700;letter-spacing:-.5px;margin-bottom:14px}
-.problem-lede p{font-size:15px;color:var(--t2);max-width:500px;margin:0 auto;line-height:1.7}
-.problem-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--b1);border:1px solid var(--b1);border-radius:var(--r-xl);overflow:hidden}
-.prob-card{background:var(--s1);padding:40px 36px}
-.prob-n{font-family:var(--display);font-size:58px;font-weight:700;letter-spacing:-2px;color:var(--gold-l);line-height:1;margin-bottom:10px;display:block;font-style:italic}
-.prob-ttl{font-size:15px;font-weight:700;margin-bottom:8px;letter-spacing:-.2px}
-.prob-txt{font-size:13px;color:var(--t2);line-height:1.65}
-.prob-src{font-family:var(--mono);font-size:10px;color:var(--t3);margin-top:14px}
-
-/* DIFFERENCE SECTION */
-.diff-section{padding:72px 40px;max-width:1160px;margin:0 auto}
-.diff-grid{display:grid;grid-template-columns:1fr 1px 1fr;gap:0;max-width:860px;margin:0 auto}
-.diff-col{padding:0 48px}
-.diff-col:first-child{padding-left:0}
-.diff-col:last-child{padding-right:0}
-.diff-divider{background:var(--b1)}
-.diff-heading{font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;margin-bottom:20px;padding-bottom:10px;border-bottom:1px solid var(--b1)}
-.diff-row{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--t2);margin-bottom:12px}
-
-/* SHARED WRAP */
-.wrap{padding:0 40px 72px;max-width:1160px;margin:0 auto}
-.wrap-top{padding-top:72px}
-.sec-head{display:flex;align-items:center;gap:12px;margin-bottom:26px}
-.sec-label{font-family:var(--mono);font-size:10px;font-weight:500;color:var(--t3);letter-spacing:1.2px;text-transform:uppercase}
-.sec-line{flex:1;height:1px;background:var(--b1)}
-.sec-tag{font-family:var(--mono);font-size:10px;padding:2px 9px;border-radius:4px;font-weight:500}
-.tag-new{background:var(--green-bg);color:var(--green);border:1px solid var(--green-br)}
-.tag-hot{background:var(--red-bg);color:var(--red);border:1px solid var(--red-br)}
-.tag-pro{background:var(--gold-bg);color:var(--gold-l);border:1px solid var(--gold-br)}
-.tag-cyan{background:var(--cyan-bg);color:var(--cyan);border:1px solid var(--cyan-br)}
-
-/* FEATURED CARD */
-.fc{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r-2xl);overflow:hidden;position:relative}
-.fc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),var(--cyan))}
-.fc-head{padding:30px 36px 26px;display:flex;gap:22px;align-items:flex-start;border-bottom:1px solid var(--b1)}
-.fc-icon{width:52px;height:52px;border-radius:14px;background:var(--gold-bg);border:1px solid var(--gold-br);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
-.fc-meta{flex:1;min-width:0}
-.fc-eyebrow{display:flex;align-items:center;gap:8px;margin-bottom:6px}
-.fc-cat{font-family:var(--mono);font-size:10px;color:var(--t3);letter-spacing:.8px;text-transform:uppercase}
-.fc-pill{font-family:var(--mono);font-size:10px;padding:2px 8px;border-radius:4px}
-.fc-title{font-size:22px;font-weight:700;letter-spacing:-.4px;margin-bottom:8px;line-height:1.2}
-.fc-tagline{color:var(--t2);font-size:14px;line-height:1.65;max-width:680px}
-.fc-scores{display:flex;align-items:center;gap:6px;margin-top:16px;flex-wrap:wrap}
-.schip{display:flex;align-items:center;gap:5px;padding:4px 10px;background:var(--s2);border:1px solid var(--b2);border-radius:6px;font-family:var(--mono);font-size:11px}
-.sc-l{color:var(--t3)}.sc-v{font-weight:500;color:var(--t1)}
-.sc-hi{color:var(--green)}.sc-md{color:var(--amber)}
-.fc-body{display:grid;grid-template-columns:1fr 1fr 1fr;border-bottom:1px solid var(--b1)}
-.fc-col{padding:26px 30px;border-right:1px solid var(--b1)}
-.fc-col:last-child{border-right:none}
-.col-ttl{font-family:var(--mono);font-size:10px;font-weight:500;color:var(--t3);letter-spacing:.8px;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:6px}
-.col-ttl::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--gold)}
-.col-txt{font-size:13px;color:var(--t2);line-height:1.65}
-.col-txt strong{color:var(--t1);font-weight:600}
-.col-txt p+p{margin-top:10px}
-.sig-row{display:flex;flex-direction:column;gap:9px}
-.sig-item{display:flex;align-items:flex-start;gap:9px;font-size:12px}
-.sig-dot{width:5px;height:5px;border-radius:50%;background:var(--cyan);margin-top:5px;flex-shrink:0}
-.sig-txt{color:var(--t2)}.sig-txt em{color:var(--cyan);font-style:normal;font-weight:600}
-.exec-steps{display:flex;flex-direction:column;gap:8px}
-.estep{display:flex;align-items:flex-start;gap:10px;font-size:12px}
-.estep-n{width:18px;height:18px;border-radius:5px;background:var(--s3);border:1px solid var(--b2);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10px;color:var(--t3);flex-shrink:0;margin-top:1px}
-.estep-t{color:var(--t2);line-height:1.5}.estep-t strong{color:var(--t1);font-weight:600}
-.fc-foot{padding:18px 36px;display:flex;align-items:center;gap:12px}
-.fc-fl{display:flex;align-items:center;gap:12px;margin-right:auto}
-.fc-timing{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;color:var(--t3)}
-.tming-dot{width:5px;height:5px;border-radius:50%;background:var(--amber)}
-.rev-badge{display:flex;align-items:center;gap:6px;padding:5px 12px;background:var(--green-bg);border:1px solid var(--green-br);border-radius:6px;font-family:var(--mono);font-size:12px;font-weight:500;color:var(--green)}
-.fc-acts{display:flex;gap:8px}
-.btn-outline{padding:7px 16px;border-radius:var(--r);font-size:13px;font-weight:600;background:transparent;color:var(--t2);border:1px solid var(--b2);cursor:pointer;transition:.15s;font-family:var(--body)}
-.btn-outline:hover{color:var(--t1);border-color:var(--b3)}
-.btn-gold-ol{padding:7px 16px;border-radius:var(--r);font-size:13px;font-weight:600;background:var(--gold-bg);color:var(--gold-l);border:1px solid var(--gold-br);cursor:pointer;transition:.15s;font-family:var(--body)}
-.btn-gold-ol:hover{background:rgba(200,134,26,.14)}
-
-/* HOW */
-.how-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-.how-card{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r-lg);padding:24px;transition:.2s}
-.how-card:hover{border-color:var(--b2)}
-.how-n{font-family:var(--mono);font-size:11px;font-weight:500;color:var(--t3);margin-bottom:18px;display:flex;align-items:center;gap:8px}
-.how-n::after{content:'';flex:1;height:1px;background:var(--b1)}
-.how-ico{font-size:24px;margin-bottom:10px}
-.how-ttl{font-size:14px;font-weight:700;margin-bottom:7px;letter-spacing:-.2px}
-.how-desc{font-size:12px;color:var(--t2);line-height:1.65}
-
-/* LEADERBOARD */
-.lb-wrap{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r-xl);overflow:hidden}
-.lb-hdr{padding:18px 24px;border-bottom:1px solid var(--b1);display:flex;align-items:center;gap:12px}
-.lb-ttl{font-size:14px;font-weight:700;margin-right:auto}
-.lb-filters{display:flex;gap:6px}
-.lbf{font-family:var(--mono);font-size:11px;padding:5px 12px;border-radius:20px;border:1px solid var(--b2);color:var(--t3);cursor:pointer;background:transparent;font-weight:500;transition:.15s}
-.lbf:hover{color:var(--t1)}
-.lbf.on{background:var(--gold-bg);border-color:var(--gold-br);color:var(--gold-l)}
-.lb-row{display:grid;grid-template-columns:40px 1fr 90px 90px 90px 90px 110px;align-items:center;padding:13px 20px;border-bottom:1px solid var(--b1);transition:.15s;cursor:pointer;gap:8px}
-.lb-row:hover{background:var(--s2)}
-.lb-row:last-child{border-bottom:none}
-.lb-row.lbh{color:var(--t3);font-family:var(--mono);font-size:10px;letter-spacing:.5px;text-transform:uppercase;cursor:default;padding:10px 20px}
-.lb-row.lbh:hover{background:transparent}
-.lb-rank{font-family:var(--mono);font-size:13px;font-weight:500;color:var(--t3);text-align:center}
-.r1,.r2,.r3{color:var(--gold-l);font-weight:700}
-.lb-nm{font-size:13px;font-weight:600;letter-spacing:-.2px}
-.lb-ct{font-family:var(--mono);font-size:10px;color:var(--t3);margin-top:1px}
-.lb-sc{font-family:var(--mono);font-size:13px;font-weight:500;text-align:center}
-.lsh{color:var(--green)}.lsm{color:var(--amber)}.lsl{color:var(--red)}
-.lb-view{font-family:var(--mono);font-size:11px;padding:4px 12px;border-radius:5px;background:var(--gold-bg);color:var(--gold-l);border:1px solid var(--gold-br);cursor:pointer;transition:.15s;white-space:nowrap}
-.lb-view:hover{background:rgba(200,134,26,.14)}
-
-/* SIGNALS */
-.sigs-row{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
-.sig-card{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r-lg);padding:20px 16px;text-align:center;transition:.2s;cursor:pointer}
-.sig-card:hover{border-color:var(--b2);transform:translateY(-2px)}
-.sig-pct{font-family:var(--mono);font-size:22px;font-weight:500;line-height:1;margin-bottom:5px}
-.sig-up{color:var(--green)}.sig-dn{color:var(--red)}.sig-gold{color:var(--gold-l)}
-.sig-nm{font-size:11px;color:var(--t2);font-weight:600;margin-bottom:3px}
-.sig-src{font-family:var(--mono);font-size:10px;color:var(--t3)}
-.sig-badge{display:inline-block;font-family:var(--mono);font-size:9px;padding:2px 7px;border-radius:20px;margin-top:8px;font-weight:500}
-.sb-r{background:var(--green-bg);color:var(--green)}.sb-h{background:var(--red-bg);color:var(--red)}.sb-g{background:var(--gold-bg);color:var(--gold-l)}
-
-/* PROOF */
-.proof-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.proof-card{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r-lg);padding:24px;transition:.2s}
-.proof-card:hover{border-color:var(--b2)}
-.proof-outcome{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;background:var(--green-bg);border:1px solid var(--green-br);border-radius:5px;font-family:var(--mono);font-size:11px;font-weight:500;color:var(--green);margin-bottom:14px}
-.proof-stars{color:var(--gold);font-size:12px;letter-spacing:1px;margin-bottom:10px}
-.proof-txt{font-size:13px;color:var(--t2);line-height:1.75;margin-bottom:18px}
-.proof-author{display:flex;align-items:center;gap:10px}
-.av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
-.proof-nm{font-size:13px;font-weight:600}
-.proof-role{font-size:11px;color:var(--t3);font-family:var(--mono)}
-
-
-/* COMMUNITY MARQUEE */
-.comm-marquee{overflow:hidden;position:relative}
-.comm-track{display:flex;gap:14px;width:max-content;animation:communityScroll 55s linear infinite}
-.comm-marquee:hover .comm-track{animation-play-state:paused}
-@keyframes communityScroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-.comm-card{width:320px;background:var(--s1);border:1px solid var(--b1);border-radius:var(--r-lg);padding:22px;flex-shrink:0}
-.comm-stars{color:var(--gold);font-size:12px;letter-spacing:1px;margin-bottom:10px}
-.comm-text{font-size:13px;color:var(--t2);line-height:1.75;margin-bottom:16px}
-.comm-meta{display:flex;align-items:center;gap:10px}
-.comm-role{font-size:12px;color:var(--t3);font-family:var(--mono)}
-
-/* PRICING */
-.pricing-grid{display:grid;grid-template-columns:1fr 1.08fr 1fr;gap:16px}
-.pc{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r-xl);padding:30px;transition:.2s}
-.pc.feat{border-color:var(--gold-br);background:linear-gradient(160deg,#120F05,var(--s1));position:relative;overflow:hidden}
-.pc.feat::before{content:'Most Popular';position:absolute;top:14px;right:14px;font-family:var(--mono);font-size:9px;padding:3px 9px;background:var(--gold-bg);color:var(--gold-l);border:1px solid var(--gold-br);border-radius:20px;letter-spacing:.5px}
-.plan-nm{font-family:var(--mono);font-size:11px;font-weight:500;color:var(--t3);letter-spacing:.8px;text-transform:uppercase;margin-bottom:10px}
-.plan-px{font-size:40px;font-weight:700;letter-spacing:-2px;line-height:1;margin-bottom:4px;font-family:var(--mono)}
-.plan-px.gold{color:var(--gold-l)}
-.plan-cy{font-size:12px;color:var(--t3);margin-bottom:22px}
-.plan-desc{font-size:13px;color:var(--t2);line-height:1.65;margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid var(--b1)}
-.plan-feats{display:flex;flex-direction:column;gap:10px;margin-bottom:28px}
-.pfi{display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--t2)}
-.pfc{width:16px;height:16px;border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-top:1px}
-.pfy{background:var(--green-bg);border:1px solid var(--green-br);color:var(--green)}
-.pfg{background:var(--gold-bg);border:1px solid var(--gold-br);color:var(--gold-l)}
-.pfn{background:var(--s2);border:1px solid var(--b2)}
-
-/* CTA BLOCK */
-.cta-block{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r-2xl);padding:80px 64px;text-align:center;position:relative;overflow:hidden}
-.cta-block::before{content:'';position:absolute;top:-60px;left:50%;transform:translateX(-50%);width:500px;height:400px;background:radial-gradient(ellipse,rgba(200,134,26,.09),transparent 70%);pointer-events:none}
-.cta-block h2{font-family:var(--display);font-size:clamp(34px,4.5vw,58px);font-weight:700;letter-spacing:-.5px;margin-bottom:18px}
-.cta-block h2 em{font-style:italic;color:var(--gold-l)}
-.cta-block p{font-size:16px;color:var(--t2);max-width:460px;margin:0 auto 38px;line-height:1.7}
-.cta-form{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;max-width:440px;margin:0 auto 16px}
-.cta-input{flex:1;min-width:220px;padding:12px 16px;background:var(--s2);border:1px solid var(--b2);border-radius:var(--r-lg);color:var(--t1);font-family:var(--body);font-size:14px;outline:none;transition:.15s}
-.cta-input:focus{border-color:var(--gold-br)}
-.cta-input::placeholder{color:var(--t3)}
-.cta-note{font-family:var(--mono);font-size:11px;color:var(--t3)}
-
-
-/* INTELLIGENCE INFRASTRUCTURE */
-.intel-section{background:var(--s1);border-top:1px solid var(--b1);border-bottom:1px solid var(--b1);padding:76px 40px}
-.intel-inner{max-width:1160px;margin:0 auto}
-.intel-top{text-align:center;max-width:860px;margin:0 auto 42px}
-.intel-kicker{font-family:var(--mono);font-size:10px;color:var(--t3);letter-spacing:1.2px;text-transform:uppercase;margin-bottom:14px}
-.intel-title{font-family:var(--display);font-size:clamp(34px,4.6vw,58px);font-weight:700;letter-spacing:-.6px;line-height:1.02;margin-bottom:18px}
-.intel-title em{font-style:italic;color:var(--gold-l)}
-.intel-copy{font-size:15px;color:var(--t2);line-height:1.8;max-width:760px;margin:0 auto 18px}
-.intel-pill{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;background:var(--gold-bg);border:1px solid var(--gold-br);font-family:var(--mono);font-size:11px;color:var(--gold-l);margin-top:8px}
-.intel-price-card{background:linear-gradient(160deg,#120F05,var(--s1));border:1px solid var(--gold-br);border-radius:var(--r-2xl);padding:30px;margin:0 auto 26px;max-width:860px;position:relative;overflow:hidden}
-.intel-price-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),var(--cyan))}
-.intel-price-sub{font-family:var(--mono);font-size:10px;color:var(--t3);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
-.intel-price{font-family:var(--mono);font-size:48px;font-weight:700;letter-spacing:-2px;line-height:1;color:var(--gold-l);margin-bottom:10px}
-.intel-price-desc{font-size:14px;color:var(--t2);line-height:1.7;max-width:640px}
-.intel-cost-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:24px}
-.intel-cost-item{background:var(--s2);border:1px solid var(--b2);border-radius:var(--r-lg);padding:16px}
-.intel-cost-name{font-size:13px;font-weight:600;letter-spacing:-.2px;margin-bottom:6px}
-.intel-cost-val{font-family:var(--mono);font-size:13px;color:var(--gold-l)}
-.intel-note{font-family:var(--mono);font-size:11px;color:var(--t3);margin-top:18px}
-.intel-cats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:24px}
-.intel-cat{background:var(--bg);border:1px solid var(--b1);border-radius:var(--r-xl);padding:22px}
-.intel-cat-head{font-family:var(--mono);font-size:10px;color:var(--t3);letter-spacing:1px;text-transform:uppercase;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--b1)}
-.intel-list{display:flex;flex-direction:column;gap:10px}
-.intel-row{display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
-.intel-row-name{font-size:13px;color:var(--t1);line-height:1.45}
-.intel-row-val{font-family:var(--mono);font-size:11px;color:var(--t3);white-space:nowrap}
-.intel-disclaimer{margin-top:26px;font-size:12px;color:var(--t3);line-height:1.75;border-top:1px solid var(--b1);padding-top:18px}
-@media (max-width: 980px){
-  .intel-cost-grid,.intel-cats{grid-template-columns:1fr}
-}
-
-
-/* MEMBERS EXTENDED */
-.members-intro{max-width:820px;margin:0 auto 28px;text-align:center}
-.members-kicker{font-family:var(--mono);font-size:10px;color:var(--t3);letter-spacing:1.1px;text-transform:uppercase;margin-bottom:10px}
-.members-note{font-family:var(--mono);font-size:11px;color:var(--t3)}
-.members-grid-xl{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.member-quote{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r-xl);padding:22px;transition:.2s}
-.member-quote:hover{border-color:var(--b2);transform:translateY(-2px)}
-.member-stars{color:var(--gold);font-size:12px;letter-spacing:1px;margin-bottom:12px}
-.member-text{font-size:13px;color:var(--t2);line-height:1.75;margin-bottom:16px}
-.member-meta{display:flex;flex-direction:column;gap:8px}
-.member-role{font-size:13px;font-weight:600;color:var(--t1)}
-.member-tags{display:flex;flex-wrap:wrap;gap:6px}
-.member-tag{font-family:var(--mono);font-size:10px;padding:4px 8px;border-radius:999px;border:1px solid var(--b2);background:var(--s2);color:var(--t3)}
-
-/* CONTACT */
-.contact-section{padding:80px 40px;background:var(--s1);border-top:1px solid var(--b1);border-bottom:1px solid var(--b1)}
-.contact-inner{max-width:1160px;margin:0 auto}
-.contact-top{max-width:760px;margin:0 auto 38px;text-align:center}
-.contact-kicker{font-family:var(--mono);font-size:10px;color:var(--t3);letter-spacing:1.1px;text-transform:uppercase;margin-bottom:14px}
-.contact-title{font-family:var(--display);font-size:clamp(34px,4.8vw,60px);font-weight:700;letter-spacing:-.6px;line-height:1.02;margin-bottom:16px}
-.contact-title em{font-style:italic;color:var(--gold-l)}
-.contact-copy{font-size:15px;color:var(--t2);line-height:1.8;max-width:680px;margin:0 auto}
-.contact-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:18px;align-items:start}
-.contact-card{background:var(--bg);border:1px solid var(--b1);border-radius:var(--r-2xl);padding:28px}
-.form-title{font-size:18px;font-weight:700;letter-spacing:-.2px;margin-bottom:18px}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.form-field{display:flex;flex-direction:column;gap:7px}
-.form-field.full{grid-column:1/-1}
-.form-label{font-size:12px;color:var(--t2);font-weight:600}
-.form-input,.form-select,.form-textarea{width:100%;padding:12px 14px;background:var(--s2);border:1px solid var(--b2);border-radius:12px;color:var(--t1);font-family:var(--body);font-size:14px;outline:none}
-.form-textarea{min-height:140px;resize:vertical}
-.form-input::placeholder,.form-textarea::placeholder{color:var(--t3)}
-.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--gold-br)}
-.form-note{font-size:12px;color:var(--t3);line-height:1.7;margin-top:14px}
-.office-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.office-card{background:var(--bg);border:1px solid var(--b1);border-radius:var(--r-xl);padding:18px}
-.office-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
-.office-city{font-size:15px;font-weight:700}
-.office-region{font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:999px;background:var(--gold-bg);border:1px solid var(--gold-br);color:var(--gold-l)}
-.office-addr{font-size:13px;color:var(--t2);line-height:1.7}
-.discretion-card{margin-top:12px;background:var(--bg);border:1px solid var(--b1);border-radius:var(--r-xl);padding:20px}
-.discretion-title{font-size:15px;font-weight:700;margin-bottom:8px}
-.discretion-copy{font-size:13px;color:var(--t2);line-height:1.75}
-@media (max-width: 980px){
-  .members-grid-xl,.contact-grid,.office-grid,.form-grid{grid-template-columns:1fr}
-}
-
-/* FOOTER */
-footer{border-top:1px solid var(--b1)}
-.footer-inner{max-width:1160px;margin:0 auto;padding:36px 40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px}
-.footer-links{display:flex;gap:24px;font-size:13px;color:var(--t3)}
-.footer-links span{cursor:pointer;transition:.15s}.footer-links span:hover{color:var(--t1)}
-
-
-.toast{
-  position:fixed;right:24px;bottom:24px;z-index:1000;
-  background:rgba(11,13,21,.96);color:var(--t1);border:1px solid var(--b2);
-  border-radius:12px;padding:12px 14px;font-size:13px;box-shadow:0 14px 36px rgba(0,0,0,.28);
-  opacity:0;transform:translateY(8px);pointer-events:none;transition:.22s;
-}
-.toast.show{opacity:1;transform:none}
-
-
-/* MEMBERSHIP */
-.membership-section{padding:72px 40px;background:var(--s1);border-top:1px solid var(--b1);border-bottom:1px solid var(--b1)}
-.membership-inner{max-width:1160px;margin:0 auto}
-.membership-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:18px;align-items:start}
-.membership-card{background:var(--bg);border:1px solid var(--b1);border-radius:var(--r-2xl);padding:28px}
-.membership-kicker{font-family:var(--mono);font-size:10px;color:var(--t3);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
-.membership-title{font-family:var(--display);font-size:clamp(30px,4.2vw,48px);font-weight:700;letter-spacing:-.5px;line-height:1.05;margin-bottom:14px}
-.membership-copy{font-size:14px;color:var(--t2);line-height:1.75;max-width:580px}
-.auth-tabs{display:flex;gap:8px;margin:18px 0 18px}
-.auth-tab{padding:9px 12px;border-radius:999px;border:1px solid var(--b2);background:transparent;color:var(--t2);font-family:var(--mono);font-size:11px;cursor:pointer}
-.auth-tab.active{background:var(--gold-bg);border-color:var(--gold-br);color:var(--gold-l)}
-.auth-panel{display:none}
-.auth-panel.active{display:block}
-.auth-socials{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
-.auth-btn{display:flex;align-items:center;justify-content:center;gap:8px;padding:12px 14px;border-radius:12px;border:1px solid var(--b2);background:var(--s2);color:var(--t1);font-weight:600;cursor:pointer;font-family:var(--body);font-size:13px}
-.auth-btn.full{grid-column:1/-1}
-.auth-sep{display:flex;align-items:center;gap:10px;margin:14px 0;color:var(--t3);font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.8px}
-.auth-sep::before,.auth-sep::after{content:'';flex:1;height:1px;background:var(--b1)}
-.auth-form{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.auth-field{display:flex;flex-direction:column;gap:7px}
-.auth-field.full{grid-column:1/-1}
-.auth-label{font-size:12px;color:var(--t2);font-weight:600}
-.auth-input{width:100%;padding:12px 14px;background:var(--s2);border:1px solid var(--b2);border-radius:12px;color:var(--t1);font-family:var(--body);font-size:14px;outline:none}
-.auth-input::placeholder{color:var(--t3)}
-.auth-input:focus{border-color:var(--gold-br)}
-.auth-meta{font-size:12px;color:var(--t3);line-height:1.7;margin-top:12px}
-.auth-state{margin-top:16px;padding:14px;border:1px solid var(--b1);border-radius:12px;background:var(--s2)}
-.auth-state-title{font-size:13px;font-weight:700;margin-bottom:4px}
-.auth-state-copy{font-size:12px;color:var(--t2);line-height:1.7}
-.auth-links{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
-.auth-link-btn{padding:10px 14px;border-radius:10px;border:1px solid var(--b2);background:transparent;color:var(--t2);font-weight:600;cursor:pointer}
-.hidden-auth{display:none!important}
-@media (max-width:980px){
-  .membership-grid,.auth-socials,.auth-form{grid-template-columns:1fr}
-}
-
-/* ANIMATIONS */
-.reveal{opacity:0;transform:translateY(16px);transition:opacity .55s ease,transform .55s ease}
-.reveal.visible{opacity:1;transform:none}
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NicheLab</title>
+  <style>
+    :root{
+      --bg:#05060A; --panel:#0C1018; --panel-2:#111725; --line:#182032; --line-2:#293552;
+      --text:#EEF2FB; --muted:#99A6C4; --soft:#68748E; --gold:#C8861A; --gold-2:#E8A832;
+      --green:#22C55E; --blue:#5AA6FF; --sans:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+      --serif:Georgia,"Times New Roman",serif; --mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;
+      --radius:24px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; color:var(--text); font-family:var(--sans);
+      background:
+        radial-gradient(circle at 0% 0%, rgba(200,134,26,.08), transparent 24%),
+        linear-gradient(180deg,#05060A 0%, #070A10 100%);
+    }
+    a{text-decoration:none;color:inherit}
+    .wrap{max-width:1320px;margin:0 auto;padding:20px 22px 72px}
+    .nav{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:6px 0 18px}
+    .brand{display:flex;align-items:center;gap:12px;font-size:30px;font-weight:700;letter-spacing:-.04em}
+    .mark{width:15px;height:15px;border-radius:50%;background:linear-gradient(180deg,var(--gold-2),var(--gold));box-shadow:0 0 0 4px rgba(200,134,26,.12)}
+    .nav-links{display:flex;gap:10px;flex-wrap:wrap}
+    .btn{min-height:42px;padding:0 16px;border-radius:13px;border:1px solid var(--line-2);display:inline-flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#101523,#090D16);color:var(--text);font-size:14px}
+    .btn.gold{border:none;background:linear-gradient(180deg,var(--gold-2),var(--gold));color:#fff}
+    .eyebrow{font:11px/1.4 var(--mono);text-transform:uppercase;letter-spacing:.14em;color:var(--soft)}
+    .hero{display:grid;grid-template-columns:1.05fr .95fr;gap:18px;align-items:start}
+    .editorial{padding:18px 2px 0 2px}
+    .editorial h1{margin:16px 0 14px;font-family:var(--serif);font-size:74px;line-height:.94;letter-spacing:-.055em;max-width:820px}
+    .editorial p{max-width:720px;color:var(--muted);font-size:18px;line-height:1.84;margin:0 0 14px}
+    .editorial-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
+    .signal-monitor{border:1px solid rgba(200,134,26,.18);border-radius:28px;background:linear-gradient(160deg, rgba(18,14,8,.98), rgba(9,12,18,.98));padding:20px;box-shadow:0 22px 70px rgba(0,0,0,.32)}
+    .monitor-stack{display:grid;gap:12px;margin-top:14px}
+    .monitor-item{border:1px solid var(--line);border-radius:18px;padding:14px 16px;background:linear-gradient(180deg,var(--panel-2),var(--panel))}
+    .monitor-label{font:10px/1.2 var(--mono);text-transform:uppercase;letter-spacing:.13em;color:var(--soft);margin-bottom:8px}
+    .monitor-value{font-size:26px;letter-spacing:-.03em}
+    .monitor-copy{color:var(--muted);font-size:14px;line-height:1.6;margin-top:6px}
+    .monitor-title{font-family:var(--serif);font-size:34px;line-height:1.04;letter-spacing:-.04em;margin:0}
+    .badge-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+    .badge{border-radius:999px;padding:7px 10px;border:1px solid var(--line-2);background:#0E1320;color:#C4CCE0;font:10px/1.2 var(--mono);text-transform:uppercase;letter-spacing:.12em}
+    .badge.gold{background:rgba(200,134,26,.08);border-color:rgba(200,134,26,.24);color:#F0C97B}
+    .badge.green{background:rgba(34,197,94,.08);border-color:rgba(34,197,94,.24);color:#A3E8BB}
+    .dossier{margin-top:28px;border:1px solid rgba(200,134,26,.18);border-radius:30px;background:linear-gradient(160deg, rgba(20,15,8,.98), rgba(10,13,20,.99));padding:24px;display:grid;grid-template-columns:1.15fr .85fr;gap:18px;align-items:start}
+    .dossier h2{margin:8px 0 10px;font-family:var(--serif);font-size:58px;line-height:.97;letter-spacing:-.045em}
+    .dossier-copy{color:var(--muted);font-size:17px;line-height:1.8;max-width:760px}
+    .meta-grid{display:grid;gap:12px}
+    .meta-card{border:1px solid var(--line);border-radius:18px;background:#0C1019;padding:16px}
+    .meta-label{font:10px/1.2 var(--mono);text-transform:uppercase;letter-spacing:.12em;color:var(--soft);margin-bottom:8px}
+    .meta-value{font-size:18px;line-height:1.6}
+    .section{margin-top:44px}
+    .section h3{margin:0 0 16px;font-family:var(--serif);font-size:38px;letter-spacing:-.04em}
+    .rail{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(280px,1fr);gap:14px;overflow-x:auto;padding-bottom:6px}
+    .rail-card{min-height:180px;border:1px solid var(--line);border-radius:22px;background:linear-gradient(180deg,var(--panel-2),var(--panel));padding:18px}
+    .rail-card h4{margin:8px 0 10px;font-family:var(--serif);font-size:28px;line-height:1.04;letter-spacing:-.035em}
+    .rail-card p{margin:0;color:var(--muted);line-height:1.65;font-size:14px}
+    .explainer{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .explainer-card{border:1px solid var(--line);border-radius:22px;background:linear-gradient(180deg,var(--panel-2),var(--panel));padding:20px;min-height:220px}
+    .explainer-card h4{margin:10px 0 10px;font-family:var(--serif);font-size:30px;line-height:1.06;letter-spacing:-.035em}
+    .explainer-card p{margin:0;color:var(--muted);line-height:1.76}
+    .footer{margin-top:56px;color:var(--soft);font-size:14px}
+    @media (max-width:1160px){.hero,.dossier,.explainer{grid-template-columns:1fr}.editorial h1{font-size:56px}.dossier h2{font-size:42px}}
+    @media (max-width:760px){.wrap{padding:16px 14px 54px}.editorial h1{font-size:42px}.monitor-title{font-size:28px}.section h3{font-size:30px}}
+  </style>
 </head>
 <body>
-
-<!-- ═══ NAV ═══ -->
-<nav>
-  <div class="nav-logo">
-    <div class="logo-mark">NL</div>
-    <span>NicheLab</span>
-  </div>
-  <div class="nav-links">
-    <a class="nav-link active" href="#ideas">Ideas</a>
-    <a class="nav-link" href="#leaderboard">Leaderboard</a>
-    <a class="nav-link" href="#signals">Signals</a>
-    <a class="nav-link" href="#pricing">Pricing</a>
-  </div>
-  <div style="display:flex;gap:8px;margin-left:16px">
-    <button class="btn btn-ghost cta-signin" type="button">Sign in</button>
-    <button class="btn btn-gold cta-start-free" type="button">Start free →</button>
-  </div>
-</nav>
-
-<!-- ═══ HERO ═══ -->
-<section class="hero">
-  <div class="search-hero-wrap">
-    <div class="search-hero-label">Signal search</div>
-    <div class="search-hero-bar">
-      <div class="search-hero-icon">⌕</div>
-      <div class="search-hero-text">The #1 Website to Spot Trends and Startup Ideas Worth Building.<span class="search-hero-caret"></span></div>
-    </div>
-  </div>
-  <div class="hero-eyebrow">
-    <span class="eyebrow-dot"></span>
-    Report #184 published today · Webhook Reliability Platform
-  </div>
-  <h1>The market already knows<br><em>what to build.</em></h1>
-  <p class="hero-context">NicheLab mines <strong>Reddit sentiment, search velocity, funding signals, and competitor gaps</strong> — then condenses 200+ hours of research into 13-section investment-grade opportunity reports. Build the right thing. The first time.</p>
-  <div class="hero-actions">
-    <button class="btn btn-gold btn-lg cta-read-report" type="button">Read today's report free →</button>
-    <button class="btn btn-ghost btn-lg cta-browse" type="button">Browse 200+ opportunities</button>
-  </div>
-  <div class="hero-stats">
-    <div class="hstat"><span class="hstat-v">1,240+</span><span class="hstat-l">Active builders</span></div>
-    <div class="hstat"><span class="hstat-v">200+</span><span class="hstat-l">Validated ideas</span></div>
-    <div class="hstat"><span class="hstat-v">47</span><span class="hstat-l">Countries</span></div>
-    <div class="hstat"><span class="hstat-v">13</span><span class="hstat-l">Sections per report</span></div>
-  </div>
-</section>
-
-<!-- ═══ LIVE SIGNAL TICKER ═══ -->
-<div class="ticker">
-  <div class="ticker-inner">
-    <div class="tick-item"><span class="tick-label">AI Agent Debugging</span><span class="tick-up">+890%</span><span class="tick-sub">search vol / 18mo</span></div>
-    <div class="tick-item"><span class="tick-label">Webhook Reliability</span><span class="tick-up">+287%</span><span class="tick-sub">Google Trends / 36mo</span></div>
-    <div class="tick-item"><span class="tick-label">EU AI Act Compliance</span><span class="tick-up">HIGH SIGNAL</span></div>
-    <div class="tick-item"><span class="tick-label">API Rate Limiting SaaS</span><span class="tick-up">+412%</span><span class="tick-sub">search vol / 12mo</span></div>
-    <div class="tick-item"><span class="tick-label">B2B No-Code Tools</span><span class="tick-up">+63%</span><span class="tick-sub">Reddit sentiment</span></div>
-    <div class="tick-item"><span class="tick-label">AI Mock API Server</span><span class="tick-up">+195%</span><span class="tick-sub">GitHub stars / 6mo</span></div>
-    <div class="tick-item"><span class="tick-label">Micro-SaaS Infra</span><span class="tick-up">+78%</span><span class="tick-sub">Crunchbase funding</span></div>
-    <div class="tick-item"><span class="tick-label">Postman Alternatives</span><span class="tick-up">+340%</span><span class="tick-sub">Reddit threads / 90d</span></div>
-    <!-- Seamless loop duplicate -->
-    <div class="tick-item"><span class="tick-label">AI Agent Debugging</span><span class="tick-up">+890%</span><span class="tick-sub">search vol / 18mo</span></div>
-    <div class="tick-item"><span class="tick-label">Webhook Reliability</span><span class="tick-up">+287%</span><span class="tick-sub">Google Trends / 36mo</span></div>
-    <div class="tick-item"><span class="tick-label">EU AI Act Compliance</span><span class="tick-up">HIGH SIGNAL</span></div>
-    <div class="tick-item"><span class="tick-label">API Rate Limiting SaaS</span><span class="tick-up">+412%</span><span class="tick-sub">search vol / 12mo</span></div>
-    <div class="tick-item"><span class="tick-label">B2B No-Code Tools</span><span class="tick-up">+63%</span><span class="tick-sub">Reddit sentiment</span></div>
-    <div class="tick-item"><span class="tick-label">AI Mock API Server</span><span class="tick-up">+195%</span><span class="tick-sub">GitHub stars / 6mo</span></div>
-    <div class="tick-item"><span class="tick-label">Micro-SaaS Infra</span><span class="tick-up">+78%</span><span class="tick-sub">Crunchbase funding</span></div>
-    <div class="tick-item"><span class="tick-label">Postman Alternatives</span><span class="tick-up">+340%</span><span class="tick-sub">Reddit threads / 90d</span></div>
-  </div>
-</div>
-
-<!-- ═══ PROBLEM ═══ -->
-<div class="problem-section">
-  <div class="problem-inner">
-    <div class="problem-lede reveal">
-      <h2>Most founders build<br>the wrong thing.</h2>
-      <p>Not because they lack talent. Because they're making six-figure decisions on incomplete data. NicheLab exists to fix this.</p>
-    </div>
-    <div class="problem-grid reveal">
-      <div class="prob-card">
-        <span class="prob-n">42%</span>
-        <div class="prob-ttl">Fail from no market need</div>
-        <div class="prob-txt">The #1 reason startups die isn't poor execution — it's solving a problem no one has, in a market too small to matter, without the data to know in advance.</div>
-        <div class="prob-src">CB Insights · 2023 Startup Failure Report</div>
+  <div class="wrap">
+    <nav class="nav">
+      <div class="brand"><span class="mark"></span>NicheLab</div>
+      <div class="nav-links">
+        <a class="btn" href="dashboard.html">Dashboard</a>
+        <a class="btn" href="#rail">Reports</a>
+        <a class="btn" href="#method">Method</a>
+        <a class="btn gold" href="dashboard.html">Start free</a>
       </div>
-      <div class="prob-card">
-        <span class="prob-n">14mo</span>
-        <div class="prob-ttl">Average time wasted per wrong pivot</div>
-        <div class="prob-txt">Fourteen months of building, hiring, and burning runway before discovering the market signal was wrong from day one. That's time you don't get back.</div>
-        <div class="prob-src">YC Partner Survey · 2022</div>
-      </div>
-      <div class="prob-card">
-        <span class="prob-n">$47K</span>
-        <div class="prob-ttl">Average burn before pivoting</div>
-        <div class="prob-txt">The true cost of trusting gut instinct over data. A NicheLab Starter plan costs $249/year. 200+ reports. $1.24 per validated opportunity. The math writes itself.</div>
-        <div class="prob-src">First Round Capital · 2023</div>
-      </div>
-    </div>
-  </div>
-</div>
+    </nav>
 
-<!-- ═══ IDEA OF THE DAY ═══ -->
-<div class="wrap wrap-top" id="ideas">
-  <div class="sec-head">
-    <span class="sec-label">Idea of the day</span>
-    <div class="sec-line"></div>
-    <span class="sec-tag tag-new">New Today</span>
-  </div>
-  <div class="fc reveal">
-    <div class="fc-head">
-      <div class="fc-icon">🔗</div>
-      <div class="fc-meta">
-        <div class="fc-eyebrow">
-          <span class="fc-cat">Micro-SaaS · Dev Tools</span>
-          <span class="fc-pill tag-hot">High Signal</span>
-        </div>
-        <div class="fc-title">Webhook Reliability Platform for Indie Developers</div>
-        <div class="fc-tagline">Production-grade webhook management for teams that can't afford Datadog but can't afford downtime. Capture, debug, replay, and monitor every webhook event across your entire SaaS stack — in one place, under $80/month.</div>
-        <div class="fc-scores">
-          <div class="schip"><span class="sc-l">Market</span><span class="sc-v sc-hi">84/100</span></div>
-          <div class="schip"><span class="sc-l">Revenue</span><span class="sc-v sc-hi">78/100</span></div>
-          <div class="schip"><span class="sc-l">Competition</span><span class="sc-v sc-md">61/100</span></div>
-          <div class="schip"><span class="sc-l">Difficulty</span><span class="sc-v sc-hi">42/100</span></div>
-          <div class="schip"><span class="sc-l">MVP Time</span><span class="sc-v">10–14 wks</span></div>
-          <div class="schip"><span class="sc-l">TAM</span><span class="sc-v">$7.0B</span></div>
-          <div class="schip"><span class="sc-l">CAGR</span><span class="sc-v sc-hi">18.2%</span></div>
-        </div>
-      </div>
-    </div>
-    <div class="fc-body">
-      <div class="fc-col">
-        <div class="col-ttl">Why now</div>
-        <div class="col-txt">
-          <p>Postman restricted its free tier in May 2023, triggering a developer exodus. <strong>Hoppscotch gained 25,000 GitHub stars in 6 months</strong> from that backlash — but no one captured the hosted webhook infrastructure market Postman vacated.</p>
-          <p>AI agents calling external APIs are exploding. <strong>"AI agent debugging" queries up 890%</strong> in 18 months. Incumbent tools weren't designed for this use case. The window is 6–9 months wide.</p>
-        </div>
-      </div>
-      <div class="fc-col">
-        <div class="col-ttl">Proof signals</div>
-        <div class="sig-row">
-          <div class="sig-item"><div class="sig-dot"></div><div class="sig-txt"><em>+287%</em> growth in "webhook debugging" searches over 36 months (Google Trends)</div></div>
-          <div class="sig-item"><div class="sig-dot"></div><div class="sig-txt">Hookdeck raised a <em>$7M Series A</em> in 2023 — validates the commercial model</div></div>
-          <div class="sig-item"><div class="sig-dot"></div><div class="sig-txt">Webhook.site founder disclosed <em>$15K–$20K MRR</em> with a simpler product (Indie Hackers, 2022)</div></div>
-          <div class="sig-item"><div class="sig-dot"></div><div class="sig-txt">Reddit r/webdev "Postman is dead to me": <em>847 upvotes, 400+ comments</em></div></div>
-          <div class="sig-item"><div class="sig-dot"></div><div class="sig-txt">EU AI Act Article 12 mandates <em>API audit logs</em> — compliance demand incoming</div></div>
-        </div>
-      </div>
-      <div class="fc-col">
-        <div class="col-ttl">30-day execution plan</div>
-        <div class="exec-steps">
-          <div class="estep"><div class="estep-n">1</div><div class="estep-t">Interview 20 engineers. Ask: <strong>"What's most frustrating about webhook integrations?"</strong> Do NOT pitch.</div></div>
-          <div class="estep"><div class="estep-n">2</div><div class="estep-t">Ship landing page: <strong>"Never lose a webhook event again."</strong> Target 200 signups from HN + Reddit.</div></div>
-          <div class="estep"><div class="estep-n">3</div><div class="estep-t">Map where <strong>Webhook.site ends and Hookdeck begins.</strong> That $29–$79 gap is your product.</div></div>
-          <div class="estep"><div class="estep-n">4</div><div class="estep-t">Price at <strong>$29/mo Developer · $79/mo Team</strong> from day one. No launch discounts.</div></div>
-          <div class="estep"><div class="estep-n">5</div><div class="estep-t">Ship <strong>npx hookbase listen</strong> CLI. Every run auto-creates a free account — your PLG engine.</div></div>
-        </div>
-      </div>
-    </div>
-    <div class="fc-foot">
-      <div class="fc-fl">
-        <div class="fc-timing"><div class="tming-dot"></div>10–14 week solo build</div>
-        <div class="rev-badge">$12,600 MRR at Month 12 (Base Case)</div>
-      </div>
-      <div class="fc-acts">
-        <button class="btn-outline cta-save-idea" type="button">Save idea</button>
-        <button class="btn-gold-ol cta-full-report" type="button">Detailed report →</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ═══ HOW IT WORKS ═══ -->
-<div class="wrap">
-  <div class="sec-head">
-    <span class="sec-label">How it works</span>
-    <div class="sec-line"></div>
-  </div>
-  <div class="how-grid reveal">
-    <div class="how-card">
-      <div class="how-n">01</div>
-      <div class="how-ico">📡</div>
-      <div class="how-ttl">Signal Capture</div>
-      <div class="how-desc">We monitor 47 data sources continuously — Reddit threads, Google Trends, GitHub star velocity, Crunchbase funding rounds, G2 review sentiment, and regulatory filings.</div>
-    </div>
-    <div class="how-card">
-      <div class="how-n">02</div>
-      <div class="how-ico">🧮</div>
-      <div class="how-ttl">Opportunity Scoring</div>
-      <div class="how-desc">Each idea is scored across 5 dimensions: Market Size, Revenue Potential, Competition Level, Build Difficulty, and Signal Strength — with citations, not opinions.</div>
-    </div>
-    <div class="how-card">
-      <div class="how-n">03</div>
-      <div class="how-ico">📋</div>
-      <div class="how-ttl">Detailed reports</div>
-      <div class="how-desc">TAM/SAM/SOM with sources. Competitor gap analysis. Revenue model. 30-day execution plan. Financial model. Founder-fit score. 200+ hours → 15-minute read.</div>
-    </div>
-    <div class="how-card">
-      <div class="how-n">04</div>
-      <div class="how-ico">🚀</div>
-      <div class="how-ttl">Execute with Confidence</div>
-      <div class="how-desc">Every report ends with a specific 30-day action plan and base-case MRR projection. Know what to build, why it works, and how to start — today.</div>
-    </div>
-  </div>
-</div>
-
-
-<!-- ═══ INTELLIGENCE INFRASTRUCTURE ═══ -->
-<div class="intel-section">
-  <div class="intel-inner">
-    <div class="intel-top reveal">
-      <div class="intel-kicker">Intelligence infrastructure</div>
-      <h2 class="intel-title">Where the<br><em>signal comes from.</em></h2>
-      <p class="intel-copy">Reddit sentiment, search velocity, funding signals, and competitor gaps do not emerge from guesswork. They are assembled from the same intelligence categories institutions pay heavily to access.</p>
-      <p class="intel-copy">A Bloomberg Terminal costs $27,000 a year. A single McKinsey report, $30,000. CB Insights Enterprise starts at $15,000 annually. These tools were not built for the individual founder.</p>
-      <p class="intel-copy">Every NicheLab analysis is built on the same intelligence infrastructure that informs decisions at the world's largest hedge funds, strategy consultancies and sovereign wealth offices. The data layer does not change. Only who gets to act on it does.</p>
-      <div class="intel-pill">Institutional-grade intelligence · Individual price point</div>
-    </div>
-
-    <div class="intel-price-card reveal">
-      <div class="intel-price-sub">What direct access to these sources costs</div>
-      <div class="intel-price">$147,400/yr</div>
-      <div class="intel-price-desc">Combined institutional list price across the intelligence categories we monitor.</div>
-
-      <div class="intel-cost-grid">
-        <div class="intel-cost-item">
-          <div class="intel-cost-name">Bloomberg Terminal</div>
-          <div class="intel-cost-val">$27,000/yr</div>
-        </div>
-        <div class="intel-cost-item">
-          <div class="intel-cost-name">CB Insights Enterprise</div>
-          <div class="intel-cost-val">$15,000/yr</div>
-        </div>
-        <div class="intel-cost-item">
-          <div class="intel-cost-name">Gartner Research Access</div>
-          <div class="intel-cost-val">$30,000/yr</div>
-        </div>
-        <div class="intel-cost-item">
-          <div class="intel-cost-name">PitchBook Platform</div>
-          <div class="intel-cost-val">$24,000/yr</div>
-        </div>
-        <div class="intel-cost-item">
-          <div class="intel-cost-name">McKinsey Reports (avg 4)</div>
-          <div class="intel-cost-val">$22,000/yr</div>
-        </div>
-        <div class="intel-cost-item">
-          <div class="intel-cost-name">Euromonitor Passport</div>
-          <div class="intel-cost-val">$18,400/yr</div>
-        </div>
-        <div class="intel-cost-item">
-          <div class="intel-cost-name">IBISWorld Industry Suite</div>
-          <div class="intel-cost-val">$11,000/yr</div>
+    <section class="hero">
+      <div class="editorial">
+        <div class="eyebrow">Editorial front page · live publishing system</div>
+        <h1>The #1 Website to Spot Trends and Startup Ideas Worth Building.</h1>
+        <p>NicheLab is built to make market intelligence feel less like content and more like a working system. Instead of static inspiration, it surfaces focused opportunities through automated report generation, scoring, and publishing.</p>
+        <p>The result is a front page that behaves more like an intelligence desk than a generic startup trend site.</p>
+        <div class="editorial-actions">
+          <a class="btn gold" href="#dossier">Open today’s dossier</a>
+          <a class="btn" href="dashboard.html">Enter dashboard</a>
         </div>
       </div>
 
-      <div class="intel-note">Figures reflect publicly available institutional pricing. For reference only.</div>
-    </div>
-
-    <div class="intel-cats reveal">
-      <div class="intel-cat">
-        <div class="intel-cat-head">Strategy & consulting</div>
-        <div class="intel-list">
-          <div class="intel-row"><div class="intel-row-name">McKinsey Global Institute</div><div class="intel-row-val">$30K/report</div></div>
-          <div class="intel-row"><div class="intel-row-name">BCG Henderson Institute</div><div class="intel-row-val">Institutional</div></div>
-          <div class="intel-row"><div class="intel-row-name">Bain & Company Research</div><div class="intel-row-val">Institutional</div></div>
-          <div class="intel-row"><div class="intel-row-name">Deloitte Insights</div><div class="intel-row-val">Public</div></div>
-          <div class="intel-row"><div class="intel-row-name">PwC Global Reports</div><div class="intel-row-val">Public</div></div>
-        </div>
-      </div>
-
-      <div class="intel-cat">
-        <div class="intel-cat-head">Financial & market</div>
-        <div class="intel-list">
-          <div class="intel-row"><div class="intel-row-name">Bloomberg Terminal</div><div class="intel-row-val">$27K/yr</div></div>
-          <div class="intel-row"><div class="intel-row-name">Goldman Sachs Research</div><div class="intel-row-val">Institutional</div></div>
-          <div class="intel-row"><div class="intel-row-name">Financial Times</div><div class="intel-row-val">$499/yr</div></div>
-          <div class="intel-row"><div class="intel-row-name">The Economist</div><div class="intel-row-val">$345/yr</div></div>
-          <div class="intel-row"><div class="intel-row-name">Wall Street Journal</div><div class="intel-row-val">$439/yr</div></div>
-        </div>
-      </div>
-
-      <div class="intel-cat">
-        <div class="intel-cat-head">Technology & venture</div>
-        <div class="intel-list">
-          <div class="intel-row"><div class="intel-row-name">CB Insights Enterprise</div><div class="intel-row-val">$15K/yr</div></div>
-          <div class="intel-row"><div class="intel-row-name">Gartner Research</div><div class="intel-row-val">$30K/yr</div></div>
-          <div class="intel-row"><div class="intel-row-name">PitchBook Platform</div><div class="intel-row-val">$24K/yr</div></div>
-          <div class="intel-row"><div class="intel-row-name">a16z / Sequoia Memos</div><div class="intel-row-val">Public</div></div>
-          <div class="intel-row"><div class="intel-row-name">Y Combinator Data</div><div class="intel-row-val">Public</div></div>
-        </div>
-      </div>
-
-      <div class="intel-cat">
-        <div class="intel-cat-head">Academic & research</div>
-        <div class="intel-list">
-          <div class="intel-row"><div class="intel-row-name">Harvard Business Review</div><div class="intel-row-val">$299/yr</div></div>
-          <div class="intel-row"><div class="intel-row-name">MIT Sloan Management</div><div class="intel-row-val">Academic</div></div>
-          <div class="intel-row"><div class="intel-row-name">Stanford GSB Research</div><div class="intel-row-val">Academic</div></div>
-          <div class="intel-row"><div class="intel-row-name">Wharton School Studies</div><div class="intel-row-val">Academic</div></div>
-          <div class="intel-row"><div class="intel-row-name">Oxford Saïd Business</div><div class="intel-row-val">Academic</div></div>
-        </div>
-      </div>
-
-      <div class="intel-cat">
-        <div class="intel-cat-head">Industry & consumer</div>
-        <div class="intel-list">
-          <div class="intel-row"><div class="intel-row-name">Euromonitor Passport</div><div class="intel-row-val">$18K/yr</div></div>
-          <div class="intel-row"><div class="intel-row-name">IBISWorld Suite</div><div class="intel-row-val">$11K/yr</div></div>
-          <div class="intel-row"><div class="intel-row-name">Statista Enterprise</div><div class="intel-row-val">$8K/yr</div></div>
-          <div class="intel-row"><div class="intel-row-name">Public filings</div><div class="intel-row-val">Public</div></div>
-          <div class="intel-row"><div class="intel-row-name">SEC EDGAR Filings</div><div class="intel-row-val">Public</div></div>
-        </div>
-      </div>
-
-      <div class="intel-cat">
-        <div class="intel-cat-head">Behavioral signals</div>
-        <div class="intel-list">
-          <div class="intel-row"><div class="intel-row-name">Google Trends & Search</div><div class="intel-row-val">Public</div></div>
-          <div class="intel-row"><div class="intel-row-name">Reddit Community Data</div><div class="intel-row-val">Public</div></div>
-          <div class="intel-row"><div class="intel-row-name">Product Hunt Signals</div><div class="intel-row-val">Public</div></div>
-          <div class="intel-row"><div class="intel-row-name">Indie Hackers Revenue</div><div class="intel-row-val">Public</div></div>
-          <div class="intel-row"><div class="intel-row-name">MicroAcquire Deal Data</div><div class="intel-row-val">Public</div></div>
-          <div class="intel-row"><div class="intel-row-name">Exploding Topics</div><div class="intel-row-val">$39/mo</div></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="intel-disclaimer">
-      All analytical outputs are produced through proprietary synthesis methodologies and do not constitute sublicensed reproduction of any proprietary data infrastructure. Institutional designations serve as reference points only and shall not be construed as evidence of partnership agreements. All outputs represent forward-looking synthesized inference and do not constitute investment, financial, legal, or business advice.
-    </div>
-  </div>
-</div>
-
-
-<!-- ═══ DATA VS OPINION ═══ -->
-<div style="background:var(--s1);border-top:1px solid var(--b1);border-bottom:1px solid var(--b1);padding:64px 40px">
-  <div style="max-width:1160px;margin:0 auto">
-    <div style="text-align:center;margin-bottom:48px" class="reveal">
-      <div style="font-family:var(--mono);font-size:10px;color:var(--t3);letter-spacing:1.2px;text-transform:uppercase;margin-bottom:12px">Why NicheLab</div>
-      <h2 style="font-family:var(--display);font-size:clamp(30px,4vw,48px);font-weight:700;letter-spacing:-.5px">Data, not opinions.</h2>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1px 1fr;max-width:820px;margin:0 auto" class="reveal">
-      <div style="padding-right:48px">
-        <div style="font-family:var(--mono);font-size:10px;color:var(--t3);letter-spacing:1px;text-transform:uppercase;margin-bottom:18px;padding-bottom:10px;border-bottom:1px solid var(--b1)">The conventional approach</div>
-        <div style="display:flex;flex-direction:column;gap:12px">
-          <div style="display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--t2)"><span style="color:var(--red);margin-top:0px;font-weight:700">✕</span>Browse Twitter for hot takes and gut feelings</div>
-          <div style="display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--t2)"><span style="color:var(--red);margin-top:0px;font-weight:700">✕</span>Ask an LLM to brainstorm ideas from thin air</div>
-          <div style="display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--t2)"><span style="color:var(--red);margin-top:0px;font-weight:700">✕</span>Spend months on manual, unverified research</div>
-          <div style="display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--t2)"><span style="color:var(--red);margin-top:0px;font-weight:700">✕</span>Trust a podcast guest's market assumptions</div>
-          <div style="display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--t2)"><span style="color:var(--red);margin-top:0px;font-weight:700">✕</span>Hope your instinct aligns with actual demand</div>
-        </div>
-      </div>
-      <div style="background:var(--b1)"></div>
-      <div style="padding-left:48px">
-        <div style="font-family:var(--mono);font-size:10px;color:var(--gold-l);letter-spacing:1px;text-transform:uppercase;margin-bottom:18px;padding-bottom:10px;border-bottom:1px solid var(--gold-br)">NicheLab</div>
-        <div style="display:flex;flex-direction:column;gap:12px">
-          <div style="display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--t2)"><span style="color:var(--green);margin-top:0px;font-weight:700">✓</span>47 monitored real-world data sources</div>
-          <div style="display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--t2)"><span style="color:var(--green);margin-top:0px;font-weight:700">✓</span>Every claim cited — Reddit, Trends, Crunchbase, G2</div>
-          <div style="display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--t2)"><span style="color:var(--green);margin-top:0px;font-weight:700">✓</span>200+ hours of research in a 15-minute read</div>
-          <div style="display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--t2)"><span style="color:var(--green);margin-top:0px;font-weight:700">✓</span>Investment-grade TAM/SAM/SOM with sources</div>
-          <div style="display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--t2)"><span style="color:var(--green);margin-top:0px;font-weight:700">✓</span>Specific 30-day execution plan per opportunity</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ═══ LEADERBOARD ═══ -->
-<div class="wrap wrap-top" id="leaderboard">
-  <div class="sec-head">
-    <span class="sec-label">Opportunity leaderboard</span>
-    <div class="sec-line"></div>
-    <span class="sec-tag tag-pro">200+ Ideas</span>
-  </div>
-  <div class="lb-wrap reveal">
-    <div class="lb-hdr">
-      <span class="lb-ttl">Top Validated Opportunities — March 2026</span>
-      <div class="lb-filters">
-        <button class="lbf on">All</button>
-        <button class="lbf">Micro-SaaS</button>
-        <button class="lbf">Dev Tools</button>
-        <button class="lbf">AI</button>
-        <button class="lbf">Consumer</button>
-      </div>
-    </div>
-    <div class="lb-row lbh">
-      <div>#</div><div>Idea</div>
-      <div style="text-align:center">Market</div>
-      <div style="text-align:center">Revenue</div>
-      <div style="text-align:center">Difficulty</div>
-      <div style="text-align:center">Signal</div>
-      <div style="text-align:right">Report</div>
-    </div>
-    <div class="lb-row" data-category="micro-saas dev-tools">
-      <div class="lb-rank r1">1</div>
-      <div><div class="lb-nm">Webhook Reliability Platform</div><div class="lb-ct">Micro-SaaS · Dev Tools</div></div>
-      <div class="lb-sc lsh" style="text-align:center">84</div>
-      <div class="lb-sc lsh" style="text-align:center">78</div>
-      <div class="lb-sc lsh" style="text-align:center">42</div>
-      <div class="lb-sc lsh" style="text-align:center">⬆ High</div>
-      <div style="text-align:right"><button class="lb-view cta-leaderboard-report" data-idea="Webhook Reliability Platform" type="button">Open report</button></div>
-    </div>
-    <div class="lb-row" data-category="micro-saas dev-tools ai">
-      <div class="lb-rank r2">2</div>
-      <div><div class="lb-nm">AI Mock API Server (Hosted)</div><div class="lb-ct">Micro-SaaS · Dev Tools</div></div>
-      <div class="lb-sc lsh" style="text-align:center">81</div>
-      <div class="lb-sc lsh" style="text-align:center">76</div>
-      <div class="lb-sc lsh" style="text-align:center">39</div>
-      <div class="lb-sc lsh" style="text-align:center">⬆ High</div>
-      <div style="text-align:right"><button class="lb-view cta-leaderboard-report" data-idea="AI Mock API Server (Hosted)" type="button">Open report</button></div>
-    </div>
-    <div class="lb-row" data-category="micro-saas dev-tools">
-      <div class="lb-rank r3">3</div>
-      <div><div class="lb-nm">API Breaking Change Monitor</div><div class="lb-ct">Micro-SaaS · Infrastructure</div></div>
-      <div class="lb-sc lsh" style="text-align:center">77</div>
-      <div class="lb-sc lsh" style="text-align:center">72</div>
-      <div class="lb-sc lsm" style="text-align:center">54</div>
-      <div class="lb-sc lsm" style="text-align:center">↗ Rising</div>
-      <div style="text-align:right"><button class="lb-view cta-leaderboard-report" data-idea="API Breaking Change Monitor" type="button">Open report</button></div>
-    </div>
-    <div class="lb-row" data-category="ai">
-      <div class="lb-rank">4</div>
-      <div><div class="lb-nm">EU AI Act Compliance Logger</div><div class="lb-ct">Compliance · SaaS</div></div>
-      <div class="lb-sc lsh" style="text-align:center">74</div>
-      <div class="lb-sc lsm" style="text-align:center">69</div>
-      <div class="lb-sc lsm" style="text-align:center">58</div>
-      <div class="lb-sc lsm" style="text-align:center">↗ Emerging</div>
-      <div style="text-align:right"><button class="lb-view cta-leaderboard-report" data-idea="EU AI Act Compliance Logger" type="button">Open report</button></div>
-    </div>
-    <div class="lb-row" data-category="micro-saas dev-tools">
-      <div class="lb-rank">5</div>
-      <div><div class="lb-nm">Rate Limit Management Proxy</div><div class="lb-ct">Micro-SaaS · Dev Tools</div></div>
-      <div class="lb-sc lsm" style="text-align:center">68</div>
-      <div class="lb-sc lsm" style="text-align:center">64</div>
-      <div class="lb-sc lsh" style="text-align:center">31</div>
-      <div class="lb-sc lsm" style="text-align:center">↗ Rising</div>
-      <div style="text-align:right"><button class="lb-view cta-leaderboard-report" data-idea="Rate Limit Management Proxy" type="button">Open report</button></div>
-    </div>
-    <div class="lb-row" style="opacity:.55;cursor:default">
-      <div class="lb-rank" style="color:var(--t3)">6–200+</div>
-      <div style="color:var(--t3);font-size:13px;display:flex;align-items:center;gap:10px">
-        <span>Unlock all opportunities</span>
-        <span style="font-family:var(--mono);font-size:10px;padding:2px 8px;background:var(--gold-bg);color:var(--gold-l);border:1px solid var(--gold-br);border-radius:4px">STARTER · $249/yr</span>
-      </div>
-      <div></div><div></div><div></div><div></div>
-      <div style="text-align:right"><button class="lb-view cta-upgrade" type="button">Upgrade →</button></div>
-    </div>
-  </div>
-</div>
-
-<!-- ═══ SIGNALS ═══ -->
-<div class="wrap" id="signals">
-  <div class="sec-head">
-    <span class="sec-label">Live market signals</span>
-    <div class="sec-line"></div>
-    <span class="sec-tag tag-cyan">Real-time</span>
-  </div>
-  <div class="sigs-row reveal">
-    <div class="sig-card">
-      <div class="sig-pct sig-up">+287%</div>
-      <div class="sig-nm">Webhook Debugging</div>
-      <div class="sig-src">Google Trends · 36mo</div>
-      <div class="sig-badge sb-r">Rising Fast</div>
-    </div>
-    <div class="sig-card">
-      <div class="sig-pct sig-up">+890%</div>
-      <div class="sig-nm">AI Agent Debugging</div>
-      <div class="sig-src">Search Volume · 18mo</div>
-      <div class="sig-badge sb-h">Explosive</div>
-    </div>
-    <div class="sig-card">
-      <div class="sig-pct sig-up">+412%</div>
-      <div class="sig-nm">API Rate Limiting</div>
-      <div class="sig-src">Search Volume · 12mo</div>
-      <div class="sig-badge sb-g">Emerging</div>
-    </div>
-    <div class="sig-card">
-      <div class="sig-pct sig-up">+195%</div>
-      <div class="sig-nm">Mock API Servers</div>
-      <div class="sig-src">GitHub Stars · 6mo</div>
-      <div class="sig-badge sb-r">Rising</div>
-    </div>
-    <div class="sig-card">
-      <div class="sig-pct sig-gold">$7M</div>
-      <div class="sig-nm">Hookdeck Series A</div>
-      <div class="sig-src">Crunchbase · 2023</div>
-      <div class="sig-badge sb-g">Market Validated</div>
-    </div>
-  </div>
-</div>
-
-
-<!-- ═══ PROOF ═══ -->
-<div class="wrap">
-  <div class="sec-head">
-    <span class="sec-label">From the community</span>
-    <div class="sec-line"></div>
-  </div>
-
-  <div class="comm-marquee reveal">
-    <div class="comm-track">
-      <div class="comm-card">
-        <div class="comm-stars">★★★★★</div>
-        <div class="comm-text">“NicheLab is what idea research should look like for serious builders. The competitor maps alone save weeks.”</div>
-        <div class="proof-author"><div class="av" style="background:var(--gold-bg);color:var(--gold-l)">AK</div><div><div class="proof-nm">Alex Kim</div><div class="comm-role">Solo founder · $8K MRR</div></div></div>
-      </div>
-      <div class="comm-card">
-        <div class="comm-stars">★★★★★</div>
-        <div class="comm-text">“I stopped wasting weekends researching niches on Twitter. The action plans are unusually practical.”</div>
-        <div class="proof-author"><div class="av" style="background:var(--green-bg);color:var(--green)">SR</div><div><div class="proof-nm">Sara Reyes</div><div class="comm-role">Developer · 2 products shipped</div></div></div>
-      </div>
-      <div class="comm-card">
-        <div class="comm-stars">★★★★★</div>
-        <div class="comm-text">“The TAM/SAM/SOM section gave me language I could use directly in an investor deck.”</div>
-        <div class="proof-author"><div class="av" style="background:var(--amber-bg);color:var(--amber)">JM</div><div><div class="proof-nm">James Müller</div><div class="comm-role">Founder · Pre-seed funded</div></div></div>
-      </div>
-      <div class="comm-card">
-        <div class="comm-stars">★★★★★</div>
-        <div class="comm-text">“Best signal-to-noise ratio I’ve seen in a startup research product. No fluff, just usable insight.”</div>
-        <div class="proof-author"><div class="av" style="background:var(--cyan-bg);color:var(--cyan)">LT</div><div><div class="proof-nm">Lina Torres</div><div class="comm-role">Operator · B2B SaaS</div></div></div>
-      </div>
-      <div class="comm-card">
-        <div class="comm-stars">★★★★★</div>
-        <div class="comm-text">“The risk matrix was the section that changed my mind about entering a market that looked attractive on the surface.”</div>
-        <div class="proof-author"><div class="av" style="background:var(--gold-bg);color:var(--gold-l)">MC</div><div><div class="proof-nm">Marcus Chen</div><div class="comm-role">Founder · 3 exits</div></div></div>
-      </div>
-      <div class="comm-card">
-        <div class="comm-stars">★★★★★</div>
-        <div class="comm-text">“I found a better micro-SaaS wedge in one report than I had in months of manual research.”</div>
-        <div class="proof-author"><div class="av" style="background:var(--green-bg);color:var(--green)">DK</div><div><div class="proof-nm">Daniel K.</div><div class="comm-role">Indie founder</div></div></div>
-      </div>
-      <div class="comm-card">
-        <div class="comm-stars">★★★★★</div>
-        <div class="comm-text">“The opportunity scoring is fast enough for weekly workflow, but still feels institutional in depth.”</div>
-        <div class="proof-author"><div class="av" style="background:var(--amber-bg);color:var(--amber)">LM</div><div><div class="proof-nm">Laura M.</div><div class="comm-role">Product strategist</div></div></div>
-      </div>
-      <div class="comm-card">
-        <div class="comm-stars">★★★★★</div>
-        <div class="comm-text">“I used the 30-day plan almost line by line. That alone justified the subscription.”</div>
-        <div class="proof-author"><div class="av" style="background:var(--cyan-bg);color:var(--cyan)">RS</div><div><div class="proof-nm">Robert S.</div><div class="comm-role">Startup founder</div></div></div>
-      </div>
-      <div class="comm-card">
-        <div class="comm-stars">★★★★★</div>
-        <div class="comm-text">“The research has the tone of something built by people who have actually sat inside funds and strategy firms.”</div>
-        <div class="proof-author"><div class="av" style="background:var(--gold-bg);color:var(--gold-l)">EP</div><div><div class="proof-nm">Elena Petrova</div><div class="comm-role">Angel investor</div></div></div>
-      </div>
-      <div class="comm-card">
-        <div class="comm-stars">★★★★★</div>
-        <div class="comm-text">“Much faster than buying one-off industry reports, and much more actionable for builders.”</div>
-        <div class="proof-author"><div class="av" style="background:var(--green-bg);color:var(--green)">NB</div><div><div class="proof-nm">Noah Blake</div><div class="comm-role">Independent consultant</div></div></div>
-      </div>
-      <div class="comm-card">
-        <div class="comm-stars">★★★★★</div>
-        <div class="comm-text">“It helps me pressure-test markets before my team commits engineering time.”</div>
-        <div class="proof-author"><div class="av" style="background:var(--amber-bg);color:var(--amber)">VT</div><div><div class="proof-nm">Victor Tran</div><div class="comm-role">Head of product</div></div></div>
-      </div>
-      <div class="comm-card">
-        <div class="comm-stars">★★★★★</div>
-        <div class="comm-text">“The signal data tends to appear here earlier than it shows up in mainstream trend products.”</div>
-        <div class="proof-author"><div class="av" style="background:var(--cyan-bg);color:var(--cyan)">CH</div><div><div class="proof-nm">Clara Hoffmann</div><div class="comm-role">Creator economy operator</div></div></div>
-      </div>
-
-      <div class="comm-card">
-        <div class="comm-stars">★★★★★</div>
-        <div class="comm-text">“NicheLab is what idea research should look like for serious builders. The competitor maps alone save weeks.”</div>
-        <div class="proof-author"><div class="av" style="background:var(--gold-bg);color:var(--gold-l)">AK</div><div><div class="proof-nm">Alex Kim</div><div class="comm-role">Solo founder · $8K MRR</div></div></div>
-      </div>
-      <div class="comm-card">
-        <div class="comm-stars">★★★★★</div>
-        <div class="comm-text">“I stopped wasting weekends researching niches on Twitter. The action plans are unusually practical.”</div>
-        <div class="proof-author"><div class="av" style="background:var(--green-bg);color:var(--green)">SR</div><div><div class="proof-nm">Sara Reyes</div><div class="comm-role">Developer · 2 products shipped</div></div></div>
-      </div>
-      <div class="comm-card">
-        <div class="comm-stars">★★★★★</div>
-        <div class="comm-text">“The TAM/SAM/SOM section gave me language I could use directly in an investor deck.”</div>
-        <div class="proof-author"><div class="av" style="background:var(--amber-bg);color:var(--amber)">JM</div><div><div class="proof-nm">James Müller</div><div class="comm-role">Founder · Pre-seed funded</div></div></div>
-      </div>
-      <div class="comm-card">
-        <div class="comm-stars">★★★★★</div>
-        <div class="comm-text">“Best signal-to-noise ratio I’ve seen in a startup research product. No fluff, just usable insight.”</div>
-        <div class="proof-author"><div class="av" style="background:var(--cyan-bg);color:var(--cyan)">LT</div><div><div class="proof-nm">Lina Torres</div><div class="comm-role">Operator · B2B SaaS</div></div></div>
-      </div>
-      <div class="comm-card">
-        <div class="comm-stars">★★★★★</div>
-        <div class="comm-text">“The risk matrix was the section that changed my mind about entering a market that looked attractive on the surface.”</div>
-        <div class="proof-author"><div class="av" style="background:var(--gold-bg);color:var(--gold-l)">MC</div><div><div class="proof-nm">Marcus Chen</div><div class="comm-role">Founder · 3 exits</div></div></div>
-      </div>
-      <div class="comm-card">
-        <div class="comm-stars">★★★★★</div>
-        <div class="comm-text">“I found a better micro-SaaS wedge in one report than I had in months of manual research.”</div>
-        <div class="proof-author"><div class="av" style="background:var(--green-bg);color:var(--green)">DK</div><div><div class="proof-nm">Daniel K.</div><div class="comm-role">Indie founder</div></div></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<!-- ═══ PRICING ═══ -->
-<div class="wrap" id="pricing">
-  <div class="sec-head">
-    <span class="sec-label">Pricing</span>
-    <div class="sec-line"></div>
-  </div>
-  <p style="font-size:15px;color:var(--t2);max-width:560px;margin:0 0 36px;line-height:1.7">
-    Each NicheLab report represents 200+ hours of institutional research. At $249/year for 200+ reports, you're paying <strong style="color:var(--t1)">$1.24 per validated opportunity.</strong> A single bad pivot costs 1,000× that.
-  </p>
-  <div class="pricing-grid reveal">
-    <div class="pc">
-      <div class="plan-nm">Free</div>
-      <div class="plan-px">$0</div>
-      <div class="plan-cy">forever · no card required</div>
-      <div class="plan-desc">Explore NicheLab before committing. See the leaderboard top 5. Read today's featured report in preview mode. Understand what you're buying.</div>
-      <div class="plan-feats">
-        <div class="pfi"><div class="pfc pfy"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Daily featured report (preview)</div>
-        <div class="pfi"><div class="pfc pfy"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Score dashboard (5 metrics)</div>
-        <div class="pfi"><div class="pfc pfy"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Leaderboard top 5</div>
-        <div class="pfi"><div class="pfc pfn"></div><span style="color:var(--t3)">Detailed reports</span></div>
-        <div class="pfi"><div class="pfc pfn"></div><span style="color:var(--t3)">Competitor intel per report</span></div>
-        <div class="pfi"><div class="pfc pfn"></div><span style="color:var(--t3)">Custom report generation</span></div>
-      </div>
-      <button class="btn btn-ghost cta-plan-free" style="width:100%;padding:11px" type="button">Start for free</button>
-    </div>
-    <div class="pc feat">
-      <div class="plan-nm">Starter</div>
-      <div class="plan-px gold">$249</div>
-      <div class="plan-cy">/year · billed annually <span style="color:var(--green);font-weight:600">(save 17%)</span></div>
-      <div class="plan-desc">Full access to every report in the database. The opportunity leaderboard. Trend alerts. Everything to find and validate your next idea. <strong style="color:var(--gold-l)">That's $1.24 per report.</strong></div>
-      <div class="plan-feats">
-        <div class="pfi"><div class="pfc pfy"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>200+ Detailed reports</div>
-        <div class="pfi"><div class="pfc pfy"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Leaderboard + weekly trend alerts</div>
-        <div class="pfi"><div class="pfc pfy"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Competitor intel per report</div>
-        <div class="pfi"><div class="pfc pfy"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Founder-fit assessment</div>
-        
-        <div class="pfi"><div class="pfc pfn"></div><span style="color:var(--t3)">Custom report generation</span></div>
-      </div>
-      <button class="btn btn-gold cta-plan-starter" style="width:100%;padding:11px" type="button">Start Starter plan →</button>
-    </div>
-    <div class="pc">
-      <div class="plan-nm">Pro</div>
-      <div class="plan-px">$899</div>
-      <div class="plan-cy">/year · billed annually</div>
-      <div class="plan-desc">Everything in Starter, plus on-demand custom research. Enter any niche, category, or region — we generate the Detailed report within 24 hours.</div>
-      <div class="plan-feats">
-        <div class="pfi"><div class="pfc pfy"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Everything in Starter</div>
-        <div class="pfi"><div class="pfc pfy"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>12 custom reports/year</div>
-        <div class="pfi"><div class="pfc pfy"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Financial model exports (Excel)</div>
-        <div class="pfi"><div class="pfc pfy"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Early access to new tools</div>
-        <div class="pfi"><div class="pfc pfy"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Founder community access</div>
-        <div class="pfi"><div class="pfc pfy"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Priority support</div>
-      </div>
-      <button class="btn btn-ghost cta-plan-pro" style="width:100%;padding:11px" type="button">Start Pro plan</button>
-    </div>
-  </div>
-</div>
-
-
-
-<!-- ═══ MEMBERSHIP ═══ -->
-<div class="membership-section" id="membership">
-  <div class="membership-inner">
-    <div class="sec-head">
-      <span class="sec-label">Membership</span>
-      <div class="sec-line"></div>
-    </div>
-
-    <div class="membership-grid reveal">
-      <div class="membership-card">
-        <div class="membership-kicker">Member access</div>
-        <h2 class="membership-title">Sign in, start free,<br><em>or create your account.</em></h2>
-        <p class="membership-copy">This section is wired for Google, Facebook, Apple, and email/password sign-in. To make social login live on GitHub Pages, add your Firebase web configuration and enable the providers in Firebase Authentication.</p>
-
-        <div class="auth-tabs">
-          <button class="auth-tab active" type="button" data-auth-tab="signin">Sign in</button>
-          <button class="auth-tab" type="button" data-auth-tab="signup">Create account</button>
+      <aside class="signal-monitor">
+        <div class="eyebrow">Live signal monitor</div>
+        <h2 id="monitor-title" class="monitor-title">Loading signal state...</h2>
+        <div class="badge-row">
+          <span id="monitor-category" class="badge">Category</span>
+          <span id="monitor-confidence" class="badge green">Confidence</span>
+          <span id="monitor-recommendation" class="badge gold">Recommendation</span>
         </div>
 
-        <div class="auth-panel active" data-auth-panel="signin">
-          <div class="auth-socials">
-            <button class="auth-btn" id="auth-google" type="button">Google</button>
-            <button class="auth-btn" id="auth-facebook" type="button">Facebook</button>
-            <button class="auth-btn full" id="auth-apple" type="button">Apple</button>
+        <div class="monitor-stack">
+          <div class="monitor-item">
+            <div class="monitor-label">Featured report</div>
+            <div id="monitor-featured" class="monitor-value">—</div>
+            <div class="monitor-copy">Current top-ranked report from the publishing engine.</div>
           </div>
-
-          <div class="auth-sep">Or continue with email</div>
-
-          <div class="auth-form">
-            <div class="auth-field full">
-              <label class="auth-label">Email address</label>
-              <input class="auth-input" id="signin-email" type="email" placeholder="you@domain.com" />
-            </div>
-            <div class="auth-field full">
-              <label class="auth-label">Password</label>
-              <input class="auth-input" id="signin-password" type="password" placeholder="Enter your password" />
-            </div>
-            <div class="auth-field full">
-              <button class="btn btn-gold" id="signin-submit" type="button">Sign in</button>
-            </div>
-            <div class="auth-field full">
-              <button class="auth-link-btn" id="auth-reset-password" type="button">Forgot password</button>
-            </div>
+          <div class="monitor-item">
+            <div class="monitor-label">Published reports</div>
+            <div id="monitor-total" class="monitor-value">—</div>
+            <div class="monitor-copy">Reports currently surfaced through the live feed.</div>
+          </div>
+          <div class="monitor-item">
+            <div class="monitor-label">Last update</div>
+            <div id="monitor-updated" class="monitor-value" style="font-size:20px">—</div>
+            <div class="monitor-copy">Most recent front page refresh timestamp.</div>
           </div>
         </div>
+      </aside>
+    </section>
 
-        <div class="auth-panel" data-auth-panel="signup">
-          <div class="auth-socials">
-            <button class="auth-btn" id="signup-google" type="button">Continue with Google</button>
-            <button class="auth-btn" id="signup-facebook" type="button">Continue with Facebook</button>
-            <button class="auth-btn full" id="signup-apple" type="button">Continue with Apple</button>
-          </div>
-
-          <div class="auth-sep">Or create with email</div>
-
-          <div class="auth-form">
-            <div class="auth-field">
-              <label class="auth-label">First name</label>
-              <input class="auth-input" id="signup-firstname" type="text" placeholder="First name" />
-            </div>
-            <div class="auth-field">
-              <label class="auth-label">Last name</label>
-              <input class="auth-input" id="signup-lastname" type="text" placeholder="Last name" />
-            </div>
-            <div class="auth-field full">
-              <label class="auth-label">Email address</label>
-              <input class="auth-input" id="signup-email" type="email" placeholder="you@domain.com" />
-            </div>
-            <div class="auth-field full">
-              <label class="auth-label">Password</label>
-              <input class="auth-input" id="signup-password" type="password" placeholder="Create a password" />
-            </div>
-            <div class="auth-field full">
-              <button class="btn btn-gold" id="signup-submit" type="button">Create account</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="auth-meta">To activate social auth, paste your Firebase web config and enable Google, Facebook, Apple, and Email/Password providers in Firebase Authentication. Stripe upgrade buttons are also ready for live Payment Links.</div>
-      </div>
-
-      <div class="membership-card">
-        <div class="membership-kicker">Current access state</div>
-        <div class="auth-state">
-          <div class="auth-state-title" id="member-state-title">Not signed in</div>
-          <div class="auth-state-copy" id="member-state-copy">Users who click report access or plan buttons will be routed here until authentication is completed.</div>
-        </div>
-
-        <div class="auth-links">
-          <button class="auth-link-btn" id="goto-free-plan" type="button">Start Free</button>
-          <button class="auth-link-btn" id="goto-starter-plan" type="button">Starter</button>
-          <button class="auth-link-btn" id="goto-pro-plan" type="button">Pro</button>
-          <button class="auth-link-btn hidden-auth" id="auth-signout" type="button">Sign out</button>
-        </div>
-
-        <div class="auth-state" style="margin-top:18px">
-          <div class="auth-state-title">Configuration placeholders</div>
-          <div class="auth-state-copy">Replace the Firebase config block in the script with your real project values. Then replace the Stripe placeholders with your Stripe Payment Links. After that, the auth and upgrade flows can go live on GitHub Pages without changing the HTML structure.</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<!-- ═══ GET IN TOUCH ═══ -->
-<div class="contact-section" id="contact">
-  <div class="contact-inner">
-    <div class="contact-top reveal">
-      <div class="contact-kicker">Get in touch</div>
-      <h2 class="contact-title">Written<br><em>correspondence only.</em></h2>
-      <p class="contact-copy">NicheLab operates under a strict written communication policy. All enquiries are received, reviewed, and responded to via the form below. We do not accept walk-in visits, unscheduled calls, or verbal requests of any nature.</p>
-    </div>
-
-    <div class="contact-grid reveal">
-      <form class="contact-card" action="https://formspree.io/f/mwvrzqld" method="POST">
-        <div class="form-title">Submit your enquiry</div>
-        <div class="form-grid">
-          <input type="hidden" name="_subject" value="New NicheLab enquiry" />
-          <input type="hidden" name="_replyto" value="" />
-          <div class="form-field">
-            <label class="form-label">First name</label>
-            <input class="form-input" id="contact-first-name" name="first_name" placeholder="First name" value="" />
-          </div>
-          <div class="form-field">
-            <label class="form-label">Last name</label>
-            <input class="form-input" id="contact-last-name" name="last_name" placeholder="Last name" value="" />
-          </div>
-          <div class="form-field full">
-            <label class="form-label">Email address</label>
-            <input class="form-input" type="email" id="contact-email" name="email" placeholder="you@domain.com" value="" />
-          </div>
-          <div class="form-field full">
-            <label class="form-label">Subject</label>
-            <select class="form-select" id="contact-subject" name="subject">
-              <option value="">Select enquiry type</option>
-              <option>General enquiry</option>
-              <option>Membership</option>
-              <option>Partnership</option>
-              <option>Press</option>
-              <option>Research request</option>
-            </select>
-          </div>
-          <div class="form-field full">
-            <label class="form-label">Organisation (optional)</label>
-            <input class="form-input" id="contact-organization" name="organization" placeholder="Company or institution" value="" />
-          </div>
-          <div class="form-field full">
-            <label class="form-label">Message</label>
-            <textarea class="form-textarea" id="contact-message" name="message" placeholder="Please describe your enquiry in detail. Incomplete or vague submissions may not receive a response."></textarea>
-          </div>
-          <div class="form-field full">
-            <button class="btn btn-gold btn-lg" style="width:100%">Submit enquiry</button>
-          </div>
-        </div>
-        <div class="form-note">Your correspondence is treated with complete confidentiality. We do not share, sell, or disclose submission content to any third party. By submitting, you acknowledge NicheLab's Privacy Policy and Terms of Service.</div>
-      </form>
-
+    <section id="dossier" class="dossier">
       <div>
-        <div class="form-title" style="margin:0 0 14px 4px">Global correspondence offices</div>
-        <div class="office-grid">
-          <div class="office-card">
-            <div class="office-top"><div class="office-city">🇬🇧 London</div><div class="office-region">Primary</div></div>
-            <div class="office-addr">Knightsbridge One<br>Hyde Park<br>London SW1X 7LJ<br>United Kingdom</div>
-          </div>
-          <div class="office-card">
-            <div class="office-top"><div class="office-city">🇦🇪 Dubai</div><div class="office-region">MENA</div></div>
-            <div class="office-addr">The Palm Jumeirah<br>Dubai<br>United Arab Emirates</div>
-          </div>
-          <div class="office-card">
-            <div class="office-top"><div class="office-city">🇵🇹 Lisbon</div><div class="office-region">EMEA</div></div>
-            <div class="office-addr">Quinta Patino Estates<br>Avenida da República<br>Cascais, Lisbon<br>Portugal</div>
-          </div>
-          <div class="office-card">
-            <div class="office-top"><div class="office-city">🇺🇸 Los Angeles</div><div class="office-region">Americas</div></div>
-            <div class="office-addr">Benedict Canyon<br>Beverly Hills, CA 90210<br>United States of America</div>
-          </div>
+        <div class="eyebrow">Today’s dossier</div>
+        <h2 id="featured-title">Loading latest dossier...</h2>
+        <div id="featured-subtitle" class="dossier-copy">The system is fetching the latest generated report for the front page.</div>
+        <div class="badge-row">
+          <span id="featured-category" class="badge">Category</span>
+          <span id="featured-confidence" class="badge green">Confidence</span>
+          <span id="featured-recommendation" class="badge gold">Recommendation</span>
         </div>
-
-        <div class="discretion-card">
-          <div class="discretion-title">Discretion policy</div>
-          <div class="discretion-copy">All NicheLab offices operate within fully secured, private-access residential and commercial estates. Specific unit identifiers, floor plans, and building numbers are withheld as standard security protocol. Visitors are not received without prior written appointment confirmation issued by NicheLab's coordination team. Physical correspondence without a confirmed reference number will not be accepted.</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:18px">
+          <a id="featured-link" class="btn gold" href="dashboard.html">Open report</a>
+          <a class="btn" href="dashboard.html">View all reports</a>
         </div>
       </div>
-    </div>
-  </div>
-</div>
 
+      <div class="meta-grid">
+        <div class="meta-card">
+          <div class="meta-label">Why it matters</div>
+          <div class="meta-value">The front page surfaces one live report as a daily dossier rather than burying it inside a generic grid.</div>
+        </div>
+        <div class="meta-card">
+          <div class="meta-label">System state</div>
+          <div class="meta-value">GitHub Actions generates reports, updates JSON feeds, and republishes the front page without manual listing changes.</div>
+        </div>
+        <div class="meta-card">
+          <div class="meta-label">Best fit</div>
+          <div class="meta-value">Founders, operators, product strategists, and small funds who want clearer commercial signal before they build.</div>
+        </div>
+      </div>
+    </section>
 
-<!-- ═══ FINAL CTA ═══ -->
-<div class="wrap">
-  <div class="cta-block reveal">
-    <h2>Stop building on<br><em>assumptions.</em></h2>
-    <p>Read today's opportunity report free. No credit card. No pitch. Just data-backed intelligence on a market that's ready to be built.</p>
-    <div class="cta-form">
-      <input class="cta-input" type="email" placeholder="your@email.com">
-      <button class="btn btn-gold btn-lg cta-get-free-report" type="button">Get free report →</button>
-    </div>
-    <div class="cta-note">1,240+ builders already inside · Unsubscribe anytime</div>
-  </div>
-</div>
+    <section id="rail" class="section">
+      <h3>Report rail</h3>
+      <div id="report-rail" class="rail"></div>
+    </section>
 
+    <section id="method" class="section">
+      <h3>Why this matters</h3>
+      <div class="explainer">
+        <div class="explainer-card">
+          <div class="eyebrow">Signal source</div>
+          <h4>More than trend watching.</h4>
+          <p>The system is useful because it does not rely on a single signal source. It looks for repeated evidence across founder chatter, workflow pain, market density, and opportunity framing.</p>
+        </div>
+        <div class="explainer-card">
+          <div class="eyebrow">Scoring logic</div>
+          <h4>Filtered, not merely generated.</h4>
+          <p>Reports are not just produced; they are ranked through buyer clarity, workflow specificity, monetization plausibility, and editorial filtering so that weak candidates do not dominate the surface area.</p>
+        </div>
+        <div class="explainer-card">
+          <div class="eyebrow">Publishing model</div>
+          <h4>Automatically surfaced.</h4>
+          <p>Once a report is produced, the site can publish and surface it automatically. That turns the homepage into a live intelligence front page instead of a manually maintained marketing asset.</p>
+        </div>
+      </div>
+    </section>
 
-<!-- ═══ WHERE THE SIGNAL COMES FROM ═══ -->
-<div class="wrap">
-  <div class="sec-head">
-    <span class="sec-label">Where the signal comes from</span>
-    <div class="sec-line"></div>
-  </div>
-  <div class="sigs-row reveal">
-    <div class="sig-card">
-      <div class="sig-pct sig-up">Reddit</div>
-      <div class="sig-nm">Developer Discussions</div>
-      <div class="sig-src">Real user pain</div>
-    </div>
-    <div class="sig-card">
-      <div class="sig-pct sig-up">Google</div>
-      <div class="sig-nm">Search Trends</div>
-      <div class="sig-src">Demand velocity</div>
-    </div>
-    <div class="sig-card">
-      <div class="sig-pct sig-up">GitHub</div>
-      <div class="sig-nm">Star Growth</div>
-      <div class="sig-src">Developer adoption</div>
-    </div>
-    <div class="sig-card">
-      <div class="sig-pct sig-up">Crunchbase</div>
-      <div class="sig-nm">Funding Signals</div>
-      <div class="sig-src">Investor validation</div>
-    </div>
-    <div class="sig-card">
-      <div class="sig-pct sig-up">G2</div>
-      <div class="sig-nm">Review Sentiment</div>
-      <div class="sig-src">Customer demand</div>
-    </div>
-  </div>
-</div>
-
-
-<!-- ═══ WHAT OUR MEMBERS SAY ═══ -->
-<div class="wrap">
-  <div class="sec-head">
-    <span class="sec-label">What our members say</span>
-    <div class="sec-line"></div>
+    <div class="footer">Auto-generated report feed connected to GitHub Actions publishing.</div>
   </div>
 
-  <div class="members-intro reveal">
-    <div class="members-kicker">Names withheld by request · Identities verified by NicheLab</div>
-  </div>
-
-  <div class="members-grid-xl reveal">
-    <div class="member-quote">
-      <div class="member-stars">★★★★★</div>
-      <div class="member-text">“I found a micro-SaaS gap in legal document automation that I'd been researching for 6 months. NicheLab surfaced it in a single analysis with a cleaner competitive map than anything I'd built myself.”</div>
-      <div class="member-meta">
-        <div class="member-role">Solo founder, 2nd exit</div>
-        <div class="member-tags"><span class="member-tag">Micro-SaaS</span><span class="member-tag">Legal Tech</span><span class="member-tag">Pro</span></div>
-      </div>
-    </div>
-    <div class="member-quote">
-      <div class="member-stars">★★★★★</div>
-      <div class="member-text">“The opportunity scoring alone is worth the subscription. I used to spend days building models to evaluate whether a niche was worth entering. Now I do it in minutes.”</div>
-      <div class="member-meta">
-        <div class="member-role">Product strategist, Series B startup</div>
-        <div class="member-tags"><span class="member-tag">Strategy</span><span class="member-tag">Starter</span></div>
-      </div>
-    </div>
-    <div class="member-quote">
-      <div class="member-stars">★★★★★</div>
-      <div class="member-text">“I launched a Notion template business using a NicheLab analysis as my roadmap. First $2K in revenue within 40 days. The go-to-market plan was accurate to a degree that surprised me.”</div>
-      <div class="member-meta">
-        <div class="member-role">Creator, digital products</div>
-        <div class="member-tags"><span class="member-tag">Creator Economy</span><span class="member-tag">Starter</span></div>
-      </div>
-    </div>
-    <div class="member-quote">
-      <div class="member-stars">★★★★★</div>
-      <div class="member-text">“What I pay for a month of NicheLab, I used to spend on a single industry report that took 3 weeks to arrive. The intelligence here is faster and frankly more actionable.”</div>
-      <div class="member-meta">
-        <div class="member-role">Independent consultant, EMEA</div>
-        <div class="member-tags"><span class="member-tag">B2B Services</span><span class="member-tag">Pro</span></div>
-      </div>
-    </div>
-    <div class="member-quote">
-      <div class="member-stars">★★★★★</div>
-      <div class="member-text">“The competitive landscape section changed how I think about positioning. I was about to enter a market that looked empty — the analysis showed me exactly why three others had failed there.”</div>
-      <div class="member-meta">
-        <div class="member-role">Founder, B2B SaaS</div>
-        <div class="member-tags"><span class="member-tag">Micro-SaaS</span><span class="member-tag">Pro</span></div>
-      </div>
-    </div>
-    <div class="member-quote">
-      <div class="member-stars">★★★★★</div>
-      <div class="member-text">“I've been building in the creator economy for four years. The trend signal data here picks up on things that don't show up on Exploding Topics or Google Trends for another two or three months.”</div>
-      <div class="member-meta">
-        <div class="member-role">Creator economy operator</div>
-        <div class="member-tags"><span class="member-tag">Creator Economy</span><span class="member-tag">Pro</span></div>
-      </div>
-    </div>
-    <div class="member-quote">
-      <div class="member-stars">★★★★★</div>
-      <div class="member-text">“The free tier alone justified signing up. The daily analysis gives me enough signal to know whether a category is worth investigating further.”</div>
-      <div class="member-meta">
-        <div class="member-role">Early stage investor, angel</div>
-        <div class="member-tags"><span class="member-tag">Angel</span><span class="member-tag">Free → Pro</span></div>
-      </div>
-    </div>
-    <div class="member-quote">
-      <div class="member-stars">★★★★★</div>
-      <div class="member-text">“I used the 30-day action plan almost exactly as written. It's not generic — it's sequenced like someone who's actually launched a product before wrote it.”</div>
-      <div class="member-meta">
-        <div class="member-role">First-time founder, mobile apps</div>
-        <div class="member-tags"><span class="member-tag">Mobile Apps</span><span class="member-tag">Starter</span></div>
-      </div>
-    </div>
-    <div class="member-quote">
-      <div class="member-stars">★★★★★</div>
-      <div class="member-text">“Running a small fund focused on pre-seed micro-SaaS. NicheLab is part of our deal flow workflow. The market sizing data and competitor gap maps are the fastest way to pressure-test a founder's thesis.”</div>
-      <div class="member-meta">
-        <div class="member-role">Pre-seed fund principal</div>
-        <div class="member-tags"><span class="member-tag">VC</span><span class="member-tag">Pro</span></div>
-      </div>
-    </div>
-    <div class="member-quote">
-      <div class="member-stars">★★★★★</div>
-      <div class="member-text">“The risk matrix section is something I've never seen done well anywhere else. Most tools just tell you the opportunity — this one tells you exactly what will kill it.”</div>
-      <div class="member-meta">
-        <div class="member-role">Operator, 3 exits</div>
-        <div class="member-tags"><span class="member-tag">Serial founder</span><span class="member-tag">Pro</span></div>
-      </div>
-    </div>
-    <div class="member-quote">
-      <div class="member-stars">★★★★★</div>
-      <div class="member-text">“Three months in. Found two opportunities I'm actively building. One is already at $1,400 MRR. The analysis predicted the entry difficulty accurately — I was live in 22 days.”</div>
-      <div class="member-meta">
-        <div class="member-role">Indie hacker, 4 products live</div>
-        <div class="member-tags"><span class="member-tag">Indie Hacker</span><span class="member-tag">Starter</span></div>
-      </div>
-    </div>
-    <div class="member-quote">
-      <div class="member-stars">★★★★★</div>
-      <div class="member-text">“My previous process for validating a niche was 3 weeks of manual research. That process is now a single morning on NicheLab.”</div>
-      <div class="member-meta">
-        <div class="member-role">Business analyst, growth stage</div>
-        <div class="member-tags"><span class="member-tag">Ops</span><span class="member-tag">Pro</span></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<!-- ═══ WHO IS BEHIND THIS ═══ -->
-<div style="background:var(--s1);border-top:1px solid var(--b1);border-bottom:1px solid var(--b1);padding:80px 40px">
-  <div style="max-width:1000px;margin:0 auto">
-
-    <div style="text-align:center;margin-bottom:50px">
-      <div style="font-family:var(--mono);font-size:10px;color:var(--t3);letter-spacing:1.2px;text-transform:uppercase;margin-bottom:14px">
-        Who is behind this
-      </div>
-
-      <h2 style="font-family:var(--display);font-size:48px;font-weight:700;letter-spacing:-.5px;margin-bottom:16px">
-        Built by people who<br><em>have been inside.</em>
-      </h2>
-
-      <p style="font-size:16px;color:var(--t2);max-width:720px;margin:0 auto 20px;line-height:1.8">
-        NicheLab was not built by people who read about markets. It was built by people who spent years inside them — 
-        and left because they knew what individual founders were missing.
-      </p>
-
-      <p style="font-size:15px;color:var(--t2);max-width:760px;margin:0 auto 18px;line-height:1.8">
-        The founding team brings together backgrounds across global strategy consulting, venture capital,
-        institutional market research and product development. Between them: exits, advisory roles at funds,
-        engagements at Big Four firms, and years spent producing the kind of analysis that previously never
-        reached the individual builder.
-      </p>
-
-      <p style="font-size:15px;color:var(--t2);max-width:760px;margin:0 auto 18px;line-height:1.8">
-        The platform exists because this team knows exactly what institutional intelligence looks like —
-        and chose to make it accessible at a different price point.
-      </p>
-
-      <p style="font-size:14px;color:var(--t3);max-width:720px;margin:0 auto;line-height:1.8">
-        Team members are not publicly named by choice. In a market intelligence business, the methodology matters
-        more than the biography. We let the work speak.
-      </p>
-    </div>
-
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:18px">
-
-      <div class="how-card">
-        <div class="how-n">01</div>
-        <div class="how-ttl">Strategy & Market Intelligence Lead</div>
-        <div class="how-desc">
-          Former engagement manager at a global top‑3 strategy consultancy.
-          Led market entry and competitive intelligence projects across 12 markets.
-          Wharton MBA.
-        </div>
-        <div style="margin-top:12px;font-family:var(--mono);font-size:11px;color:var(--t3)">
-          McKinsey‑tier · Market entry · Wharton
-        </div>
-      </div>
-
-      <div class="how-card">
-        <div class="how-n">02</div>
-        <div class="how-ttl">Venture & Startup Intelligence</div>
-        <div class="how-desc">
-          Former analyst at a Tier 1 VC fund. Evaluated 400+ startups annually
-          across SaaS, fintech and consumer. Prior stint at PwC Deals.
-          London Business School.
-        </div>
-        <div style="margin-top:12px;font-family:var(--mono);font-size:11px;color:var(--t3)">
-          Tier 1 VC · Big Four · LBS
-        </div>
-      </div>
-
-      <div class="how-card">
-        <div class="how-n">03</div>
-        <div class="how-ttl">Data & Product Architecture</div>
-        <div class="how-desc">
-          Previously led data products at a Series B fintech.
-          Built market signal pipelines used by institutional clients.
-          MIT Computer Science.
-        </div>
-        <div style="margin-top:12px;font-family:var(--mono);font-size:11px;color:var(--t3)">
-          Signal systems · Fintech · MIT
-        </div>
-      </div>
-
-      <div class="how-card">
-        <div class="how-n">04</div>
-        <div class="how-ttl">Editorial & Research Standards</div>
-        <div class="how-desc">
-          Former researcher at a top‑5 global think tank.
-          Published in FT, The Economist and Harvard Business Review.
-          Oxford PPE.
-        </div>
-        <div style="margin-top:12px;font-family:var(--mono);font-size:11px;color:var(--t3)">
-          Think tank · HBR published · Oxford
-        </div>
-      </div>
-
-    </div>
-
-    <div style="text-align:center;margin-top:40px;font-family:var(--mono);font-size:12px;color:var(--t3)">
-      — Additional analysts, domain specialists and senior advisors not listed here.<br>
-      The full team operates under a deliberate discretion policy. In market intelligence, visibility is a liability.
-    </div>
-
-  </div>
-</div>
-
-    <div class="footer-links">
-      <span>About</span>
-      <span>Reports</span>
-      <span>Pricing</span>
-      <span>Community</span>
-      <span>Legal</span>
-    </div>
-    <div style="font-family:var(--mono);font-size:11px;color:var(--t3)">© 2026 NicheLab · nichelab.io</div>
-  </div>
-</footer>
-
-
-<script type="module">
-const FIREBASE_CONFIG = {
-  apiKey: "AIzaSyCrAeW_WvzENswPLKcOn6_7Zrk0OjNvrmA",
-  authDomain: "nichelab-5427c.firebaseapp.com",
-  projectId: "nichelab-5427c",
-  appId: "1:892086112182:web:9bd8d175cd8e512c63fb17"
-};
-
-const STRIPE_LINKS = {
-  starter: "https://buy.stripe.com/REPLACE_STARTER",
-  pro: "https://buy.stripe.com/REPLACE_PRO",
-  upgrade: "https://buy.stripe.com/REPLACE_UPGRADE"
-};
-
-const obs = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-}, { threshold: 0.06 });
-document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-
-const toast = document.createElement('div');
-toast.className = 'toast';
-document.body.appendChild(toast);
-
-function showToast(message){
-  toast.textContent = message;
-  toast.classList.add('show');
-  clearTimeout(window.__toastTimer);
-  window.__toastTimer = setTimeout(() => toast.classList.remove('show'), 2500);
-}
-
-function goToMembership(tab = 'signin'){
-  document.getElementById('membership')?.scrollIntoView({behavior:'smooth', block:'start'});
-  setActiveAuthTab(tab);
-  setTimeout(() => {
-    const target = tab === 'signup' ? document.getElementById('signup-email') : document.getElementById('signin-email');
-    target?.focus();
-  }, 500);
-}
-
-function setActiveAuthTab(tab){
-  document.querySelectorAll('[data-auth-tab]').forEach(btn => btn.classList.toggle('active', btn.dataset.authTab === tab));
-  document.querySelectorAll('[data-auth-panel]').forEach(panel => panel.classList.toggle('active', panel.dataset.authPanel === tab));
-}
-
-window.setActiveAuthTab = setActiveAuthTab;
-
-document.querySelectorAll('[data-auth-tab]').forEach(btn => {
-  btn.addEventListener('click', () => setActiveAuthTab(btn.dataset.authTab));
-});
-
-document.querySelectorAll('.lbf').forEach(btn => {
-  btn.addEventListener('click', function() {
-    document.querySelectorAll('.lbf').forEach(b => b.classList.remove('on'));
-    this.classList.add('on');
-    const label = this.textContent.trim().toLowerCase();
-    document.querySelectorAll('.lb-row[data-category]').forEach(row => {
-      const cat = row.dataset.category || '';
-      const show =
-        label === 'all' ||
-        (label === 'micro-saas' && cat.includes('micro-saas')) ||
-        (label === 'dev tools' && cat.includes('dev-tools')) ||
-        (label === 'ai' && cat.includes('ai')) ||
-        (label === 'consumer' && cat.includes('consumer'));
-      row.style.display = show ? 'grid' : 'none';
-    });
-  });
-});
-
-document.querySelectorAll('.nav-link').forEach(l => {
-  l.addEventListener('click', function() {
-    document.querySelectorAll('.nav-link').forEach(x => x.classList.remove('active'));
-    this.classList.add('active');
-  });
-});
-
-document.querySelector('.cta-signin')?.addEventListener('click', () => goToMembership('signin'));
-document.querySelector('.cta-start-free')?.addEventListener('click', () => goToMembership('signup'));
-document.querySelector('.cta-read-report')?.addEventListener('click', () => document.getElementById('ideas')?.scrollIntoView({behavior:'smooth', block:'start'}));
-document.querySelector('.cta-browse')?.addEventListener('click', () => document.getElementById('leaderboard')?.scrollIntoView({behavior:'smooth', block:'start'}));
-
-document.querySelector('.cta-save-idea')?.addEventListener('click', (e) => {
-  const key = 'nichelab_saved_ideas';
-  const current = JSON.parse(localStorage.getItem(key) || '[]');
-  const idea = 'Webhook Reliability Platform for Indie Developers';
-  if(!current.includes(idea)){
-    current.push(idea);
-    localStorage.setItem(key, JSON.stringify(current));
-  }
-  e.currentTarget.textContent = 'Saved ✓';
-  showToast('Idea saved in this browser.');
-});
-
-document.querySelector('.cta-full-report')?.addEventListener('click', () => {
-  window.__pendingResource = 'Webhook Reliability Platform for Indie Developers';
-  goToMembership('signin');
-});
-
-document.querySelectorAll('.cta-leaderboard-report').forEach(btn => {
-  btn.addEventListener('click', () => {
-    window.__pendingResource = btn.dataset.idea || 'this opportunity';
-    goToMembership('signin');
-  });
-});
-
-document.querySelector('.cta-upgrade')?.addEventListener('click', () => startUpgradeCheckout());
-document.querySelector('.cta-plan-free')?.addEventListener('click', () => goToMembership('signup'));
-document.querySelector('.cta-plan-starter')?.addEventListener('click', () => { window.__pendingPlan = 'starter'; goToMembership('signup'); });
-document.querySelector('.cta-plan-pro')?.addEventListener('click', () => { window.__pendingPlan = 'pro'; goToMembership('signup'); });
-document.querySelector('.cta-get-free-report')?.addEventListener('click', () => goToMembership('signup'));
-
-document.getElementById('goto-free-plan')?.addEventListener('click', () => goToMembership('signup'));
-document.getElementById('goto-starter-plan')?.addEventListener('click', () => { window.__pendingPlan = 'starter'; startUpgradeCheckout('starter'); });
-document.getElementById('goto-pro-plan')?.addEventListener('click', () => { window.__pendingPlan = 'pro'; startUpgradeCheckout('pro'); });
-
-function startUpgradeCheckout(plan = null){
-  const resolvedPlan = plan || window.__pendingPlan || 'upgrade';
-  const link = STRIPE_LINKS[resolvedPlan] || STRIPE_LINKS.upgrade;
-  if(!link || link.includes('REPLACE_')){
-    showToast('Stripe link placeholder detected. Add your live Stripe Payment Link first.');
-    return;
-  }
-  window.location.href = link;
-}
-
-function setMemberState(title, copy, signedIn = false){
-  const t = document.getElementById('member-state-title');
-  const c = document.getElementById('member-state-copy');
-  const signout = document.getElementById('auth-signout');
-  if (t) t.textContent = title;
-  if (c) c.textContent = copy;
-  signout?.classList.toggle('hidden-auth', !signedIn);
-}
-
-setMemberState('Not signed in', 'Users who click report access or plan buttons will be routed here until authentication is completed.', false);
-
-// Formspree helper
-document.addEventListener('DOMContentLoaded', function() {
-  const form = document.querySelector('.contact-card[action="https://formspree.io/f/mwvrzqld"]');
-  if (!form) return;
-  const emailInput = form.querySelector('input[name="email"]');
-  const replyTo = form.querySelector('input[name="_replyto"]');
-  if (emailInput && replyTo) {
-    const syncReplyTo = () => replyTo.value = emailInput.value || '';
-    emailInput.addEventListener('input', syncReplyTo);
-    syncReplyTo();
-  }
-});
-
-// Firebase Auth integration
-let firebaseReady = false;
-let auth = null;
-let app = null;
-let authFns = {};
-
-async function initFirebaseAuth(){
-  if (firebaseReady) return true;
-  const hasConfig = FIREBASE_CONFIG.apiKey && !FIREBASE_CONFIG.apiKey.includes('REPLACE_ME');
-  if (!hasConfig) {
-    showToast('Firebase config placeholder detected. Add your live Firebase web config.');
-    return false;
-  }
-
-  const [{ initializeApp }, authMod] = await Promise.all([
-    import('https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js'),
-    import('https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js')
-  ]);
-
-  app = initializeApp(FIREBASE_CONFIG);
-  auth = authMod.getAuth(app);
-  auth.languageCode = 'en';
-
-  authFns = authMod;
-  firebaseReady = true;
-
-  authMod.onAuthStateChanged(auth, user => {
-    if (user) {
-      const email = user.email || 'Signed-in user';
-      let copy = `Signed in as ${email}.`;
-      if (window.__pendingResource) copy += ` You can now unlock access flows for ${window.__pendingResource}.`;
-      if (window.__pendingPlan) copy += ` Pending checkout intent: ${window.__pendingPlan}.`;
-      setMemberState('Signed in', copy, true);
-      showToast('Authentication successful.');
-    } else {
-      setMemberState('Not signed in', 'Users who click report access or plan buttons will be routed here until authentication is completed.', false);
-    }
-  });
-
-  return true;
-}
-
-async function signInWithProvider(providerName){
-  const ok = await initFirebaseAuth();
-  if (!ok) return;
-
-  let provider;
-  if (providerName === 'google') provider = new authFns.GoogleAuthProvider();
-  if (providerName === 'facebook') provider = new authFns.FacebookAuthProvider();
-  if (providerName === 'apple') provider = new authFns.OAuthProvider('apple.com');
-  if (!provider) return;
-
-  try {
-    await authFns.signInWithPopup(auth, provider);
-  } catch (err) {
-    console.error(err);
-    showToast(err.message || 'Sign-in failed.');
-  }
-}
-
-async function signInWithEmail(){
-  const ok = await initFirebaseAuth();
-  if (!ok) return;
-  const email = document.getElementById('signin-email')?.value?.trim();
-  const password = document.getElementById('signin-password')?.value || '';
-  if (!email || !password) {
-    showToast('Enter your email and password.');
-    return;
-  }
-  try {
-    await authFns.signInWithEmailAndPassword(auth, email, password);
-  } catch (err) {
-    console.error(err);
-    showToast(err.message || 'Email sign-in failed.');
-  }
-}
-
-async function signUpWithEmail(){
-  const ok = await initFirebaseAuth();
-  if (!ok) return;
-  const email = document.getElementById('signup-email')?.value?.trim();
-  const password = document.getElementById('signup-password')?.value || '';
-  if (!email || !password) {
-    showToast('Enter email and password to create an account.');
-    return;
-  }
-  try {
-    const cred = await authFns.createUserWithEmailAndPassword(auth, email, password);
-    const firstName = document.getElementById('signup-firstname')?.value?.trim() || '';
-    const lastName = document.getElementById('signup-lastname')?.value?.trim() || '';
-    const displayName = `${firstName} ${lastName}`.trim();
-    if (displayName) {
-      await authFns.updateProfile(cred.user, { displayName });
-    }
-    if (window.__pendingPlan === 'starter' || window.__pendingPlan === 'pro') {
-      startUpgradeCheckout(window.__pendingPlan);
-    }
-  } catch (err) {
-    console.error(err);
-    showToast(err.message || 'Account creation failed.');
-  }
-}
-
-async function sendReset(){
-  const ok = await initFirebaseAuth();
-  if (!ok) return;
-  const email = document.getElementById('signin-email')?.value?.trim();
-  if (!email) {
-    showToast('Enter your email first.');
-    return;
-  }
-  try {
-    await authFns.sendPasswordResetEmail(auth, email);
-    showToast('Password reset email sent.');
-  } catch (err) {
-    console.error(err);
-    showToast(err.message || 'Could not send reset email.');
-  }
-}
-
-document.getElementById('auth-google')?.addEventListener('click', () => signInWithProvider('google'));
-document.getElementById('auth-facebook')?.addEventListener('click', () => signInWithProvider('facebook'));
-document.getElementById('auth-apple')?.addEventListener('click', () => signInWithProvider('apple'));
-document.getElementById('signup-google')?.addEventListener('click', () => signInWithProvider('google'));
-document.getElementById('signup-facebook')?.addEventListener('click', () => signInWithProvider('facebook'));
-document.getElementById('signup-apple')?.addEventListener('click', () => signInWithProvider('apple'));
-document.getElementById('signin-submit')?.addEventListener('click', signInWithEmail);
-document.getElementById('signup-submit')?.addEventListener('click', signUpWithEmail);
-document.getElementById('auth-reset-password')?.addEventListener('click', sendReset);
-document.getElementById('auth-signout')?.addEventListener('click', async () => {
-  const ok = await initFirebaseAuth();
-  if (!ok) return;
-  await authFns.signOut(auth);
-  showToast('Signed out.');
-});
-</script>
-
-
-<script>
-(function(){
-  function fmtDate(value){
-    try{
-      return value ? new Date(value).toLocaleDateString() : '—';
-    }catch(e){
-      return '—';
-    }
-  }
-
-  function setText(el, value){
-    if (el) el.textContent = value;
-  }
-
-  function wireHrefLikeButton(el, href){
-    if (!el) return;
-    el.addEventListener('click', function(ev){
-      ev.preventDefault();
-      window.location.href = href;
-    });
-  }
-
-  async function loadNicheLabFrontPage(){
-    try{
-      const [feedRes, manifestRes] = await Promise.all([
-        fetch('generated-reports/homepage-feed.json?ts=' + Date.now()),
-        fetch('generated-reports/reports-manifest.json?ts=' + Date.now())
-      ]);
-
-      const feed = await feedRes.json();
-      const manifest = await manifestRes.json();
-
-      const featured = feed.featured_report || {};
-      const reports = Array.isArray(manifest.reports) ? manifest.reports : [];
-      const safeDate = fmtDate(feed.generated_at);
-
-      // HERO
-      setText(document.querySelector('.hero-eyebrow'), featured.title ? `Live now · ${featured.title}` : 'Live report feed online');
-
-      const heroStats = document.querySelectorAll('.hero-stats .hstat');
-      if (heroStats[0]) heroStats[0].querySelector('.hstat-v').textContent = '1,240+';
-      if (heroStats[1]) heroStats[1].querySelector('.hstat-v').textContent = String(feed.total_reports ?? reports.length ?? '—');
-      if (heroStats[1]) heroStats[1].querySelector('.hstat-l').textContent = 'Validated ideas';
-      if (heroStats[2]) heroStats[2].querySelector('.hstat-v').textContent = String((feed.categories || []).length || '—');
-      if (heroStats[2]) heroStats[2].querySelector('.hstat-l').textContent = 'Tracked categories';
-      if (heroStats[3]) heroStats[3].querySelector('.hstat-v').textContent = safeDate;
-      if (heroStats[3]) heroStats[3].querySelector('.hstat-l').textContent = 'Last update';
-
-      const heroReadBtn = document.querySelector('.cta-read-report');
-      const heroBrowseBtn = document.querySelector('.cta-browse');
-      wireHrefLikeButton(heroReadBtn, featured.report_path || 'dashboard.html');
-      if (heroBrowseBtn) {
-        heroBrowseBtn.addEventListener('click', function(ev){
-          ev.preventDefault();
-          const target = document.getElementById('leaderboard');
-          if (target) target.scrollIntoView({behavior:'smooth', block:'start'});
-        });
-      }
-
-      // IDEA OF THE DAY / FEATURED CARD
-      setText(document.querySelector('.fc-cat'), featured.category || 'Live category');
-      setText(document.querySelector('.fc-pill'), (featured.recommendation || 'Live feed').replaceAll('_',' '));
-      setText(document.querySelector('.fc-title'), featured.title || 'No featured report available');
-      setText(document.querySelector('.fc-tagline'), featured.subtitle || 'The publishing pipeline is active, but no featured report was returned.');
-
-      const scoreChips = document.querySelectorAll('.fc-scores .schip');
-      if (scoreChips[0]) { scoreChips[0].querySelector('.sc-l').textContent = 'Confidence'; scoreChips[0].querySelector('.sc-v').textContent = featured.overall_confidence != null ? `${featured.overall_confidence}/100` : '—'; }
-      if (scoreChips[1]) { scoreChips[1].querySelector('.sc-l').textContent = 'Recommendation'; scoreChips[1].querySelector('.sc-v').textContent = (featured.recommendation || '—').replaceAll('_',' '); }
-      if (scoreChips[2]) { scoreChips[2].querySelector('.sc-l').textContent = 'Reports'; scoreChips[2].querySelector('.sc-v').textContent = String(feed.total_reports ?? reports.length ?? '—'); }
-      if (scoreChips[3]) { scoreChips[3].querySelector('.sc-l').textContent = 'Categories'; scoreChips[3].querySelector('.sc-v').textContent = String((feed.categories || []).length || '—'); }
-      if (scoreChips[4]) { scoreChips[4].querySelector('.sc-l').textContent = 'Published'; scoreChips[4].querySelector('.sc-v').textContent = safeDate; }
-      if (scoreChips[5]) { scoreChips[5].querySelector('.sc-l').textContent = 'Slug'; scoreChips[5].querySelector('.sc-v').textContent = featured.slug || 'Live'; }
-      if (scoreChips[6]) { scoreChips[6].querySelector('.sc-l').textContent = 'Status'; scoreChips[6].querySelector('.sc-v').textContent = 'Auto'; }
-
-      const fullReportBtn = document.querySelector('.cta-full-report');
-      wireHrefLikeButton(fullReportBtn, featured.report_path || 'dashboard.html');
-
-      // LEADERBOARD
-      const lbWrap = document.querySelector('#leaderboard .lb-wrap');
-      if (lbWrap){
-        lbWrap.querySelectorAll('.lb-row:not(.lbh)').forEach(el => el.remove());
-
-        reports.slice(0, 8).forEach((item, idx) => {
-          const conf = Number(item.overall_confidence ?? 0);
-          const market = conf || '—';
-          const revenue = conf ? Math.max(40, Math.min(95, conf - 4)) : '—';
-          const difficulty = conf ? Math.max(20, Math.min(85, 100 - conf + 8)) : '—';
-          const signalText = conf >= 80 ? '⬆ High' : (conf >= 65 ? '→ Medium' : '↓ Low');
-
-          const row = document.createElement('div');
-          row.className = 'lb-row';
-          row.innerHTML = `
-            <div class="lb-rank ${idx < 3 ? 'r'+(idx+1) : ''}">${idx+1}</div>
-            <div>
-              <div class="lb-nm">${item.title || 'Untitled report'}</div>
-              <div class="lb-ct">${item.category || 'Report'} · ${(item.recommendation || 'live').replaceAll('_',' ')}</div>
-            </div>
-            <div class="lb-sc lsh" style="text-align:center">${market}</div>
-            <div class="lb-sc lsh" style="text-align:center">${revenue}</div>
-            <div class="lb-sc lsh" style="text-align:center">${difficulty}</div>
-            <div class="lb-sc lsh" style="text-align:center">${signalText}</div>
-            <div style="text-align:right"><button class="lb-view" type="button">Open report</button></div>
+  <script>
+    async function loadIndex() {
+      try {
+        const [feedRes, manifestRes] = await Promise.all([
+          fetch('generated-reports/homepage-feed.json?ts=' + Date.now()),
+          fetch('generated-reports/reports-manifest.json?ts=' + Date.now())
+        ]);
+        const feed = await feedRes.json();
+        const manifest = await manifestRes.json();
+        const featured = feed.featured_report || {};
+        const reports = Array.isArray(manifest.reports) ? manifest.reports : [];
+
+        const safeDate = feed.generated_at ? new Date(feed.generated_at).toLocaleDateString() : '—';
+
+        document.getElementById('featured-title').textContent = featured.title || 'No featured report available';
+        document.getElementById('featured-subtitle').textContent = featured.subtitle || 'No subtitle available.';
+        document.getElementById('featured-category').textContent = featured.category || 'Category';
+        document.getElementById('featured-confidence').textContent = 'Confidence ' + (featured.overall_confidence ?? '—');
+        document.getElementById('featured-recommendation').textContent = (featured.recommendation || 'Recommendation').replaceAll('_',' ');
+        document.getElementById('featured-link').href = featured.report_path || 'dashboard.html';
+
+        document.getElementById('monitor-title').textContent = 'Live publishing online';
+        document.getElementById('monitor-category').textContent = featured.category || 'Category';
+        document.getElementById('monitor-confidence').textContent = 'Confidence ' + (featured.overall_confidence ?? '—');
+        document.getElementById('monitor-recommendation').textContent = (featured.recommendation || 'Recommendation').replaceAll('_',' ');
+        document.getElementById('monitor-featured').textContent = featured.title || '—';
+        document.getElementById('monitor-total').textContent = feed.total_reports ?? reports.length ?? '—';
+        document.getElementById('monitor-updated').textContent = safeDate;
+
+        const rail = document.getElementById('report-rail');
+        rail.innerHTML = '';
+        reports.slice(0, 6).forEach((item) => {
+          const el = document.createElement('a');
+          el.className = 'rail-card';
+          el.href = item.report_path || 'dashboard.html';
+          el.innerHTML = `
+            <div class="eyebrow">${item.category || 'Report'}</div>
+            <h4>${item.title || 'Untitled report'}</h4>
+            <p>${item.subtitle || ''}</p>
+            <div class="badge-row"><span class="badge green">Confidence ${item.overall_confidence ?? '—'}</span></div>
           `;
-          row.querySelector('.lb-view').addEventListener('click', (ev) => {
-            ev.stopPropagation();
-            window.location.href = item.report_path || 'dashboard.html';
-          });
-          row.addEventListener('click', () => {
-            window.location.href = item.report_path || 'dashboard.html';
-          });
-          lbWrap.appendChild(row);
+          rail.appendChild(el);
         });
+      } catch (e) {
+        console.error(e);
+        document.getElementById('featured-title').textContent = 'Feed could not be loaded';
+        document.getElementById('featured-subtitle').textContent = 'The generated report feed is missing or not yet deployed.';
       }
-
-      // SIGNALS
-      const sigsRow = document.querySelector('#signals .sigs-row');
-      if (sigsRow){
-        const presets = [
-          ['+287%', 'Google Trends · 36mo', 'Rising Fast', 'sig-up', 'sb-r'],
-          ['+890%', 'Search Volume · 18mo', 'Explosive', 'sig-up', 'sb-h'],
-          ['+412%', 'Opportunity Score · Live', 'High Conviction', 'sig-up', 'sb-r'],
-          ['+195%', 'Report Confidence · Live', 'Fresh Report', 'sig-up', 'sb-r'],
-          ['$7M', 'Market Validation · Live', 'Validated', 'sig-gold', 'sb-g']
-        ];
-        sigsRow.innerHTML = '';
-        reports.slice(0,5).forEach((item, idx) => {
-          const [pct, src, badge, pctCls, badgeCls] = presets[idx] || [`+${item.overall_confidence ?? 0}%`, 'Live Feed', 'Live', 'sig-up', 'sb-r'];
-          const card = document.createElement('div');
-          card.className = 'sig-card';
-          card.innerHTML = `
-            <div class="sig-pct ${pctCls}">${pct}</div>
-            <div class="sig-nm">${item.category || 'Opportunity'}</div>
-            <div class="sig-src">${src}</div>
-            <div class="sig-badge ${badgeCls}">${badge}</div>
-          `;
-          card.addEventListener('click', () => {
-            window.location.href = item.report_path || 'dashboard.html';
-          });
-          sigsRow.appendChild(card);
-        });
-      }
-
-      // COMMUNITY MARQUEE
-      const commTrack = document.querySelector('.comm-track');
-      if (commTrack && reports.length){
-        const people = [
-          ['AK', 'Alex Kim', 'Solo founder · $8K MRR'],
-          ['SR', 'Sara Reyes', 'Developer · 2 products shipped'],
-          ['JM', 'James Müller', 'Founder · Pre-seed funded'],
-          ['LM', 'Laura M.', 'Product strategist'],
-          ['RS', 'Robert S.', 'Startup founder'],
-          ['EP', 'Elena Petrova', 'Angel investor']
-        ];
-        const cards = reports.slice(0,6).map((item, idx) => {
-          const [initials, name, role] = people[idx] || ['NL', 'NicheLab Member', 'Builder'];
-          return `
-            <div class="comm-card">
-              <div class="comm-stars">★★★★★</div>
-              <div class="comm-text">“${item.title} feels like the kind of opportunity I would have spent weeks validating manually. The framing is unusually actionable.”</div>
-              <div class="comm-meta">
-                <div class="av" style="background:var(--gold-bg);color:var(--gold-l)">${initials}</div>
-                <div>
-                  <div class="proof-nm">${name}</div>
-                  <div class="comm-role">${role}</div>
-                </div>
-              </div>
-            </div>
-          `;
-        }).join('');
-        commTrack.innerHTML = cards + cards;
-      }
-
-    }catch(err){
-      console.error(err);
-      const fcTitle = document.querySelector('.fc-title');
-      const fcTagline = document.querySelector('.fc-tagline');
-      if (fcTitle) fcTitle.textContent = 'Live feed could not be loaded';
-      if (fcTagline) fcTagline.textContent = 'The page design is intact, but the generated report feed is currently unavailable.';
     }
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', loadNicheLabFrontPage);
-  } else {
-    loadNicheLabFrontPage();
-  }
-})();
-</script>
-
+    loadIndex();
+  </script>
 </body>
 </html>

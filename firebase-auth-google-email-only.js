@@ -1,7 +1,3 @@
-// firebase-auth-google-email-only.js
-// Keeps auth limited to Google + Email/Password.
-// Remove Apple sign-in code from your site before using this.
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {
   getAuth,
@@ -13,18 +9,18 @@ import {
   signOut
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-// Replace this with your live Firebase config
 const firebaseConfig = {
-  apiKey: "REPLACE_ME",
-  authDomain: "REPLACE_ME",
-  projectId: "REPLACE_ME",
-  storageBucket: "REPLACE_ME",
-  messagingSenderId: "REPLACE_ME",
-  appId: "REPLACE_ME"
+  apiKey: "AIzaSyCrAeW_WvzENswPLKcOn6_7Zrk0OjNvrmA",
+  authDomain: "nichelab-5427c.firebaseapp.com",
+  projectId: "nichelab-5427c",
+  storageBucket: "nichelab-5427c.firebasestorage.app",
+  messagingSenderId: "892086112182",
+  appId: "1:892086112182:web:9bd8d175cd8e512c63fb17"
 };
 
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
+auth.onAuthStateChanged = onAuthStateChanged.bind(null, auth);
 const googleProvider = new GoogleAuthProvider();
 
 export async function signInWithGoogle() {
@@ -59,11 +55,7 @@ export async function signOutUser() {
   }
 }
 
-export function listenForAuthChanges(callback) {
-  return onAuthStateChanged(auth, callback);
-}
-
-export function showAuthError(error) {
+function showAuthError(error) {
   const map = {
     "auth/invalid-credential": "Sign-in failed. Try Google sign-in or check your email and password.",
     "auth/user-not-found": "No account was found for that email.",

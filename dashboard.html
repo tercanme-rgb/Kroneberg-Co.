@@ -8,10 +8,8 @@
     :root{
       --bg:#06070B; --panel:#0B0E16; --panel2:#101523; --line:#171E2D; --line2:#25304A;
       --text:#EEF2FB; --muted:#95A3C4; --soft:#68748E; --gold:#C8861A; --gold2:#E8A832;
-      --radius-xl:24px; --radius-lg:18px;
-      --sans: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-      --serif: Georgia, "Times New Roman", serif;
-      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      --radius:22px; --sans:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+      --serif:Georgia,"Times New Roman",serif; --mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;
     }
     *{box-sizing:border-box}
     body{
@@ -44,11 +42,12 @@
     .reports-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
     .report-card{display:block;border-radius:22px;border:1px solid var(--line);background:linear-gradient(180deg,var(--panel2),var(--panel));padding:20px;min-height:220px}
     .report-card h3{font-family:var(--serif);font-size:31px;line-height:1.04;letter-spacing:-.035em;margin:8px 0 10px}
-    @media (max-width:1050px){
-      .app{grid-template-columns:1fr}
-      .side{position:relative;height:auto;border-right:none;border-bottom:1px solid #141B2A}
-      .hero-grid,.reports-grid,.stats{grid-template-columns:1fr}
-    }
+    .auth-modal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;padding:20px;z-index:99}
+    .auth-box{width:min(520px,100%);background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:24px;padding:22px}
+    .field{display:grid;gap:8px;margin-bottom:12px}
+    .field input{width:100%;min-height:46px;border-radius:12px;border:1px solid var(--line2);background:#0C1120;color:var(--text);padding:0 14px}
+    .auth-error{color:#ffb4b4;min-height:20px;font-size:14px;margin:8px 0}
+    @media (max-width:1050px){.app{grid-template-columns:1fr}.side{position:relative;height:auto;border-right:none;border-bottom:1px solid #141B2A}.hero-grid,.reports-grid,.stats{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
@@ -76,7 +75,7 @@
             <span id="featured-recommendation" class="badge">Recommendation</span>
           </div>
           <div style="display:flex;gap:12px;flex-wrap:wrap">
-            <a id="featured-open" class="btn gold" href="#">Open full report</a>
+            <a id="featured-open" class="btn gold" href="#">Open report</a>
             <a class="btn" href="index.html">Back to site</a>
           </div>
         </div>
@@ -98,15 +97,68 @@
       <section class="section" id="account">
         <h2>Account</h2>
         <div class="card">
-          <div class="eyebrow">Auto-publish connected</div>
-          <div class="muted">This dashboard reads directly from the generated report manifest. New reports published by GitHub Actions appear here automatically.</div>
+          <div class="eyebrow">Optional sign in</div>
+          <div class="muted">The dashboard is readable without authentication. Sign in is only needed for protected actions like saved items, billing, and account management.</div>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:16px">
+            <button class="btn gold" id="sign-in">Sign in</button>
+            <button class="btn" id="sign-out" style="display:none">Sign out</button>
+            <button class="btn" id="manage-billing" data-requires-auth="billing">Manage billing</button>
+          </div>
         </div>
       </section>
     </main>
   </div>
 
-  <script>
-    async function loadDashboard() {
+  <div class="auth-modal" id="auth-modal">
+    <div class="auth-box">
+      <div class="eyebrow">Sign in</div>
+      <h2 style="margin:0 0 16px;font-family:var(--serif);font-size:36px;letter-spacing:-.03em">Access your account</h2>
+      <button class="btn gold" id="google-signin" style="width:100%;margin-bottom:14px">Continue with Google</button>
+
+      <form id="email-signin-form">
+        <div class="field">
+          <label>Email</label>
+          <input id="signin-email" type="email" required />
+        </div>
+        <div class="field">
+          <label>Password</label>
+          <input id="signin-password" type="password" required />
+        </div>
+        <button class="btn" style="width:100%;margin-top:4px" type="submit">Sign in with email</button>
+      </form>
+
+      <form id="create-account-form" style="margin-top:14px">
+        <div class="field">
+          <label>Create account · email</label>
+          <input id="create-email" type="email" required />
+        </div>
+        <div class="field">
+          <label>Create account · password</label>
+          <input id="create-password" type="password" required />
+        </div>
+        <button class="btn" style="width:100%;margin-top:4px" type="submit">Create account</button>
+      </form>
+
+      <div class="auth-error" id="auth-error"></div>
+      <button class="btn" id="close-auth" style="width:100%;margin-top:8px">Close</button>
+    </div>
+  </div>
+
+  <script src="dashboard-auth-open.js"></script>
+  <script type="module">
+    import { auth, signInWithGoogle, signInWithEmail, createAccount, signOutUser } from './firebase-auth-google-email-only.js';
+
+    window.openAuthModal = function() {
+      const modal = document.getElementById('auth-modal');
+      if (modal) modal.style.display = 'flex';
+    };
+
+    function closeAuthModal(){
+      const modal = document.getElementById('auth-modal');
+      if (modal) modal.style.display = 'none';
+    }
+
+    window.loadDashboard = async function() {
       try {
         const feedRes = await fetch('generated-reports/homepage-feed.json?ts=' + Date.now());
         const feed = await feedRes.json();
@@ -131,7 +183,7 @@
         (manifest.reports || []).forEach(item => {
           const el = document.createElement('a');
           el.className = 'report-card';
-          el.href = item.report_path;
+          el.href = item.report_path || '#';
           el.innerHTML = `
             <div class="eyebrow">${item.category || 'Report'}</div>
             <h3>${item.title || 'Untitled report'}</h3>
@@ -148,8 +200,33 @@
         document.getElementById('featured-title').textContent = 'Dashboard feed could not be loaded';
         document.getElementById('featured-subtitle').textContent = 'The generated report manifest is missing or unreachable.';
       }
-    }
-    loadDashboard();
+    };
+
+    initDashboardWithoutAuthLock(auth, window.loadDashboard);
+
+    document.getElementById('sign-in')?.addEventListener('click', () => openAuthModal());
+    document.getElementById('close-auth')?.addEventListener('click', () => closeAuthModal());
+    document.getElementById('google-signin')?.addEventListener('click', async () => {
+      await signInWithGoogle();
+      closeAuthModal();
+    });
+    document.getElementById('email-signin-form')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('signin-email').value;
+      const password = document.getElementById('signin-password').value;
+      await signInWithEmail(email, password);
+      closeAuthModal();
+    });
+    document.getElementById('create-account-form')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('create-email').value;
+      const password = document.getElementById('create-password').value;
+      await createAccount(email, password);
+      closeAuthModal();
+    });
+    document.getElementById('sign-out')?.addEventListener('click', async () => {
+      await signOutUser();
+    });
   </script>
 </body>
 </html>
