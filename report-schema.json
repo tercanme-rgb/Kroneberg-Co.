@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "NicheLab Report Schema",
+  "type": "object",
+  "required": [
+    "report_id",
+    "slug",
+    "status",
+    "tier_visibility",
+    "meta",
+    "dashboard",
+    "scoring",
+    "market_research",
+    "community_signals",
+    "competitor_insights",
+    "strategy_frameworks",
+    "business_model",
+    "founder_fit",
+    "risk_matrix",
+    "case_examples",
+    "roadmap_30d",
+    "verdict",
+    "visuals",
+    "starter_view",
+    "pro_view",
+    "rendering"
+  ],
+  "properties": {
+    "report_id": {
+      "type": "string"
+    },
+    "slug": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "published",
+        "archived"
+      ]
+    },
+    "tier_visibility": {
+      "type": "object",
+      "required": [
+        "starter_available",
+        "pro_available",
+        "pdf_export_pro_only"
+      ],
+      "properties": {
+        "starter_available": {
+          "type": "boolean"
+        },
+        "pro_available": {
+          "type": "boolean"
+        },
+        "pdf_export_pro_only": {
+          "type": "boolean"
+        }
+      }
+    },
+    "meta": {
+      "type": "object"
+    },
+    "dashboard": {
+      "type": "object"
+    },
+    "scoring": {
+      "type": "object"
+    },
+    "market_research": {
+      "type": "object"
+    },
+    "community_signals": {
+      "type": "object"
+    },
+    "competitor_insights": {
+      "type": "object"
+    },
+    "strategy_frameworks": {
+      "type": "object"
+    },
+    "business_model": {
+      "type": "object"
+    },
+    "founder_fit": {
+      "type": "object"
+    },
+    "risk_matrix": {
+      "type": "object"
+    },
+    "case_examples": {
+      "type": "object"
+    },
+    "roadmap_30d": {
+      "type": "object"
+    },
+    "verdict": {
+      "type": "object"
+    },
+    "visuals": {
+      "type": "object"
+    },
+    "starter_view": {
+      "type": "object"
+    },
+    "pro_view": {
+      "type": "object"
+    },
+    "rendering": {
+      "type": "object"
+    }
+  }
+}
