@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NicheLab Dashboard</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,500;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NicheLab Unified Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,500;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
 <style>
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -21,9 +20,8 @@
   --display:'Cormorant Garamond',Georgia,serif;
   --body:'Plus Jakarta Sans',sans-serif;
   --mono:'IBM Plex Mono',monospace;
-  --r:8px;--r-lg:12px;--r-xl:16px;--r-2xl:20px;
 }
-body{font-family:var(--body);background:var(--bg);color:var(--t1);line-height:1.6;font-size:15px;overflow-x:hidden}
+body{font-family:var(--body);background:var(--bg);color:var(--t1);line-height:1.6;font-size:15px}
 a{text-decoration:none;color:inherit}
 button,input,textarea,select{font:inherit}
 .btn{padding:10px 14px;border-radius:10px;border:1px solid var(--b2);background:transparent;color:var(--t2);cursor:pointer;font-weight:600;transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease,color .16s ease,background-color .16s ease}
@@ -38,34 +36,29 @@ button,input,textarea,select{font:inherit}
 .small-item{background:var(--s1);border:1px solid var(--b1);border-radius:14px;padding:16px}
 .chip{font-family:var(--mono);font-size:11px;padding:5px 9px;border-radius:8px;background:var(--s2);border:1px solid var(--b2)}
 .tag{font-family:var(--mono);font-size:10px;padding:4px 8px;border-radius:999px;border:1px solid var(--b2);color:var(--t3);background:var(--s2)}
-.field{display:flex;flex-direction:column;gap:7px;margin-bottom:12px}
-.field label{font-size:12px;color:var(--t2);font-weight:600}
-.field input,.field textarea,.field select{width:100%;padding:11px 12px;background:var(--s2);border:1px solid var(--b2);border-radius:10px;color:var(--t1)}
-.field textarea{min-height:120px;resize:vertical}
+.lock-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;background:var(--gold-bg);border:1px solid var(--gold-br);border-radius:999px;font-family:var(--mono);font-size:11px;color:var(--gold-l)}
 .toast{position:fixed;right:24px;bottom:24px;z-index:1000;background:rgba(11,13,21,.96);color:var(--t1);border:1px solid var(--b2);border-radius:12px;padding:12px 14px;font-size:13px;box-shadow:0 14px 36px rgba(0,0,0,.28);opacity:0;transform:translateY(8px);pointer-events:none;transition:.22s}
 .toast.show{opacity:1;transform:none}
+.locked{position:relative;overflow:hidden}
+.locked::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,8,12,.10),rgba(7,8,12,.78));pointer-events:none}
+.lock-overlay{position:absolute;left:16px;right:16px;bottom:16px;z-index:2;background:rgba(11,13,21,.96);border:1px solid var(--gold-br);border-radius:14px;padding:14px}
+.hidden{display:none!important}
 
 .app{display:grid;grid-template-columns:250px 1fr;min-height:100vh}
 .sidebar{background:var(--s1);border-right:1px solid var(--b1);padding:24px 18px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column}
 .logo{display:flex;align-items:center;gap:10px;margin-bottom:28px}
 .logo-mark{width:30px;height:30px;background:var(--gold);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;font-weight:600;color:#07080C}
-.logo-text{font-weight:700}
 .plan-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;background:var(--gold-bg);border:1px solid var(--gold-br);border-radius:999px;font-family:var(--mono);font-size:11px;color:var(--gold-l);margin-bottom:22px}
 .side-nav{display:flex;flex-direction:column;gap:6px}
 .side-link{padding:12px 14px;border-radius:12px;color:var(--t2);font-weight:500;cursor:pointer;border:1px solid transparent;background:transparent;text-align:left}
 .side-link:hover,.side-link.active{background:var(--s2);color:var(--t1);border-color:var(--b2)}
-.sidebar-foot{margin-top:auto;padding-top:16px;border-top:1px solid var(--b1)}
-.mini-note{font-size:12px;color:var(--t3)}
-.main{padding:28px 28px 40px}
+.main{padding:28px}
 .topbar{display:flex;align-items:center;gap:14px;justify-content:space-between;margin-bottom:22px}
 .search{flex:1;max-width:620px;background:var(--s1);border:1px solid var(--b1);border-radius:999px;padding:12px 16px;color:var(--t2)}
-.top-actions{display:flex;gap:10px;flex-wrap:wrap}
 .hero{background:linear-gradient(160deg,#120F05,var(--s1));border:1px solid var(--gold-br);border-radius:20px;padding:28px;position:relative;overflow:hidden;margin-bottom:18px}
 .hero::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),var(--cyan))}
 .hero h1{font-family:var(--display);font-size:42px;line-height:1.05;letter-spacing:-.5px;margin-bottom:12px}
 .hero p{color:var(--t2);max-width:760px}
-.page{display:none}
-.page.active{display:block}
 .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}
 .metric{font-family:var(--mono);font-size:28px;color:var(--gold-l);margin-bottom:6px}
 .label{font-size:12px;color:var(--t3);text-transform:uppercase;letter-spacing:.8px;font-family:var(--mono)}
@@ -74,14 +67,11 @@ button,input,textarea,select{font:inherit}
 .section-head{display:flex;align-items:center;gap:12px;margin-bottom:18px}
 .section-head .line{flex:1;height:1px;background:var(--b1)}
 .section-title{font-family:var(--mono);font-size:10px;color:var(--t3);letter-spacing:1.1px;text-transform:uppercase}
-.two-col{display:grid;grid-template-columns:1.25fr .75fr;gap:14px}
+.two-col{display:grid;grid-template-columns:1.2fr .8fr;gap:14px}
 .list{display:flex;flex-direction:column;gap:12px}
 .item{background:var(--s1);border:1px solid var(--b1);border-radius:16px;padding:18px}
 .item-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:8px}
 .meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-.toolbar{display:flex;align-items:center;gap:10px;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap}
-.filter-row{display:flex;gap:10px;flex-wrap:wrap}
-.select,.input{background:var(--s1);border:1px solid var(--b1);border-radius:10px;padding:11px 12px;color:var(--t2)}
 .table-wrap{background:var(--s1);border:1px solid var(--b1);border-radius:16px;overflow:hidden}
 .table{width:100%;border-collapse:collapse}
 .table th,.table td{padding:14px 16px;border-bottom:1px solid var(--b1);text-align:left}
@@ -91,215 +81,140 @@ button,input,textarea,select{font:inherit}
 .score{font-family:var(--mono);font-size:12px;padding:5px 8px;border-radius:8px;border:1px solid var(--b2);display:inline-block}
 .score.good{color:var(--green);background:var(--green-bg);border-color:var(--green-br)}
 .score.mid{color:var(--amber);background:var(--amber-bg);border-color:var(--amber-br)}
-.score.bad{color:var(--red);background:var(--red-bg);border-color:var(--red-br)}
-.signal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.signal-card{background:var(--s1);border:1px solid var(--b1);border-radius:16px;padding:18px}
-.signal-value{font-family:var(--mono);font-size:26px;margin-bottom:6px;color:var(--cyan)}
-.research-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.form-card{background:var(--s1);border:1px solid var(--b1);border-radius:16px;padding:20px}
-.saved-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.account-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.stack{display:flex;flex-direction:column;gap:12px}
-.account-actions .btn{width:100%;padding:14px 16px;justify-content:center}
+.small-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .linkish{color:var(--cyan);font-weight:600}
-.report-link{display:inline-flex;align-items:center;gap:8px;color:var(--t1);font-weight:600;margin-top:12px}
-.report-link:hover{color:var(--gold-l)}
-@media (max-width: 1180px) {
-  .grid{grid-template-columns:repeat(2,1fr)}
-  .signal-grid,.saved-grid,.account-grid,.research-grid,.two-col{grid-template-columns:1fr}
-}
-@media (max-width: 900px) {
-  .app{grid-template-columns:1fr}
-  .sidebar{position:relative;height:auto}
-  .main{padding:20px}
-  .grid{grid-template-columns:1fr}
-  .topbar{flex-direction:column;align-items:stretch}
-  .search{max-width:none}
-}
+.toolbar{display:flex;align-items:center;gap:10px;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap}
+.filter-row{display:flex;gap:10px;flex-wrap:wrap}
+.select,.input{background:var(--s1);border:1px solid var(--b1);border-radius:10px;padding:11px 12px;color:var(--t2)}
+@media (max-width:1180px){.grid,.small-grid,.two-col{grid-template-columns:1fr}}
+@media (max-width:900px){.app{grid-template-columns:1fr}.sidebar{position:relative;height:auto}.main{padding:20px}.grid{grid-template-columns:1fr}.topbar{flex-direction:column;align-items:stretch}.search{max-width:none}}
 </style>
 </head>
 <body>
 <div class="app">
   <aside class="sidebar">
-    <div class="logo">
-      <div class="logo-mark">NL</div>
-      <div class="logo-text">NicheLab</div>
-    </div>
-    <div class="plan-badge">PRO workspace</div>
+    <div class="logo"><div class="logo-mark">NL</div><div>NicheLab</div></div>
+    <div class="plan-badge" id="plan-badge">PRO workspace</div>
     <nav class="side-nav">
-      <button class="side-link active" data-page="dashboard">Dashboard</button>
-      <button class="side-link" data-page="opportunities">Opportunities</button>
-      <button class="side-link" data-page="signals">Signals</button>
-      <button class="side-link" data-page="research">Research</button>
-      <button class="side-link" data-page="saved">Saved</button>
-      <button class="side-link" data-page="account">Account</button>
+      <button class="side-link active">Dashboard</button>
+      <button class="side-link">Opportunities</button>
+      <button class="side-link">Signals</button>
+      <button class="side-link">Saved</button>
+      <button class="side-link js-upgrade hidden" id="upgrade-nav">Upgrade to PRO</button>
       <a class="side-link" href="index.html">Back to site</a>
     </nav>
-    <div class="sidebar-foot"><div class="mini-note">Member area is separate from the public landing page.</div></div>
   </aside>
 
   <main class="main">
     <div class="topbar">
       <input class="search" value="Search reports, signals, and market gaps" />
-      <div class="top-actions">
-        <button class="btn" id="btn-notifications">Notifications</button>
-        <button class="btn btn-gold" id="btn-run-research">Run custom research</button>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn" id="export-btn">Export shortlist</button>
+        <button class="btn btn-gold js-upgrade hidden" id="upgrade-top">Unlock PRO</button>
       </div>
     </div>
 
-    <section class="page active" id="page-dashboard">
-      <section class="hero">
-        <div class="kicker">Command center</div>
-        <h1>Welcome to your<br>market intelligence workspace.</h1>
-        <p>You are now inside the member environment. This area is intentionally separate from the public landing page and is where paid users review opportunities, signals, and research outputs.</p>
-      </section>
-
-      <div class="grid">
-        <div class="card"><div class="metric">214</div><div class="label">Reports available</div><div class="value">Validated opportunities in the database</div></div>
-        <div class="card"><div class="metric">47</div><div class="label">Signal sources</div><div class="value">Active intelligence inputs being monitored</div></div>
-        <div class="card"><div class="metric">12</div><div class="label">Saved ideas</div><div class="value">Tracked in your private workspace</div></div>
-        <div class="card"><div class="metric">3</div><div class="label">High-conviction</div><div class="value">Recommended this week</div></div>
-      </div>
-
-      <div class="section">
-        <div class="section-head"><div class="section-title">What to look at next</div><div class="line"></div></div>
-        <div class="two-col">
-          <div class="list">
-            <div class="item">
-              <div class="item-top">
-                <div><div class="item-title">Webhook Reliability Platform</div><div class="note">Production-grade webhook management for teams that need observability, replay, and debugging without enterprise overhead.</div></div>
-                <div class="tag">Featured report</div>
-              </div>
-              <div class="meta"><div class="chip">Market 84</div><div class="chip">Revenue 78</div><div class="chip">Difficulty 42</div><div class="chip">High signal</div></div>
-              <a class="report-link" href="report-webhook-reliability.html">Open full report →</a>
-            </div>
-            <div class="item">
-              <div class="item-top">
-                <div><div class="item-title">AI Mock API Server (Hosted)</div><div class="note">Strong pull from AI prototyping teams, developer tooling communities, and teams seeking lower-friction testing environments.</div></div>
-                <div class="tag">Rising</div>
-              </div>
-              <div class="meta"><div class="chip">Fast to MVP</div><div class="chip">Developer tools</div><div class="chip">Solo-friendly</div></div>
-              <a class="report-link" href="report-ai-mock-api-server.html">Open full report →</a>
-            </div>
-            <div class="item">
-              <div class="item-top">
-                <div><div class="item-title">EU AI Act Compliance Logger</div><div class="note">Compliance-driven demand with expanding urgency as auditability expectations move into procurement and platform requirements.</div></div>
-                <div class="tag">Regulatory tailwind</div>
-              </div>
-              <div class="meta"><div class="chip">Compliance</div><div class="chip">B2B SaaS</div><div class="chip">Emerging</div></div>
-              <a class="report-link" href="report-eu-ai-act-compliance-logger.html">Open full report →</a>
-            </div>
-          </div>
-          <div class="stack">
-            <div class="small-item"><strong>Today’s featured report</strong><div class="note">Webhook Reliability Platform</div></div>
-            <div class="small-item"><strong>Rising signal</strong><div class="note">AI agent debugging queries are accelerating faster than incumbent tooling is adapting.</div></div>
-            <div class="small-item"><strong>Operator note</strong><div class="note">Build the wedge, not the full platform. Early conviction is strongest in narrowly painful workflow categories.</div></div>
-            <div class="small-item"><strong>Pending plan context</strong><div class="note" id="pending-plan">None</div></div>
-          </div>
-        </div>
-      </div>
+    <section class="hero">
+      <div class="kicker" id="hero-kicker">PRO access</div>
+      <h1 id="hero-title">Full market intelligence<br>workspace.</h1>
+      <p id="hero-copy">PRO includes full report access, competitor tables, TAM/SAM/SOM blocks, downloadable PDF exports, and deeper opportunity tooling.</p>
     </section>
 
-    <section class="page" id="page-opportunities">
-      <div class="section-head"><div class="section-title">Opportunity database</div><div class="line"></div></div>
+    <div class="grid">
+      <div class="card"><div class="metric" id="reports-count">214</div><div class="label">Reports available</div><div class="value" id="reports-copy">Validated opportunities in the database</div></div>
+      <div class="card"><div class="metric" id="source-count">47</div><div class="label">Signal sources</div><div class="value" id="source-copy">Active intelligence inputs being monitored</div></div>
+      <div class="card"><div class="metric" id="saved-count">12</div><div class="label">Saved ideas</div><div class="value" id="saved-copy">Tracked in your private workspace</div></div>
+      <div class="card"><div class="metric" id="next-unlock">PRO</div><div class="label">Workspace tier</div><div class="value" id="unlock-copy">Full exports, custom research, and deep report access enabled</div></div>
+    </div>
+
+    <div class="section">
+      <div class="section-head"><div class="section-title">Reports and access</div><div class="line"></div></div>
+      <div class="two-col">
+        <div class="list">
+          <div class="item">
+            <div class="item-top">
+              <div><div class="item-title">Webhook Reliability Platform</div><div class="note">Available in both Starter and PRO.</div></div>
+              <div class="tag">Open</div>
+            </div>
+            <div class="meta"><div class="chip">Market 84</div><div class="chip">Revenue 78</div><div class="chip">Difficulty 42</div></div>
+            <a class="btn btn-gold report-open" style="margin-top:12px;display:inline-flex" href="report-webhook-reliability.html?plan=starter" data-starter="true">Open report</a>
+          </div><div class="item">
+            <div class="item-top">
+              <div><div class="item-title">AI Mock API Server (Hosted)</div><div class="note">Available in both Starter and PRO.</div></div>
+              <div class="tag">Open</div>
+            </div>
+            <div class="meta"><div class="chip">Market 81</div><div class="chip">Revenue 76</div><div class="chip">Difficulty 39</div></div>
+            <a class="btn btn-gold report-open" style="margin-top:12px;display:inline-flex" href="report-ai-mock-api-server.html?plan=starter" data-starter="true">Open report</a>
+          </div><div class="item locked">
+            <div class="item-top">
+              <div><div class="item-title">EU AI Act Compliance Logger</div><div class="note">Visible in Starter, fully unlocked in PRO.</div></div>
+              <div class="tag">PRO</div>
+            </div>
+            <div class="meta"><div class="chip">Compliance SaaS</div><div class="chip">Emerging</div></div>
+            <div class="lock-overlay">
+              <div class="lock-badge">Upgrade to PRO</div>
+              <div class="note" style="margin-top:8px">Unlock full analysis, competitor tables, TAM/SAM/SOM, PDF export, and deeper report sections.</div>
+              <button class="btn btn-gold js-upgrade" style="margin-top:10px">Upgrade</button>
+            </div>
+          </div><div class="item locked">
+            <div class="item-top">
+              <div><div class="item-title">Rate Limit Management Proxy</div><div class="note">Visible in Starter, fully unlocked in PRO.</div></div>
+              <div class="tag">PRO</div>
+            </div>
+            <div class="meta"><div class="chip">Infrastructure</div><div class="chip">Rising</div></div>
+            <div class="lock-overlay">
+              <div class="lock-badge">Upgrade to PRO</div>
+              <div class="note" style="margin-top:8px">Unlock full analysis, competitor tables, TAM/SAM/SOM, PDF export, and deeper report sections.</div>
+              <button class="btn btn-gold js-upgrade" style="margin-top:10px">Upgrade</button>
+            </div>
+          </div><div class="item locked">
+            <div class="item-top">
+              <div><div class="item-title">Client Onboarding Workflow Suite</div><div class="note">Visible in Starter, fully unlocked in PRO.</div></div>
+              <div class="tag">PRO</div>
+            </div>
+            <div class="meta"><div class="chip">B2B SaaS</div><div class="chip">High</div></div>
+            <div class="lock-overlay">
+              <div class="lock-badge">Upgrade to PRO</div>
+              <div class="note" style="margin-top:8px">Unlock full analysis, competitor tables, TAM/SAM/SOM, PDF export, and deeper report sections.</div>
+              <button class="btn btn-gold js-upgrade" style="margin-top:10px">Upgrade</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="small-grid">
+          <div class="small-item"><strong>Current plan</strong><div class="note" id="plan-description">PRO includes full report access and deeper intelligence layers.</div></div>
+          <div class="small-item"><strong>Export access</strong><div class="note" id="export-copy">PDF exports and deeper report assets are available.</div></div>
+          <div class="small-item"><strong>Database coverage</strong><div class="note" id="coverage-copy">Advanced coverage and full opportunity database are visible.</div></div>
+          <div class="small-item"><strong>Upgrade path</strong><div class="note" id="upgrade-copy">No upgrade required.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head"><div class="section-title">Opportunity table</div><div class="line"></div></div>
       <div class="toolbar">
         <div class="filter-row">
           <select class="select"><option>All categories</option><option>Micro-SaaS</option><option>AI</option><option>Compliance</option><option>Dev tools</option></select>
           <select class="select"><option>Highest conviction</option><option>Newest</option><option>Lowest competition</option></select>
           <input class="input" placeholder="Filter by keyword" value="Solo-founder friendly">
         </div>
-        <button class="btn btn-gold" id="btn-export-db">Export shortlist</button>
+        <span class="lock-badge hidden" id="advanced-filter-lock">Advanced filters are PRO only</span>
       </div>
       <div class="table-wrap">
         <table class="table">
           <thead><tr><th>Opportunity</th><th>Category</th><th>Market</th><th>Revenue</th><th>Competition</th><th>Difficulty</th><th>Signal</th><th>Report</th></tr></thead>
           <tbody>
-            <tr><td>Webhook Reliability Platform</td><td>Dev Tools</td><td><span class="score good">84</span></td><td><span class="score good">78</span></td><td><span class="score mid">61</span></td><td><span class="score good">42</span></td><td><span class="score good">High</span></td><td><a class="linkish" href="report-webhook-reliability.html">Open</a></td></tr>
-            <tr><td>AI Mock API Server (Hosted)</td><td>Dev Tools / AI</td><td><span class="score good">81</span></td><td><span class="score good">76</span></td><td><span class="score mid">58</span></td><td><span class="score good">39</span></td><td><span class="score good">High</span></td><td><a class="linkish" href="report-ai-mock-api-server.html">Open</a></td></tr>
-            <tr><td>EU AI Act Compliance Logger</td><td>Compliance SaaS</td><td><span class="score good">74</span></td><td><span class="score mid">69</span></td><td><span class="score mid">57</span></td><td><span class="score mid">58</span></td><td><span class="score mid">Emerging</span></td><td><a class="linkish" href="report-eu-ai-act-compliance-logger.html">Open</a></td></tr>
-            <tr><td>Rate Limit Management Proxy</td><td>Infrastructure</td><td><span class="score mid">68</span></td><td><span class="score mid">64</span></td><td><span class="score good">31</span></td><td><span class="score good">36</span></td><td><span class="score mid">Rising</span></td><td><a class="linkish" href="report-rate-limit-management-proxy.html">Open</a></td></tr>
-            <tr><td>Client Onboarding Workflow Suite</td><td>B2B SaaS</td><td><span class="score good">79</span></td><td><span class="score good">74</span></td><td><span class="score mid">63</span></td><td><span class="score mid">49</span></td><td><span class="score good">High</span></td><td><a class="linkish" href="report-client-onboarding-workflow-suite.html">Open</a></td></tr>
+            <tr data-starter="true"><td>Webhook Reliability Platform</td><td>Dev Tools</td><td><span class="score good">84</span></td><td><span class="score good">78</span></td><td><span class="score mid">61</span></td><td><span class="score bad">42</span></td><td><span class="score good">High</span></td><td><a class="linkish report-open" href="report-webhook-reliability.html?plan=pro" data-starter="true">Open</a></td></tr><tr data-starter="true"><td>AI Mock API Server (Hosted)</td><td>Dev Tools / AI</td><td><span class="score good">81</span></td><td><span class="score good">76</span></td><td><span class="score mid">58</span></td><td><span class="score bad">39</span></td><td><span class="score good">High</span></td><td><a class="linkish report-open" href="report-ai-mock-api-server.html?plan=pro" data-starter="true">Open</a></td></tr><tr data-starter="false"><td>EU AI Act Compliance Logger</td><td>Compliance SaaS</td><td><span class="score mid">74</span></td><td><span class="score mid">69</span></td><td><span class="score mid">57</span></td><td><span class="score mid">58</span></td><td><span class="score mid">Emerging</span></td><td><span class="lock-badge">PRO only</span></td></tr><tr data-starter="false"><td>Rate Limit Management Proxy</td><td>Infrastructure</td><td><span class="score mid">68</span></td><td><span class="score mid">64</span></td><td><span class="score bad">31</span></td><td><span class="score bad">36</span></td><td><span class="score mid">Rising</span></td><td><span class="lock-badge">PRO only</span></td></tr><tr data-starter="false"><td>Client Onboarding Workflow Suite</td><td>B2B SaaS</td><td><span class="score good">79</span></td><td><span class="score mid">74</span></td><td><span class="score mid">63</span></td><td><span class="score bad">49</span></td><td><span class="score good">High</span></td><td><span class="lock-badge">PRO only</span></td></tr>
           </tbody>
         </table>
       </div>
-    </section>
-
-    <section class="page" id="page-signals">
-      <div class="section-head"><div class="section-title">Signal intelligence</div><div class="line"></div></div>
-      <div class="signal-grid">
-        <div class="signal-card"><div class="signal-value">+287%</div><div class="item-title">Webhook debugging</div><div class="note">Search growth over 36 months remains well above category average.</div></div>
-        <div class="signal-card"><div class="signal-value">+890%</div><div class="item-title">AI agent debugging</div><div class="note">Developer troubleshooting intent is outrunning current tooling quality.</div></div>
-        <div class="signal-card"><div class="signal-value">$7M</div><div class="item-title">Hookdeck Series A</div><div class="note">Commercial validation suggests infrastructure demand is fundable.</div></div>
-        <div class="signal-card"><div class="signal-value">Rising</div><div class="item-title">Operator complaints</div><div class="note">Reddit and Discord conversations show unresolved frustration in API reliability workflows.</div></div>
-        <div class="signal-card"><div class="signal-value">Alert</div><div class="item-title">Crowding risk</div><div class="note">General AI productivity categories continue to compress on differentiation.</div></div>
-        <div class="signal-card"><div class="signal-value">Window</div><div class="item-title">Compliance tailwind</div><div class="note">Procurement and auditability requirements create timing advantage for narrow compliance wedges.</div></div>
-      </div>
-    </section>
-
-    <section class="page" id="page-research">
-      <div class="section-head"><div class="section-title">Custom research</div><div class="line"></div></div>
-      <div class="research-grid">
-        <div class="form-card">
-          <div class="item-title" style="margin-bottom:12px">Run a niche search</div>
-          <div class="field"><label>Niche or market</label><input id="research-topic" value="AI workflow audit platform for agencies"></div>
-          <div class="field"><label>Region</label><select id="research-region"><option>Global</option><option>United States</option><option>Europe</option><option>MENA</option></select></div>
-          <div class="field"><label>Focus</label><select id="research-focus"><option>Demand validation</option><option>Competitor map</option><option>Pricing structure</option><option>Go-to-market</option></select></div>
-          <button class="btn btn-gold" id="btn-run-brief">Generate brief</button>
-        </div>
-        <div class="form-card">
-          <div class="item-title" style="margin-bottom:12px">Generated brief</div>
-          <div class="stack" id="research-output">
-            <div class="small-item"><strong>Thesis</strong><div class="note">An audit and QA platform for agencies managing multi-client AI workflows could win by reducing delivery risk and proving output quality.</div></div>
-            <div class="small-item"><strong>Why now</strong><div class="note">AI service delivery is scaling faster than agencies' internal control layers.</div></div>
-            <div class="small-item"><strong>Commercial angle</strong><div class="note">Sell to agencies first, then expand into enterprise workflow governance.</div></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="page" id="page-saved">
-      <div class="section-head"><div class="section-title">Saved workspace</div><div class="line"></div></div>
-      <div class="saved-grid">
-        <div class="card"><div class="item-title">Saved ideas</div><div class="note" style="margin-top:8px">Webhook Reliability Platform<br>AI Mock API Server<br>Client Onboarding Workflow Suite</div></div>
-        <div class="card"><div class="item-title">Watchlists</div><div class="note" style="margin-top:8px">Dev Tools<br>Compliance SaaS<br>Creator Economy<br>Agency workflow</div></div>
-        <div class="card"><div class="item-title">Notes</div><textarea id="saved-notes" style="margin-top:10px;width:100%;min-height:160px;background:var(--s2);border:1px solid var(--b2);border-radius:10px;color:var(--t1);padding:12px">Validate legal-tech automation wedge against agency workflow market. Compare switching costs and expansion paths.</textarea><button class="btn" id="btn-save-notes" style="margin-top:10px;width:100%">Save notes</button></div>
-      </div>
-    </section>
-
-    <section class="page" id="page-account">
-      <div class="section-head"><div class="section-title">Account</div><div class="line"></div></div>
-      <div class="account-grid">
-        <div class="card">
-          <div class="item-title">Membership details</div>
-          <div class="stack" style="margin-top:12px">
-            <div class="small-item"><strong>Plan</strong><div class="note">PRO</div></div>
-            <div class="small-item"><strong>Billing cadence</strong><div class="note">Annual</div></div>
-            <div class="small-item"><strong>Research credits</strong><div class="note">12 remaining this cycle</div></div>
-          </div>
-          <div class="item-title" style="margin:18px 0 10px">Profile</div>
-          <div class="field"><label>Full name</label><input id="profile-name" value="Erman"></div>
-          <div class="field"><label>Email</label><input id="profile-email" value="you@domain.com"></div>
-          <div class="field"><label>Focus areas</label><input id="profile-focus" value="Micro-SaaS, Dev Tools, AI Infrastructure"></div>
-        </div>
-        <div class="card account-actions">
-          <div class="item-title" style="margin-bottom:12px">Actions</div>
-          <div class="stack">
-            <button class="btn" id="btn-manage-billing">Manage billing</button>
-            <button class="btn" id="btn-update-profile">Update profile</button>
-            <button class="btn" id="btn-export-notes">Export notes</button>
-            <button class="btn" id="btn-signout">Sign out</button>
-          </div>
-          <div class="small-item" id="account-action-output" style="margin-top:14px">
-            <strong>Action panel</strong>
-            <div class="note">Use the actions above to manage billing, save profile changes, export saved notes, or sign out.</div>
-          </div>
-        </div>
-      </div>
-    </section>
+    </div>
   </main>
 </div>
 
 <script>
+const starterYearly = "https://buy.stripe.com/aFa4gAdmT8SS5hB1igebu01";
+const proYearly = "https://buy.stripe.com/aFa6oI0A7glk6lFf96ebu03";
 const toast = document.createElement('div');
 toast.className = 'toast';
 document.body.appendChild(toast);
@@ -311,91 +226,51 @@ function showToast(message){
   window.__toastTimer = setTimeout(() => toast.classList.remove('show'), 2200);
 }
 
-function openPage(page){
-  document.querySelectorAll('.side-link[data-page]').forEach(btn => btn.classList.toggle('active', btn.dataset.page === page));
-  document.querySelectorAll('.page').forEach(section => section.classList.toggle('active', section.id === 'page-' + page));
-  if(history.replaceState) history.replaceState(null, '', '#' + page);
+function getPlan(){
+  const params = new URLSearchParams(window.location.search);
+  const qp = params.get('plan');
+  const saved = localStorage.getItem('nichelab_plan');
+  const plan = (qp || saved || 'pro').toLowerCase();
+  localStorage.setItem('nichelab_plan', plan);
+  return plan === 'starter' ? 'starter' : 'pro';
 }
 
-document.querySelectorAll('.side-link[data-page]').forEach(btn => {
-  btn.addEventListener('click', () => openPage(btn.dataset.page));
-});
+const plan = getPlan();
+document.querySelectorAll('.js-upgrade').forEach(btn => btn.addEventListener('click', () => window.location.href = proYearly));
 
-const starterYearly = "https://buy.stripe.com/aFa4gAdmT8SS5hB1igebu01";
-const proYearly = "https://buy.stripe.com/aFa6oI0A7glk6lFf96ebu03";
-
-document.getElementById('btn-notifications').addEventListener('click', () => showToast('3 unread intelligence alerts.'));
-document.getElementById('btn-run-research').addEventListener('click', () => { openPage('research'); showToast('Moved to custom research.'); });
-document.getElementById('btn-export-db').addEventListener('click', () => showToast('Shortlist export queued.'));
-document.getElementById('btn-save-notes').addEventListener('click', () => {
-  localStorage.setItem('nichelab_saved_notes', document.getElementById('saved-notes').value);
-  showToast('Notes saved locally.');
-});
-document.getElementById('btn-manage-billing').addEventListener('click', () => {
-  const panel = document.getElementById('account-action-output');
-  panel.innerHTML = `<strong>Billing options</strong><div class="note">Choose where to go next.</div>
-    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
-      <a class="btn" href="${starterYearly}">Starter yearly checkout</a>
-      <a class="btn btn-gold" href="${proYearly}">Pro yearly checkout</a>
-    </div>`;
-  showToast('Billing actions loaded.');
-});
-document.getElementById('btn-update-profile').addEventListener('click', () => {
-  const profile = {
-    name: document.getElementById('profile-name').value,
-    email: document.getElementById('profile-email').value,
-    focus: document.getElementById('profile-focus').value
-  };
-  localStorage.setItem('nichelab_profile', JSON.stringify(profile));
-  document.getElementById('account-action-output').innerHTML = `<strong>Profile updated</strong><div class="note">Saved for ${profile.name} · ${profile.email}. Focus areas: ${profile.focus}.</div>`;
-  showToast('Profile saved locally.');
-});
-document.getElementById('btn-export-notes').addEventListener('click', () => {
-  const notes = document.getElementById('saved-notes').value || localStorage.getItem('nichelab_saved_notes') || 'No notes available.';
-  const blob = new Blob([notes], {type: 'text/plain;charset=utf-8'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = 'nichelab-notes.txt'; a.click();
-  URL.revokeObjectURL(url);
-  document.getElementById('account-action-output').innerHTML = `<strong>Notes exported</strong><div class="note">A text export of your saved notes has been prepared and downloaded.</div>`;
-  showToast('Notes exported.');
-});
-document.getElementById('btn-signout').addEventListener('click', () => {
-  localStorage.removeItem('nichelab_profile');
-  showToast('Signed out locally.');
-  setTimeout(() => window.location.href = 'index.html', 500);
-});
-
-document.getElementById('btn-run-brief').addEventListener('click', () => {
-  const topic = document.getElementById('research-topic').value || 'Selected niche';
-  const region = document.getElementById('research-region').value || 'Global';
-  const focus = document.getElementById('research-focus').value || 'Demand validation';
-  document.getElementById('research-output').innerHTML = `
-    <div class="small-item"><strong>Thesis</strong><div class="note">${topic} shows promising commercial structure for ${region.toLowerCase()} buyers when framed around operational risk reduction.</div></div>
-    <div class="small-item"><strong>Why now</strong><div class="note">The category is benefiting from workflow complexity, fragmented tooling, and increasing buyer urgency around measurable outcomes.</div></div>
-    <div class="small-item"><strong>Analyst angle</strong><div class="note">Priority analysis requested: ${focus}. Initial recommendation is to validate customer pain intensity before broadening feature scope.</div></div>
-  `;
-  showToast('Custom brief generated.');
-});
-
-const params = new URLSearchParams(window.location.search);
-const plan = params.get('plan');
-if(plan){
-  document.getElementById('pending-plan').textContent = plan;
+if (plan === 'starter'){
+  document.getElementById('plan-badge').textContent = 'Starter workspace';
+  document.getElementById('hero-kicker').textContent = 'Starter access';
+  document.getElementById('hero-title').innerHTML = 'Validated opportunities,<br>with selective depth.';
+  document.getElementById('hero-copy').textContent = 'Starter includes curated report access, a lighter opportunity view, and summary intelligence. Full exports, deeper report assets, and some opportunities remain locked for PRO.';
+  document.getElementById('reports-count').textContent = '42';
+  document.getElementById('reports-copy').textContent = 'Starter-access opportunities';
+  document.getElementById('source-count').textContent = '5';
+  document.getElementById('source-copy').textContent = 'Curated signal categories';
+  document.getElementById('saved-count').textContent = '3';
+  document.getElementById('saved-copy').textContent = 'Starter workspace limit';
+  document.getElementById('next-unlock').textContent = 'PRO';
+  document.getElementById('unlock-copy').textContent = 'PDF exports, custom research, and deeper report access locked';
+  document.getElementById('plan-description').textContent = 'Starter includes summary intelligence and selected open reports.';
+  document.getElementById('export-copy').textContent = 'PDF exports and deeper report assets are locked on Starter.';
+  document.getElementById('coverage-copy').textContent = 'Database coverage is curated. Some opportunities remain visible but locked.';
+  document.getElementById('upgrade-copy').textContent = 'Upgrade to PRO to unlock full report depth.';
+  document.getElementById('upgrade-nav').classList.remove('hidden');
+  document.getElementById('upgrade-top').classList.remove('hidden');
+  document.getElementById('advanced-filter-lock').classList.remove('hidden');
+  document.querySelectorAll('[data-starter="false"]').forEach(el => {
+    const link = el.querySelector('.report-open');
+    if (link){
+      link.outerHTML = '<span class="lock-badge">PRO only</span>';
+    }
+  });
+  document.querySelectorAll('.report-open[data-starter="true"]').forEach(link => {
+    link.href = link.href.replace('plan=pro', 'plan=starter');
+  });
+  document.getElementById('export-btn').addEventListener('click', () => showToast('PDF export and shortlist export are available on PRO.'));
+} else {
+  document.getElementById('export-btn').addEventListener('click', () => showToast('Shortlist export queued.'));
 }
-const savedNotes = localStorage.getItem('nichelab_saved_notes');
-if(savedNotes) document.getElementById('saved-notes').value = savedNotes;
-const profileRaw = localStorage.getItem('nichelab_profile');
-if(profileRaw){
-  try{
-    const p = JSON.parse(profileRaw);
-    if(p.name) document.getElementById('profile-name').value = p.name;
-    if(p.email) document.getElementById('profile-email').value = p.email;
-    if(p.focus) document.getElementById('profile-focus').value = p.focus;
-  }catch(e){}
-}
-const initialPage = window.location.hash ? window.location.hash.replace('#','') : 'dashboard';
-if(document.getElementById('page-' + initialPage)) openPage(initialPage);
 </script>
 </body>
 </html>

@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Webhook Reliability Platform for Indie Developers - NicheLab Report</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,500;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>Webhook Reliability Platform - NicheLab Report</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,500;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -19,9 +19,8 @@
   --display:'Cormorant Garamond',Georgia,serif;
   --body:'Plus Jakarta Sans',sans-serif;
   --mono:'IBM Plex Mono',monospace;
-  --r:8px;--r-lg:12px;--r-xl:16px;--r-2xl:20px;
 }
-body{font-family:var(--body);background:var(--bg);color:var(--t1);line-height:1.6;font-size:15px;overflow-x:hidden}
+body{font-family:var(--body);background:var(--bg);color:var(--t1);line-height:1.6;font-size:15px}
 a{text-decoration:none;color:inherit}
 button,input,textarea,select{font:inherit}
 .btn{padding:10px 14px;border-radius:10px;border:1px solid var(--b2);background:transparent;color:var(--t2);cursor:pointer;font-weight:600;transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease,color .16s ease,background-color .16s ease}
@@ -36,14 +35,15 @@ button,input,textarea,select{font:inherit}
 .small-item{background:var(--s1);border:1px solid var(--b1);border-radius:14px;padding:16px}
 .chip{font-family:var(--mono);font-size:11px;padding:5px 9px;border-radius:8px;background:var(--s2);border:1px solid var(--b2)}
 .tag{font-family:var(--mono);font-size:10px;padding:4px 8px;border-radius:999px;border:1px solid var(--b2);color:var(--t3);background:var(--s2)}
-.field{display:flex;flex-direction:column;gap:7px;margin-bottom:12px}
-.field label{font-size:12px;color:var(--t2);font-weight:600}
-.field input,.field textarea,.field select{width:100%;padding:11px 12px;background:var(--s2);border:1px solid var(--b2);border-radius:10px;color:var(--t1)}
-.field textarea{min-height:120px;resize:vertical}
+.lock-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;background:var(--gold-bg);border:1px solid var(--gold-br);border-radius:999px;font-family:var(--mono);font-size:11px;color:var(--gold-l)}
 .toast{position:fixed;right:24px;bottom:24px;z-index:1000;background:rgba(11,13,21,.96);color:var(--t1);border:1px solid var(--b2);border-radius:12px;padding:12px 14px;font-size:13px;box-shadow:0 14px 36px rgba(0,0,0,.28);opacity:0;transform:translateY(8px);pointer-events:none;transition:.22s}
 .toast.show{opacity:1;transform:none}
+.locked{position:relative;overflow:hidden}
+.locked::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,8,12,.10),rgba(7,8,12,.78));pointer-events:none}
+.lock-overlay{position:absolute;left:16px;right:16px;bottom:16px;z-index:2;background:rgba(11,13,21,.96);border:1px solid var(--gold-br);border-radius:14px;padding:14px}
+.hidden{display:none!important}
 
-.wrap{max-width:1120px;margin:0 auto;padding:32px 24px 48px}
+.wrap{max-width:1080px;margin:0 auto;padding:32px 24px 48px}
 .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:24px}
 .logo{display:flex;align-items:center;gap:10px}
 .logo-mark{width:30px;height:30px;background:var(--gold);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;font-weight:600;color:#07080C}
@@ -53,26 +53,13 @@ button,input,textarea,select{font:inherit}
 .hero::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),var(--cyan))}
 .hero h1{font-family:var(--display);font-size:46px;line-height:1.02;letter-spacing:-.6px;margin-bottom:14px}
 .hero p{max-width:780px;color:var(--t2)}
-.score-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
-.score{font-family:var(--mono);font-size:12px;padding:6px 9px;border-radius:8px;border:1px solid var(--b2)}
-.score.good{color:var(--green);background:var(--green-bg);border-color:var(--green-br)}
-.score.mid{color:var(--amber);background:var(--amber-bg);border-color:var(--amber-br)}
 .tam-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:14px}
 .tam-card{background:var(--s1);border:1px solid var(--b1);border-radius:16px;padding:18px}
 .tam-value{font-family:var(--mono);font-size:28px;color:var(--gold-l);margin-bottom:6px}
-.chart-card,.section-card{background:var(--s1);border:1px solid var(--b1);border-radius:16px;padding:20px}
-.chart-card{margin-bottom:14px}
-.chart-card h3,.section-card h3{font-size:16px;margin-bottom:10px}
-.chart-card p,.section-card p{color:var(--t2)}
-.trend-chart{width:100%;height:auto;margin-top:8px}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.table-wrap{background:var(--s1);border:1px solid var(--b1);border-radius:16px;overflow:hidden;margin-bottom:14px}
-.table{width:100%;border-collapse:collapse}
-.table th,.table td{padding:14px 16px;border-bottom:1px solid var(--b1);text-align:left;vertical-align:top}
-.table th{font-family:var(--mono);font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.8px;background:rgba(255,255,255,.01)}
-.table td{font-size:14px;color:var(--t2)}
-.table td:first-child{color:var(--t1);font-weight:600}
-.table tr:last-child td{border-bottom:none}
+.section-card{background:var(--s1);border:1px solid var(--b1);border-radius:16px;padding:20px;position:relative}
+.section-card h3{font-size:16px;margin-bottom:10px}
+.section-card p{color:var(--t2)}
 .footer-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:20px}
 @media (max-width:900px){.grid,.tam-grid{grid-template-columns:1fr}.hero h1{font-size:38px}}
 </style>
@@ -81,63 +68,57 @@ button,input,textarea,select{font:inherit}
 <div class="wrap">
   <div class="topbar">
     <div class="logo"><div class="logo-mark">NL</div><div>NicheLab Report</div></div>
-    <a class="back" href="dashboard.html#opportunities">- Back to dashboard</a>
+    <a class="back" href="dashboard.html">- Back to dashboard</a>
   </div>
 
   <section class="hero">
-    <div class="kicker">Micro-SaaS · Dev Tools</div>
-    <h1>Webhook Reliability Platform for Indie Developers</h1>
-    <p>Production-grade webhook management for teams that need capture, replay, debugging, alerting, and auditability without enterprise observability overhead.</p>
-    <div class="score-row"><div class="score good">Market 84</div><div class="score good">Revenue 78</div><div class="score mid">Competition 61</div><div class="score bad">Difficulty 42</div></div>
+    <div class="kicker">Dev Tools</div>
+    <h1>Webhook Reliability Platform</h1>
+    <p>Production-grade webhook management for teams that need replay, debugging, alerting, and auditability without enterprise observability overhead.</p>
   </section>
 
-  <div class="tam-grid">
-    <div class="tam-card"><div class="kicker">TAM</div><div class="tam-value">$7.0B</div><div class="note">Total addressable market based on category-wide spend.</div></div>
-    <div class="tam-card"><div class="kicker">SAM</div><div class="tam-value">$860M</div><div class="note">Reachable segment aligned with current wedge and buyer profile.</div></div>
-    <div class="tam-card"><div class="kicker">SOM</div><div class="tam-value">$18M</div><div class="note">Near-term obtainable slice under focused execution assumptions.</div></div>
+  <div class="tam-grid" id="tam-block">
+    <div class="tam-card"><div class="kicker">TAM</div><div class="tam-value">$7.0B</div><div class="note">Total addressable market</div></div>
+    <div class="tam-card"><div class="kicker">SAM</div><div class="tam-value">$860M</div><div class="note">Serviceable available market</div></div>
+    <div class="tam-card"><div class="kicker">SOM</div><div class="tam-value">$18M</div><div class="note">Serviceable obtainable market</div></div>
   </div>
 
-  <div class="chart-card">
-    <div class="kicker">Momentum</div>
-    <h3>Signal trajectory</h3>
-    <p>Postman’s free-tier changes, growing AI agent complexity, and increasing demand for API auditability create a wedge between disposable debugging tools and expensive enterprise infrastructure.</p>
-    <svg viewBox="0 0 720 220" class="trend-chart" aria-label="Trend chart">
-      <defs>
-        <linearGradient id="fillgrad" x1="0" x2="0" y1="0" y2="1">
-          <stop offset="0%" stop-color="rgba(200,134,26,0.35)"/>
-          <stop offset="100%" stop-color="rgba(200,134,26,0.02)"/>
-        </linearGradient>
-      </defs>
-      <line x1="48" y1="50" x2="700" y2="50" stroke="#1D2136" stroke-width="1"/><line x1="48" y1="82" x2="700" y2="82" stroke="#1D2136" stroke-width="1"/><line x1="48" y1="114" x2="700" y2="114" stroke="#1D2136" stroke-width="1"/><line x1="48" y1="146" x2="700" y2="146" stroke="#1D2136" stroke-width="1"/><line x1="48" y1="178" x2="700" y2="178" stroke="#1D2136" stroke-width="1"/>
-      <path d="M 48.0,147.1264367816092 138.0,138.16091954022988 228.0,133.67816091954023 318.0,121.72413793103448 408.0,114.25287356321839 498.0,93.33333333333334 588.0,70.91954022988506 678.0,50.0 678.0,180 48.0,180" fill="rgba(200,134,26,0.10)"></path>
-      <polyline fill="none" stroke="#E8A832" stroke-width="3" points="48.0,147.1264367816092 138.0,138.16091954022988 228.0,133.67816091954023 318.0,121.72413793103448 408.0,114.25287356321839 498.0,93.33333333333334 588.0,70.91954022988506 678.0,50.0" stroke-linecap="round" stroke-linejoin="round"></polyline>
-      <circle cx="48.0" cy="147.1264367816092" r="4.5" fill="#E8A832"/><text x="48.0" y="137.1264367816092" fill="#ECF0F8" font-size="11" text-anchor="middle">22</text><circle cx="138.0" cy="138.16091954022988" r="4.5" fill="#E8A832"/><text x="138.0" y="128.16091954022988" fill="#ECF0F8" font-size="11" text-anchor="middle">28</text><circle cx="228.0" cy="133.67816091954023" r="4.5" fill="#E8A832"/><text x="228.0" y="123.67816091954023" fill="#ECF0F8" font-size="11" text-anchor="middle">31</text><circle cx="318.0" cy="121.72413793103448" r="4.5" fill="#E8A832"/><text x="318.0" y="111.72413793103448" fill="#ECF0F8" font-size="11" text-anchor="middle">39</text><circle cx="408.0" cy="114.25287356321839" r="4.5" fill="#E8A832"/><text x="408.0" y="104.25287356321839" fill="#ECF0F8" font-size="11" text-anchor="middle">44</text><circle cx="498.0" cy="93.33333333333334" r="4.5" fill="#E8A832"/><text x="498.0" y="83.33333333333334" fill="#ECF0F8" font-size="11" text-anchor="middle">58</text><circle cx="588.0" cy="70.91954022988506" r="4.5" fill="#E8A832"/><text x="588.0" y="60.91954022988506" fill="#ECF0F8" font-size="11" text-anchor="middle">73</text><circle cx="678.0" cy="50.0" r="4.5" fill="#E8A832"/><text x="678.0" y="40.0" fill="#ECF0F8" font-size="11" text-anchor="middle">87</text>
-      <text x="48.0" y="204" fill="#505878" font-size="11" text-anchor="middle">Q1</text><text x="138.0" y="204" fill="#505878" font-size="11" text-anchor="middle">Q2</text><text x="228.0" y="204" fill="#505878" font-size="11" text-anchor="middle">Q3</text><text x="318.0" y="204" fill="#505878" font-size="11" text-anchor="middle">Q4</text><text x="408.0" y="204" fill="#505878" font-size="11" text-anchor="middle">Q5</text><text x="498.0" y="204" fill="#505878" font-size="11" text-anchor="middle">Q6</text><text x="588.0" y="204" fill="#505878" font-size="11" text-anchor="middle">Q7</text><text x="678.0" y="204" fill="#505878" font-size="11" text-anchor="middle">Q8</text>
-    </svg>
-  </div>
-
-  <div class="table-wrap">
-    <table class="table">
-      <thead><tr><th>Competitor</th><th>Positioning</th><th>Pricing</th><th>Gap / opening</th></tr></thead>
-      <tbody><tr><td>Hookdeck</td><td>Enterprise-grade event ops</td><td>$299+/mo</td><td>High-end pricing leaves SMB wedge open</td></tr><tr><td>Webhook.site</td><td>Simple debugging</td><td>$0-$19/mo</td><td>Strong debugging but limited workflow depth</td></tr><tr><td>Svix</td><td>Webhook sending infra</td><td>Custom</td><td>Delivery infrastructure focus, not debugging-first</td></tr><tr><td>Custom internal tooling</td><td>In-house scripts</td><td>Hidden cost</td><td>Common but brittle and hard to maintain</td></tr></tbody>
-    </table>
-  </div>
-
-  <div class="grid">
-    <div class="section-card"><div class="kicker">Section</div><h3>Demand evidence</h3><p>Search growth in webhook debugging remains elevated. Operator complaints consistently focus on lost events, replay difficulty, and insufficient debugging visibility.</p></div>
-<div class="section-card"><div class="kicker">Section</div><h3>Customer profile</h3><p>Indie developers, small SaaS teams, API-first products, and agencies shipping event-driven integrations.</p></div>
-<div class="section-card"><div class="kicker">Section</div><h3>Product wedge</h3><p>Capture, replay, alerting, and log retention for teams between disposable tools and high-end observability suites.</p></div>
-<div class="section-card"><div class="kicker">Section</div><h3>Monetization</h3><p>Developer plan around $29/month, Team plan around $79/month, with usage-linked upgrades and retention-based upsells.</p></div>
-<div class="section-card"><div class="kicker">Section</div><h3>Go-to-market</h3><p>Launch with a CLI listener, developer education content, and examples showing the hidden cost of missed webhook failures.</p></div>
-<div class="section-card"><div class="kicker">Section</div><h3>Risk matrix</h3><p>Commoditization risk if positioned too broadly. Must avoid becoming a generic observability clone without a focused wedge.</p></div>
-<div class="section-card"><div class="kicker">Section</div><h3>30-day plan</h3><p>Interview 20 engineers, launch a focused landing page, validate messaging, and test early distribution through dev communities.</p></div>
+  <div class="grid" id="sections-grid">
+    <div class="section-card section-item" data-open="true"><div class="kicker">Report section</div><h3>Executive summary</h3><p>A focused reliability product can win by making invisible event failures visible and actionable for smaller teams.</p></div><div class="section-card section-item" data-open="true"><div class="kicker">Report section</div><h3>Why now</h3><p>Event-driven architectures keep spreading while small teams still rely on fragmented debugging workflows.</p></div><div class="section-card section-item" data-open="true"><div class="kicker">Report section</div><h3>Demand evidence</h3><p>Search momentum and operator pain both support a practical SMB wedge.</p></div><div class="section-card section-item" data-open="false"><div class="kicker">Report section</div><h3>Competitor table</h3><p>Hookdeck sits high-end, lightweight tools stay shallow, and internal scripts remain brittle.</p></div><div class="section-card section-item" data-open="false"><div class="kicker">Report section</div><h3>Monetization</h3><p>Developer and Team plans with log-retention and collaboration upsells.</p></div>
   </div>
 
   <div class="footer-actions">
-    <a class="btn btn-gold" href="webhook-reliability.pdf" download>Download PDF export</a>
-    <a class="btn" href="dashboard.html#saved">Save to workspace</a>
-    <a class="btn" href="dashboard.html#research">Compare with another idea</a>
+    <a class="btn btn-gold" id="pdf-btn" href="webhook-reliability.pdf" download>Download PDF export</a>
+    <a class="btn" href="dashboard.html">Back to workspace</a>
+    <a class="btn js-upgrade hidden" href="https://buy.stripe.com/aFa6oI0A7glk6lFf96ebu03">Upgrade to PRO</a>
   </div>
 </div>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const saved = localStorage.getItem('nichelab_plan');
+const plan = ((params.get('plan') || saved || 'pro').toLowerCase() === 'starter') ? 'starter' : 'pro';
+localStorage.setItem('nichelab_plan', plan);
+
+if(plan === 'starter'){
+  document.querySelectorAll('.section-item[data-open="false"]').forEach(el => {
+    el.classList.add('locked');
+    const overlay = document.createElement('div');
+    overlay.className = 'lock-overlay';
+    overlay.innerHTML = '<div class="lock-badge">Upgrade to PRO</div><div class="note" style="margin-top:8px">This deeper report layer is available on PRO only, including extended analysis and supporting assets.</div><a class="btn btn-gold" style="margin-top:10px;display:inline-flex" href="https://buy.stripe.com/aFa6oI0A7glk6lFf96ebu03">Unlock PRO</a>';
+    el.appendChild(overlay);
+  });
+  document.getElementById('tam-block').classList.add('locked');
+  const tamOverlay = document.createElement('div');
+  tamOverlay.className = 'lock-overlay';
+  tamOverlay.innerHTML = '<div class="lock-badge">PRO only</div><div class="note" style="margin-top:8px">TAM / SAM / SOM blocks are part of PRO report depth.</div><a class="btn btn-gold" style="margin-top:10px;display:inline-flex" href="https://buy.stripe.com/aFa6oI0A7glk6lFf96ebu03">Upgrade</a>';
+  document.getElementById('tam-block').appendChild(tamOverlay);
+  document.getElementById('pdf-btn').addEventListener('click', (e) => {
+    e.preventDefault();
+    alert('PDF export is available on PRO only.');
+  });
+  document.querySelector('.js-upgrade').classList.remove('hidden');
+}
+</script>
 </body>
 </html>
