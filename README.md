@@ -1,24 +1,27 @@
+# GitHub patch pack
 
-# NicheLab site integration
-
-This package connects the site UI to the auto-generated report files.
+Upload these files to your repo root.
 
 ## Files
-- `index.html`
-- `dashboard.html`
+- `COPY_REPLACEMENTS.md`
+- `copy-replacements.json`
+- `dashboard-auth-open.js`
+- `firebase-auth-google-email-only.js`
 
-## What they do
-- `index.html` reads:
-  - `generated-reports/homepage-feed.json`
-  - `generated-reports/reports-manifest.json`
-- `dashboard.html` reads:
-  - `generated-reports/homepage-feed.json`
-  - `generated-reports/reports-manifest.json`
+## What to do
+1. Apply the copy replacements across `index.html`, `dashboard.html`, pricing sections, and report buttons.
+2. In `dashboard.html`, remove any code that blocks access when a user is not signed in.
+3. Include `dashboard-auth-open.js` and use:
+   `initDashboardWithoutAuthLock(auth, loadDashboard)`
+4. Disable Apple sign-in in Firebase Console.
+5. Keep only Google + Email/Password auth in your site code.
 
-## Result
-When GitHub Actions creates new reports, the homepage featured report and dashboard report list update automatically.
+## Firebase Console changes
+Authentication -> Sign-in method:
+- Google: Enabled
+- Email/Password: Enabled
+- Apple: Disabled
 
-## Replace in repo
-- replace current `index.html`
-- replace current `dashboard.html`
-
+## Authorized domain
+Make sure this exists in Firebase:
+- `tercanme-rgb.github.io`
