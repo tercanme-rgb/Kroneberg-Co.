@@ -38,9 +38,10 @@ button,input,textarea,select{font:inherit}
 .lock-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;background:var(--gold-bg);border:1px solid var(--gold-br);border-radius:999px;font-family:var(--mono);font-size:11px;color:var(--gold-l)}
 .toast{position:fixed;right:24px;bottom:24px;z-index:1000;background:rgba(11,13,21,.96);color:var(--t1);border:1px solid var(--b2);border-radius:12px;padding:12px 14px;font-size:13px;box-shadow:0 14px 36px rgba(0,0,0,.28);opacity:0;transform:translateY(8px);pointer-events:none;transition:.22s}
 .toast.show{opacity:1;transform:none}
-.locked{position:relative;overflow:hidden}
+.locked{position:relative;overflow:hidden;min-height:220px}
 .locked::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,8,12,.10),rgba(7,8,12,.78));pointer-events:none}
-.lock-overlay{position:absolute;left:16px;right:16px;bottom:16px;z-index:2;background:rgba(11,13,21,.96);border:1px solid var(--gold-br);border-radius:14px;padding:14px}
+.lock-overlay .note{white-space:normal;overflow-wrap:anywhere}.lock-overlay .btn{display:inline-flex;max-width:100%}
+.lock-overlay{position:absolute;left:16px;right:16px;bottom:16px;z-index:2;background:rgba(11,13,21,.96);border:1px solid var(--gold-br);border-radius:14px;padding:14px;max-width:calc(100% - 32px);box-sizing:border-box}
 .hidden{display:none!important}
 
 .wrap{max-width:1080px;margin:0 auto;padding:32px 24px 48px}
@@ -55,13 +56,15 @@ button,input,textarea,select{font:inherit}
 .hero p{max-width:780px;color:var(--t2)}
 .tam-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:14px}
 .tam-card{background:var(--s1);border:1px solid var(--b1);border-radius:16px;padding:18px}
+#tam-block.locked{position:relative;min-height:230px;padding-bottom:150px}
 .tam-value{font-family:var(--mono);font-size:28px;color:var(--gold-l);margin-bottom:6px}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.section-card{background:var(--s1);border:1px solid var(--b1);border-radius:16px;padding:20px;position:relative}
+.section-card{background:var(--s1);border:1px solid var(--b1);border-radius:16px;padding:20px;position:relative;min-height:220px}
+.section-card.locked{padding-bottom:140px}
 .section-card h3{font-size:16px;margin-bottom:10px}
 .section-card p{color:var(--t2)}
 .footer-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:20px}
-@media (max-width:900px){.grid,.tam-grid{grid-template-columns:1fr}.hero h1{font-size:38px}}
+@media (max-width:900px){.grid,.tam-grid{grid-template-columns:1fr}.hero h1{font-size:38px}.lock-overlay{left:12px;right:12px;bottom:12px}.section-card.locked{padding-bottom:170px}#tam-block.locked{padding-bottom:180px}}
 </style>
 </head>
 <body>

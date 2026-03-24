@@ -39,9 +39,10 @@ button,input,textarea,select{font:inherit}
 .lock-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;background:var(--gold-bg);border:1px solid var(--gold-br);border-radius:999px;font-family:var(--mono);font-size:11px;color:var(--gold-l)}
 .toast{position:fixed;right:24px;bottom:24px;z-index:1000;background:rgba(11,13,21,.96);color:var(--t1);border:1px solid var(--b2);border-radius:12px;padding:12px 14px;font-size:13px;box-shadow:0 14px 36px rgba(0,0,0,.28);opacity:0;transform:translateY(8px);pointer-events:none;transition:.22s}
 .toast.show{opacity:1;transform:none}
-.locked{position:relative;overflow:hidden}
+.locked{position:relative;overflow:hidden;min-height:220px}
 .locked::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,8,12,.10),rgba(7,8,12,.78));pointer-events:none}
-.lock-overlay{position:absolute;left:16px;right:16px;bottom:16px;z-index:2;background:rgba(11,13,21,.96);border:1px solid var(--gold-br);border-radius:14px;padding:14px}
+.lock-overlay .note{white-space:normal;overflow-wrap:anywhere}.lock-overlay .btn{display:inline-flex;max-width:100%}
+.lock-overlay{position:absolute;left:16px;right:16px;bottom:16px;z-index:2;background:rgba(11,13,21,.96);border:1px solid var(--gold-br);border-radius:14px;padding:14px;max-width:calc(100% - 32px);box-sizing:border-box}
 .hidden{display:none!important}
 
 .app{display:grid;grid-template-columns:250px 1fr;min-height:100vh}
@@ -87,7 +88,7 @@ button,input,textarea,select{font:inherit}
 .filter-row{display:flex;gap:10px;flex-wrap:wrap}
 .select,.input{background:var(--s1);border:1px solid var(--b1);border-radius:10px;padding:11px 12px;color:var(--t2)}
 @media (max-width:1180px){.grid,.small-grid,.two-col{grid-template-columns:1fr}}
-@media (max-width:900px){.app{grid-template-columns:1fr}.sidebar{position:relative;height:auto}.main{padding:20px}.grid{grid-template-columns:1fr}.topbar{flex-direction:column;align-items:stretch}.search{max-width:none}}
+@media (max-width:900px){.app{grid-template-columns:1fr}.sidebar{position:relative;height:auto}.main{padding:20px}.grid{grid-template-columns:1fr}.topbar{flex-direction:column;align-items:stretch}.search{max-width:none}.lock-overlay{left:12px;right:12px;bottom:12px}.locked{min-height:250px}}
 </style>
 </head>
 <body>
