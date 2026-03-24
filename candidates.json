@@ -1,0 +1,325 @@
+[
+  {
+    "candidate_id": "cand_finance_&_admin_invoice_review_0",
+    "visible_category": "Finance & Admin",
+    "engine_theme": "invoice_review",
+    "title": "Exception Review Workflow for Fractional CFOs",
+    "subtitle": "A focused invoice exception handling wedge for fractional CFOs facing manual review.",
+    "buyer": {
+      "primary": "fractional CFOs",
+      "secondary": []
+    },
+    "workflow": "invoice exception handling",
+    "pain": "manual review",
+    "trigger": "vendor growth",
+    "business_model": "subscription",
+    "geo": "Global",
+    "thesis": "A subscription product focused on invoice exception handling could win with fractional CFOs by reducing manual review under conditions shaped by vendor growth."
+  },
+  {
+    "candidate_id": "cand_finance_&_admin_expense_approval_1",
+    "visible_category": "Finance & Admin",
+    "engine_theme": "expense_approval",
+    "title": "Expense Approval Workflow for Ops Leads",
+    "subtitle": "A focused expense approvals wedge for ops leads facing spreadsheet dependency.",
+    "buyer": {
+      "primary": "ops leads",
+      "secondary": []
+    },
+    "workflow": "expense approvals",
+    "pain": "spreadsheet dependency",
+    "trigger": "cost scrutiny",
+    "business_model": "subscription",
+    "geo": "Global",
+    "thesis": "A subscription product focused on expense approvals could win with ops leads by reducing spreadsheet dependency under conditions shaped by cost scrutiny."
+  },
+  {
+    "candidate_id": "cand_finance_&_admin_reconciliation_workflows_2",
+    "visible_category": "Finance & Admin",
+    "engine_theme": "reconciliation_workflows",
+    "title": "Payment Exception Handling for Bookkeepers",
+    "subtitle": "A focused payment exception handling wedge for bookkeepers facing manual exception review.",
+    "buyer": {
+      "primary": "bookkeepers",
+      "secondary": []
+    },
+    "workflow": "payment exception handling",
+    "pain": "manual exception review",
+    "trigger": "cross-border payments",
+    "business_model": "subscription",
+    "geo": "Global",
+    "thesis": "A subscription product focused on payment exception handling could win with bookkeepers by reducing manual exception review under conditions shaped by cross-border payments."
+  },
+  {
+    "candidate_id": "cand_finance_&_admin_invoice_review_3",
+    "visible_category": "Finance & Admin",
+    "engine_theme": "invoice_review",
+    "title": "Approval Workflow for Finance Managers",
+    "subtitle": "A focused invoice review wedge for finance managers facing approval delays.",
+    "buyer": {
+      "primary": "finance managers",
+      "secondary": []
+    },
+    "workflow": "invoice review",
+    "pain": "approval delays",
+    "trigger": "vendor growth",
+    "business_model": "subscription",
+    "geo": "Global",
+    "thesis": "A subscription product focused on invoice review could win with finance managers by reducing approval delays under conditions shaped by vendor growth."
+  },
+  {
+    "candidate_id": "cand_finance_&_admin_expense_approval_4",
+    "visible_category": "Finance & Admin",
+    "engine_theme": "expense_approval",
+    "title": "Policy Checks for Finance Teams",
+    "subtitle": "A focused policy checks wedge for finance teams facing spreadsheet dependency.",
+    "buyer": {
+      "primary": "finance teams",
+      "secondary": []
+    },
+    "workflow": "policy checks",
+    "pain": "spreadsheet dependency",
+    "trigger": "cost scrutiny",
+    "business_model": "workflow_saas",
+    "geo": "Global",
+    "thesis": "A workflow saas product focused on policy checks could win with finance teams by reducing spreadsheet dependency under conditions shaped by cost scrutiny."
+  },
+  {
+    "candidate_id": "cand_finance_&_admin_reconciliation_workflows_5",
+    "visible_category": "Finance & Admin",
+    "engine_theme": "reconciliation_workflows",
+    "title": "Reconciliation Workflow for Finance Managers",
+    "subtitle": "A focused reconciliation wedge for finance managers facing messy reconciliation.",
+    "buyer": {
+      "primary": "finance managers",
+      "secondary": []
+    },
+    "workflow": "reconciliation",
+    "pain": "messy reconciliation",
+    "trigger": "volume growth",
+    "business_model": "subscription",
+    "geo": "Global",
+    "thesis": "A subscription product focused on reconciliation could win with finance managers by reducing messy reconciliation under conditions shaped by volume growth."
+  },
+  {
+    "candidate_id": "cand_finance_&_admin_invoice_review_6",
+    "visible_category": "Finance & Admin",
+    "engine_theme": "invoice_review",
+    "title": "Invoice Exception Handling for Finance Managers",
+    "subtitle": "A focused invoice exception handling wedge for finance managers facing manual review.",
+    "buyer": {
+      "primary": "finance managers",
+      "secondary": []
+    },
+    "workflow": "invoice exception handling",
+    "pain": "manual review",
+    "trigger": "lean finance teams",
+    "business_model": "subscription",
+    "geo": "Global",
+    "thesis": "A subscription product focused on invoice exception handling could win with finance managers by reducing manual review under conditions shaped by lean finance teams."
+  },
+  {
+    "candidate_id": "cand_finance_&_admin_expense_approval_7",
+    "visible_category": "Finance & Admin",
+    "engine_theme": "expense_approval",
+    "title": "Expense Approval Workflow for Finance Teams",
+    "subtitle": "A focused expense approvals wedge for finance teams facing slow approvals.",
+    "buyer": {
+      "primary": "finance teams",
+      "secondary": []
+    },
+    "workflow": "expense approvals",
+    "pain": "slow approvals",
+    "trigger": "cost scrutiny",
+    "business_model": "subscription",
+    "geo": "Global",
+    "thesis": "A subscription product focused on expense approvals could win with finance teams by reducing slow approvals under conditions shaped by cost scrutiny."
+  },
+  {
+    "candidate_id": "cand_finance_&_admin_reconciliation_workflows_8",
+    "visible_category": "Finance & Admin",
+    "engine_theme": "reconciliation_workflows",
+    "title": "Cash Flow Checks for Bookkeepers",
+    "subtitle": "A focused cash flow checks wedge for bookkeepers facing messy reconciliation.",
+    "buyer": {
+      "primary": "bookkeepers",
+      "secondary": []
+    },
+    "workflow": "cash flow checks",
+    "pain": "messy reconciliation",
+    "trigger": "volume growth",
+    "business_model": "finance_ops_tool",
+    "geo": "Global",
+    "thesis": "A finance ops tool product focused on cash flow checks could win with bookkeepers by reducing messy reconciliation under conditions shaped by volume growth."
+  },
+  {
+    "candidate_id": "cand_finance_&_admin_invoice_review_9",
+    "visible_category": "Finance & Admin",
+    "engine_theme": "invoice_review",
+    "title": "Invoice Review Workflow for Fractional CFOs",
+    "subtitle": "A focused invoice review wedge for fractional CFOs facing approval delays.",
+    "buyer": {
+      "primary": "fractional CFOs",
+      "secondary": []
+    },
+    "workflow": "invoice review",
+    "pain": "approval delays",
+    "trigger": "lean finance teams",
+    "business_model": "finance_workflow",
+    "geo": "Global",
+    "thesis": "A finance workflow product focused on invoice review could win with fractional CFOs by reducing approval delays under conditions shaped by lean finance teams."
+  },
+  {
+    "candidate_id": "cand_finance_&_admin_expense_approval_10",
+    "visible_category": "Finance & Admin",
+    "engine_theme": "expense_approval",
+    "title": "Policy Checks for Ops Leads",
+    "subtitle": "A focused policy checks wedge for ops leads facing slow approvals.",
+    "buyer": {
+      "primary": "ops leads",
+      "secondary": []
+    },
+    "workflow": "policy checks",
+    "pain": "slow approvals",
+    "trigger": "cost scrutiny",
+    "business_model": "subscription",
+    "geo": "Global",
+    "thesis": "A subscription product focused on policy checks could win with ops leads by reducing slow approvals under conditions shaped by cost scrutiny."
+  },
+  {
+    "candidate_id": "cand_finance_&_admin_reconciliation_workflows_11",
+    "visible_category": "Finance & Admin",
+    "engine_theme": "reconciliation_workflows",
+    "title": "Payment Exception Handling for E-commerce Finance Teams",
+    "subtitle": "A focused payment exception handling wedge for e-commerce finance teams facing low visibility.",
+    "buyer": {
+      "primary": "e-commerce finance teams",
+      "secondary": []
+    },
+    "workflow": "payment exception handling",
+    "pain": "low visibility",
+    "trigger": "cross-border payments",
+    "business_model": "finance_ops_tool",
+    "geo": "Global",
+    "thesis": "A finance ops tool product focused on payment exception handling could win with e-commerce finance teams by reducing low visibility under conditions shaped by cross-border payments."
+  },
+  {
+    "candidate_id": "cand_finance_&_admin_invoice_review_12",
+    "visible_category": "Finance & Admin",
+    "engine_theme": "invoice_review",
+    "title": "Invoice Approval for Bookkeepers",
+    "subtitle": "A focused invoice approval wedge for bookkeepers facing manual review.",
+    "buyer": {
+      "primary": "bookkeepers",
+      "secondary": []
+    },
+    "workflow": "invoice approval",
+    "pain": "manual review",
+    "trigger": "lean finance teams",
+    "business_model": "finance_workflow",
+    "geo": "Global",
+    "thesis": "A finance workflow product focused on invoice approval could win with bookkeepers by reducing manual review under conditions shaped by lean finance teams."
+  },
+  {
+    "candidate_id": "cand_finance_&_admin_expense_approval_13",
+    "visible_category": "Finance & Admin",
+    "engine_theme": "expense_approval",
+    "title": "Expense Approval Workflow for Smb Admin Teams",
+    "subtitle": "A focused expense approvals wedge for SMB admins facing low visibility.",
+    "buyer": {
+      "primary": "SMB admins",
+      "secondary": []
+    },
+    "workflow": "expense approvals",
+    "pain": "low visibility",
+    "trigger": "distributed teams",
+    "business_model": "workflow_saas",
+    "geo": "Global",
+    "thesis": "A workflow saas product focused on expense approvals could win with SMB admins by reducing low visibility under conditions shaped by distributed teams."
+  },
+  {
+    "candidate_id": "cand_finance_&_admin_reconciliation_workflows_14",
+    "visible_category": "Finance & Admin",
+    "engine_theme": "reconciliation_workflows",
+    "title": "Cash Flow Checks for E-commerce Finance Teams",
+    "subtitle": "A focused cash flow checks wedge for e-commerce finance teams facing manual exception review.",
+    "buyer": {
+      "primary": "e-commerce finance teams",
+      "secondary": []
+    },
+    "workflow": "cash flow checks",
+    "pain": "manual exception review",
+    "trigger": "cross-border payments",
+    "business_model": "subscription",
+    "geo": "Global",
+    "thesis": "A subscription product focused on cash flow checks could win with e-commerce finance teams by reducing manual exception review under conditions shaped by cross-border payments."
+  },
+  {
+    "candidate_id": "cand_finance_&_admin_invoice_review_15",
+    "visible_category": "Finance & Admin",
+    "engine_theme": "invoice_review",
+    "title": "Invoice Review Workflow for Bookkeepers",
+    "subtitle": "A focused invoice review wedge for bookkeepers facing invoice errors.",
+    "buyer": {
+      "primary": "bookkeepers",
+      "secondary": []
+    },
+    "workflow": "invoice review",
+    "pain": "invoice errors",
+    "trigger": "lean finance teams",
+    "business_model": "subscription",
+    "geo": "Global",
+    "thesis": "A subscription product focused on invoice review could win with bookkeepers by reducing invoice errors under conditions shaped by lean finance teams."
+  },
+  {
+    "candidate_id": "cand_finance_&_admin_expense_approval_16",
+    "visible_category": "Finance & Admin",
+    "engine_theme": "expense_approval",
+    "title": "Purchase Review for Ops Leads",
+    "subtitle": "A focused purchase review wedge for ops leads facing low visibility.",
+    "buyer": {
+      "primary": "ops leads",
+      "secondary": []
+    },
+    "workflow": "purchase review",
+    "pain": "low visibility",
+    "trigger": "distributed teams",
+    "business_model": "subscription",
+    "geo": "Global",
+    "thesis": "A subscription product focused on purchase review could win with ops leads by reducing low visibility under conditions shaped by distributed teams."
+  },
+  {
+    "candidate_id": "cand_finance_&_admin_invoice_review_18",
+    "visible_category": "Finance & Admin",
+    "engine_theme": "invoice_review",
+    "title": "Invoice Exception Handling for Fractional CFOs",
+    "subtitle": "A focused invoice exception handling wedge for fractional CFOs facing invoice errors.",
+    "buyer": {
+      "primary": "fractional CFOs",
+      "secondary": []
+    },
+    "workflow": "invoice exception handling",
+    "pain": "invoice errors",
+    "trigger": "lean finance teams",
+    "business_model": "subscription",
+    "geo": "Global",
+    "thesis": "A subscription product focused on invoice exception handling could win with fractional CFOs by reducing invoice errors under conditions shaped by lean finance teams."
+  },
+  {
+    "candidate_id": "cand_finance_&_admin_expense_approval_19",
+    "visible_category": "Finance & Admin",
+    "engine_theme": "expense_approval",
+    "title": "Purchase Review for Finance Teams",
+    "subtitle": "A focused purchase review wedge for finance teams facing slow approvals.",
+    "buyer": {
+      "primary": "finance teams",
+      "secondary": []
+    },
+    "workflow": "purchase review",
+    "pain": "slow approvals",
+    "trigger": "distributed teams",
+    "business_model": "subscription",
+    "geo": "Global",
+    "thesis": "A subscription product focused on purchase review could win with finance teams by reducing slow approvals under conditions shaped by distributed teams."
+  }
+]

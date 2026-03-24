@@ -1,32 +1,939 @@
-[
-  {
-    "rank": 1,
-    "title": "Reconciliation Workflow for Finance Managers",
-    "category": "Finance & Admin",
-    "buyer": "finance managers",
-    "workflow": "reconciliation",
-    "thesis": "A subscription product focused on reconciliation could win with finance managers by reducing messy reconciliation under conditions shaped by volume growth.",
-    "overall_score": 88.0,
-    "publishability": 98
+{
+  "visible_categories": [
+    "Micro-SaaS",
+    "AI Automation",
+    "E-Commerce",
+    "Creator Economy",
+    "Local Business",
+    "B2B Services",
+    "Finance & Admin"
+  ],
+  "categories": {
+    "Micro-SaaS": {
+      "engine_themes": [
+        "niche_workflow_saas",
+        "smb_tooling",
+        "vertical_micro_tools"
+      ]
+    },
+    "AI Automation": {
+      "engine_themes": [
+        "ai_workflow_ops",
+        "agent_qa",
+        "human_review_layers"
+      ]
+    },
+    "E-Commerce": {
+      "engine_themes": [
+        "returns_workflows",
+        "support_ops",
+        "post_purchase_ops"
+      ]
+    },
+    "Creator Economy": {
+      "engine_themes": [
+        "content_workflows",
+        "audience_monetization",
+        "member_onboarding"
+      ]
+    },
+    "Local Business": {
+      "engine_themes": [
+        "clinic_admin",
+        "appointment_workflows",
+        "lead_follow_up"
+      ]
+    },
+    "B2B Services": {
+      "engine_themes": [
+        "agency_ops",
+        "client_onboarding",
+        "delivery_qa"
+      ]
+    },
+    "Finance & Admin": {
+      "engine_themes": [
+        "invoice_review",
+        "expense_approval",
+        "reconciliation_workflows"
+      ]
+    }
   },
-  {
-    "rank": 2,
-    "title": "Invoice Exception Handling for Finance Managers",
-    "category": "Finance & Admin",
-    "buyer": "finance managers",
-    "workflow": "invoice exception handling",
-    "thesis": "A subscription product focused on invoice exception handling could win with finance managers by reducing manual review under conditions shaped by lean finance teams.",
-    "overall_score": 88.0,
-    "publishability": 98
+  "engine_theme_dictionary": {
+    "niche_workflow_saas": {
+      "buyers": [
+        "indie SaaS teams",
+        "small remote ops teams",
+        "startup client delivery teams"
+      ],
+      "workflows": [
+        "approval routing",
+        "handoff tracking",
+        "exception handling",
+        "review workflows"
+      ],
+      "pains": [
+        "manual coordination",
+        "poor visibility",
+        "slow handoffs",
+        "spreadsheet dependency"
+      ],
+      "triggers": [
+        "team growth",
+        "tool fragmentation",
+        "margin pressure",
+        "service complexity"
+      ],
+      "models": [
+        "subscription",
+        "tiered_saas"
+      ]
+    },
+    "smb_tooling": {
+      "buyers": [
+        "small SaaS support teams",
+        "bootstrapped SaaS founders",
+        "small product ops teams"
+      ],
+      "workflows": [
+        "support inbox triage",
+        "customer issue routing",
+        "internal alert escalation",
+        "ops reporting review"
+      ],
+      "pains": [
+        "expensive incumbents",
+        "manual reporting",
+        "low visibility",
+        "messy workflows"
+      ],
+      "triggers": [
+        "software sprawl",
+        "lean teams",
+        "support cost"
+      ],
+      "models": [
+        "subscription",
+        "freemium"
+      ]
+    },
+    "vertical_micro_tools": {
+      "buyers": [
+        "cross-border Shopify finance teams",
+        "AI agencies",
+        "clinic managers",
+        "legal ops teams"
+      ],
+      "workflows": [
+        "invoice exception review",
+        "client onboarding QA",
+        "patient intake follow-up",
+        "contract request triage"
+      ],
+      "pains": [
+        "too many manual steps",
+        "slow follow-up",
+        "fragmented tools"
+      ],
+      "triggers": [
+        "staff shortages",
+        "growing service volume",
+        "compliance pressure"
+      ],
+      "models": [
+        "subscription",
+        "workflow_saas"
+      ]
+    },
+    "ai_workflow_ops": {
+      "buyers": [
+        "AI product teams",
+        "AI agencies",
+        "B2B SaaS teams shipping AI features"
+      ],
+      "workflows": [
+        "AI output validation",
+        "human approval routing",
+        "prompt review workflow",
+        "audit logging"
+      ],
+      "pains": [
+        "inconsistent outputs",
+        "manual QA",
+        "poor traceability",
+        "tool sprawl"
+      ],
+      "triggers": [
+        "AI adoption",
+        "trust pressure",
+        "workflow complexity"
+      ],
+      "models": [
+        "subscription",
+        "usage_based"
+      ]
+    },
+    "agent_qa": {
+      "buyers": [
+        "agent builders",
+        "AI startups",
+        "product engineers"
+      ],
+      "workflows": [
+        "agent testing",
+        "scenario replay",
+        "failure triage",
+        "eval pipelines"
+      ],
+      "pains": [
+        "agent drift",
+        "hard-to-reproduce bugs",
+        "manual testing"
+      ],
+      "triggers": [
+        "multi-agent workflows",
+        "enterprise deployments",
+        "release frequency"
+      ],
+      "models": [
+        "subscription",
+        "usage_based"
+      ]
+    },
+    "human_review_layers": {
+      "buyers": [
+        "ops teams using AI",
+        "compliance-sensitive teams",
+        "B2B SaaS vendors"
+      ],
+      "workflows": [
+        "human approval",
+        "audit logging",
+        "review queues",
+        "exception routing"
+      ],
+      "pains": [
+        "unclear ownership",
+        "missing logs",
+        "approval bottlenecks"
+      ],
+      "triggers": [
+        "procurement pressure",
+        "regulatory scrutiny",
+        "AI workflow growth"
+      ],
+      "models": [
+        "subscription",
+        "seat_based"
+      ]
+    },
+    "returns_workflows": {
+      "buyers": [
+        "Shopify brands",
+        "DTC operators",
+        "e-commerce ops teams"
+      ],
+      "workflows": [
+        "return approval",
+        "refund exception review",
+        "warehouse coordination"
+      ],
+      "pains": [
+        "refund leakage",
+        "manual returns",
+        "margin loss"
+      ],
+      "triggers": [
+        "rising return volume",
+        "margin compression",
+        "cross-border complexity"
+      ],
+      "models": [
+        "subscription",
+        "ops_tooling"
+      ]
+    },
+    "support_ops": {
+      "buyers": [
+        "DTC support teams",
+        "marketplace sellers",
+        "e-commerce operators"
+      ],
+      "workflows": [
+        "ticket triage",
+        "refund communication",
+        "status updates",
+        "issue categorization"
+      ],
+      "pains": [
+        "support overload",
+        "slow replies",
+        "fragmented inboxes"
+      ],
+      "triggers": [
+        "order growth",
+        "staff constraints",
+        "customer expectation pressure"
+      ],
+      "models": [
+        "subscription",
+        "seat_based"
+      ]
+    },
+    "post_purchase_ops": {
+      "buyers": [
+        "Shopify brands",
+        "consumer operators",
+        "ops managers"
+      ],
+      "workflows": [
+        "shipment follow-up",
+        "delivery exception handling",
+        "post-purchase communication"
+      ],
+      "pains": [
+        "poor post-purchase visibility",
+        "manual follow-up",
+        "support duplication"
+      ],
+      "triggers": [
+        "cross-border shipping",
+        "third-party logistics dependence"
+      ],
+      "models": [
+        "subscription",
+        "workflow_saas"
+      ]
+    },
+    "content_workflows": {
+      "buyers": [
+        "newsletter operators",
+        "course creators",
+        "YouTubers"
+      ],
+      "workflows": [
+        "content repurposing",
+        "launch planning",
+        "content ops"
+      ],
+      "pains": [
+        "manual repetition",
+        "messy publishing workflows",
+        "inconsistent output"
+      ],
+      "triggers": [
+        "content volume growth",
+        "creator burnout",
+        "platform dependence"
+      ],
+      "models": [
+        "subscription",
+        "template_plus_saas"
+      ]
+    },
+    "audience_monetization": {
+      "buyers": [
+        "community founders",
+        "creators",
+        "newsletter owners"
+      ],
+      "workflows": [
+        "offer packaging",
+        "funnel follow-up",
+        "member upsell"
+      ],
+      "pains": [
+        "unclear monetization",
+        "manual upsell flow",
+        "low conversion visibility"
+      ],
+      "triggers": [
+        "ad revenue pressure",
+        "audience diversification"
+      ],
+      "models": [
+        "subscription",
+        "digital_product"
+      ]
+    },
+    "member_onboarding": {
+      "buyers": [
+        "membership founders",
+        "community operators",
+        "cohort hosts"
+      ],
+      "workflows": [
+        "member onboarding",
+        "activation flows",
+        "welcome sequences"
+      ],
+      "pains": [
+        "poor activation",
+        "manual onboarding",
+        "churn after signup"
+      ],
+      "triggers": [
+        "membership growth",
+        "retention pressure"
+      ],
+      "models": [
+        "subscription",
+        "membership"
+      ]
+    },
+    "clinic_admin": {
+      "buyers": [
+        "clinic owners",
+        "practice managers",
+        "dental office operators"
+      ],
+      "workflows": [
+        "patient intake",
+        "review response",
+        "billing exception review"
+      ],
+      "pains": [
+        "admin overload",
+        "missed follow-ups",
+        "paper-heavy workflows"
+      ],
+      "triggers": [
+        "staff shortages",
+        "patient volume growth"
+      ],
+      "models": [
+        "subscription",
+        "practice_ops"
+      ]
+    },
+    "appointment_workflows": {
+      "buyers": [
+        "salon owners",
+        "clinic managers",
+        "local service businesses"
+      ],
+      "workflows": [
+        "appointment reminders",
+        "rescheduling",
+        "booking confirmations"
+      ],
+      "pains": [
+        "no-shows",
+        "manual reminder workflows",
+        "scheduling confusion"
+      ],
+      "triggers": [
+        "higher booking volume",
+        "small team load"
+      ],
+      "models": [
+        "subscription",
+        "local_business_saas"
+      ]
+    },
+    "lead_follow_up": {
+      "buyers": [
+        "local service operators",
+        "home service businesses",
+        "agencies"
+      ],
+      "workflows": [
+        "quote follow-up",
+        "lead qualification",
+        "booking follow-up"
+      ],
+      "pains": [
+        "slow response",
+        "lost leads",
+        "messy follow-up"
+      ],
+      "triggers": [
+        "higher lead cost",
+        "low conversion"
+      ],
+      "models": [
+        "subscription",
+        "workflow_saas"
+      ]
+    },
+    "agency_ops": {
+      "buyers": [
+        "marketing agencies",
+        "design studios",
+        "AI agencies"
+      ],
+      "workflows": [
+        "delivery reporting",
+        "QA and approval",
+        "handoff coordination"
+      ],
+      "pains": [
+        "messy delivery",
+        "unclear ownership",
+        "client confusion"
+      ],
+      "triggers": [
+        "remote teams",
+        "margin pressure",
+        "service productization"
+      ],
+      "models": [
+        "subscription",
+        "white_label_workflow"
+      ]
+    },
+    "client_onboarding": {
+      "buyers": [
+        "agencies",
+        "consultancies",
+        "service firms"
+      ],
+      "workflows": [
+        "proposal-to-kickoff flow",
+        "client onboarding",
+        "intake coordination"
+      ],
+      "pains": [
+        "messy onboarding",
+        "scope creep",
+        "manual follow-up"
+      ],
+      "triggers": [
+        "more clients",
+        "faster onboarding expectations"
+      ],
+      "models": [
+        "subscription",
+        "workflow_saas"
+      ]
+    },
+    "delivery_qa": {
+      "buyers": [
+        "service businesses",
+        "agencies",
+        "boutique consultancies"
+      ],
+      "workflows": [
+        "deliverable review",
+        "approval workflows",
+        "handoff QA"
+      ],
+      "pains": [
+        "inconsistent delivery",
+        "manual QA",
+        "late revisions"
+      ],
+      "triggers": [
+        "team scaling",
+        "quality pressure"
+      ],
+      "models": [
+        "subscription",
+        "ops_tooling"
+      ]
+    },
+    "invoice_review": {
+      "buyers": [
+        "finance managers",
+        "bookkeepers",
+        "fractional CFOs"
+      ],
+      "workflows": [
+        "invoice review",
+        "invoice exception handling",
+        "invoice approval"
+      ],
+      "pains": [
+        "manual review",
+        "invoice errors",
+        "approval delays"
+      ],
+      "triggers": [
+        "lean finance teams",
+        "vendor growth"
+      ],
+      "models": [
+        "subscription",
+        "finance_workflow"
+      ]
+    },
+    "expense_approval": {
+      "buyers": [
+        "ops leads",
+        "finance teams",
+        "SMB admins"
+      ],
+      "workflows": [
+        "expense approvals",
+        "purchase review",
+        "policy checks"
+      ],
+      "pains": [
+        "slow approvals",
+        "spreadsheet dependency",
+        "low visibility"
+      ],
+      "triggers": [
+        "cost scrutiny",
+        "distributed teams"
+      ],
+      "models": [
+        "subscription",
+        "workflow_saas"
+      ]
+    },
+    "reconciliation_workflows": {
+      "buyers": [
+        "bookkeepers",
+        "finance managers",
+        "e-commerce finance teams"
+      ],
+      "workflows": [
+        "reconciliation",
+        "payment exception handling",
+        "cash flow checks"
+      ],
+      "pains": [
+        "messy reconciliation",
+        "manual exception review",
+        "low visibility"
+      ],
+      "triggers": [
+        "cross-border payments",
+        "volume growth"
+      ],
+      "models": [
+        "subscription",
+        "finance_ops_tool"
+      ]
+    }
   },
-  {
-    "rank": 3,
-    "title": "Invoice Exception Handling for Fractional CFOs",
-    "category": "Finance & Admin",
-    "buyer": "fractional CFOs",
-    "workflow": "invoice exception handling",
-    "thesis": "A subscription product focused on invoice exception handling could win with fractional CFOs by reducing invoice errors under conditions shaped by lean finance teams.",
-    "overall_score": 88.0,
-    "publishability": 98
+  "publish_rules": {
+    "title_normalization": {
+      "B2b": "B2B",
+      "Saas": "SaaS",
+      "Cfos": "CFOs",
+      "Ai": "AI",
+      "Qa": "QA",
+      "DeFi": "DeFi"
+    }
+  },
+  "category_competitors": {
+    "AI Automation": [
+      {
+        "name": "Humanloop",
+        "positioning": "LLM evaluation and workflow tooling",
+        "pricing": "Custom / team-based",
+        "strength": "Strong evaluation framing",
+        "weakness": "Can feel heavy for narrow operator workflows"
+      },
+      {
+        "name": "PromptLayer",
+        "positioning": "Prompt tracking and observability",
+        "pricing": "$29+/mo",
+        "strength": "Good prompt visibility",
+        "weakness": "Less workflow-oriented for review and approval use cases"
+      },
+      {
+        "name": "LangSmith",
+        "positioning": "Tracing and debugging for LLM apps",
+        "pricing": "Usage-based",
+        "strength": "Developer credibility",
+        "weakness": "Not always packaged for non-technical operator review"
+      },
+      {
+        "name": "Internal QA workflow",
+        "positioning": "Manual review process",
+        "pricing": "Hidden cost",
+        "strength": "Flexible in edge cases",
+        "weakness": "Slow, inconsistent, and difficult to scale"
+      }
+    ],
+    "Finance & Admin": [
+      {
+        "name": "Ramp",
+        "positioning": "Expense and finance operations",
+        "pricing": "Bundled / platform-led",
+        "strength": "Strong finance workflow footprint",
+        "weakness": "Broad product scope can leave narrower exception workflows underserved"
+      },
+      {
+        "name": "Airbase",
+        "positioning": "Procurement and spend management",
+        "pricing": "Custom",
+        "strength": "Enterprise finance credibility",
+        "weakness": "Heavier than many SMB review workflows need"
+      },
+      {
+        "name": "Spreadsheet workflow",
+        "positioning": "Manual review and reconciliation",
+        "pricing": "Hidden cost",
+        "strength": "Flexible",
+        "weakness": "Error-prone and poor for repeatability"
+      },
+      {
+        "name": "Approval add-on in ERP",
+        "positioning": "Basic review workflow",
+        "pricing": "Bundled",
+        "strength": "Already present in stack",
+        "weakness": "Shallow workflow depth and weak usability"
+      }
+    ],
+    "Local Business": [
+      {
+        "name": "Jane App",
+        "positioning": "Practice and appointment operations",
+        "pricing": "$79+/mo",
+        "strength": "Strong vertical fit",
+        "weakness": "Broad admin layer rather than narrow workflow optimization"
+      },
+      {
+        "name": "Mindbody",
+        "positioning": "Scheduling and business management",
+        "pricing": "Custom / mid-market",
+        "strength": "Large installed base",
+        "weakness": "Often feels heavy and generalized"
+      },
+      {
+        "name": "Manual front-desk workflow",
+        "positioning": "Phone, notes, and inbox",
+        "pricing": "Hidden cost",
+        "strength": "Familiar",
+        "weakness": "Highly dependent on staff consistency"
+      },
+      {
+        "name": "Booking software add-on",
+        "positioning": "Partial workflow support",
+        "pricing": "Bundled",
+        "strength": "Simple to adopt",
+        "weakness": "Weak for exception handling and follow-up discipline"
+      }
+    ],
+    "Micro-SaaS": [
+      {
+        "name": "Zapier Interfaces",
+        "positioning": "Workflow surfaces and lightweight ops",
+        "pricing": "$29+/mo",
+        "strength": "Easy automation adjacency",
+        "weakness": "Not purpose-built for narrow workflow products"
+      },
+      {
+        "name": "Airtable",
+        "positioning": "Flexible internal workflow base",
+        "pricing": "$20+/seat",
+        "strength": "Customizable",
+        "weakness": "Still requires teams to build their own workflow logic"
+      },
+      {
+        "name": "Internal spreadsheet process",
+        "positioning": "DIY workaround",
+        "pricing": "Hidden cost",
+        "strength": "Fast to start",
+        "weakness": "Breaks under repeatable operational load"
+      },
+      {
+        "name": "Generic ops SaaS",
+        "positioning": "Broad SMB workflow tooling",
+        "pricing": "$49+/mo",
+        "strength": "Breadth",
+        "weakness": "Weak positioning for a narrow pain point"
+      }
+    ],
+    "B2B Services": [
+      {
+        "name": "ClickUp",
+        "positioning": "Project and ops management",
+        "pricing": "$10+/user",
+        "strength": "Broad team adoption",
+        "weakness": "Too generic for delivery-specific workflow discipline"
+      },
+      {
+        "name": "Monday.com",
+        "positioning": "Work management",
+        "pricing": "$9+/user",
+        "strength": "Flexible and familiar",
+        "weakness": "Requires setup and still leaves service-specific gaps"
+      },
+      {
+        "name": "Client ops spreadsheet",
+        "positioning": "DIY service workflow",
+        "pricing": "Hidden cost",
+        "strength": "Low-cost starting point",
+        "weakness": "Weak QA and status discipline"
+      },
+      {
+        "name": "Agency CRM add-on",
+        "positioning": "Light service workflow support",
+        "pricing": "Bundled",
+        "strength": "Lives inside existing stack",
+        "weakness": "Usually shallow after kickoff"
+      }
+    ],
+    "E-Commerce": [
+      {
+        "name": "Gorgias",
+        "positioning": "Support and commerce helpdesk",
+        "pricing": "$60+/mo",
+        "strength": "Strong commerce support positioning",
+        "weakness": "Not purpose-built for narrow ops exceptions"
+      },
+      {
+        "name": "Loop Returns",
+        "positioning": "Returns workflow",
+        "pricing": "Custom / volume-based",
+        "strength": "Clear returns positioning",
+        "weakness": "Category-specific rather than broader exception workflows"
+      },
+      {
+        "name": "Manual support process",
+        "positioning": "Inbox plus spreadsheets",
+        "pricing": "Hidden cost",
+        "strength": "Already in place",
+        "weakness": "Low visibility and repeated leakage"
+      },
+      {
+        "name": "Shopify app add-on",
+        "positioning": "Single workflow assist",
+        "pricing": "$19+/mo",
+        "strength": "Easy to install",
+        "weakness": "Often too shallow for operations teams"
+      }
+    ],
+    "Creator Economy": [
+      {
+        "name": "ConvertKit",
+        "positioning": "Audience and creator monetization",
+        "pricing": "$29+/mo",
+        "strength": "Strong creator footprint",
+        "weakness": "Broader audience platform than narrow ops workflow"
+      },
+      {
+        "name": "Beehiiv",
+        "positioning": "Newsletter growth and monetization",
+        "pricing": "$39+/mo",
+        "strength": "Clear creator use case",
+        "weakness": "Not designed for adjacent creator ops workflows"
+      },
+      {
+        "name": "Notion plus templates",
+        "positioning": "DIY creator workflow",
+        "pricing": "Hidden cost",
+        "strength": "Flexible",
+        "weakness": "Manual and inconsistent"
+      },
+      {
+        "name": "Zapier stack",
+        "positioning": "Connected automation workaround",
+        "pricing": "$29+/mo",
+        "strength": "Fast to assemble",
+        "weakness": "Hard to maintain as complexity grows"
+      }
+    ]
+  },
+  "editorial_rules": {
+    "AI Automation": {
+      "preferred_buyers": [
+        "AI product teams",
+        "AI agencies",
+        "B2B SaaS teams shipping AI features"
+      ],
+      "preferred_workflows": [
+        "AI output validation",
+        "audit logging",
+        "human approval routing",
+        "prompt review workflow"
+      ],
+      "avoid_title_fragments": [
+        "shipping ai features"
+      ],
+      "preferred_rewrites": {
+        "B2B SaaS Teams Shipping AI Features": "B2B AI Product Teams",
+        "QA Workflow": "AI QA Workflow"
+      }
+    },
+    "Finance & Admin": {
+      "preferred_buyers": [
+        "finance managers",
+        "fractional CFOs",
+        "finance teams",
+        "ops leads"
+      ],
+      "preferred_workflows": [
+        "invoice review",
+        "invoice exception handling",
+        "expense approvals",
+        "reconciliation",
+        "payment exception handling"
+      ],
+      "avoid_title_fragments": [
+        "approval workflow"
+      ],
+      "preferred_rewrites": {
+        "Approval Workflow": "Approval Controls Workflow",
+        "Smb Admins": "SMB Admin Teams"
+      }
+    },
+    "Local Business": {
+      "preferred_buyers": [
+        "clinic managers",
+        "practice managers",
+        "local service businesses",
+        "home service businesses"
+      ],
+      "preferred_workflows": [
+        "appointment reminders",
+        "lead qualification",
+        "patient intake",
+        "booking follow-up"
+      ],
+      "avoid_title_fragments": [
+        "workflow for"
+      ],
+      "preferred_rewrites": {
+        "Appointment Reminders": "Appointment Reminder System"
+      }
+    },
+    "Micro-SaaS": {
+      "preferred_buyers": [
+        "indie SaaS teams",
+        "small SaaS support teams",
+        "bootstrapped SaaS founders"
+      ],
+      "preferred_workflows": [
+        "support inbox triage",
+        "internal alert escalation",
+        "approval routing",
+        "handoff tracking",
+        "exception handling"
+      ],
+      "avoid_title_fragments": [
+        "review workflow layer",
+        "workflow layer"
+      ],
+      "preferred_rewrites": {
+        "Support Inbox Triage": "Support Triage Workflow",
+        "Internal Alert Escalation": "Internal Alert Escalation Workflow"
+      }
+    },
+    "B2B Services": {
+      "preferred_buyers": [
+        "agencies",
+        "consultancies",
+        "service firms",
+        "marketing agencies"
+      ],
+      "preferred_workflows": [
+        "client onboarding",
+        "proposal-to-kickoff flow",
+        "delivery reporting",
+        "handoff coordination"
+      ],
+      "avoid_title_fragments": [
+        "workflow for"
+      ],
+      "preferred_rewrites": {
+        "Proposal-To-Kickoff Flow": "Proposal-to-Kickoff Workflow"
+      }
+    }
   }
-]
+}
