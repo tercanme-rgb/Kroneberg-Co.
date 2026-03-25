@@ -8,7 +8,7 @@ function openAuthModal() {
   else alert("Please sign in to use this feature.");
 }
 
-function requireAuth(actionName = "protected action") {
+function requireAuth() {
   if (!window.currentUser) {
     openAuthModal();
     return false;
@@ -29,21 +29,21 @@ function wireProtectedDashboardActions() {
 
   document.querySelectorAll(".cta-save-idea,[data-requires-auth='save']").forEach((btn) => {
     btn.addEventListener("click", (e) => {
-      if (!requireAuth("save")) e.preventDefault();
+      if (!requireAuth()) e.preventDefault();
     });
   });
 
   const billingBtn = document.getElementById("manage-billing");
   if (billingBtn) {
     billingBtn.addEventListener("click", (e) => {
-      if (!requireAuth("billing")) e.preventDefault();
+      if (!requireAuth()) e.preventDefault();
     });
   }
 
   const profileBtn = document.getElementById("update-profile");
   if (profileBtn) {
     profileBtn.addEventListener("click", (e) => {
-      if (!requireAuth("profile")) e.preventDefault();
+      if (!requireAuth()) e.preventDefault();
     });
   }
 }
@@ -60,20 +60,13 @@ function initDashboardWithoutAuthLock(auth, loadDashboard) {
   if (!auth || typeof auth.onAuthStateChanged !== "function") {
     window.currentUser = null;
     updateAuthUI(null);
-    // Auth yoksa ana sayfaya yönlendir
-    window.location.href = "index.html";
+    loadDashboardOnce(loadDashboard);
     return;
   }
 
   auth.onAuthStateChanged((user) => {
-    if (!user) {
-      // Giriş yapılmamışsa ana sayfaya yönlendir
-      window.location.href = "index.html";
-      return;
-    }
-
-    window.currentUser = user;
-    updateAuthUI(user);
+    window.currentUser = user || null;
+    updateAuthUI(user || null);
     loadDashboardOnce(loadDashboard);
   });
 }

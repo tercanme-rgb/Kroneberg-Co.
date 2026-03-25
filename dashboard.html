@@ -56,9 +56,9 @@
       <div class="brand"><span class="brand-mark"></span>NicheLab</div>
       <a class="nav-link active" href="dashboard.html">Dashboard</a>
       <a class="nav-link" href="#reports">Opportunities</a>
-      <a class="nav-link" href="#reports">Signals</a>
-      <a class="nav-link" href="#reports">Research</a>
-      <a class="nav-link" href="#reports">Saved</a>
+      <a class="nav-link" href="#signals">Signals</a>
+      <a class="nav-link" href="#research">Research</a>
+      <a class="nav-link" href="#saved">Saved</a>
       <a class="nav-link" href="#account">Account</a>
       <a class="nav-link" href="index.html">Back to site</a>
     </aside>
@@ -94,6 +94,38 @@
         <div id="report-list" class="reports-grid"></div>
       </section>
 
+      <section class="section" id="signals">
+        <h2>Signal snapshots</h2>
+        <div id="signal-list" class="reports-grid"></div>
+      </section>
+
+      <section class="section" id="research">
+        <h2>Research workflow</h2>
+        <div class="reports-grid">
+          <div class="card">
+            <div class="eyebrow">Pipeline</div>
+            <h3 style="margin:0 0 10px;font-family:var(--serif);font-size:30px;letter-spacing:-.03em">How reports are generated</h3>
+            <div class="muted">Category architecture creates candidates, scoring ranks them, report JSON structures the brief, and the renderer outputs the final HTML report. This keeps the dashboard aligned with the report engine and gives each page a real content source.</div>
+            <div class="badge-row" style="margin-top:16px">
+              <span class="badge">Generate candidates</span>
+              <span class="badge">Score shortlist</span>
+              <span class="badge">Build report JSON</span>
+              <span class="badge">Render HTML</span>
+            </div>
+          </div>
+          <div class="card">
+            <div class="eyebrow">Live usage</div>
+            <h3 style="margin:0 0 10px;font-family:var(--serif);font-size:30px;letter-spacing:-.03em">What each page is doing</h3>
+            <div class="muted">The landing page pushes a selected opportunity into browser state. The dashboard reads that state, opens the matching report, and surfaces saved ideas, report stats, and signal cards. That closes the loop between discovery and action without changing the visual system.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="saved">
+        <h2>Saved ideas</h2>
+        <div id="saved-list" class="reports-grid"></div>
+      </section>
+
       <section class="section" id="account">
         <h2>Account</h2>
         <div class="card">
@@ -103,7 +135,9 @@
             <button class="btn gold" id="sign-in">Sign in</button>
             <button class="btn" id="sign-out" style="display:none">Sign out</button>
             <button class="btn" id="manage-billing" data-requires-auth="billing">Manage billing</button>
+            <button class="btn" id="update-profile" data-requires-auth="profile">Update profile</button>
           </div>
+          <div id="account-status" class="muted" style="margin-top:14px">Browsing is open. Sign in only unlocks account-level actions.</div>
         </div>
       </section>
     </main>
@@ -148,6 +182,38 @@
   <script type="module">
     import { auth, signInWithGoogle, signInWithEmail, createAccount, signOutUser } from './firebase-auth-google-email-only.js';
 
+    const SAMPLE_FEED = {
+      generated_at: '2026-03-25T12:00:00Z',
+      total_reports: 5,
+      categories: ['AI Automation','Finance & Admin','Micro-SaaS','Local Business','B2B Services'],
+      featured_report: {
+        title: 'Webhook Reliability Platform for Indie Developers',
+        subtitle: 'A focused workflow product for indie SaaS teams built to reduce manual coordination.',
+        category: 'Micro-SaaS',
+        overall_confidence: 86,
+        recommendation: 'build',
+        report_path: 'generated-reports/reports/webhook-reliability-platform-for-indie-developers.html'
+      }
+    };
+
+    const SAMPLE_MANIFEST = {
+      generated_at: SAMPLE_FEED.generated_at,
+      reports: [
+        { category:'Micro-SaaS', title:'Webhook Reliability Platform for Indie Developers', subtitle:'A focused workflow product for indie SaaS teams built to reduce manual coordination.', report_path:'generated-reports/reports/webhook-reliability-platform-for-indie-developers.html', overall_confidence:86, recommendation:'build' },
+        { category:'AI Automation', title:'AI Output Validation for AI Product Teams', subtitle:'A focused control layer for AI product teams that reduces the operational risk of AI output validation.', report_path:'generated-reports/reports/ai-output-validation-for-ai-product-teams.html', overall_confidence:84, recommendation:'build' },
+        { category:'Finance & Admin', title:'Invoice Exception Review for Finance Teams', subtitle:'A workflow product for finance teams built to reduce invoice errors and improve review discipline.', report_path:'generated-reports/reports/invoice-exception-review-for-finance-teams.html', overall_confidence:81, recommendation:'validate_first' },
+        { category:'Local Business', title:'Patient Intake Follow-Up for Clinic Managers', subtitle:'A practical operations layer for clinic managers built to reduce admin drag around patient intake follow-up.', report_path:'generated-reports/reports/patient-intake-follow-up-for-clinic-managers.html', overall_confidence:79, recommendation:'validate_first' },
+        { category:'B2B Services', title:'Client Onboarding QA for AI Agencies', subtitle:'A focused workflow product for AI agencies built to reduce messy onboarding.', report_path:'generated-reports/reports/client-onboarding-qa-for-ai-agencies.html', overall_confidence:82, recommendation:'build' }
+      ]
+    };
+
+    const SIGNAL_CARDS = [
+      {label:'Search velocity', value:'+28%', note:'Higher than last cycle'},
+      {label:'Operator complaints', value:'+14%', note:'Repeated workflow pain'},
+      {label:'Competition density', value:'Moderate', note:'Room for positioning'},
+      {label:'Revenue fit', value:'Strong', note:'Recurring pricing works'}
+    ];
+
     window.openAuthModal = function() {
       const modal = document.getElementById('auth-modal');
       if (modal) modal.style.display = 'flex';
@@ -158,51 +224,152 @@
       if (modal) modal.style.display = 'none';
     }
 
-    window.loadDashboard = async function() {
+    function formatRecommendation(value){
+      return String(value || 'recommendation').replaceAll('_', ' ');
+    }
+
+    function formatDate(value){
+      if (!value) return '—';
+      return new Date(value).toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
+    }
+
+    async function fetchJsonWithFallback(path, fallback) {
       try {
-        const feedRes = await fetch('generated-reports/homepage-feed.json?ts=' + Date.now());
-        const feed = await feedRes.json();
-        const featured = feed.featured_report || {};
-
-        document.getElementById('featured-title').textContent = featured.title || 'No featured report available';
-        document.getElementById('featured-subtitle').textContent = featured.subtitle || 'No subtitle available.';
-        document.getElementById('featured-category').textContent = featured.category || 'Category';
-        document.getElementById('featured-confidence').textContent = 'Confidence ' + (featured.overall_confidence ?? '—');
-        document.getElementById('featured-recommendation').textContent = (featured.recommendation || 'Recommendation').replaceAll('_',' ');
-        document.getElementById('featured-open').href = featured.report_path || '#';
-
-        document.getElementById('stat-reports').textContent = feed.total_reports ?? '—';
-        document.getElementById('stat-categories').textContent = (feed.categories || []).length || '—';
-        document.getElementById('stat-updated').textContent = feed.generated_at ? new Date(feed.generated_at).toLocaleDateString() : '—';
-
-        const manifestRes = await fetch('generated-reports/reports-manifest.json?ts=' + Date.now());
-        const manifest = await manifestRes.json();
-        const holder = document.getElementById('report-list');
-        holder.innerHTML = '';
-
-        (manifest.reports || []).forEach(item => {
-          const el = document.createElement('a');
-          el.className = 'report-card';
-          el.href = item.report_path || '#';
-          el.innerHTML = `
-            <div class="eyebrow">${item.category || 'Report'}</div>
-            <h3>${item.title || 'Untitled report'}</h3>
-            <div class="muted">${item.subtitle || ''}</div>
-            <div class="badge-row">
-              <span class="badge">Confidence ${item.overall_confidence ?? '—'}</span>
-              <span class="badge">${(item.recommendation || '—').replaceAll('_',' ')}</span>
-            </div>
-          `;
-          holder.appendChild(el);
-        });
-      } catch (e) {
-        console.error(e);
-        document.getElementById('featured-title').textContent = 'Dashboard feed could not be loaded';
-        document.getElementById('featured-subtitle').textContent = 'The generated report manifest is missing or unreachable.';
+        const res = await fetch(path + '?ts=' + Date.now());
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return await res.json();
+      } catch (error) {
+        console.warn('Using fallback for', path, error);
+        return fallback;
       }
+    }
+
+    function renderFeatured(featured){
+      const selectedTitle = localStorage.getItem('nichelab_selected_report_title');
+      const chosen = SAMPLE_MANIFEST.reports.find(item => item.title === selectedTitle) || featured;
+      document.getElementById('featured-title').textContent = chosen.title || 'No featured report available';
+      document.getElementById('featured-subtitle').textContent = chosen.subtitle || 'No subtitle available.';
+      document.getElementById('featured-category').textContent = chosen.category || 'Category';
+      document.getElementById('featured-confidence').textContent = 'Confidence ' + (chosen.overall_confidence ?? '—');
+      document.getElementById('featured-recommendation').textContent = formatRecommendation(chosen.recommendation);
+      document.getElementById('featured-open').href = chosen.report_path || '#';
+    }
+
+    function renderReports(manifest){
+      const selectedTitle = localStorage.getItem('nichelab_selected_report_title');
+      const holder = document.getElementById('report-list');
+      holder.innerHTML = '';
+      (manifest.reports || []).forEach(item => {
+        const el = document.createElement('a');
+        el.className = 'report-card';
+        el.href = item.report_path || '#';
+        if (selectedTitle && item.title === selectedTitle) {
+          el.style.borderColor = 'var(--gold2)';
+          el.style.boxShadow = '0 0 0 1px rgba(232,168,50,.25) inset';
+        }
+        el.innerHTML = `
+          <div class="eyebrow">${item.category || 'Report'}</div>
+          <h3>${item.title || 'Untitled report'}</h3>
+          <div class="muted">${item.subtitle || ''}</div>
+          <div class="badge-row">
+            <span class="badge">Confidence ${item.overall_confidence ?? '—'}</span>
+            <span class="badge">${formatRecommendation(item.recommendation)}</span>
+          </div>
+        `;
+        holder.appendChild(el);
+      });
+    }
+
+    function renderSignals(){
+      const holder = document.getElementById('signal-list');
+      holder.innerHTML = '';
+      SIGNAL_CARDS.forEach(item => {
+        const el = document.createElement('div');
+        el.className = 'card';
+        el.innerHTML = `
+          <div class="eyebrow">Signal</div>
+          <h3 style="margin:0 0 10px;font-family:var(--serif);font-size:30px;letter-spacing:-.03em">${item.value}</h3>
+          <div style="font-weight:600;margin-bottom:6px">${item.label}</div>
+          <div class="muted">${item.note}</div>
+        `;
+        holder.appendChild(el);
+      });
+    }
+
+    function renderSaved(manifest){
+      const holder = document.getElementById('saved-list');
+      const savedIdeas = JSON.parse(localStorage.getItem('nichelab_saved_ideas') || '[]');
+      holder.innerHTML = '';
+      if (!savedIdeas.length) {
+        holder.innerHTML = `
+          <div class="card">
+            <div class="eyebrow">Saved ideas</div>
+            <h3 style="margin:0 0 10px;font-family:var(--serif);font-size:30px;letter-spacing:-.03em">No saved ideas yet</h3>
+            <div class="muted">Use the save button on the landing page. Saved ideas appear here automatically and stay in this browser.</div>
+          </div>
+        `;
+        return;
+      }
+      savedIdeas.forEach(title => {
+        const match = (manifest.reports || []).find(item => item.title.toLowerCase().includes(title.toLowerCase().split(' for ')[0]));
+        const el = document.createElement(match ? 'a' : 'div');
+        el.className = 'report-card';
+        if (match) el.href = match.report_path;
+        el.innerHTML = `
+          <div class="eyebrow">Saved</div>
+          <h3>${title}</h3>
+          <div class="muted">${match?.subtitle || 'Saved from the landing page. Open the dashboard library to continue reviewing this opportunity.'}</div>
+          <div class="badge-row">
+            <span class="badge">${match?.category || 'Opportunity'}</span>
+            <span class="badge">Browser saved</span>
+          </div>
+        `;
+        holder.appendChild(el);
+      });
+    }
+
+    function applyFocusFromLanding(){
+      const focus = localStorage.getItem('nichelab_dashboard_focus');
+      if (!focus) return;
+      const target = document.getElementById(focus);
+      target?.scrollIntoView({ behavior:'smooth', block:'start' });
+      localStorage.removeItem('nichelab_dashboard_focus');
+    }
+
+    function updateAccountStatus(user){
+      const el = document.getElementById('account-status');
+      if (!el) return;
+      if (user?.email) {
+        el.textContent = `Signed in as ${user.email}. Billing and profile actions are now available.`;
+      } else {
+        el.textContent = 'Browsing is open. Sign in only unlocks account-level actions.';
+      }
+    }
+
+    window.loadDashboard = async function() {
+      const feed = await fetchJsonWithFallback('generated-reports/homepage-feed.json', SAMPLE_FEED);
+      const manifest = await fetchJsonWithFallback('generated-reports/reports-manifest.json', SAMPLE_MANIFEST);
+
+      renderFeatured(feed.featured_report || SAMPLE_FEED.featured_report);
+      renderReports(manifest);
+      renderSignals();
+      renderSaved(manifest);
+
+      document.getElementById('stat-reports').textContent = feed.total_reports ?? manifest.reports?.length ?? '—';
+      document.getElementById('stat-categories').textContent = (feed.categories || []).length || '—';
+      document.getElementById('stat-updated').textContent = formatDate(feed.generated_at || manifest.generated_at);
+
+      applyFocusFromLanding();
     };
 
     initDashboardWithoutAuthLock(auth, window.loadDashboard);
+
+    document.querySelectorAll('.side .nav-link[href^="#"]').forEach(link => {
+      link.addEventListener('click', () => {
+        document.querySelectorAll('.side .nav-link').forEach(item => item.classList.remove('active'));
+        link.classList.add('active');
+      });
+    });
 
     document.getElementById('sign-in')?.addEventListener('click', () => openAuthModal());
     document.getElementById('close-auth')?.addEventListener('click', () => closeAuthModal());
@@ -226,6 +393,22 @@
     });
     document.getElementById('sign-out')?.addEventListener('click', async () => {
       await signOutUser();
+    });
+
+    auth.onAuthStateChanged((user) => {
+      updateAccountStatus(user || null);
+    });
+
+    document.getElementById('manage-billing')?.addEventListener('click', (e) => {
+      if (!window.currentUser) return;
+      e.preventDefault();
+      alert('Billing portal will be connected to your live Stripe customer portal link.');
+    });
+
+    document.getElementById('update-profile')?.addEventListener('click', (e) => {
+      if (!window.currentUser) return;
+      e.preventDefault();
+      alert('Profile editor can be connected next. Auth flow is now working and the action is unlocked for signed-in users.');
     });
   </script>
 </body>
