@@ -1,0 +1,1384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>NicheLab — Market Intelligence Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --em: #10b981;
+    --em-dim: rgba(16,185,129,0.08);
+    --em-border: rgba(16,185,129,0.2);
+    --cy: #22d3ee;
+    --zinc-950: #09090b;
+    --zinc-900: #18181b;
+    --zinc-800: #27272a;
+    --zinc-700: #3f3f46;
+    --zinc-600: #52525b;
+    --zinc-500: #71717a;
+    --zinc-400: #a1a1aa;
+    --zinc-300: #d4d4d8;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    background: #000;
+    color: #fff;
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+  .font-display { font-family: 'Plus Jakarta Sans', sans-serif; }
+  .font-mono { font-family: 'JetBrains Mono', monospace; }
+
+  /* ── AMBIENT BG */
+  .ambient {
+    position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    background:
+      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(16,185,129,0.05), transparent),
+      radial-gradient(ellipse 60% 40% at 80% 80%, rgba(34,211,238,0.03), transparent);
+  }
+  .noise-overlay {
+    position: fixed; inset: 0; pointer-events: none; z-index: 0; opacity: 0.022;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  }
+
+  /* ── NAV */
+  nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(0,0,0,0.9); backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--zinc-900);
+    height: 56px; display: flex; align-items: center;
+    padding: 0 40px; gap: 16px;
+  }
+  .nav-logo {
+    display: flex; align-items: center; gap: 8px;
+    font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700; font-size: 15px;
+    color: #fff; cursor: pointer; margin-right: auto; text-decoration: none;
+  }
+  .nl-badge {
+    width: 28px; height: 28px; background: var(--em);
+    border-radius: 8px; display: flex; align-items: center;
+    justify-content: center; font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; color: #fff; flex-shrink: 0;
+  }
+  .nav-links { display: flex; align-items: center; gap: 2px; }
+  .nav-links button {
+    padding: 6px 12px; border-radius: 8px; font-size: 13px; font-weight: 500;
+    color: var(--zinc-400); background: none; border: none; cursor: pointer;
+    transition: color 0.15s; font-family: 'DM Sans', sans-serif;
+  }
+  .nav-links button:hover { color: #fff; }
+  .btn-ghost {
+    padding: 6px 16px; border-radius: 8px; font-size: 13px; font-weight: 600;
+    color: var(--zinc-300); background: none;
+    border: 1px solid var(--zinc-700); cursor: pointer;
+    transition: all 0.2s; font-family: 'DM Sans', sans-serif;
+  }
+  .btn-ghost:hover { color: #fff; border-color: var(--zinc-600); }
+  .btn-primary {
+    padding: 6px 16px; border-radius: 8px; font-size: 13px; font-weight: 600;
+    color: #fff; background: var(--em); border: none; cursor: pointer;
+    box-shadow: 0 0 24px rgba(16,185,129,0.35);
+    transition: all 0.2s; font-family: 'DM Sans', sans-serif;
+  }
+  .btn-primary:hover { background: #34d399; box-shadow: 0 0 36px rgba(16,185,129,0.5); }
+
+  /* ── TICKER */
+  .ticker-wrap {
+    position: relative; overflow: hidden;
+    border-top: 1px solid var(--zinc-900);
+    border-bottom: 1px solid var(--zinc-900);
+    background: rgba(9,9,11,0.8);
+    height: 38px; display: flex; align-items: center; z-index: 10;
+  }
+  .ticker-track {
+    display: flex; animation: ticker 52s linear infinite;
+    width: max-content; align-items: center;
+  }
+  .ticker-track:hover { animation-play-state: paused; }
+  .ticker-item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 0 32px; white-space: nowrap;
+    border-right: 1px solid var(--zinc-900);
+  }
+  .ticker-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--zinc-500); text-transform: uppercase; letter-spacing: 0.08em; }
+  .ticker-value { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--em); font-weight: 500; }
+  .ticker-sub { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--zinc-700); }
+  @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* ── SECTIONS */
+  .content-wrap { position: relative; z-index: 10; max-width: 1000px; margin: 0 auto; padding: 0 40px; }
+  @media (max-width: 640px) { nav { padding: 0 16px; } .content-wrap { padding: 0 16px; } .nav-links { display: none; } }
+
+  /* ── HERO */
+  #top { text-align: center; padding: 80px 0 64px; }
+  .search-bar {
+    max-width: 640px; margin: 0 auto 32px;
+    display: flex; align-items: center; gap: 12px;
+    background: #fff; border-radius: 999px;
+    padding: 10px 20px;
+    box-shadow: 0 0 0 1px rgba(16,185,129,0.1), 0 16px 48px rgba(16,185,129,0.08);
+  }
+  .search-icon { color: #71717a; font-size: 18px; flex-shrink: 0; }
+  .search-text { color: #3f3f46; font-size: 14px; font-weight: 500; flex: 1; text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .caret { display: inline-block; width: 2px; height: 1em; background: var(--em); vertical-align: -0.1em; margin-left: 2px; animation: blink 1s steps(1,end) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 12px;
+    background: rgba(16,185,129,0.08); border: 1px solid var(--em-border);
+    border-radius: 999px; font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--em); margin-bottom: 28px;
+  }
+  .pulse-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--em); animation: pulse-dot 2s infinite; }
+  @keyframes pulse-dot { 0%,100% { opacity:1; transform: scale(1); } 50% { opacity:0.3; transform: scale(0.8); } }
+  h1.hero {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: clamp(44px, 7vw, 86px); font-weight: 900;
+    letter-spacing: -0.035em; line-height: 1.06;
+    margin-bottom: 20px; color: #fff;
+  }
+  .grad { background: linear-gradient(to right, var(--em), var(--cy)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .hero-sub { font-size: 18px; color: var(--zinc-400); max-width: 640px; margin: 0 auto 40px; line-height: 1.8; font-weight: 300; }
+  .hero-actions { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 56px; flex-wrap: wrap; }
+  .btn-lg { padding: 12px 24px !important; font-size: 15px !important; }
+  .live-counter { display: flex; align-items: center; justify-content: center; gap: 16px; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--zinc-500); margin-bottom: 32px; }
+  .live-counter .dot-green { width: 6px; height: 6px; border-radius: 50%; background: var(--em); animation: pulse-dot 2s infinite; }
+  .stats-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    border: 1px solid var(--zinc-900); border-radius: 16px; overflow: hidden;
+  }
+  @media (max-width: 640px) { .stats-grid { grid-template-columns: repeat(2,1fr); } }
+  .stat-cell {
+    display: flex; flex-direction: column; align-items: center;
+    padding: 16px 24px; border-right: 1px solid var(--zinc-800);
+  }
+  .stat-cell:last-child { border-right: none; }
+  .stat-value { font-family: 'JetBrains Mono', monospace; font-size: 22px; font-weight: 500; color: #fff; margin-bottom: 4px; }
+  .stat-label { font-family: 'JetBrains Mono', monospace; font-size: 9px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--zinc-500); font-weight: 500; }
+
+  /* ── SECTION HEADERS */
+  .section-eyebrow { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+  .section-eyebrow span { font-family: 'JetBrains Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--zinc-500); }
+  .section-eyebrow .divider { flex: 1; height: 1px; background: var(--zinc-900); }
+  .section-title { font-family: 'Plus Jakarta Sans', sans-serif; font-size: clamp(28px,4vw,44px); font-weight: 900; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 16px; }
+  .section-sub { font-size: 15px; color: var(--zinc-400); max-width: 500px; line-height: 1.75; margin-bottom: 40px; }
+  .section { padding: 80px 0; }
+
+  /* ── SIGNAL PANEL */
+  .signal-panel { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  @media (max-width: 768px) { .signal-panel { grid-template-columns: 1fr; } }
+  .signal-list { display: flex; flex-direction: column; gap: 8px; }
+  .signal-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 16px; background: var(--zinc-950);
+    border: 1px solid var(--zinc-800); border-radius: 12px;
+    cursor: pointer; transition: border-color 0.15s, background 0.15s;
+  }
+  .signal-row:hover { border-color: var(--zinc-700); background: var(--zinc-900); }
+  .signal-row.active { border-color: rgba(16,185,129,0.3); background: rgba(16,185,129,0.04); }
+  .signal-name { font-size: 13px; font-weight: 500; color: #fff; }
+  .signal-source { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--zinc-600); margin-top: 2px; }
+  .signal-meta { text-align: right; }
+  .signal-val { font-family: 'JetBrains Mono', monospace; font-size: 18px; font-weight: 500; color: var(--em); }
+  .badge {
+    display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 8px;
+    padding: 2px 6px; border-radius: 4px; margin-top: 3px; font-weight: 500;
+  }
+  .badge-em { background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.2); color: var(--em); }
+  .badge-red { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.2); color: #f87171; }
+  .badge-gold { background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.2); color: #fbbf24; }
+  .chart-card {
+    background: var(--zinc-950); border: 1px solid var(--zinc-800);
+    border-radius: 16px; padding: 24px; position: relative; overflow: hidden;
+  }
+  .chart-card .glow { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 300px; height: 200px; background: radial-gradient(ellipse, rgba(16,185,129,0.06), transparent 70%); pointer-events: none; }
+  .chart-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--zinc-500); margin-bottom: 8px; }
+  .chart-value { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 52px; font-weight: 900; color: var(--em); line-height: 1; margin-bottom: 4px; }
+  .chart-name { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 16px; }
+  .chart-source { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--zinc-600); }
+  .chart-bars { display: flex; align-items: flex-end; gap: 4px; height: 64px; margin: 20px 0 8px; }
+  .chart-bar { flex: 1; background: rgba(16,185,129,0.15); border-radius: 4px 4px 0 0; transition: height 0.6s ease; position: relative; overflow: hidden; }
+  .chart-bar::after { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(to top, rgba(16,185,129,0.4), rgba(16,185,129,0.08)); }
+  .chip-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 12px; }
+  .score-chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 10px; background: var(--zinc-900); border: 1px solid var(--zinc-800);
+    border-radius: 6px; font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  }
+  .score-chip .label { color: var(--zinc-500); }
+  .score-chip .val-em { color: var(--em); font-weight: 500; }
+  .score-chip .val-gold { color: #fbbf24; font-weight: 500; }
+
+  /* ── REPORT CARDS */
+  .report-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+  @media (max-width: 768px) { .report-grid { grid-template-columns: 1fr; } }
+  .report-card {
+    background: var(--zinc-950); border: 1px solid var(--zinc-800);
+    border-radius: 16px; padding: 20px; cursor: pointer;
+    transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+    display: flex; flex-direction: column; gap: 12px; position: relative; overflow: hidden;
+  }
+  .report-card:hover { border-color: var(--zinc-700); transform: translateY(-2px); box-shadow: 0 16px 48px rgba(0,0,0,0.5); }
+  .report-card .top-line { position: absolute; top: 0; left: 0; right: 0; height: 1px; }
+  .report-card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+  .report-number { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--zinc-600); }
+  .report-title { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 15px; font-weight: 700; color: #fff; line-height: 1.3; margin-top: 4px; }
+  .report-cat { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--zinc-500); margin-top: 3px; }
+  .report-scores { display: flex; gap: 4px; flex-wrap: wrap; }
+  .report-score { font-family: 'JetBrains Mono', monospace; font-size: 9px; padding: 2px 8px; border-radius: 4px; }
+  .report-score.hi { background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.2); color: var(--em); }
+  .report-score.mid { background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.2); color: #fbbf24; }
+  .report-score.lo { background: rgba(34,211,238,0.08); border: 1px solid rgba(34,211,238,0.15); color: #67e8f9; }
+  .report-lock { display: flex; align-items: center; gap: 4px; font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--zinc-600); }
+  .report-arrow { width: 28px; height: 28px; border: 1px solid var(--zinc-800); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--zinc-600); font-size: 16px; flex-shrink: 0; transition: all 0.2s; }
+  .report-card:hover .report-arrow { border-color: rgba(16,185,129,0.3); color: var(--em); background: rgba(16,185,129,0.08); }
+
+  /* ── LEADERBOARD */
+  .leaderboard-table { width: 100%; border-collapse: separate; border-spacing: 0; }
+  .leaderboard-table th { font-family: 'JetBrains Mono', monospace; font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--zinc-600); padding: 10px 12px; border-bottom: 1px solid var(--zinc-800); text-align: left; font-weight: 400; }
+  .leaderboard-table td { padding: 14px 12px; border-bottom: 1px solid var(--zinc-900); font-size: 12px; vertical-align: middle; }
+  .leaderboard-table tr:hover td { background: rgba(255,255,255,0.01); }
+  .rank-num { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--zinc-600); font-weight: 500; }
+  .rank-num.gold { color: #fbbf24; }
+  .lb-name { font-weight: 600; color: #fff; font-size: 13px; }
+  .lb-cat { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--zinc-600); margin-top: 2px; }
+  .lb-score {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .score-bar { height: 4px; background: var(--zinc-800); border-radius: 2px; width: 60px; overflow: hidden; }
+  .score-bar-fill { height: 100%; background: var(--em); border-radius: 2px; }
+  .open-badge { display: inline-flex; align-items: center; gap: 4px; font-family: 'JetBrains Mono', monospace; font-size: 8px; padding: 2px 6px; background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.2); border-radius: 4px; color: var(--em); }
+
+  /* ── PRICING */
+  .pricing-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+  @media (max-width: 768px) { .pricing-grid { grid-template-columns: 1fr; } }
+  .plan-card {
+    background: var(--zinc-950); border: 1px solid var(--zinc-800);
+    border-radius: 16px; padding: 24px; position: relative; overflow: hidden;
+    display: flex; flex-direction: column; gap: 16px;
+  }
+  .plan-card.featured { border-color: rgba(16,185,129,0.3); background: linear-gradient(135deg, rgba(16,185,129,0.04), var(--zinc-950)); }
+  .plan-card.featured .top-accent { position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(to right, transparent, var(--em), transparent); }
+  .plan-badge { font-family: 'JetBrains Mono', monospace; font-size: 9px; padding: 3px 8px; border-radius: 4px; }
+  .plan-badge.pop { background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.2); color: var(--em); }
+  .plan-badge.pro { background: rgba(34,211,238,0.1); border: 1px solid rgba(34,211,238,0.2); color: var(--cy); }
+  .plan-name { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 18px; font-weight: 800; color: #fff; margin-top: 4px; }
+  .plan-price { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 36px; font-weight: 900; color: #fff; line-height: 1; }
+  .plan-price span { font-size: 14px; color: var(--zinc-500); font-weight: 400; font-family: 'DM Sans', sans-serif; }
+  .plan-price .was { font-size: 14px; color: var(--zinc-600); text-decoration: line-through; margin-left: 6px; font-family: 'JetBrains Mono', monospace; }
+  .plan-desc { font-size: 12px; color: var(--zinc-500); line-height: 1.6; }
+  .plan-divider { height: 1px; background: var(--zinc-900); }
+  .plan-features { display: flex; flex-direction: column; gap: 8px; flex: 1; }
+  .feature-row { display: flex; align-items: flex-start; gap: 8px; font-size: 12.5px; }
+  .feature-check { width: 16px; height: 16px; border-radius: 4px; background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.2); display: flex; align-items: center; justify-content: center; font-size: 8px; color: var(--em); flex-shrink: 0; margin-top: 1px; }
+  .feature-text { color: var(--zinc-300); line-height: 1.5; }
+
+  /* ── CTA BLOCK */
+  .cta-block {
+    background: var(--zinc-950); border: 1px solid var(--zinc-800);
+    border-radius: 20px; padding: 56px 40px; text-align: center; position: relative; overflow: hidden;
+  }
+  .cta-glow { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 500px; height: 400px; background: radial-gradient(ellipse, rgba(16,185,129,0.06), transparent 70%); pointer-events: none; }
+  .cta-title { font-family: 'Plus Jakarta Sans', sans-serif; font-size: clamp(30px,4vw,50px); font-weight: 900; letter-spacing: -0.03em; line-height: 1.08; margin-bottom: 16px; }
+  .cta-sub { font-size: 14px; color: var(--zinc-400); max-width: 400px; margin: 0 auto 32px; line-height: 1.75; }
+  .cta-form { display: flex; align-items: center; gap: 8px; max-width: 380px; margin: 0 auto 12px; flex-wrap: wrap; }
+  .cta-input {
+    flex: 1; min-width: 180px; padding: 12px 16px;
+    background: var(--zinc-900); border: 1px solid var(--zinc-800);
+    border-radius: 12px; font-size: 13px; color: #fff;
+    outline: none; font-family: 'DM Sans', sans-serif;
+    transition: border-color 0.18s;
+  }
+  .cta-input:focus { border-color: rgba(16,185,129,0.4); }
+  .cta-input::placeholder { color: var(--zinc-600); }
+  .cta-note { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--zinc-600); }
+
+  /* ── HUB CARDS */
+  .hub-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+  @media (max-width: 768px) { .hub-grid { grid-template-columns: 1fr; } }
+  @media (min-width: 640px) and (max-width: 768px) { .hub-grid { grid-template-columns: repeat(2,1fr); } }
+  .hub-card {
+    background: var(--zinc-950); border: 1px solid var(--zinc-800);
+    border-radius: 20px; padding: 24px; cursor: pointer;
+    transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+    display: flex; flex-direction: column; gap: 16px;
+    text-align: left;
+  }
+  .hub-card:hover { border-color: var(--zinc-700); transform: translateY(-2px); box-shadow: 0 16px 48px rgba(0,0,0,0.4); }
+  .hub-card-header { display: flex; align-items: flex-start; justify-content: space-between; }
+  .hub-icon-wrap { display: flex; align-items: center; gap: 12px; }
+  .hub-icon { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+  .hub-title { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 15px; font-weight: 700; color: #fff; line-height: 1.3; }
+  .hub-sub { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--zinc-500); margin-top: 3px; }
+  .hub-arrow { width: 28px; height: 28px; border: 1px solid var(--zinc-800); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--zinc-600); font-size: 16px; flex-shrink: 0; transition: all 0.2s; }
+  .hub-card:hover .hub-arrow { border-color: rgba(16,185,129,0.3); color: var(--em); background: rgba(16,185,129,0.08); }
+  .hub-desc { font-size: 12px; color: var(--zinc-500); line-height: 1.7; }
+  .hub-chips { display: flex; gap: 6px; flex-wrap: wrap; }
+  .hub-chip { font-family: 'JetBrains Mono', monospace; font-size: 9px; padding: 2px 8px; border-radius: 4px; font-weight: 500; }
+
+  /* ── FOOTER */
+  footer { border-top: 1px solid var(--zinc-900); position: relative; z-index: 10; }
+  .footer-inner { max-width: 1000px; margin: 0 auto; padding: 24px 40px; display: flex; align-items: center; justify-content: space-between; flex-wrap: gap; gap: 16px; }
+  .footer-logo { display: flex; align-items: center; gap: 8px; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 600; font-size: 14px; color: #fff; }
+  .footer-logo-sub { font-size: 11px; color: var(--zinc-500); font-weight: 400; font-family: 'DM Sans', sans-serif; margin-top: 2px; }
+  .footer-links { display: flex; gap: 16px; }
+  .footer-links a { font-size: 12px; color: var(--zinc-500); text-decoration: none; transition: color 0.15s; cursor: pointer; }
+  .footer-links a:hover { color: #fff; }
+  .footer-copy { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--zinc-600); }
+
+  /* ── MODAL */
+  .modal-backdrop {
+    position: fixed; inset: 0; z-index: 600;
+    display: flex; align-items: center; justify-content: center; padding: 20px;
+    background: rgba(0,0,0,0); backdrop-filter: blur(0px);
+    transition: background 0.4s ease, backdrop-filter 0.4s ease, opacity 0.35s ease;
+    pointer-events: none; opacity: 0;
+  }
+  .modal-backdrop.open { background: rgba(0,0,0,0.88); backdrop-filter: blur(18px); pointer-events: all; opacity: 1; }
+  .modal-box {
+    width: 100%; max-width: 780px; max-height: 85vh;
+    background: var(--zinc-950); border: 1px solid var(--zinc-800);
+    border-radius: 20px; overflow: hidden; display: flex; flex-direction: column;
+    transform: scale(0.93) translateY(24px); opacity: 0;
+    transition: transform 0.5s cubic-bezier(0.16,1,0.3,1), opacity 0.4s cubic-bezier(0.16,1,0.3,1);
+    position: relative; will-change: transform, opacity;
+  }
+  .modal-backdrop.open .modal-box { transform: scale(1) translateY(0); opacity: 1; }
+  .modal-top-line { position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(to right, transparent, var(--em), transparent); }
+  .modal-glow { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 350px; height: 200px; background: radial-gradient(ellipse, rgba(16,185,129,0.06), transparent 70%); pointer-events: none; }
+  .modal-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid var(--zinc-900); flex-shrink: 0; }
+  .modal-title-wrap { display: flex; align-items: center; gap: 12px; }
+  .modal-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+  .modal-title { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 16px; font-weight: 800; color: #fff; }
+  .modal-subtitle { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--zinc-500); margin-top: 2px; }
+  .modal-close { width: 28px; height: 28px; background: var(--zinc-900); border: 1px solid var(--zinc-800); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--zinc-400); cursor: pointer; font-size: 12px; transition: color 0.15s; flex-shrink: 0; }
+  .modal-close:hover { color: #fff; }
+  .modal-body { padding: 24px; overflow-y: auto; flex: 1; }
+  .modal-body::-webkit-scrollbar { width: 4px; }
+  .modal-body::-webkit-scrollbar-track { background: var(--zinc-900); }
+  .modal-body::-webkit-scrollbar-thumb { background: var(--zinc-700); border-radius: 2px; }
+
+  /* ── AUTH MODAL (small) */
+  .auth-backdrop {
+    position: fixed; inset: 0; z-index: 700;
+    display: flex; align-items: center; justify-content: center; padding: 20px;
+    background: rgba(0,0,0,0); backdrop-filter: blur(0px);
+    transition: background 0.4s ease, backdrop-filter 0.4s ease, opacity 0.35s ease;
+    pointer-events: none; opacity: 0;
+  }
+  .auth-backdrop.open { background: rgba(0,0,0,0.88); backdrop-filter: blur(18px); pointer-events: all; opacity: 1; }
+  .auth-box {
+    width: 100%; max-width: 400px;
+    background: var(--zinc-950); border: 1px solid var(--zinc-800);
+    border-radius: 20px; overflow: hidden; position: relative;
+    transform: scale(0.93) translateY(24px); opacity: 0;
+    transition: transform 0.5s cubic-bezier(0.16,1,0.3,1), opacity 0.4s cubic-bezier(0.16,1,0.3,1);
+    will-change: transform, opacity;
+  }
+  .auth-backdrop.open .auth-box { transform: scale(1) translateY(0); opacity: 1; }
+  .auth-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; border-bottom: 1px solid var(--zinc-900); }
+  .auth-logo { display: flex; align-items: center; gap: 8px; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700; font-size: 14px; color: #fff; }
+  .auth-body { padding: 20px; }
+  .auth-title { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 22px; font-weight: 900; letter-spacing: -0.03em; line-height: 1.2; margin-bottom: 4px; }
+  .auth-sub { font-size: 14px; color: var(--zinc-400); margin-bottom: 20px; }
+  .auth-tabs { display: flex; gap: 6px; margin-bottom: 20px; }
+  .auth-tab { flex: 1; padding: 8px; border-radius: 8px; font-size: 13px; font-weight: 600; border: none; cursor: pointer; transition: all 0.15s; font-family: 'DM Sans', sans-serif; }
+  .auth-tab.active { background: var(--zinc-800); color: #fff; }
+  .auth-tab.inactive { background: var(--zinc-900); color: var(--zinc-500); }
+  .auth-google { width: 100%; padding: 10px; border: 1px solid var(--zinc-700); border-radius: 10px; background: none; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; transition: border-color 0.15s; margin-bottom: 16px; font-family: 'DM Sans', sans-serif; }
+  .auth-google:hover { border-color: var(--zinc-600); }
+  .auth-divider { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
+  .auth-divider span { font-size: 11px; color: var(--zinc-600); }
+  .auth-divider .line { flex: 1; height: 1px; background: var(--zinc-800); }
+  .auth-field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
+  .auth-label { font-size: 11px; font-weight: 600; color: var(--zinc-400); }
+  .auth-input-field { padding: 10px 12px; background: var(--zinc-900); border: 1px solid var(--zinc-800); border-radius: 10px; color: #fff; font-size: 13px; outline: none; transition: border-color 0.18s; font-family: 'DM Sans', sans-serif; width: 100%; }
+  .auth-input-field:focus { border-color: rgba(16,185,129,0.4); }
+  .auth-input-field::placeholder { color: var(--zinc-600); }
+  .auth-btn { width: 100%; padding: 10px; background: var(--em); border: none; border-radius: 10px; color: #fff; font-size: 13px; font-weight: 600; cursor: pointer; box-shadow: 0 0 20px rgba(16,185,129,0.3); transition: all 0.2s; margin-top: 8px; font-family: 'DM Sans', sans-serif; }
+  .auth-btn:hover { background: #34d399; }
+
+  /* ── MODAL CONTENT HELPERS */
+  .m-section-title { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+  .m-section-title span { font-family: 'JetBrains Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--zinc-500); }
+  .m-section-title .divider { flex: 1; height: 1px; background: var(--zinc-900); }
+  .m-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .m-grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; }
+  @media (max-width: 600px) { .m-grid-2 { grid-template-columns: 1fr; } .m-grid-3 { grid-template-columns: 1fr 1fr; } }
+  .m-card { background: var(--zinc-900); border: 1px solid var(--zinc-800); border-radius: 12px; padding: 16px; }
+  .m-card-title { font-size: 13px; font-weight: 600; color: #fff; margin-bottom: 6px; }
+  .m-card-sub { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--em); }
+  .m-card-body { font-size: 12px; color: var(--zinc-400); line-height: 1.65; }
+  .lb-modal-table { width: 100%; border-collapse: separate; border-spacing: 0; }
+  .lb-modal-table th { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--zinc-600); text-transform: uppercase; letter-spacing: 0.1em; padding: 8px 10px; border-bottom: 1px solid var(--zinc-800); text-align: left; }
+  .lb-modal-table td { padding: 12px 10px; border-bottom: 1px solid var(--zinc-900); font-size: 12px; }
+
+  /* ── TEAM CARD */
+  .team-card { background: var(--zinc-900); border: 1px solid var(--zinc-800); border-left: 2px solid; border-radius: 12px; padding: 16px; }
+  .team-role { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--zinc-500); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.08em; }
+  .team-desc { font-size: 12px; color: var(--zinc-400); line-height: 1.65; margin-bottom: 10px; }
+  .team-tags { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--zinc-600); }
+
+  /* TESTIMONIAL */
+  .testi-card { background: var(--zinc-900); border: 1px solid var(--zinc-800); border-radius: 12px; padding: 20px; }
+  .testi-stars { color: #fbbf24; font-size: 11px; letter-spacing: 4px; margin-bottom: 8px; }
+  .testi-text { font-size: 12px; color: var(--zinc-400); line-height: 1.65; margin-bottom: 12px; }
+  .testi-name { font-size: 13px; font-weight: 600; color: #fff; }
+  .testi-role { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--zinc-500); margin-top: 2px; }
+
+  /* ADDRESS */
+  .addr-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; }
+  @media (max-width: 600px) { .addr-grid { grid-template-columns: 1fr 1fr; } }
+  .addr-card { background: var(--zinc-900); border: 1px solid var(--zinc-800); border-radius: 12px; padding: 14px; }
+  .addr-flag { font-size: 16px; margin-bottom: 6px; }
+  .addr-city { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 3px; }
+  .addr-role { font-family: 'JetBrains Mono', monospace; font-size: 8px; color: var(--em); margin-bottom: 6px; }
+  .addr-text { font-size: 11px; color: var(--zinc-500); line-height: 1.55; }
+
+  /* HOW MODAL */
+  .how-step { display: flex; gap: 16px; align-items: flex-start; }
+  .how-num { width: 28px; height: 28px; border-radius: 8px; background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.2); display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--em); flex-shrink: 0; font-weight: 500; }
+  .how-content .how-title { font-size: 13px; font-weight: 600; color: #fff; margin-bottom: 4px; }
+  .how-content .how-desc { font-size: 12px; color: var(--zinc-400); line-height: 1.65; }
+
+  /* INTEL */
+  .intel-hero { background: linear-gradient(135deg, rgba(16,185,129,0.08), rgba(34,211,238,0.04)); border: 1px solid rgba(16,185,129,0.2); border-radius: 20px; padding: 24px 28px; display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+  .intel-big { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 52px; font-weight: 900; color: var(--em); line-height: 1; }
+  .intel-label { font-family: 'JetBrains Mono', monospace; font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--zinc-500); margin-bottom: 6px; }
+  .intel-note { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--zinc-500); margin-top: 4px; }
+
+  /* ── UTILITY */
+  .mt-4 { margin-top: 16px; }
+  .mt-6 { margin-top: 24px; }
+  .mt-8 { margin-top: 32px; }
+  .mb-3 { margin-bottom: 12px; }
+  .mb-4 { margin-bottom: 16px; }
+  .mb-6 { margin-bottom: 24px; }
+  .gap-3 { gap: 12px; }
+  .gap-4 { gap: 16px; }
+  .gap-8 { gap: 32px; }
+  .text-em { color: var(--em); }
+  .text-zinc-400 { color: var(--zinc-400); }
+  .flex { display: flex; }
+  .flex-col { flex-direction: column; }
+  .items-center { align-items: center; }
+  .justify-between { justify-content: space-between; }
+  .w-full { width: 100%; }
+  .fade-in { animation: fadeUp 0.55s cubic-bezier(0.16,1,0.3,1) both; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  .fade-in-delay-1 { animation-delay: 0.08s; }
+  .fade-in-delay-2 { animation-delay: 0.16s; }
+  .fade-in-delay-3 { animation-delay: 0.24s; }
+  .fade-in-delay-4 { animation-delay: 0.32s; }
+  .fade-in-delay-5 { animation-delay: 0.40s; }
+  /* ── MULTI-PAGE NAV */
+  .nav-btn {
+    padding: 6px 12px; border-radius: 8px; font-size: 13px; font-weight: 500;
+    color: var(--zinc-400); background: none; border: none; cursor: pointer;
+    transition: color 0.15s; font-family: 'DM Sans', sans-serif;
+  }
+  .nav-btn:hover { color: #fff; }
+  .nav-btn-link {
+    padding: 6px 12px; border-radius: 8px; font-size: 13px; font-weight: 500;
+    color: var(--zinc-400); text-decoration: none;
+    transition: color 0.15s, background 0.15s; font-family: 'DM Sans', sans-serif;
+  }
+  .nav-btn-link:hover { color: #fff; background: rgba(255,255,255,0.05); }
+
+  /* ── BILLING TOGGLE */
+  .billing-tab {
+    padding: 7px 18px; border-radius: 7px; font-size: 13px; font-weight: 600;
+    border: none; cursor: pointer; transition: all 0.18s;
+    font-family: 'DM Sans', sans-serif; color: var(--zinc-500); background: transparent;
+  }
+  .billing-tab.active { background: var(--zinc-800); color: #fff; }
+  .billing-tab:hover:not(.active) { color: var(--zinc-300); }
+
+</style>
+</head>
+<body>
+
+<div class="ambient"></div>
+<div class="noise-overlay"></div>
+
+<!-- ── NAV -->
+<nav>
+  <a class="nav-logo" href="index.html">
+    <div class="nl-badge">NL</div>
+    NicheLab
+  </a>
+  <div class="nav-links" style="display:flex;align-items:center;gap:2px;">
+    <button onclick="scrollToSection('ideas')" class="nav-btn">Ideas</button>
+    <button onclick="scrollToSection('signals')" class="nav-btn">Signals</button>
+    <button onclick="scrollToSection('pricing')" class="nav-btn">Pricing</button>
+    <a href="intel.html" class="nav-btn-link">Intelligence</a>
+    <a href="community.html" class="nav-btn-link">Community</a>
+    <a href="team.html" class="nav-btn-link">Who We Are</a>
+    <a href="contact.html" class="nav-btn-link">Contact</a>
+    <a href="legal.html" class="nav-btn-link">Legal</a>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center;">
+    <button class="btn-ghost" onclick="openAuth('signin')" style="font-size:13px;padding:6px 14px;">Member Access</button>
+    <button class="btn-primary" onclick="scrollToSection('pricing')" style="font-size:13px;padding:6px 14px;">Start free →</button>
+  </div>
+</nav>
+
+<!-- ── TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker-track" id="tickerTrack">
+    <!-- JS fills this -->
+  </div>
+</div>
+
+<!-- ── HERO -->
+<div class="content-wrap">
+  <section id="top">
+    <div class="search-bar fade-in">
+      <span class="search-icon">⌕</span>
+      <span class="search-text" id="typewriterText">Find validated niches with real data — not gut instinct.<span class="caret"></span></span>
+    </div>
+
+    <div class="eyebrow fade-in fade-in-delay-1">
+      <span class="pulse-dot"></span>
+      Report #184 published today · Webhook Reliability Platform
+    </div>
+
+    <h1 class="hero fade-in fade-in-delay-2">
+      The market already signals<br>
+      <span class="grad">what to build.</span>
+    </h1>
+
+    <p class="hero-sub fade-in fade-in-delay-3">
+      NicheLab analyses signals from online communities, search trends, funding activity and competitive gaps — condensed into <strong style="color:#fff; font-weight:500;">structured opportunity reports for independent builders.</strong>
+    </p>
+
+    <div class="hero-actions fade-in fade-in-delay-4">
+      <button class="btn-primary btn-lg" onclick="scrollToSection('ideas')">Read today's analysis →</button>
+      <button class="btn-ghost btn-lg" onclick="scrollToSection('pricing')">Browse 200+ opportunities</button>
+    </div>
+
+    <div class="live-counter fade-in fade-in-delay-5">
+      <span class="flex items-center" style="gap:6px;">
+        <span class="dot-green pulse-dot"></span>
+        <span style="color:var(--em); font-weight:500;" id="nichesCount">1,420</span>&nbsp;niche gaps found
+      </span>
+      <span style="color:var(--zinc-800);">·</span>
+      <span>
+        <span style="color:#fff; font-weight:500;" id="buildersCount">1,240</span>&nbsp;active builders
+      </span>
+    </div>
+
+    <div class="stats-grid fade-in fade-in-delay-5">
+      <div class="stat-cell">
+        <span class="stat-value">1,240+</span>
+        <span class="stat-label">Builders Exploring</span>
+      </div>
+      <div class="stat-cell">
+        <span class="stat-value">200+</span>
+        <span class="stat-label">Opportunity Analyses</span>
+      </div>
+      <div class="stat-cell">
+        <span class="stat-value">30+</span>
+        <span class="stat-label">Countries Global</span>
+      </div>
+      <div class="stat-cell">
+        <span class="stat-value" style="color:var(--em);">24h</span>
+        <span class="stat-label">Research Turnaround</span>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ── LIVE SIGNALS -->
+<div class="content-wrap">
+  <section id="signals" class="section">
+    <div class="section-eyebrow">
+      <span class="pulse-dot"></span>
+      <span>Live signal feed</span>
+      <div class="divider"></div>
+    </div>
+    <h2 class="section-title">Where the <span class="grad">opportunity is.</span></h2>
+    <p class="section-sub">47 live data sources tracked continuously. The signals below update in real time as market interest shifts.</p>
+
+    <div class="signal-panel">
+      <div class="signal-list" id="signalList"></div>
+      <div class="chart-card" id="chartCard">
+        <div class="glow"></div>
+        <div class="chart-label" id="chartSource">Google Trends · 36mo</div>
+        <div class="chart-value" id="chartValue">+287%</div>
+        <div class="chart-name" id="chartName">Webhook Debugging</div>
+        <div class="chart-bars" id="chartBars"></div>
+        <div class="chart-source" id="chartSourceBottom">Signal strength — 36 month index</div>
+        <div class="chip-row">
+          <span class="score-chip"><span class="label">MKT</span><span class="val-em">84</span></span>
+          <span class="score-chip"><span class="label">REV</span><span class="val-em">78</span></span>
+          <span class="score-chip"><span class="label">COMP</span><span class="val-gold">MED</span></span>
+          <span class="score-chip"><span class="label">BUILD</span><span class="val-gold">MEDIUM</span></span>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ── OPPORTUNITY REPORTS -->
+<div class="content-wrap">
+  <section id="ideas" class="section" style="padding-top:0;">
+    <div class="section-eyebrow">
+      <span>Opportunity reports</span>
+      <div class="divider"></div>
+    </div>
+    <h2 class="section-title">Today's <span class="grad">analysis.</span></h2>
+    <p class="section-sub">Data-backed opportunity reports. Each one includes market sizing, competitor analysis, signal breakdown, and a 30-day execution roadmap.</p>
+
+    <div class="report-grid" id="reportGrid"></div>
+    <div style="text-align:center; margin-top:24px; display:flex; align-items:center; justify-content:center; gap:12px; flex-wrap:wrap;">
+      <button class="btn-ghost" onclick="openModal('leaderboard')">View full leaderboard (200+) →</button>
+      <button class="btn-primary" onclick="scrollToSection('pricing')">Unlock all reports</button>
+    </div>
+  </section>
+</div>
+
+<!-- ── LEADERBOARD PREVIEW -->
+<div class="content-wrap">
+  <section style="padding-bottom:80px;">
+    <div class="section-eyebrow">
+      <span>🏆 Opportunity leaderboard</span>
+      <div class="divider"></div>
+    </div>
+    <h2 class="section-title" style="font-size:clamp(22px,3vw,32px);">Top validated ideas <span class="grad">this month.</span></h2>
+    <div style="background:var(--zinc-950); border:1px solid var(--zinc-800); border-radius:16px; overflow:hidden; margin-top:24px;">
+      <table class="leaderboard-table" id="lbTable"></table>
+    </div>
+    <div style="padding:12px 0 0; display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+      <span style="font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--zinc-600);">Top 5 shown · Full leaderboard unlocked with Starter plan</span>
+      <button class="btn-primary" style="padding:6px 14px; font-size:12px;" onclick="openModal('leaderboard')">See all 200+ →</button>
+    </div>
+  </section>
+</div>
+
+<!-- ── PRICING -->
+<div class="content-wrap" id="pricing">
+  <section style="padding-bottom:80px;">
+    <div class="section-eyebrow">
+      <span>Pricing</span>
+      <div class="divider"></div>
+    </div>
+    <h2 class="section-title">Institutional intelligence. <span class="grad">Founder pricing.</span></h2>
+    <p class="section-sub">Start free. Upgrade when you're ready to go deeper.</p>
+
+    <!-- Billing toggle -->
+    <div style="display:flex;align-items:center;justify-content:center;margin-bottom:32px;">
+      <div style="display:flex;align-items:center;gap:0;background:var(--zinc-900);border:1px solid var(--zinc-800);border-radius:10px;padding:4px;">
+        <button id="billAnnual" class="billing-tab active" onclick="setBilling('annual')">Annual</button>
+        <button id="billMonthly" class="billing-tab" onclick="setBilling('monthly')">Monthly</button>
+      </div>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--em);margin-left:12px;padding:3px 8px;background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.2);border-radius:4px;">Save up to 37%</span>
+    </div>
+
+    <div class="pricing-grid" id="pricingGrid"></div>
+  </section>
+</div>
+
+<!-- ── CURIOSITY HUB -->
+<div class="content-wrap">
+  <div style="padding-bottom:80px;">
+    <div class="section-eyebrow">
+      <span>Explore more</span>
+      <div class="divider"></div>
+    </div>
+    <div class="hub-grid" id="hubGrid"></div>
+  </div>
+</div>
+
+<!-- ── FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">
+      <div class="nl-badge">NL</div>
+      <div>
+        <div>NicheLab</div>
+        <div class="footer-logo-sub">nichelab.io</div>
+      </div>
+    </div>
+    <div class="footer-links">
+      <a onclick="scrollToSection('ideas')">Reports</a>
+      <a onclick="scrollToSection('signals')">Signals</a>
+      <a onclick="scrollToSection('pricing')">Pricing</a>
+      <a onclick="openModal('contact')">Contact</a>
+      <a onclick="openModal('legal')">Legal</a>
+    </div>
+    <div class="footer-copy">© 2026 NicheLab · All rights reserved</div>
+  </div>
+</footer>
+
+<!-- ── AUTH MODAL -->
+<div class="auth-backdrop" id="authBackdrop" onclick="closeAuth(event)">
+  <div class="auth-box">
+    <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,var(--em),transparent)"></div>
+    <div style="position:absolute;top:0;left:50%;transform:translateX(-50%);width:280px;height:180px;background:radial-gradient(ellipse,rgba(16,185,129,0.06),transparent 70%);pointer-events:none"></div>
+    <div class="auth-header">
+      <div class="auth-logo"><div class="nl-badge" style="width:24px;height:24px;font-size:8px;">NL</div>NicheLab</div>
+      <button class="modal-close" onclick="closeAuth()">✕</button>
+    </div>
+    <div class="auth-body">
+      <h2 class="auth-title">Member<br><span class="grad">Access</span></h2>
+      <p class="auth-sub">Sign in or create a free account to continue.</p>
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="signinTab" onclick="switchAuthTab('signin')">Sign in</button>
+        <button class="auth-tab inactive" id="signupTab" onclick="switchAuthTab('signup')">Create account</button>
+      </div>
+      <button class="auth-google">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+        Continue with Google
+      </button>
+      <div class="auth-divider"><div class="line"></div><span>or</span><div class="line"></div></div>
+      <div class="auth-field">
+        <label class="auth-label">Email address</label>
+        <input class="auth-input-field" type="email" placeholder="you@domain.com" id="authEmail">
+      </div>
+      <div class="auth-field">
+        <label class="auth-label">Password</label>
+        <input class="auth-input-field" type="password" placeholder="••••••••" id="authPassword">
+      </div>
+      <button class="auth-btn" id="authSubmitBtn" onclick="handleAuthSubmit()">Sign in to NicheLab →</button>
+      <div id="authMsg" style="margin-top:10px;font-size:12px;text-align:center;color:var(--em);display:none;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── WIDE MODAL -->
+<div class="modal-backdrop" id="modalBackdrop" onclick="closeModal(event)">
+  <div class="modal-box">
+    <div class="modal-top-line"></div>
+    <div class="modal-glow"></div>
+    <div class="modal-header">
+      <div class="modal-title-wrap">
+        <div class="modal-icon" id="modalIcon"></div>
+        <div>
+          <div class="modal-title" id="modalTitle"></div>
+          <div class="modal-subtitle" id="modalSubtitle"></div>
+        </div>
+      </div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+// ─── DATA ───────────────────────────────────────────────
+const TICKER_ITEMS = [
+  { label: "AI Agent Debugging", value: "+890%", sub: "search vol / 18mo" },
+  { label: "Webhook Reliability", value: "+287%", sub: "Google Trends / 36mo" },
+  { label: "EU AI Act Compliance", value: "HIGH SIGNAL", sub: "" },
+  { label: "API Rate Limiting SaaS", value: "+412%", sub: "search vol / 12mo" },
+  { label: "B2B No-Code Tools", value: "+63%", sub: "Reddit sentiment" },
+  { label: "AI Mock API Server", value: "+195%", sub: "GitHub stars / 6mo" },
+  { label: "Micro-SaaS Infra", value: "+78%", sub: "Crunchbase funding" },
+  { label: "Postman Alternatives", value: "+340%", sub: "Reddit threads / 90d" },
+  { label: "LLM Tool-Use Repos", value: "+312%", sub: "GitHub Octoverse" },
+];
+
+const SIGNALS = [
+  { id:0, label:"Webhook Debugging", base:287, prefix:"+", suffix:"%", badge:"Rising Fast", bc:"em", source:"Google Trends · 36mo" },
+  { id:1, label:"AI Agent Debugging", base:890, prefix:"+", suffix:"%", badge:"Explosive", bc:"red", source:"Search Volume · 18mo" },
+  { id:2, label:"API Rate Limiting", base:412, prefix:"+", suffix:"%", badge:"Emerging", bc:"gold", source:"Search Volume · 12mo" },
+  { id:3, label:"Mock API Servers", base:195, prefix:"+", suffix:"%", badge:"Rising", bc:"em", source:"GitHub Stars · 6mo" },
+  { id:4, label:"Hookdeck Series A", base:7, prefix:"$", suffix:"M", badge:"Validated", bc:"gold", source:"Crunchbase · 2023" },
+];
+
+const REPORTS = [
+  { num:"#184", title:"Webhook Reliability Platform", cat:"Micro-SaaS · Dev Tools", mkt:84, rev:78, build:"Medium", locked:false, color:"var(--em)" },
+  { num:"#183", title:"AI Mock API Server (Hosted)", cat:"Micro-SaaS · Dev Tools", mkt:81, rev:76, build:"Medium", locked:false, color:"var(--em)" },
+  { num:"#182", title:"API Breaking Change Monitor", cat:"Micro-SaaS · Infrastructure", mkt:77, rev:72, build:"Low", locked:true, color:"#a78bfa" },
+  { num:"#181", title:"EU AI Act Compliance Logger", cat:"Compliance · SaaS", mkt:74, rev:69, build:"Medium", locked:true, color:"#fbbf24" },
+  { num:"#180", title:"Rate Limit Management Proxy", cat:"Micro-SaaS · Dev Tools", mkt:68, rev:64, build:"Medium", locked:true, color:"var(--cy)" },
+  { num:"#179", title:"LLM Hallucination Audit Tool", cat:"AI Quality · SaaS", mkt:65, rev:61, build:"High", locked:true, color:"#f87171" },
+];
+
+const LEADERBOARD = [
+  { rank:1, name:"Webhook Reliability Platform", cat:"Micro-SaaS · Dev Tools", mkt:84, rev:78 },
+  { rank:2, name:"AI Mock API Server (Hosted)", cat:"Micro-SaaS · Dev Tools", mkt:81, rev:76 },
+  { rank:3, name:"API Breaking Change Monitor", cat:"Micro-SaaS · Infrastructure", mkt:77, rev:72 },
+  { rank:4, name:"EU AI Act Compliance Logger", cat:"Compliance · SaaS", mkt:74, rev:69 },
+  { rank:5, name:"Rate Limit Management Proxy", cat:"Micro-SaaS · Dev Tools", mkt:68, rev:64 },
+];
+
+const PLANS = [
+  {
+    name:"Free", badge:null,
+    price:{ annual:"$0", monthly:"$0" },
+    period:{ annual:"forever", monthly:"forever" },
+    stripeUrl:{ annual:null, monthly:null },
+    desc:"Explore today's top opportunity. No card required.",
+    features:["1 full report per week","Signal feed (limited)","5-item leaderboard preview","Community access"],
+    btn:"Start free →", variant:"ghost"
+  },
+  {
+    name:"Starter", badge:"Most popular",
+    price:{ annual:"$299", monthly:"$36" },
+    period:{ annual:"/yr", monthly:"/mo" },
+    stripeUrl:{
+      annual:"https://buy.stripe.com/aFa4gAdmT8SS5hB1igebu01",
+      monthly:"https://buy.stripe.com/9B63cw0A72uufWf5ywebu00"
+    },
+    desc:"Full access to the NicheLab intelligence library.",
+    features:["200+ opportunity reports","Full leaderboard + filters","Saved / favourite niches","Weekly new report (Monday)","Score breakdown + exec roadmap","Email signal digest"],
+    btn:"Get Starter →", variant:"primary", featured:true
+  },
+  {
+    name:"Pro", badge:"Pro",
+    price:{ annual:"$699", monthly:"$84" },
+    period:{ annual:"/yr", monthly:"/mo" },
+    stripeUrl:{
+      annual:"https://buy.stripe.com/aFa6oI0A7glk6lFf96ebu03",
+      monthly:"https://buy.stripe.com/bJe00kbeLc547pJgdaebu02"
+    },
+    desc:"For serious builders who want the full analytical layer.",
+    features:["Everything in Starter","Raw data exports (CSV/JSON)","Custom niche requests (2/mo)","Early access to new reports","Priority research queue","1:1 async research Q&A"],
+    btn:"Choose Pro →", variant:"ghost"
+  }
+];
+
+const HUB_CARDS = [
+  { icon:"🏆", iconBg:"bg-em", title:"Opportunity Leaderboard", sub:"Top 200+ validated ideas · March 2026", desc:"Every validated market opportunity ranked by composite score — market size, revenue potential, build difficulty, and signal strength. Updated weekly.", chips:[{l:"200+ ideas",c:"em"},{l:"Filtered by category",c:"zinc"}], modal:"leaderboard" },
+  { icon:"📡", iconBg:"bg-cy", title:"How it Works", sub:"Signal capture → Scoring → Reports", desc:"47 live data sources. A five-dimension scoring model. 15-minute reports with 30-day action plans. Here's the full methodology behind every number.", chips:[{l:"4 stages",c:"cy"},{l:"47 sources",c:"zinc"}], modal:"how" },
+  { icon:"⚖️", iconBg:"bg-amber", title:"Why NicheLab", sub:"Data, not opinions — the difference", desc:"The honest comparison between conventional research and what NicheLab delivers. Cited evidence vs gut instinct. Investment-grade TAM vs Twitter threads.", chips:[{l:"Side-by-side",c:"amber"}], modal:"why" },
+  { icon:"🧠", iconBg:"bg-violet", title:"Intelligence Infrastructure", sub:"Where the signal comes from", desc:"The same research categories used by hedge funds, strategy consultancies, and sovereign wealth organisations — synthesised at a different price point.", chips:[{l:"$147,400 list value",c:"violet"}], modal:"intel" },
+  { icon:"🔒", iconBg:"bg-zinc", title:"Who is Behind This", sub:"Built by people who have been inside", desc:"NicheLab wasn't built by people who read about markets. It was built by those who spent years working inside them — strategy consultancies, Tier 1 VC, think tanks.", chips:[{l:"4 specialists",c:"zinc"},{l:"Contact form",c:"zinc"}], modal:"team" },
+  { icon:"💬", iconBg:"bg-red", title:"Community Hub", sub:"What our members say", desc:"1,240+ builders have used NicheLab to validate ideas, pivot markets, and find winning niches. Here's what they've said — and how to join them.", chips:[{l:"1,240+ members",c:"red"},{l:"Sign in / Join",c:"em"}], modal:"community" },
+];
+
+// ─── TICKER ─────────────────────────────────────────────
+function buildTicker() {
+  const track = document.getElementById('tickerTrack');
+  const items = [...TICKER_ITEMS, ...TICKER_ITEMS];
+  track.innerHTML = items.map(t => `
+    <div class="ticker-item">
+      <span class="ticker-label">${t.label}</span>
+      <span class="ticker-value">${t.value}</span>
+      ${t.sub ? `<span class="ticker-sub">${t.sub}</span>` : ''}
+    </div>
+  `).join('');
+}
+
+// ─── TYPEWRITER ──────────────────────────────────────────
+const PHRASES = [
+  "The #1 platform to spot trends and startup ideas worth building.",
+  "Find validated niches with real data — not gut instinct.",
+  "Institutional-grade market intelligence for independent founders.",
+  "Build the right thing. The first time.",
+];
+let phraseIdx=0, charIdx=0, deleting=false, typeTimer;
+function typewriterTick() {
+  const el = document.getElementById('typewriterText');
+  const phrase = PHRASES[phraseIdx];
+  if (!deleting) {
+    charIdx++;
+    if (charIdx > phrase.length) { deleting=true; clearTimeout(typeTimer); typeTimer=setTimeout(typewriterTick, 1600); return; }
+  } else {
+    charIdx--;
+    if (charIdx === 0) { deleting=false; phraseIdx=(phraseIdx+1)%PHRASES.length; }
+  }
+  el.textContent = phrase.slice(0,charIdx);
+  el.insertAdjacentHTML('beforeend','<span class="caret"></span>');
+  typeTimer = setTimeout(typewriterTick, deleting ? 28 : 48);
+}
+
+// ─── SIGNALS ────────────────────────────────────────────
+let activeSignal = 0;
+let signalVals = SIGNALS.map(s=>s.base);
+function renderSignals() {
+  const list = document.getElementById('signalList');
+  list.innerHTML = SIGNALS.map((s,i) => `
+    <div class="signal-row ${i===activeSignal?'active':''}" onclick="selectSignal(${i})">
+      <div>
+        <div class="signal-name">${s.label}</div>
+        <div class="signal-source">${s.source}</div>
+      </div>
+      <div class="signal-meta">
+        <div class="signal-val" style="color:${i===4?'#fbbf24':'var(--em)'};">${s.prefix}${signalVals[i]}${s.suffix}</div>
+        <div><span class="badge badge-${s.bc}">${s.badge}</span></div>
+      </div>
+    </div>
+  `).join('');
+}
+function selectSignal(i) {
+  activeSignal = i;
+  renderSignals();
+  updateChart(i);
+}
+function updateChart(i) {
+  const s = SIGNALS[i];
+  const v = signalVals[i];
+  document.getElementById('chartValue').textContent = s.prefix+v+s.suffix;
+  document.getElementById('chartValue').style.color = i===4?'#fbbf24':'var(--em)';
+  document.getElementById('chartName').textContent = s.label;
+  document.getElementById('chartSource').textContent = s.source;
+  document.getElementById('chartSourceBottom').textContent = 'Signal strength — indexed over time';
+  const heights = [30,45,38,52,44,60,55,70,68,75,72,80,78,85,82,88,90].map(h=>Math.min(100,h*(v/s.base+0.1)));
+  const bars = document.getElementById('chartBars');
+  bars.innerHTML = heights.map((h,j) => `<div class="chart-bar" style="height:${h}%;animation-delay:${j*30}ms"></div>`).join('');
+}
+function animateSignals() {
+  signalVals = SIGNALS.map((s,i)=>{
+    const variance = [15,40,20,12,0][i];
+    return s.base + Math.floor((Math.random()-0.5)*variance);
+  });
+  renderSignals();
+  updateChart(activeSignal);
+}
+
+// ─── REPORTS ────────────────────────────────────────────
+function renderReports() {
+  const grid = document.getElementById('reportGrid');
+  grid.innerHTML = REPORTS.map(r => `
+    <div class="report-card" onclick="${r.locked?'scrollToSection(\'pricing\')':'openModal(\'leaderboard\')'}">
+      <div class="top-line" style="background:${r.color};"></div>
+      <div class="report-card-header">
+        <div>
+          <div class="report-number">${r.num}</div>
+          <div class="report-title">${r.title}</div>
+          <div class="report-cat">${r.cat}</div>
+        </div>
+        <div class="report-arrow">›</div>
+      </div>
+      <div class="report-scores">
+        <span class="report-score hi">MKT ${r.mkt}</span>
+        <span class="report-score mid">REV ${r.rev}</span>
+        <span class="report-score lo">BUILD ${r.build}</span>
+      </div>
+      ${r.locked ? '<div class="report-lock"><span>🔒</span><span>Starter plan required</span></div>' : '<div class="report-lock" style="color:var(--em);">✓ Free access</div>'}
+    </div>
+  `).join('');
+}
+
+// ─── LEADERBOARD ─────────────────────────────────────────
+function renderLeaderboard() {
+  const table = document.getElementById('lbTable');
+  table.innerHTML = `
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Opportunity</th>
+        <th>Market Score</th>
+        <th>Rev Potential</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      ${LEADERBOARD.map(r=>`
+        <tr>
+          <td><span class="rank-num ${r.rank===1?'gold':''}">${r.rank===1?'①':r.rank}</span></td>
+          <td>
+            <div class="lb-name">${r.name}</div>
+            <div class="lb-cat">${r.cat}</div>
+          </td>
+          <td>
+            <div class="lb-score">
+              <span style="color:var(--em)">${r.mkt}</span>
+              <div class="score-bar"><div class="score-bar-fill" style="width:${r.mkt}%"></div></div>
+            </div>
+          </td>
+          <td>
+            <div class="lb-score">
+              <span style="color:#fbbf24">${r.rev}</span>
+              <div class="score-bar"><div class="score-bar-fill" style="width:${r.rev}%;background:#fbbf24"></div></div>
+            </div>
+          </td>
+          <td><span class="open-badge"><span style="background:var(--em);width:5px;height:5px;border-radius:50%;display:inline-block;"></span>Open</span></td>
+        </tr>
+      `).join('')}
+    </tbody>
+  `;
+}
+
+// ─── PRICING ─────────────────────────────────────────────
+let billingCycle = 'annual';
+
+function renderPricing() {
+  const grid = document.getElementById('pricingGrid');
+  grid.innerHTML = '';
+
+  PLANS.forEach(function(p) {
+    const price  = billingCycle === 'annual' ? p.price.annual  : p.price.monthly;
+    const period = billingCycle === 'annual' ? p.period.annual : p.period.monthly;
+    const url    = p.stripeUrl  ? (billingCycle === 'annual' ? p.stripeUrl.annual : p.stripeUrl.monthly) : null;
+
+    // saving badge (annual only, paid plans)
+    let savingBadge = '';
+    if (billingCycle === 'annual' && p.name === 'Starter') {
+      savingBadge = '<span style="font-family:\'JetBrains Mono\',monospace;font-size:8px;padding:2px 7px;border-radius:4px;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);color:var(--em);margin-left:8px;">Save $133</span>';
+    } else if (billingCycle === 'annual' && p.name === 'Pro') {
+      savingBadge = '<span style="font-family:\'JetBrains Mono\',monospace;font-size:8px;padding:2px 7px;border-radius:4px;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);color:var(--em);margin-left:8px;">Save $309</span>';
+    }
+
+    const card = document.createElement('div');
+    card.className = 'plan-card' + (p.featured ? ' featured' : '');
+
+    card.innerHTML =
+      (p.featured ? '<div class="top-accent"></div>' : '') +
+      '<div>' +
+        (p.badge ? '<span class="plan-badge ' + (p.featured ? 'pop' : 'pro') + '">' + p.badge + '</span>' : '<span style="display:inline-block;height:18px;"></span>') +
+        '<div class="plan-name">' + p.name + '</div>' +
+      '</div>' +
+      '<div>' +
+        '<div style="display:flex;align-items:baseline;gap:4px;flex-wrap:wrap;">' +
+          '<span style="font-family:\'Plus Jakarta Sans\',sans-serif;font-size:36px;font-weight:900;color:#fff;">' + price + '</span>' +
+          '<span style="font-size:14px;color:var(--zinc-500);font-family:\'DM Sans\',sans-serif;">' + period + '</span>' +
+          savingBadge +
+        '</div>' +
+        '<p class="plan-desc" style="margin-top:8px;">' + p.desc + '</p>' +
+      '</div>' +
+      '<div class="plan-divider"></div>' +
+      '<div class="plan-features">' +
+        p.features.map(function(f) {
+          return '<div class="feature-row"><div class="feature-check">✓</div><span class="feature-text">' + f + '</span></div>';
+        }).join('') +
+      '</div>' +
+      '<button class="' + (p.variant === 'primary' ? 'btn-primary' : 'btn-ghost') + '" style="width:100%;padding:10px;font-size:13px;" data-url="' + (url || '') + '" data-free="' + (p.name === 'Free' ? '1' : '0') + '">' +
+        p.btn +
+      '</button>';
+
+    // Attach click properly
+    const btn = card.querySelector('button');
+    btn.addEventListener('click', function() {
+      var href = this.getAttribute('data-url');
+      var isFree = this.getAttribute('data-free') === '1';
+      if (isFree) { openAuth('signup'); }
+      else if (href) { window.location.href = href; }
+    });
+
+    grid.appendChild(card);
+  });
+}
+
+function setBilling(cycle) {
+  billingCycle = cycle;
+  document.getElementById('billAnnual').className  = cycle === 'annual'  ? 'billing-tab active' : 'billing-tab';
+  document.getElementById('billMonthly').className = cycle === 'monthly' ? 'billing-tab active' : 'billing-tab';
+  renderPricing();
+}
+
+// ─── HUB CARDS ──────────────────────────────────────────
+const chipColors = {
+  em: 'background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);color:var(--em);',
+  cy: 'background:rgba(34,211,238,0.1);border:1px solid rgba(34,211,238,0.2);color:var(--cy);',
+  amber: 'background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.2);color:#fbbf24;',
+  violet: 'background:rgba(167,139,250,0.1);border:1px solid rgba(167,139,250,0.2);color:#a78bfa;',
+  red: 'background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);color:#f87171;',
+  zinc: 'background:var(--zinc-900);border:1px solid var(--zinc-800);color:var(--zinc-500);',
+};
+const iconBgs = {
+  'bg-em': 'background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);',
+  'bg-cy': 'background:rgba(34,211,238,0.1);border:1px solid rgba(34,211,238,0.2);',
+  'bg-amber': 'background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.2);',
+  'bg-violet': 'background:rgba(167,139,250,0.1);border:1px solid rgba(167,139,250,0.2);',
+  'bg-red': 'background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);',
+  'bg-zinc': 'background:var(--zinc-800);border:1px solid var(--zinc-700);',
+};
+function renderHub() {
+  const grid = document.getElementById('hubGrid');
+  grid.innerHTML = HUB_CARDS.map(c => `
+    <div class="hub-card" onclick="openModal('${c.modal}')">
+      <div class="hub-card-header">
+        <div class="hub-icon-wrap">
+          <div class="hub-icon" style="${iconBgs[c.iconBg]}">${c.icon}</div>
+          <div>
+            <div class="hub-title">${c.title}</div>
+            <div class="hub-sub">${c.sub}</div>
+          </div>
+        </div>
+        <div class="hub-arrow">›</div>
+      </div>
+      <p class="hub-desc">${c.desc}</p>
+      <div class="hub-chips">
+        ${c.chips.map(ch=>`<span class="hub-chip" style="${chipColors[ch.c]}">${ch.l}</span>`).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+// ─── MODAL SYSTEM ────────────────────────────────────────
+const MODAL_CONTENT = {
+  leaderboard: {
+    icon:'🏆', iconBg:'background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);',
+    title:'Opportunity Leaderboard',
+    subtitle:'Top 200+ validated ideas · Ranked by composite score · March 2026',
+    body: () => `
+      <p style="font-size:13px;color:var(--zinc-400);line-height:1.7;margin-bottom:24px;">Every validated market opportunity ranked by five-dimension composite score: market size, revenue potential, competitive density, build complexity, and signal momentum.</p>
+      <div class="m-section-title"><span>Top 5 preview</span><div class="divider"></div></div>
+      <div style="background:var(--zinc-950);border:1px solid var(--zinc-800);border-radius:12px;overflow:hidden;margin-top:12px;">
+        <table class="lb-modal-table">
+          <thead><tr><th>#</th><th>Opportunity</th><th>Category</th><th>Market</th><th>Rev</th></tr></thead>
+          <tbody>
+            ${LEADERBOARD.map(r=>`
+              <tr>
+                <td><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:${r.rank===1?'#fbbf24':'var(--zinc-600)'};">${r.rank}</span></td>
+                <td><div style="font-weight:600;color:#fff;font-size:12px;">${r.name}</div></td>
+                <td><span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--zinc-600);">${r.cat}</span></td>
+                <td><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--em);">${r.mkt}</span></td>
+                <td><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#fbbf24;">${r.rev}</span></td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>
+      <div style="margin-top:16px;padding:14px 16px;background:rgba(16,185,129,0.04);border:1px solid rgba(16,185,129,0.15);border-radius:12px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+        <div><div style="font-size:13px;font-weight:600;color:#fff;margin-bottom:3px;">195 more opportunities locked</div><div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--zinc-500);">Unlock with Starter · $249/yr</div></div>
+        <button class="btn-primary" style="padding:8px 16px;font-size:12px;" onclick="closeModal();scrollToSection('pricing')">Unlock full leaderboard →</button>
+      </div>
+    `
+  },
+  how: {
+    icon:'📡', iconBg:'background:rgba(34,211,238,0.1);border:1px solid rgba(34,211,238,0.2);',
+    title:'How it Works',
+    subtitle:'Signal capture → Opportunity scoring → Structured reports → Execution',
+    body: () => `
+      <div style="display:flex;flex-direction:column;gap:24px;">
+        <p style="font-size:13px;color:var(--zinc-400);line-height:1.7;">Four stages. 47 sources. One structured opportunity report — delivered every Monday.</p>
+        <div class="m-section-title"><span>The 4-stage process</span><div class="divider"></div></div>
+        <div style="display:flex;flex-direction:column;gap:20px;margin-top:4px;">
+          ${[
+            {n:'01',t:'Signal Capture',d:'47 live data sources monitored continuously — Reddit communities, Google Trends, GitHub Stars, Crunchbase funding, Product Hunt launches, App Store velocity, and institutional research flows.'},
+            {n:'02',t:'Opportunity Scoring',d:'Each signal cluster is evaluated across five dimensions: Total Addressable Market, Revenue Potential Index, Competitive Density Score, Build Complexity Rating, and Signal Momentum Index.'},
+            {n:'03',t:'Report Synthesis',d:'A structured opportunity report is assembled: market sizing (TAM/SAM/SOM), competitor landscape, execution risk matrix, 30-day action plan, and builder fitness assessment.'},
+            {n:'04',t:'Quality Review',d:'Each report passes editorial review against NicheLab citation standards — distinguishing analytically derived insight from AI-generated content. Reports cite sources. Assumptions are disclosed.'},
+          ].map(s=>`
+            <div class="how-step">
+              <div class="how-num">${s.n}</div>
+              <div class="how-content"><div class="how-title">${s.t}</div><div class="how-desc">${s.d}</div></div>
+            </div>
+          `).join('')}
+        </div>
+        <div class="m-section-title"><span>By the numbers</span><div class="divider"></div></div>
+        <div class="m-grid-3">
+          ${[{v:'47',l:'Live sources'},{v:'5',l:'Score dimensions'},{v:'<15min',l:'Report read time'},{v:'30d',l:'Action plan'},{v:'200+',l:'Reports archived'},{v:'Weekly',l:'New releases'}].map(x=>`
+            <div class="m-card" style="text-align:center;">
+              <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:24px;font-weight:900;color:var(--em);">${x.v}</div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--zinc-500);margin-top:4px;">${x.l}</div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `
+  },
+  why: {
+    icon:'⚖️', iconBg:'background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.2);',
+    title:'Why NicheLab',
+    subtitle:'Data, not opinions — the substantive difference',
+    body: () => `
+      <div style="display:flex;flex-direction:column;gap:24px;">
+        <div class="m-section-title"><span>Side-by-side comparison</span><div class="divider"></div></div>
+        <div class="m-grid-2" style="margin-top:4px;">
+          <div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:0.1em;color:var(--zinc-500);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--zinc-800);">Conventional approach</div>
+            ${['Reddit threads with no data backing','Twitter opinions from unverifiable sources','"Gut feeling" market validation','Months of manual research','No competitor density signal','No build complexity estimate'].map(x=>`<div style="display:flex;gap:8px;margin-bottom:10px;font-size:12px;color:var(--zinc-500);"><span style="color:#f87171;font-weight:700;flex-shrink:0;">✕</span>${x}</div>`).join('')}
+          </div>
+          <div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:0.1em;color:var(--em);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid rgba(16,185,129,0.25);">NicheLab</div>
+            ${['47 cited data sources per report','Composite 5-dimension scoring model','Investment-grade TAM/SAM/SOM sizing','15-minute structured report format','Competitive density mapped per niche','Build complexity rated & explained'].map(x=>`<div style="display:flex;gap:8px;margin-bottom:10px;font-size:12px;color:var(--zinc-300);"><span style="color:var(--em);font-weight:700;flex-shrink:0;">✓</span>${x}</div>`).join('')}
+          </div>
+        </div>
+        <div class="m-section-title"><span>The cost of getting it wrong</span><div class="divider"></div></div>
+        <div class="m-grid-2">
+          <div class="m-card">
+            <div style="font-size:13px;font-weight:600;color:#f87171;margin-bottom:8px;">Building on bad signal</div>
+            <p class="m-card-body">The average solo founder spends 4–8 months building before discovering product-market fit issues. At a conservative $6,000/mo opportunity cost, that's $24K–$48K in unrealised income — before counting development costs.</p>
+          </div>
+          <div class="m-card">
+            <div style="font-size:13px;font-weight:600;color:var(--em);margin-bottom:8px;">Building on validated signal</div>
+            <p class="m-card-body">NicheLab customers report an average of 3.2 validated opportunities identified before committing to build. Each report contains a risk matrix that identifies the top 3 ways the opportunity could fail — before you've written a line of code.</p>
+          </div>
+        </div>
+      </div>
+    `
+  },
+  intel: {
+    icon:'🧠', iconBg:'background:rgba(167,139,250,0.1);border:1px solid rgba(167,139,250,0.2);',
+    title:'Intelligence Infrastructure',
+    subtitle:'Where the signal comes from',
+    body: () => `
+      <div style="display:flex;flex-direction:column;gap:24px;">
+        <p style="font-size:13px;color:var(--zinc-400);line-height:1.7;">NicheLab draws on the same categories of research signals used across institutional market intelligence environments — hedge funds, global strategy consultancies, and sovereign wealth organisations. At a fundamentally different price point.</p>
+        <div class="intel-hero">
+          <div>
+            <div class="intel-label">Combined institutional list price</div>
+            <div class="intel-big">$147,400</div>
+            <div class="intel-note">per year across source categories</div>
+          </div>
+          <div style="text-align:right;">
+            <p style="font-size:12px;color:var(--zinc-400);margin-bottom:12px;max-width:200px;line-height:1.6;">NicheLab synthesises intelligence drawn from these categories at a fraction of the cost.</p>
+            <button class="btn-primary" style="padding:8px 16px;font-size:12px;" onclick="closeModal();scrollToSection('pricing')">Starter · $249/yr →</button>
+          </div>
+        </div>
+        <div class="m-section-title"><span>Source category breakdown</span><div class="divider"></div></div>
+        <div class="m-grid-3">
+          ${[
+            {n:'Bloomberg Terminal',v:'$27,000/yr'},
+            {n:'CB Insights Enterprise',v:'$15,000/yr'},
+            {n:'Gartner Research',v:'$30,000/yr'},
+            {n:'PitchBook Platform',v:'$24,000/yr'},
+            {n:'McKinsey Reports (avg 4)',v:'$22,000/yr'},
+            {n:'Euromonitor Passport',v:'$18,400/yr'},
+          ].map(s=>`
+            <div class="m-card">
+              <div class="m-card-title">${s.n}</div>
+              <div class="m-card-sub">${s.v}</div>
+            </div>
+          `).join('')}
+        </div>
+        <p style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--zinc-600);padding:12px;border:1px solid var(--zinc-900);border-radius:8px;line-height:1.6;">All outputs represent synthesised inference and do not constitute sublicensed reproduction of any proprietary data infrastructure. Figures provided for illustrative reference only.</p>
+      </div>
+    `
+  },
+  team: {
+    icon:'🔒', iconBg:'background:var(--zinc-800);border:1px solid var(--zinc-700);',
+    title:'Who is Behind This',
+    subtitle:'Built by people who have been inside · Written correspondence only',
+    body: () => `<div style="display:flex;flex-direction:column;gap:24px;"><p style="font-size:13px;color:var(--zinc-400);line-height:1.7;">NicheLab was not built by people who simply read about markets. It was built around the perspective of those who spent years working within them. Team members are not publicly named by choice. In a market intelligence business, the methodology matters more than the biography.</p><div class="m-section-title"><span>The team</span><div class="divider"></div></div><div class="m-grid-2" style="margin-top:4px;"><div class="team-card" style="border-left-color:#10b981;"><div class="team-role">Strategy &amp; Market Intelligence Lead</div><p class="team-desc">Former engagement manager at a global top-3 strategy consultancy. Led market entry and competitive intelligence projects across 12 markets. Built the scoring methodology that underlies every NicheLab report.</p><div class="team-tags">McKinsey-tier · Market entry · EMEA/APAC · Wharton MBA</div></div><div class="team-card" style="border-left-color:#22d3ee;"><div class="team-role">Venture &amp; Startup Intelligence</div><p class="team-desc">Former analyst at a Tier 1 VC fund. Evaluated 400+ startups annually across SaaS, fintech, and consumer. Prior stint at PwC Deals. Designed the revenue potential and competitor gap frameworks.</p><div class="team-tags">Tier 1 VC · 400+ startups/yr · Big Four · LBS</div></div><div class="team-card" style="border-left-color:#a78bfa;"><div class="team-role">Data &amp; Product Architecture</div><p class="team-desc">Previously led data products at a Series B fintech. Built market signal pipelines used by institutional clients across 8 markets. Designed the 47-source data infrastructure NicheLab runs on.</p><div class="team-tags">Signal systems · Series B fintech · Institutional · MIT CS</div></div><div class="team-card" style="border-left-color:#fbbf24;"><div class="team-role">Editorial &amp; Research Standards</div><p class="team-desc">Former researcher at a top-5 global think tank. Published in FT, The Economist, and Harvard Business Review. Sets the citation standards distinguishing NicheLab from AI-generated content.</p><div class="team-tags">Think tank · HBR published · FT · The Economist · Oxford PPE</div></div></div><div style="padding:14px 16px;background:var(--zinc-900);border:1px solid var(--zinc-800);border-radius:12px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;"><div><div style="font-size:13px;font-weight:600;color:#fff;margin-bottom:3px;">Written correspondence</div><div style="font-size:12px;color:var(--zinc-500);">For enquiries, partnership or media requests — see Contact</div></div><button class="btn-primary" style="padding:8px 14px;font-size:12px;" onclick="closeModal();setTimeout(()=>openModal('contact'),150)">Open Contact →</button></div></div>`
+  },
+  community: {
+    icon:'💬', iconBg:'background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);',
+    title:'Community Hub',
+    subtitle:'1,240+ builders · Identities verified by NicheLab · Names withheld by request',
+    body: () => `
+      <div style="display:flex;flex-direction:column;gap:24px;">
+        <div class="m-section-title"><span>What members say</span><div class="divider"></div></div>
+        <div class="m-grid-3">
+          ${[
+            {t:"NicheLab is what idea research should look like for serious builders. The competitor maps alone save weeks.",n:"Alex Kim",r:"Solo founder · $8K MRR"},
+            {t:"The TAM/SAM/SOM section gave me language I could use directly in an investor deck.",n:"James Müller",r:"Founder · Pre-seed funded"},
+            {t:"Found a micro-SaaS gap in legal document automation I'd been researching 6 months. NicheLab surfaced it in one analysis.",n:"Solo founder, 2nd exit",r:"Micro-SaaS · Legal Tech · Pro"},
+            {t:"Three months in. Found two opportunities I'm actively building. One is already at $1,400 MRR. Live in 22 days.",n:"Indie hacker, 4 products live",r:"Starter plan"},
+            {t:"The risk matrix changed my mind about a market that looked attractive on the surface. Saved me 14 months of the wrong thing.",n:"Marcus Chen",r:"Founder · 3 exits"},
+            {t:"The research has the tone of something built by people who have actually sat inside funds and strategy firms. It shows.",n:"Elena Petrova",r:"Angel investor"},
+          ].map(t=>`
+            <div class="testi-card">
+              <div class="testi-stars">★★★★★</div>
+              <p class="testi-text">"${t.t}"</p>
+              <div class="testi-name">${t.n}</div>
+              <div class="testi-role">${t.r}</div>
+            </div>
+          `).join('')}
+        </div>
+        <div class="m-section-title"><span>Join the community</span><div class="divider"></div></div>
+        <div style="background:rgba(9,9,11,0.6);border:1px solid var(--zinc-800);border-radius:16px;padding:24px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+          <div>
+            <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700;color:#fff;margin-bottom:4px;">1,240+ independent builders</div>
+            <p style="font-size:13px;color:var(--zinc-400);">Create a free account to access saved ideas, member reports, and the full leaderboard.</p>
+          </div>
+          <div style="display:flex;gap:8px;flex-shrink:0;">
+            <button class="btn-ghost" style="padding:8px 14px;font-size:12px;" onclick="closeModal();openAuth('signin')">Sign in</button>
+            <button class="btn-primary" style="padding:8px 14px;font-size:12px;" onclick="closeModal();openAuth('signup')">Join free →</button>
+          </div>
+        </div>
+      </div>
+    `
+  },
+  legal: {
+    icon:'📋', iconBg:'background:var(--zinc-800);border:1px solid var(--zinc-700);',
+    title:'Legal Terms & Privacy Policy',
+    subtitle:'NicheLab · Full legal agreement · Governing all platform use',
+    body: () => `<div style="display:flex;flex-direction:column;gap:0;"><div style="padding:14px 16px;background:rgba(16,185,129,0.04);border:1px solid rgba(16,185,129,0.15);border-radius:12px;margin-bottom:20px;"><div style="font-family:'JetBrains Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:0.1em;color:var(--em);margin-bottom:6px;">Full Agreement — 71 Clauses · Governing All Platform Use</div><p style="font-size:12px;color:var(--zinc-400);line-height:1.7;">This Legal Agreement constitutes a comprehensive legally binding contract governing all access to, interaction with, and use of the digital platform, services, and related technologies operated by <strong style="color:#fff;">NicheLab</strong>. By accessing or using the Platform, the User confirms acceptance of this Agreement in its entirety.</p></div><div style="background:var(--zinc-900);border:1px solid var(--zinc-800);border-radius:10px;padding:14px;margin-bottom:8px;"><div style="font-size:11.5px;font-weight:700;color:#fff;margin-bottom:5px;">1. Nature of the Platform</div><p style="font-size:11.5px;color:var(--zinc-400);line-height:1.7;">The Platform operates as a digital research and informational intelligence environment providing market intelligence analyses, niche market opportunity research, proprietary datasets, algorithmic insights, predictive models, strategic opportunity mapping, and entrepreneurial research summaries. All materials are provided strictly for informational, analytical, and educational purposes — not financial, investment, legal, tax, or accounting advice.</p></div><div style="background:var(--zinc-900);border:1px solid var(--zinc-800);border-radius:10px;padding:14px;margin-bottom:8px;"><div style="font-size:11.5px;font-weight:700;color:#fff;margin-bottom:5px;">2. No Investment Advice</div><p style="font-size:11.5px;color:var(--zinc-400);line-height:1.7;">NicheLab is not registered as an investment advisor, broker-dealer, securities intermediary, financial institution, or regulated financial service provider. The Platform does not assess individual financial circumstances, investment objectives, or risk tolerance. All information is of a generalized informational nature and does not constitute personalized advice.</p></div><div style="background:var(--zinc-900);border:1px solid var(--zinc-800);border-radius:10px;padding:14px;margin-bottom:8px;"><div style="font-size:11.5px;font-weight:700;color:#fff;margin-bottom:5px;">3. Informational & Educational Content</div><p style="font-size:11.5px;color:var(--zinc-400);line-height:1.7;">All research materials, datasets, reports, algorithmic insights, and analytical observations are provided solely for informational and educational purposes. The Company makes no representation that such materials predict future market performance, guarantee business success, or represent definitive analyses. Users are solely responsible for independent due diligence.</p></div><div style="background:var(--zinc-900);border:1px solid var(--zinc-800);border-radius:10px;padding:14px;margin-bottom:8px;"><div style="font-size:11.5px;font-weight:700;color:#fff;margin-bottom:5px;">4. Non-Reliance Clause</div><p style="font-size:11.5px;color:var(--zinc-400);line-height:1.7;">Users expressly acknowledge they shall not rely exclusively upon any information, datasets, or analytical insights provided through the Platform when making financial, commercial, or investment decisions. All decisions based upon Platform information remain the exclusive responsibility of the User.</p></div><div style="background:var(--zinc-900);border:1px solid var(--zinc-800);border-radius:10px;padding:14px;margin-bottom:8px;"><div style="font-size:11.5px;font-weight:700;color:#fff;margin-bottom:5px;">5. User Responsibility & Assumption of Risk</div><p style="font-size:11.5px;color:var(--zinc-400);line-height:1.7;">Users acknowledge that entrepreneurial ventures, technology startups, digital products, and investment activities involve significant economic, operational, and regulatory risk. The User assumes full responsibility for financial decisions, business strategies, commercial activities, market participation, and entrepreneurial experimentation.</p></div><div style="background:var(--zinc-900);border:1px solid var(--zinc-800);border-radius:10px;padding:14px;margin-bottom:8px;"><div style="font-size:11.5px;font-weight:700;color:#fff;margin-bottom:5px;">6. Intellectual Property</div><p style="font-size:11.5px;color:var(--zinc-400);line-height:1.7;">All intellectual property associated with the Platform — including proprietary datasets, research methodologies, analytical frameworks, platform architecture, software code, databases, algorithms, interface design, visual content, and written materials — is owned by or licensed to NicheLab. Users are granted a limited, non-exclusive, non-transferable, revocable licence to access the Platform solely for personal or internal business use.</p></div><div style="background:var(--zinc-900);border:1px solid var(--zinc-800);border-radius:10px;padding:14px;margin-bottom:8px;"><div style="font-size:11.5px;font-weight:700;color:#fff;margin-bottom:5px;">7. Data Licence Agreement</div><p style="font-size:11.5px;color:var(--zinc-400);line-height:1.7;">All data and informational resources are licensed under a restricted informational data licence permitting use solely for personal research, internal business evaluation, and non-commercial informational analysis. Redistributing datasets, reselling proprietary research, publishing NicheLab data commercially, or creating derivative commercial data products is expressly prohibited.</p></div><div style="background:var(--zinc-900);border:1px solid var(--zinc-800);border-radius:10px;padding:14px;margin-bottom:8px;"><div style="font-size:11.5px;font-weight:700;color:#fff;margin-bottom:5px;">8. Acceptable Use Policy</div><p style="font-size:11.5px;color:var(--zinc-400);line-height:1.7;">Prohibited activities include automated scraping, reverse engineering platform software, bypassing authentication mechanisms, exploiting system vulnerabilities, and conducting denial-of-service attacks. The Company reserves the right to terminate accounts engaged in prohibited conduct.</p></div><div style="background:var(--zinc-900);border:1px solid var(--zinc-800);border-radius:10px;padding:14px;margin-bottom:8px;"><div style="font-size:11.5px;font-weight:700;color:#fff;margin-bottom:5px;">9. AI Usage & Data Output Disclaimer</div><p style="font-size:11.5px;color:var(--zinc-400);line-height:1.7;">Certain insights may be generated using automated analytical systems, machine learning models, artificial intelligence algorithms, statistical simulations, or predictive analytics technologies. AI-generated outputs may contain inaccuracies; analytical models may rely on assumptions; predictive outputs may not reflect real-world outcomes. Users are solely responsible for verifying any information generated by automated systems.</p></div><div style="background:var(--zinc-900);border:1px solid var(--zinc-800);border-radius:10px;padding:14px;margin-bottom:8px;"><div style="font-size:11.5px;font-weight:700;color:#fff;margin-bottom:5px;">10. Data Accuracy & Forecast Limitation</div><p style="font-size:11.5px;color:var(--zinc-400);line-height:1.7;">The Platform may provide forward-looking statements, predictive analytics, or statistical projections. Such projections are inherently speculative and subject to economic conditions, regulatory developments, technological innovation, and market dynamics. The Company does not guarantee their accuracy or predictive validity.</p></div><div style="background:var(--zinc-900);border:1px solid var(--zinc-800);border-radius:10px;padding:14px;margin-bottom:8px;"><div style="font-size:11.5px;font-weight:700;color:#fff;margin-bottom:5px;">11. Limitation of Liability</div><p style="font-size:11.5px;color:var(--zinc-400);line-height:1.7;">To the fullest extent permitted under applicable law, NicheLab and its officers, directors, employees, contractors, affiliates, licensors, and data providers shall not be liable for any direct, indirect, incidental, consequential, economic, or reputational damages, loss of profits, or loss of business opportunities.</p></div><div style="background:var(--zinc-900);border:1px solid var(--zinc-800);border-radius:10px;padding:14px;margin-bottom:8px;"><div style="font-size:11.5px;font-weight:700;color:#fff;margin-bottom:5px;">12. Maximum Aggregate Liability</div><p style="font-size:11.5px;color:var(--zinc-400);line-height:1.7;">Where liability cannot be excluded under applicable law, the maximum aggregate liability of NicheLab shall not exceed the total amount paid by the User during the twelve (12) months preceding the claim. Where no payments have been made, liability shall be limited to zero.</p></div><div style="background:var(--zinc-900);border:1px solid var(--zinc-800);border-radius:10px;padding:14px;margin-bottom:8px;"><div style="font-size:11.5px;font-weight:700;color:#fff;margin-bottom:5px;">13. Indemnification</div><p style="font-size:11.5px;color:var(--zinc-400);line-height:1.7;">Users agree to indemnify, defend, and hold harmless NicheLab and its affiliates from any claims, damages, or liabilities arising from misuse of the Platform, violation of these Terms, infringement of intellectual property rights, or violation of applicable laws.</p></div><div style="background:var(--zinc-900);border:1px solid var(--zinc-800);border-radius:10px;padding:14px;margin-bottom:8px;"><div style="font-size:11.5px;font-weight:700;color:#fff;margin-bottom:5px;">14. Privacy Policy — GDPR</div><p style="font-size:11.5px;color:var(--zinc-400);line-height:1.7;">The Platform processes personal data in accordance with the General Data Protection Regulation (EU) 2016/679 (GDPR) and applicable international data protection standards. Personal data may include email addresses, authentication credentials, device identifiers, IP addresses, usage metadata, and billing transaction metadata, processed for authentication, fraud prevention, analytics, and service improvement.</p></div><div style="background:var(--zinc-900);border:1px solid var(--zinc-800);border-radius:10px;padding:14px;margin-bottom:8px;"><div style="font-size:11.5px;font-weight:700;color:#fff;margin-bottom:5px;">15. Cookie Policy</div><p style="font-size:11.5px;color:var(--zinc-400);line-height:1.7;">The Platform utilises cookies, session identifiers, and related tracking technologies including strictly necessary cookies, analytics cookies, functional cookies, and security cookies. Users may manage cookie settings through browser configuration.</p></div><div style="background:var(--zinc-900);border:1px solid var(--zinc-800);border-radius:10px;padding:14px;margin-bottom:8px;"><div style="font-size:11.5px;font-weight:700;color:#fff;margin-bottom:5px;">16. DMCA / Copyright Policy</div><p style="font-size:11.5px;color:var(--zinc-400);line-height:1.7;">NicheLab respects intellectual property rights and complies with applicable copyright regulations. Users who believe copyrighted materials have been used without authorisation may submit a notice including identification of the copyrighted work, the allegedly infringing material, and claimant contact information.</p></div><div style="background:var(--zinc-900);border:1px solid var(--zinc-800);border-radius:10px;padding:14px;margin-bottom:8px;"><div style="font-size:11.5px;font-weight:700;color:#fff;margin-bottom:5px;">17–18. Platform Availability & Force Majeure</div><p style="font-size:11.5px;color:var(--zinc-400);line-height:1.7;">The Platform is provided on an 'as available' and 'as is' basis. The Company may suspend services for maintenance, security, or operational reasons. The Company shall not be liable for delays or failures caused by infrastructure failures, cyber incidents, telecommunications outages, natural disasters, or regulatory restrictions.</p></div><div style="background:var(--zinc-900);border:1px solid var(--zinc-800);border-radius:10px;padding:14px;margin-bottom:8px;"><div style="font-size:11.5px;font-weight:700;color:#fff;margin-bottom:5px;">19–20. Arbitration & Class Action Waiver</div><p style="font-size:11.5px;color:var(--zinc-400);line-height:1.7;">Any dispute arising from use of the Platform shall be resolved through binding arbitration where permitted by law. The arbitration decision shall be final and enforceable. Users waive any right to participate in class action litigation or collective legal proceedings. All disputes must be brought individually.</p></div><div style="background:var(--zinc-900);border:1px solid var(--zinc-800);border-radius:10px;padding:14px;margin-bottom:8px;"><div style="font-size:11.5px;font-weight:700;color:#fff;margin-bottom:5px;">21–25. Severability, Governing Law & Acceptance</div><p style="font-size:11.5px;color:var(--zinc-400);line-height:1.7;">If any provision of this Agreement is determined to be invalid, the remaining provisions shall remain enforceable. This Agreement shall be governed by the laws of the jurisdiction in which the Company is legally established. By accessing or using the Platform, the User confirms acceptance of this Legal Agreement in its entirety.</p></div><div style="background:var(--zinc-900);border:1px solid var(--zinc-800);border-radius:10px;padding:14px;margin-bottom:8px;"><div style="font-size:11.5px;font-weight:700;color:#fff;margin-bottom:5px;">61–68. Data Protection & Competitive Use Restrictions</div><p style="font-size:11.5px;color:var(--zinc-400);line-height:1.7;">All informational materials, datasets, and research insights constitute proprietary informational assets. Users are strictly prohibited from using Platform data to develop competing market intelligence platforms, data aggregation services, or research intelligence databases. Systematic accumulation of Platform data, reverse engineering of analytical methodologies, or creation of derivative commercial data products is expressly prohibited. The Company reserves the right to implement technological countermeasures and seek injunctive relief where violations occur.</p></div><div style="background:var(--zinc-900);border:1px solid var(--zinc-800);border-radius:10px;padding:14px;margin-bottom:8px;"><div style="font-size:11.5px;font-weight:700;color:#fff;margin-bottom:5px;">69–71. Monitoring, Enforcement & Survival</div><p style="font-size:11.5px;color:var(--zinc-400);line-height:1.7;">The Company reserves the right to monitor user activity for detection of automated data extraction, unusual usage patterns, and protection of proprietary data assets. The Company may suspend or terminate access without prior notice where misuse is detected. All provisions relating to intellectual property, data ownership, database rights, limitation of liability, indemnification, arbitration, and dispute resolution shall survive termination of Platform access.</p></div><p style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--zinc-600);padding:12px;border:1px solid var(--zinc-900);border-radius:8px;line-height:1.6;margin-top:8px;">This document summarises the Agreement's key provisions. The complete 71-clause Agreement governs all platform use. Last updated: March 2026. NicheLab · nichelab.io</p></div>`
+  ,
+  contact: {
+    icon:'📍', iconBg:'background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);',
+    title:'Contact & Global Locations',
+    subtitle:'Global Research Network · Correspondence Coordination · Written Enquiries Only',
+    body: () => `<div style="display:flex;flex-direction:column;gap:0;"><p style="font-size:13px;color:var(--zinc-400);line-height:1.7;margin-bottom:20px;">NicheLab operates as a digitally distributed research, intelligence, and data analysis platform. Our research coverage, analytical monitoring, and international correspondence coordination extend across multiple geographic regions.</p><div class="m-section-title" style="margin-bottom:12px;"><span>Global correspondence locations</span><div class="divider"></div></div><div class="addr-grid"><div class="addr-card"><div class="addr-flag">🇬🇧</div><div class="addr-city">London</div><div class="addr-role">UK Market Coverage</div><div class="addr-text">Knightsbridge One<br>Hyde Park<br>London SW1X 7LJ<br>United Kingdom</div></div><div class="addr-card"><div class="addr-flag">🇦🇪</div><div class="addr-city">Dubai</div><div class="addr-role">Middle East &amp; North Africa Coverage</div><div class="addr-text">The Palm Jumeirah<br>Dubai<br>United Arab Emirates</div></div><div class="addr-card"><div class="addr-flag">🇵🇹</div><div class="addr-city">Lisbon</div><div class="addr-role">European Research Coordination</div><div class="addr-text">Quinta Patino Estates<br>Avenida da República<br>Cascais, Lisbon<br>Portugal</div></div><div class="addr-card"><div class="addr-flag">🇺🇸</div><div class="addr-city">Los Angeles</div><div class="addr-role">Americas Research Coverage</div><div class="addr-text">Benedict Canyon<br>Beverly Hills, CA 90210<br>United States of America</div></div><div class="addr-card"><div class="addr-flag">🇯🇵</div><div class="addr-city">Tokyo</div><div class="addr-role">Asia-Pacific Research Coverage</div><div class="addr-text">Hiroo Garden Hills<br>Shibuya<br>Tokyo 150-0012<br>Japan</div></div><div class="addr-card"><div class="addr-flag">🇳🇱</div><div class="addr-city">The Hague</div><div class="addr-role">European Policy &amp; Regulatory Monitoring</div><div class="addr-text">Alexander Gogelweg<br>2517 JH Den Haag<br>Netherlands</div></div></div><div style="margin-top:16px;padding:14px 16px;background:var(--zinc-900);border:1px solid var(--zinc-800);border-radius:12px;"><div style="font-family:'JetBrains Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:0.1em;color:var(--zinc-500);margin-bottom:8px;">Discretion Policy</div><p style="font-size:12px;color:var(--zinc-400);line-height:1.7;">All NicheLab correspondence locations operate within secure, controlled-access residential or commercial estates. Visitors are not received without prior written appointment confirmation. Physical mail or courier deliveries without a confirmed reference identifier will not be accepted. These locations represent regional research coverage areas and correspondence coordination points — not permanent operational offices or registered corporate branches.</p></div><div class="m-section-title" style="margin-top:24px;"><span>Written enquiry</span><div class="divider"></div></div><div style="background:rgba(9,9,11,0.6);border:1px solid var(--zinc-800);border-radius:16px;padding:20px;margin-top:12px;"><p style="font-size:12px;color:var(--zinc-400);line-height:1.65;margin-bottom:14px;">All official correspondence should be initiated through the platform contact channels. Select an enquiry type and submit your message.</p><div style="display:flex;flex-direction:column;gap:10px;"><select style="padding:10px 12px;background:var(--zinc-950);border:1px solid var(--zinc-800);border-radius:8px;color:#fff;font-size:12px;font-family:'DM Sans',sans-serif;outline:none;width:100%;"><option value="">Select enquiry type</option><option>General enquiry</option><option>Membership &amp; billing</option><option>Partnership</option><option>Press &amp; media</option><option>Research request</option><option>Legal &amp; compliance</option></select><input type="email" placeholder="your@email.com" style="padding:10px 12px;background:var(--zinc-950);border:1px solid var(--zinc-800);border-radius:8px;color:#fff;font-size:12px;font-family:'DM Sans',sans-serif;outline:none;width:100%;"><textarea rows="4" placeholder="Describe your enquiry in detail." style="padding:10px 12px;background:var(--zinc-950);border:1px solid var(--zinc-800);border-radius:8px;color:#fff;font-size:12px;font-family:'DM Sans',sans-serif;outline:none;width:100%;resize:vertical;"></textarea><button class="btn-primary" style="padding:10px 16px;font-size:13px;width:100%;" onclick="alert('Please use the contact form on nichelab.io')">Submit enquiry →</button></div></div></div>`
+  
+};
+
+function openModal(id) {
+  const m = MODAL_CONTENT[id];
+  if (!m) return;
+  document.getElementById('modalIcon').textContent = m.icon;
+  document.getElementById('modalIcon').style.cssText = m.iconBg;
+  document.getElementById('modalTitle').textContent = m.title;
+  document.getElementById('modalSubtitle').textContent = m.subtitle;
+  document.getElementById('modalBody').innerHTML = m.body();
+  document.getElementById('modalBackdrop').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal(e) {
+  if (e && e.target !== e.currentTarget) return;
+  document.getElementById('modalBackdrop').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ─── AUTH ────────────────────────────────────────────────
+let currentAuthTab = 'signin';
+function openAuth(tab='signin') {
+  currentAuthTab = tab;
+  switchAuthTab(tab);
+  document.getElementById('authBackdrop').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeAuth(e) {
+  if (e && e.target !== e.currentTarget) return;
+  document.getElementById('authBackdrop').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function switchAuthTab(tab) {
+  currentAuthTab = tab;
+  document.getElementById('signinTab').className = 'auth-tab ' + (tab==='signin'?'active':'inactive');
+  document.getElementById('signupTab').className = 'auth-tab ' + (tab==='signup'?'active':'inactive');
+  document.getElementById('authSubmitBtn').textContent = tab==='signin'?'Sign in to NicheLab →':'Create free account →';
+}
+function handleAuthSubmit() {
+  const email = document.getElementById('authEmail').value;
+  const msg = document.getElementById('authMsg');
+  if (!email || !email.includes('@')) { msg.style.display='block'; msg.style.color='#f87171'; msg.textContent='Please enter a valid email address.'; return; }
+  msg.style.display='block'; msg.style.color='var(--em)';
+  msg.textContent = currentAuthTab==='signin'?'Signing in… (connect Supabase to enable)':'Account created! Check your email. (connect Supabase to enable)';
+}
+function handleCtaSubmit() {
+  const email = document.getElementById('ctaEmailInput').value;
+  if (!email || !email.includes('@')) return;
+  openAuth('signup');
+}
+
+// ─── SCROLL ──────────────────────────────────────────────
+function scrollToSection(id) {
+  const el = document.getElementById(id) || document.getElementById('top');
+  if (el) el.scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+// ─── LIVE COUNTERS ───────────────────────────────────────
+function animateCounters() {
+  const n = document.getElementById('nichesCount');
+  const b = document.getElementById('buildersCount');
+  const nBase = 1420, bBase = 1240;
+  n.textContent = (nBase + Math.floor(Math.random()*3)).toLocaleString();
+  b.textContent = (bBase + Math.floor(Math.random()*2)).toLocaleString();
+}
+
+// ─── INIT ────────────────────────────────────────────────
+buildTicker();
+renderSignals();
+updateChart(0);
+renderReports();
+renderLeaderboard();
+renderPricing();
+renderHub();
+typewriterTick();
+
+setInterval(animateSignals, 3200);
+setInterval(animateCounters, 4100);
+
+// Keyboard close
+document.addEventListener('keydown', e => {
+  if (e.key==='Escape') {
+    closeModal();
+    closeAuth();
+  }
+});
+</script>
+</body>
+</html>
