@@ -330,8 +330,16 @@ function resetSetup(){
 // ══════════════════════════════════════════════════════════
 function initSupabase(url, key){
   const {createClient} = supabase;
+  // storageKey isolates this app's auth lock from any other Supabase
+  // clients on the same domain — prevents cross-tab lock contention.
+  const projectId = url.match(/https:\/\/([^\.]+)/)?.[1] || 'nichelab';
   app.sb = createClient(url, key, {
-    auth:{ persistSession:true, autoRefreshToken:true, detectSessionInUrl:true }
+    auth:{
+      persistSession: true,
+      autoRefreshToken: true,
+      detectSessionInUrl: true,
+      storageKey: `nl_auth_${projectId}`
+    }
   });
 
   // Single authoritative event handler for all auth state transitions
@@ -367,10 +375,13 @@ function initSupabase(url, key){
     }
   });
 
-  // Safety net: if no session exists, route to auth
-  app.sb.auth.getSession().then(({data:{session}})=>{
-    if(!session && !_appInitialized) showAuth();
-  });
+  // getSession() removed — it races with onAuthStateChange on the
+  // localStorage lock, causing "lock was released" errors.
+  // Instead: if INITIAL_SESSION hasn't fired within 3s, it means
+  // there is no session — route to auth safely without a lock race.
+  setTimeout(()=>{
+    if(!_appInitialized) showAuth();
+  }, 3000);
 }
 
 // ══════════════════════════════════════════════════════════
@@ -530,7 +541,8 @@ async function loadReports(){
     .from('reports')
     .select('id,title,category,niche,summary,signal,tier_required,analyst_code,word_count,published_at,created_at')
     .eq('status','published')
-    .order('published_at',{ascending:false});
+    .order('published_at',{ascending:false,nullsFirst:false})
+    .order('created_at',{ascending:false});
 
   if(error){
     console.error('[NicheLab] loadReports:', error.message);
@@ -655,8 +667,22 @@ async function openReport(id){
     toast('Weekly limit reached (10/week). Upgrade to Pro for unlimited access.','err'); return;
   }
 
-  const {data,error} = await app.sb.from('reports').select('content').eq('id',id).single();
-  if(error||!data){ toast('Could not load report. Try again.','err'); return; }
+  // Retry up to 2x — first attempt may fail if auth token just refreshed
+  let data = null, error = null;
+  for(let attempt=1; attempt<=2; attempt++){
+    const res = await app.sb.from('reports').select('content').eq('id',id).single();
+    if(res.data && !res.error){ data=res.data; error=null; break; }
+    error = res.error;
+    if(attempt < 2){
+      // Wait briefly then refresh session before retry
+      await new Promise(r=>setTimeout(r,600));
+      await app.sb.auth.getSession(); // force token refresh on retry only
+    }
+  }
+  if(error||!data){
+    console.error('[NicheLab] openReport:', error?.message);
+    toast('Could not load report — please try again.','err'); return;
+  }
 
   // Mark read + increment usage (non-blocking)
   if(!app.readReportIds.has(id)){
