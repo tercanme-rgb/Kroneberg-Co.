@@ -341,14 +341,14 @@ function initSupabase(url, key){
   // use the raw synchronous localStorage interface — NO Web Locks,
   // NO lock contention, NO race condition. This is the correct fix.
   // ──────────────────────────────────────────────────────────────
-  const projectId = url.match(/https:\/\/([^\.]+)/)?.[1] || 'nichelab';
+  // storageKey intentionally NOT set — keeps existing user sessions valid.
+  // storage: window.localStorage bypasses Web Locks wrapper (the lock-race fix).
   app.sb = createClient(url, key, {
     auth:{
       persistSession:     true,
       autoRefreshToken:   true,
       detectSessionInUrl: true,
-      storageKey:         `nl_auth_${projectId}`,
-      storage:            window.localStorage   // ← bypasses Web Locks wrapper
+      storage:            window.localStorage
     }
   });
 
@@ -363,6 +363,14 @@ function initSupabase(url, key){
       app.readReportIds = new Set();
       if(app.realtimeCh){ app.sb.removeChannel(app.realtimeCh); app.realtimeCh=null; }
       showAuth();
+      return;
+    }
+
+    // ── No session (INITIAL_SESSION fired with null) ────────
+    // Without this branch, the page would stay blank until the
+    // 3-second timeout fires. Route immediately instead.
+    if(!session){
+      if(!_appInitialized) showAuth();
       return;
     }
 
