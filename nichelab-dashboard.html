@@ -23,7 +23,6 @@
   --radius:6px;
 }
 html,body{height:100%;font-family:var(--font-sans);background:var(--bg);color:var(--text)}
-/* ── Auth Screen ── */
 #auth-screen{display:none;min-height:100vh;align-items:center;justify-content:center;flex-direction:column;gap:0;background:var(--bg)}
 #auth-screen.active{display:flex}
 .auth-card{background:var(--surface);border:1px solid var(--border);padding:48px;width:420px;border-radius:10px;box-shadow:0 4px 32px rgba(0,0,0,.06)}
@@ -42,10 +41,8 @@ html,body{height:100%;font-family:var(--font-sans);background:var(--bg);color:va
 .auth-msg{font-size:12px;text-align:center;margin-top:14px;min-height:20px;color:var(--error)}
 .auth-msg.ok{color:var(--success)}
 .auth-setup{margin-top:24px;padding-top:20px;border-top:1px solid var(--border);font-size:11px;color:var(--text3);text-align:center;line-height:1.6}
-/* ── Main App ── */
 #app-screen{display:none;flex-direction:column;min-height:100vh}
 #app-screen.active{display:flex}
-/* ── Header ── */
 header{background:var(--surface);border-bottom:1px solid var(--border);padding:0 32px;height:60px;display:flex;align-items:center;gap:20px;position:sticky;top:0;z-index:50}
 .logo{font-family:var(--font-serif);font-size:22px;font-weight:700;color:var(--accent)}
 .logo span{font-style:italic;font-weight:400;color:var(--text2)}
@@ -61,7 +58,6 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:0
 .user-avatar{width:34px;height:34px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;font-family:var(--font-sans);cursor:pointer}
 .btn-signout{font-size:11px;color:var(--text2);background:none;border:1px solid var(--border);padding:6px 12px;border-radius:var(--radius);cursor:pointer;font-family:var(--font-sans)}
 .btn-signout:hover{color:var(--text);border-color:var(--border2)}
-/* ── Stats Bar ── */
 .stats-bar{background:var(--surface);border-bottom:1px solid var(--border);padding:12px 32px;display:flex;gap:32px}
 .stat-item{display:flex;flex-direction:column;gap:2px}
 .stat-val{font-family:var(--font-mono);font-size:18px;font-weight:500;color:var(--accent)}
@@ -71,20 +67,16 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:0
 .usage-fill{height:100%;border-radius:2px;background:var(--accent);transition:width .4s}
 .live-dot{width:7px;height:7px;border-radius:50%;background:var(--success);display:inline-block;animation:livepulse 2s infinite}
 @keyframes livepulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(.8)}}
-/* ── Layout ── */
 .content-area{display:flex;flex:1;gap:0}
-/* ── Filter Bar ── */
 .filter-bar{background:var(--surface);border-bottom:1px solid var(--border);padding:12px 32px;display:flex;align-items:center;gap:10px;overflow-x:auto}
 .filter-chip{padding:5px 14px;border-radius:20px;font-size:11px;font-weight:500;cursor:pointer;white-space:nowrap;border:1px solid var(--border);background:var(--surface2);color:var(--text2);transition:all .12s;font-family:var(--font-sans)}
 .filter-chip:hover{border-color:var(--border2);color:var(--text)}
 .filter-chip.active{background:var(--accent);color:#fff;border-color:var(--accent)}
-/* ── Feed ── */
 .feed{flex:1;padding:28px 32px;overflow-y:auto}
 .feed-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
 .feed-title{font-family:var(--font-serif);font-size:20px;font-weight:700;color:var(--text)}
-.feed-meta{font-size:11px;color:var(--text3);font-family:var(--font-mono);display:flex;align-items:center;gap:8px}
+.feed-meta{font-size:11px;color:var(--text3);font-family:var(--font-mono)}
 .report-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px}
-/* ── Report Card ── */
 .report-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:22px;cursor:pointer;transition:all .15s;position:relative;overflow:hidden}
 .report-card:hover{border-color:var(--accent);box-shadow:0 4px 20px rgba(26,48,80,.08)}
 .report-card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;background:var(--border)}
@@ -105,7 +97,6 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:0
 .locked-icon{font-size:24px}
 .locked-text{font-size:12px;color:var(--text2);font-weight:500}
 .btn-upgrade{background:var(--gold);color:#fff;border:none;padding:6px 16px;border-radius:var(--radius);font-size:11px;font-weight:600;cursor:pointer;font-family:var(--font-sans)}
-/* ── Realtime Feed ── */
 .live-feed{width:280px;border-left:1px solid var(--border);background:var(--surface2);display:flex;flex-direction:column;flex-shrink:0}
 .live-header{padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
 .live-title{font-size:12px;font-weight:600;color:var(--text2)}
@@ -115,46 +106,39 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:0
 .live-item-cat{font-family:var(--font-mono);font-size:9px;color:var(--accent);text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px}
 .live-item-title{font-size:11px;font-weight:500;color:var(--text);line-height:1.4}
 .live-item-time{font-size:9px;color:var(--text3);margin-top:4px;font-family:var(--font-mono)}
-/* ── Toast ── */
 #toast{position:fixed;bottom:24px;right:24px;z-index:200;display:flex;flex-direction:column;gap:8px;pointer-events:none}
-.toast-item{background:var(--accent);color:#fff;padding:12px 18px;border-radius:8px;font-size:13px;font-weight:500;box-shadow:0 4px 20px rgba(0,0,0,.15);animation:slideIn .3s ease;display:flex;align-items:center;gap:10px}
+.toast-item{background:var(--accent);color:#fff;padding:12px 18px;border-radius:8px;font-size:13px;font-weight:500;box-shadow:0 4px 20px rgba(0,0,0,.15);animation:slideIn .3s ease}
 .toast-item.ok{background:var(--success)}
 .toast-item.err{background:var(--error)}
 @keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
-/* ── Report Viewer Modal ── */
 #viewer-modal{position:fixed;inset:0;z-index:100;display:none;flex-direction:column;background:var(--bg)}
 #viewer-modal.open{display:flex}
 .viewer-topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;height:54px;display:flex;align-items:center;gap:16px;flex-shrink:0}
 .viewer-title{font-family:var(--font-serif);font-size:16px;font-weight:700;color:var(--text);flex:1}
-.btn-close-viewer{background:none;border:none;font-size:18px;cursor:pointer;color:var(--text2);padding:4px 8px;transition:color .12s}
+.btn-close-viewer{background:none;border:none;font-size:18px;cursor:pointer;color:var(--text2);padding:4px 8px}
 .btn-close-viewer:hover{color:var(--text)}
 #viewer-iframe{flex:1;border:none;background:#fff}
-/* ── Setup Overlay ── */
 #setup-screen{display:none;min-height:100vh;align-items:center;justify-content:center;background:var(--bg)}
 #setup-screen.active{display:flex}
 .setup-card{background:var(--surface);border:1px solid var(--border);padding:48px;width:480px;border-radius:10px;box-shadow:0 4px 32px rgba(0,0,0,.06)}
 .setup-title{font-family:var(--font-serif);font-size:26px;font-weight:700;color:var(--accent);margin-bottom:8px}
 .setup-sub{font-size:13px;color:var(--text2);margin-bottom:28px;line-height:1.6}
-/* ── Skeleton ── */
 .skeleton{background:linear-gradient(90deg,var(--border) 25%,var(--surface2) 50%,var(--border) 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;border-radius:4px}
 @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
 .skel-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:22px;height:200px}
-/* ── Scrollbar ── */
 ::-webkit-scrollbar{width:5px;height:5px}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
-/* ── Responsive ── */
 @media(max-width:900px){.live-feed{display:none}}
 @media(max-width:700px){.report-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 
-<!-- ── Setup Screen (first run / no Supabase config) ── -->
 <div id="setup-screen">
   <div class="setup-card">
     <div class="setup-title">NicheLab Setup</div>
-    <div class="setup-sub">Connect your Supabase project to get started. You'll only need to do this once — credentials are saved locally.</div>
+    <div class="setup-sub">Connect your Supabase project to get started. Credentials are saved locally to your browser and never shared.</div>
     <div class="form-field">
       <label>Supabase Project URL</label>
       <input type="url" id="setup-url" placeholder="https://xxxx.supabase.co">
@@ -168,7 +152,6 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:0
   </div>
 </div>
 
-<!-- ── Auth Screen ── -->
 <div id="auth-screen">
   <div class="auth-card">
     <div class="auth-logo">NicheLab</div>
@@ -189,11 +172,10 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:0
       <button class="btn-primary" id="btn-signup" onclick="doSignup()">Create Account</button>
     </div>
     <div id="auth-msg" class="auth-msg"></div>
-    <div class="auth-setup">Need to change the Supabase connection? <span style="text-decoration:underline;cursor:pointer;color:var(--accent)" onclick="resetSetup()">Reset setup</span></div>
+    <div class="auth-setup">Need to change connection? <span style="text-decoration:underline;cursor:pointer;color:var(--accent)" onclick="resetSetup()">Reset setup</span></div>
   </div>
 </div>
 
-<!-- ── App Screen ── -->
 <div id="app-screen">
   <header>
     <div class="logo">NicheLab <span>Intelligence</span></div>
@@ -202,8 +184,8 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:0
       <input type="text" id="search-input" placeholder="Search reports, categories, niches..." oninput="handleSearch()">
     </div>
     <div class="header-right">
-      <span class="tier-badge" id="user-tier-badge">starter</span>
-      <div class="user-avatar" id="user-avatar" title="Account"></div>
+      <span class="tier-badge" id="user-tier-badge">—</span>
+      <div class="user-avatar" id="user-avatar">—</div>
       <button class="btn-signout" onclick="doSignout()">Sign out</button>
     </div>
   </header>
@@ -221,7 +203,7 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:0
       <div class="stat-label" style="margin-bottom:4px">Weekly Usage</div>
       <div class="usage-bar-wrap">
         <div class="usage-bar"><div class="usage-fill" id="usage-fill" style="width:0%"></div></div>
-        <span id="usage-text" style="font-size:10px;font-family:var(--font-mono);color:var(--text2)">0/10</span>
+        <span id="usage-text" style="font-size:10px;font-family:var(--font-mono);color:var(--text2)">—</span>
       </div>
     </div>
     <div class="stat-item" style="margin-left:auto">
@@ -232,7 +214,7 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:0
     </div>
   </div>
 
-  <div class="filter-bar" id="filter-bar">
+  <div class="filter-bar">
     <div class="filter-chip active" data-cat="all" onclick="filterCategory('all')">All Reports</div>
     <div class="filter-chip" data-cat="Micro-SaaS" onclick="filterCategory('Micro-SaaS')">⚡ Micro-SaaS</div>
     <div class="filter-chip" data-cat="AI Automation" onclick="filterCategory('AI Automation')">🤖 AI Automation</div>
@@ -250,16 +232,10 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:0
     <div class="feed">
       <div class="feed-header">
         <div class="feed-title">Market Intelligence Reports</div>
-        <div class="feed-meta">
-          <span id="report-count">0 reports</span>
-        </div>
+        <div class="feed-meta"><span id="report-count">0 reports</span></div>
       </div>
-      <div id="report-grid" class="report-grid">
-        <!-- Reports rendered here -->
-      </div>
+      <div id="report-grid" class="report-grid"></div>
     </div>
-
-    <!-- Live Feed Sidebar -->
     <div class="live-feed">
       <div class="live-header">
         <span class="live-dot"></span>
@@ -272,7 +248,6 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:0
   </div>
 </div>
 
-<!-- ── Report Viewer ── -->
 <div id="viewer-modal">
   <div class="viewer-topbar">
     <div class="viewer-title" id="viewer-title">Report</div>
@@ -281,7 +256,6 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:0
   <iframe id="viewer-iframe"></iframe>
 </div>
 
-<!-- ── Toast ── -->
 <div id="toast"></div>
 
 <script>
@@ -289,77 +263,114 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:0
 // STATE
 // ══════════════════════════════════════════════════════════
 const app = {
-  sb: null,
-  user: null,
-  profile: null,
-  reports: [],
-  filteredReports: [],
+  sb: null, user: null, profile: null,
+  reports: [], filteredReports: [],
   readReportIds: new Set(),
-  filterCat: 'all',
-  searchQ: '',
+  filterCat: 'all', searchQ: '',
   realtimeCh: null
 };
 
 // ══════════════════════════════════════════════════════════
+// BUG FIX #1 — REPORT PERSISTENCE ON REFRESH
+//
+// Root cause: showApp() called initApp() directly. Supabase v2
+// fires onAuthStateChange for INITIAL_SESSION + SIGNED_IN +
+// TOKEN_REFRESHED — all with valid sessions. Each event triggered
+// showApp() → initApp() → showSkeletons() which wiped the grid,
+// then re-fetched. Any failure in the second+ fetch left reports gone.
+//
+// Fix: _appInitialized guard ensures initApp() runs exactly once
+// per sign-in session. Subsequent auth events only refresh profile
+// metadata (tier, usage) without touching the report grid.
+// ══════════════════════════════════════════════════════════
+let _appInitialized = false;
+
+// ══════════════════════════════════════════════════════════
 // TOAST
 // ══════════════════════════════════════════════════════════
-function toast(msg, type='', duration=3500){
+function toast(msg, type='', dur=3500){
   const el = document.getElementById('toast');
-  const item = document.createElement('div');
-  item.className = `toast-item ${type}`;
-  item.textContent = msg;
-  el.appendChild(item);
-  setTimeout(()=>{item.style.opacity='0';item.style.transform='translateX(100%)';item.style.transition='all .3s';setTimeout(()=>el.removeChild(item),300)}, duration);
+  const d  = document.createElement('div');
+  d.className = `toast-item ${type}`;
+  d.textContent = msg;
+  el.appendChild(d);
+  setTimeout(()=>{
+    d.style.cssText='opacity:0;transform:translateX(100%);transition:all .3s';
+    setTimeout(()=>{ if(el.contains(d)) el.removeChild(d); }, 320);
+  }, dur);
 }
 
 // ══════════════════════════════════════════════════════════
-// SETUP / SUPABASE INIT
+// SETUP
 // ══════════════════════════════════════════════════════════
-function initSupabase(url, key){
-  const {createClient} = supabase;
-  app.sb = createClient(url, key);
-
-  // Auth state listener — single source of truth for routing
-  app.sb.auth.onAuthStateChange(async (event, session) => {
-    if(session && session.user){
-      app.user = session.user;
-      await loadProfile();
-      showApp();
-    } else {
-      app.user = null;
-      app.profile = null;
-      showAuth();
-    }
-  });
-
-  // Initial session check (handles page refresh)
-  app.sb.auth.getSession().then(({data:{session}}) => {
-    if(!session) showAuth();
-    // If session exists, onAuthStateChange fires automatically
-  });
-}
-
 function saveSetup(){
   const url = document.getElementById('setup-url').value.trim();
   const key = document.getElementById('setup-key').value.trim();
   const msg = document.getElementById('setup-msg');
-  if(!url || !key){msg.textContent='Both fields are required.';return;}
-  if(!url.startsWith('https://')){msg.textContent='URL must start with https://';return;}
-
+  if(!url||!key){ msg.textContent='Both fields are required.'; return; }
+  if(!url.startsWith('https://')){ msg.textContent='URL must start with https://'; return; }
   localStorage.setItem('nl_sb_url', url);
   localStorage.setItem('nl_sb_key', key);
-  msg.textContent = '';
-
+  msg.textContent='';
   document.getElementById('setup-screen').classList.remove('active');
   initSupabase(url, key);
 }
 
 function resetSetup(){
-  if(!confirm('This will clear your Supabase credentials. Continue?')) return;
+  if(!confirm('Clear Supabase credentials and sign out?')) return;
+  _appInitialized = false;
   localStorage.removeItem('nl_sb_url');
   localStorage.removeItem('nl_sb_key');
   if(app.sb) app.sb.auth.signOut().catch(()=>{});
   location.reload();
+}
+
+// ══════════════════════════════════════════════════════════
+// SUPABASE INIT
+// ══════════════════════════════════════════════════════════
+function initSupabase(url, key){
+  const {createClient} = supabase;
+  app.sb = createClient(url, key, {
+    auth:{ persistSession:true, autoRefreshToken:true, detectSessionInUrl:true }
+  });
+
+  // Single authoritative event handler for all auth state transitions
+  app.sb.auth.onAuthStateChange(async (event, session)=>{
+
+    // ── Sign-out or session deletion ──────────────────────
+    if(event==='SIGNED_OUT' || event==='USER_DELETED'){
+      _appInitialized = false;
+      app.user = null; app.profile = null;
+      app.reports = []; app.filteredReports = [];
+      app.readReportIds = new Set();
+      if(app.realtimeCh){ app.sb.removeChannel(app.realtimeCh); app.realtimeCh=null; }
+      showAuth();
+      return;
+    }
+
+    // ── Valid session ─────────────────────────────────────
+    if(session && session.user){
+      app.user = session.user;
+
+      if(!_appInitialized){
+        // FIRST valid event this session → full boot
+        _appInitialized = true;
+        await loadProfile();
+        showApp();          // showApp() does NOT call initApp() anymore
+        await initApp();    // Load reports, realtime — happens ONCE
+      } else {
+        // SUBSEQUENT events (TOKEN_REFRESHED, SIGNED_IN after INITIAL_SESSION)
+        // Silently refresh profile only. DO NOT reset the report grid.
+        await loadProfile();
+        renderUserUI();
+      }
+    }
+  });
+
+  // Safety net: if no session exists, route to auth
+  app.sb.auth.getSession().then(({data:{session}})=>{
+    if(!session && !_appInitialized) showAuth();
+  });
 }
 
 // ══════════════════════════════════════════════════════════
@@ -368,7 +379,7 @@ function resetSetup(){
 function switchTab(tab){
   document.getElementById('tab-login').classList.toggle('active', tab==='login');
   document.getElementById('tab-signup').classList.toggle('active', tab==='signup');
-  document.getElementById('login-form').style.display = tab==='login' ? '' : 'none';
+  document.getElementById('login-form').style.display  = tab==='login'  ? '' : 'none';
   document.getElementById('signup-form').style.display = tab==='signup' ? '' : 'none';
   document.getElementById('auth-msg').textContent = '';
 }
@@ -378,16 +389,16 @@ async function doLogin(){
   const pass  = document.getElementById('login-pass').value;
   const msg   = document.getElementById('auth-msg');
   const btn   = document.getElementById('btn-login');
-  if(!email||!pass){msg.textContent='Please enter email and password.';return;}
-  btn.disabled = true; btn.textContent = 'Signing in...';
-  msg.textContent = ''; msg.className = 'auth-msg';
+  if(!email||!pass){ msg.textContent='Enter email and password.'; return; }
+  btn.disabled=true; btn.textContent='Signing in...';
+  msg.textContent=''; msg.className='auth-msg';
   try{
-    const {error} = await app.sb.auth.signInWithPassword({email, password:pass});
+    const {error} = await app.sb.auth.signInWithPassword({email,password:pass});
     if(error) throw error;
-    // onAuthStateChange handles navigation
+    // onAuthStateChange handles routing
   } catch(e){
-    msg.textContent = e.message || 'Sign in failed. Check credentials.';
-    btn.disabled = false; btn.textContent = 'Sign In';
+    msg.textContent = e.message||'Sign in failed.';
+    btn.disabled=false; btn.textContent='Sign In';
   }
 }
 
@@ -397,32 +408,30 @@ async function doSignup(){
   const pass  = document.getElementById('signup-pass').value;
   const msg   = document.getElementById('auth-msg');
   const btn   = document.getElementById('btn-signup');
-  if(!name||!email||!pass){msg.textContent='All fields are required.';return;}
-  if(pass.length<8){msg.textContent='Password must be at least 8 characters.';return;}
-  btn.disabled = true; btn.textContent = 'Creating account...';
-  msg.textContent = ''; msg.className = 'auth-msg';
+  if(!name||!email||!pass){ msg.textContent='All fields required.'; return; }
+  if(pass.length<8){ msg.textContent='Password must be 8+ characters.'; return; }
+  btn.disabled=true; btn.textContent='Creating account...';
+  msg.textContent=''; msg.className='auth-msg';
   try{
-    const {error} = await app.sb.auth.signUp({
-      email, password:pass,
-      options:{data:{full_name:name}}
-    });
+    const {error} = await app.sb.auth.signUp({email,password:pass,options:{data:{full_name:name}}});
     if(error) throw error;
-    msg.className = 'auth-msg ok';
-    msg.textContent = 'Account created! Check your email to confirm, or sign in now if email confirmation is disabled.';
-    btn.disabled = false; btn.textContent = 'Create Account';
+    msg.className='auth-msg ok';
+    msg.textContent='Account created! Sign in now (or check email if confirmation required).';
+    btn.disabled=false; btn.textContent='Create Account';
   } catch(e){
-    msg.textContent = e.message || 'Sign up failed.';
-    btn.disabled = false; btn.textContent = 'Create Account';
+    msg.textContent=e.message||'Sign up failed.';
+    btn.disabled=false; btn.textContent='Create Account';
   }
 }
 
 async function doSignout(){
-  if(app.realtimeCh) app.sb.removeChannel(app.realtimeCh);
+  _appInitialized=false;
+  if(app.realtimeCh){ app.sb.removeChannel(app.realtimeCh); app.realtimeCh=null; }
   await app.sb.auth.signOut();
 }
 
 // ══════════════════════════════════════════════════════════
-// SCREEN ROUTING
+// SCREEN ROUTING — showApp() does NOT call initApp()
 // ══════════════════════════════════════════════════════════
 function showSetup(){
   document.getElementById('setup-screen').classList.add('active');
@@ -438,52 +447,77 @@ function showApp(){
   document.getElementById('setup-screen').classList.remove('active');
   document.getElementById('auth-screen').classList.remove('active');
   document.getElementById('app-screen').classList.add('active');
-  initApp();
+  // ↑ initApp() intentionally NOT called here — called by onAuthStateChange guard
 }
 
 // ══════════════════════════════════════════════════════════
-// PROFILE
+// PROFILE — retries up to 3× to handle trigger race on signup
 // ══════════════════════════════════════════════════════════
 async function loadProfile(){
   if(!app.user) return;
-  const {data, error} = await app.sb
-    .from('profiles')
-    .select('*')
-    .eq('id', app.user.id)
-    .single();
-
-  if(error){
-    // Profile may not exist yet (trigger race) — retry once
-    await new Promise(r=>setTimeout(r,1500));
-    const {data:d2} = await app.sb.from('profiles').select('*').eq('id',app.user.id).single();
-    app.profile = d2;
-  } else {
-    app.profile = data;
+  for(let i=1; i<=3; i++){
+    const {data,error} = await app.sb
+      .from('profiles').select('*').eq('id',app.user.id).single();
+    if(data && !error){ app.profile=data; return; }
+    if(i<3) await new Promise(r=>setTimeout(r, 1000*i));
   }
+  // Fallback: minimal profile so UI doesn't break
+  app.profile = {
+    id: app.user.id,
+    email: app.user.email,
+    full_name: app.user.user_metadata?.full_name || app.user.email?.split('@')[0],
+    role: 'user', tier: 'starter', reports_used_this_week: 0
+  };
+}
+
+// ══════════════════════════════════════════════════════════
+// BUG FIX #2 — TIER SYNCHRONIZATION
+//
+// Root cause: admin role was not implying pro tier in entitlement
+// checks. Usage bar used starter logic for admin users.
+//
+// Fix: isAdmin derived once and propagated through all tier checks.
+// isPro = tier==='pro' OR role==='admin' (admin always unlocked).
+// Usage bar shows "Unlimited" with gold/accent color for pro/admin.
+// ══════════════════════════════════════════════════════════
+function getTierFlags(profile){
+  const p       = profile || {};
+  const isAdmin = p.role === 'admin';
+  const isPro   = p.tier === 'pro' || isAdmin;
+  return { isAdmin, isPro };
 }
 
 function renderUserUI(){
   if(!app.profile) return;
   const p = app.profile;
-  const avatar = document.getElementById('user-avatar');
-  const initial = (p.full_name||p.email||'U').charAt(0).toUpperCase();
-  avatar.textContent = initial;
+  const {isAdmin, isPro} = getTierFlags(p);
 
+  // Avatar initial
+  document.getElementById('user-avatar').textContent =
+    (p.full_name || p.email || 'U').charAt(0).toUpperCase();
+
+  // Tier badge
   const badge = document.getElementById('user-tier-badge');
-  badge.textContent = p.role==='admin' ? 'admin' : p.tier;
-  badge.className = 'tier-badge ' + (p.role==='admin'?'tier-admin':p.tier==='pro'?'tier-pro':'tier-starter');
+  badge.textContent = isAdmin ? 'admin' : isPro ? 'pro' : 'starter';
+  badge.className   = 'tier-badge ' + (isAdmin ? 'tier-admin' : isPro ? 'tier-pro' : 'tier-starter');
 
-  // Usage
-  const limit = p.tier==='pro' ? '∞' : '10';
-  const used  = p.reports_used_this_week || 0;
-  document.getElementById('usage-text').textContent = `${used}/${limit}`;
-  if(p.tier!=='pro'){
-    document.getElementById('usage-fill').style.width = Math.min(100, (used/10)*100)+'%';
+  // Usage bar
+  const used   = p.reports_used_this_week || 0;
+  const fill   = document.getElementById('usage-fill');
+  const utext  = document.getElementById('usage-text');
+  const sread  = document.getElementById('stat-read');
+
+  if(isPro){
+    utext.textContent  = 'Unlimited';
+    fill.style.width   = '100%';
+    fill.style.background = isAdmin ? 'var(--accent)' : 'var(--gold)';
+    sread.textContent  = used > 0 ? used : '∞';
   } else {
-    document.getElementById('usage-fill').style.width = '100%';
-    document.getElementById('usage-fill').style.background = 'var(--gold)';
+    utext.textContent  = `${used}/10`;
+    fill.style.width   = Math.min(100,(used/10)*100)+'%';
+    fill.style.background = used>=10 ? 'var(--error)' : 'var(--accent)';
+    sread.textContent  = used;
   }
-  document.getElementById('stat-read').textContent = used;
 }
 
 // ══════════════════════════════════════════════════════════
@@ -491,22 +525,30 @@ function renderUserUI(){
 // ══════════════════════════════════════════════════════════
 async function loadReports(){
   showSkeletons();
+
   const {data, error} = await app.sb
     .from('reports')
     .select('id,title,category,niche,summary,signal,tier_required,analyst_code,word_count,published_at,created_at')
     .eq('status','published')
     .order('published_at',{ascending:false});
 
-  if(error){console.error(error);return;}
-  app.reports = data || [];
+  if(error){
+    console.error('[NicheLab] loadReports:', error.message);
+    document.getElementById('report-grid').innerHTML = `
+      <div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--error)">
+        <div style="font-size:24px;margin-bottom:8px">⚠</div>
+        <div style="font-size:13px;margin-bottom:16px">Failed to load reports: ${error.message}</div>
+        <button onclick="loadReports()" style="padding:8px 20px;background:var(--accent);color:#fff;border:none;border-radius:4px;cursor:pointer;font-family:var(--font-sans)">Retry</button>
+      </div>`;
+    return;
+  }
 
+  app.reports = data || [];
   document.getElementById('stat-reports').textContent = app.reports.length;
 
-  // Load read IDs
+  // Load read history for this user
   const {data:reads} = await app.sb
-    .from('report_reads')
-    .select('report_id')
-    .eq('user_id', app.user.id);
+    .from('report_reads').select('report_id').eq('user_id',app.user.id);
   app.readReportIds = new Set((reads||[]).map(r=>r.report_id));
 
   applyFilters();
@@ -514,15 +556,15 @@ async function loadReports(){
 
 function applyFilters(){
   let list = [...app.reports];
-  if(app.filterCat !== 'all') list = list.filter(r=>r.category===app.filterCat);
-  if(app.searchQ) {
+  if(app.filterCat!=='all')
+    list = list.filter(r=>r.category===app.filterCat);
+  if(app.searchQ){
     const q = app.searchQ.toLowerCase();
     list = list.filter(r=>
       r.title?.toLowerCase().includes(q) ||
       r.niche?.toLowerCase().includes(q) ||
       r.category?.toLowerCase().includes(q) ||
-      r.summary?.toLowerCase().includes(q)
-    );
+      r.summary?.toLowerCase().includes(q));
   }
   app.filteredReports = list;
   renderReports();
@@ -530,9 +572,8 @@ function applyFilters(){
 
 function filterCategory(cat){
   app.filterCat = cat;
-  document.querySelectorAll('.filter-chip').forEach(el=>{
-    el.classList.toggle('active', el.dataset.cat===cat);
-  });
+  document.querySelectorAll('.filter-chip').forEach(el=>
+    el.classList.toggle('active', el.dataset.cat===cat));
   applyFilters();
 }
 
@@ -541,42 +582,38 @@ function handleSearch(){
   applyFilters();
 }
 
-function getSignalClass(sig){
-  if(sig>=70) return 'hi';
-  if(sig>=40) return 'md';
-  return 'lo';
-}
+function getSignalClass(s){ return s>=70?'hi':s>=40?'md':'lo'; }
 
 function timeAgo(date){
   if(!date) return '';
-  const d = new Date(date);
-  const diff = (Date.now()-d)/1000;
-  if(diff<60)  return 'Just now';
-  if(diff<3600) return `${Math.floor(diff/60)}m ago`;
-  if(diff<86400) return `${Math.floor(diff/3600)}h ago`;
-  return `${Math.floor(diff/86400)}d ago`;
+  const s = (Date.now()-new Date(date))/1000;
+  if(s<60)    return 'Just now';
+  if(s<3600)  return `${Math.floor(s/60)}m ago`;
+  if(s<86400) return `${Math.floor(s/3600)}h ago`;
+  return `${Math.floor(s/86400)}d ago`;
 }
 
 function renderReports(){
   const grid = document.getElementById('report-grid');
   const list = app.filteredReports;
-  document.getElementById('report-count').textContent = `${list.length} report${list.length!==1?'s':''}`;
+  document.getElementById('report-count').textContent =
+    `${list.length} report${list.length!==1?'s':''}`;
 
   if(!list.length){
-    grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--text3)">
+    grid.innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--text3)">
       <div style="font-size:36px;margin-bottom:12px">📭</div>
-      <div style="font-size:14px">No reports found. Try a different filter.</div>
-    </div>`;
+      <div style="font-size:14px">No reports found. Try a different filter.</div></div>`;
     return;
   }
 
-  const profile = app.profile;
-  grid.innerHTML = list.map(r => {
-    const isRead = app.readReportIds.has(r.id);
-    const sigClass = getSignalClass(r.signal||50);
-    const isLocked = r.tier_required==='pro' && profile?.tier!=='pro' && profile?.role!=='admin';
-    const isNew = !isRead && r.published_at && (Date.now()-new Date(r.published_at))<86400000*3;
+  const {isAdmin, isPro} = getTierFlags(app.profile);
 
+  grid.innerHTML = list.map(r=>{
+    const isRead   = app.readReportIds.has(r.id);
+    const sigClass = getSignalClass(r.signal||50);
+    const isLocked = r.tier_required==='pro' && !isPro; // admin+pro both unlock
+    const isNew    = !isRead && r.published_at &&
+                     (Date.now()-new Date(r.published_at))<86400000*3;
     return `<div class="report-card signal-${sigClass}" onclick="openReport('${r.id}')">
       ${isNew?'<div class="new-badge">NEW</div>':''}
       ${isLocked?`<div class="locked-overlay">
@@ -588,18 +625,16 @@ function renderReports(){
       <div class="card-title">${r.title||r.niche}</div>
       <div class="card-summary">${r.summary||'Comprehensive 15-section market intelligence report with financial projections, competitive analysis, and implementation roadmap.'}</div>
       <div class="card-footer">
-        <div class="card-meta">${r.word_count?r.word_count.toLocaleString()+' words · ':''} ${timeAgo(r.published_at)}</div>
-        <div class="signal-badge ${sigClass}">
-          <span>●</span> Signal ${r.signal||50}
-        </div>
+        <div class="card-meta">${r.word_count?r.word_count.toLocaleString()+' words · ':''}${timeAgo(r.published_at)}</div>
+        <div class="signal-badge ${sigClass}"><span>●</span> Signal ${r.signal||50}</div>
       </div>
     </div>`;
   }).join('');
 }
 
 function showSkeletons(){
-  const grid = document.getElementById('report-grid');
-  grid.innerHTML = Array(6).fill(`<div class="skel-card skeleton"></div>`).join('');
+  document.getElementById('report-grid').innerHTML =
+    Array(6).fill('<div class="skel-card skeleton"></div>').join('');
 }
 
 // ══════════════════════════════════════════════════════════
@@ -609,105 +644,89 @@ async function openReport(id){
   const report = app.reports.find(r=>r.id===id);
   if(!report) return;
 
-  // Tier check
-  const profile = app.profile;
-  if(report.tier_required==='pro' && profile?.tier!=='pro' && profile?.role!=='admin'){
-    toast('Upgrade to Pro to access this report.', 'err');
-    return;
+  const {isAdmin, isPro} = getTierFlags(app.profile);
+
+  if(report.tier_required==='pro' && !isPro){
+    toast('Upgrade to Pro to access this report.','err'); return;
   }
 
-  // Usage check (starters)
-  if(profile?.tier==='starter' && !app.readReportIds.has(id)){
-    const used = profile.reports_used_this_week || 0;
-    if(used >= 10){
-      toast('Weekly report limit reached. Upgrade to Pro for unlimited access.', 'err');
-      return;
-    }
+  const used = app.profile?.reports_used_this_week||0;
+  if(!isPro && !app.readReportIds.has(id) && used>=10){
+    toast('Weekly limit reached (10/week). Upgrade to Pro for unlimited access.','err'); return;
   }
 
-  // Load full content
-  const {data, error} = await app.sb
-    .from('reports')
-    .select('content')
-    .eq('id', id)
-    .single();
+  const {data,error} = await app.sb.from('reports').select('content').eq('id',id).single();
+  if(error||!data){ toast('Could not load report. Try again.','err'); return; }
 
-  if(error || !data){toast('Could not load report.', 'err');return;}
-
-  // Mark as read
+  // Mark read + increment usage (non-blocking)
   if(!app.readReportIds.has(id)){
-    await app.sb.from('report_reads').upsert({report_id:id, user_id:app.user.id});
-    await app.sb.rpc('increment_report_usage', {p_user_id: app.user.id});
     app.readReportIds.add(id);
-    // Refresh profile usage
-    await loadProfile();
-    renderUserUI();
+    app.sb.from('report_reads').upsert({report_id:id,user_id:app.user.id}).then(()=>{});
+    app.sb.rpc('increment_report_usage',{p_user_id:app.user.id}).then(()=>{});
+    // Refresh usage count silently
+    loadProfile().then(()=>renderUserUI());
   }
 
-  document.getElementById('viewer-title').textContent = report.title || report.niche;
+  document.getElementById('viewer-title').textContent = report.title||report.niche;
   document.getElementById('viewer-iframe').srcdoc = data.content;
   document.getElementById('viewer-modal').classList.add('open');
 }
 
 function closeViewer(){
   document.getElementById('viewer-modal').classList.remove('open');
-  document.getElementById('viewer-iframe').srcdoc = '';
+  setTimeout(()=>{ document.getElementById('viewer-iframe').srcdoc=''; }, 220);
 }
 
 // ══════════════════════════════════════════════════════════
 // REALTIME
 // ══════════════════════════════════════════════════════════
 function initRealtime(){
-  if(app.realtimeCh) app.sb.removeChannel(app.realtimeCh);
+  if(app.realtimeCh){ app.sb.removeChannel(app.realtimeCh); app.realtimeCh=null; }
 
-  app.realtimeCh = app.sb
-    .channel('reports-live')
-    .on('postgres_changes', {event:'INSERT', schema:'public', table:'reports'}, (payload) => {
-      const r = payload.new;
-      if(r.status !== 'published') return;
+  app.realtimeCh = app.sb.channel('reports-live')
+    .on('postgres_changes',{event:'INSERT',schema:'public',table:'reports'},(pl)=>{
+      const r=pl.new;
+      if(r.status!=='published') return;
       app.reports.unshift(r);
       applyFilters();
       addLiveItem(r);
-      toast(`New report: ${r.title||r.niche}`, 'ok');
+      toast(`New report: ${r.title||r.niche}`,'ok');
+      document.getElementById('stat-reports').textContent=app.reports.length;
     })
-    .on('postgres_changes', {event:'UPDATE', schema:'public', table:'reports'}, (payload) => {
-      const updated = payload.new;
-      const idx = app.reports.findIndex(r=>r.id===updated.id);
-      if(idx>=0){
-        if(updated.status!=='published') app.reports.splice(idx,1);
-        else app.reports[idx] = {...app.reports[idx], ...updated};
-        applyFilters();
-      }
+    .on('postgres_changes',{event:'UPDATE',schema:'public',table:'reports'},(pl)=>{
+      const u=pl.new;
+      const idx=app.reports.findIndex(r=>r.id===u.id);
+      if(idx<0) return;
+      if(u.status!=='published'){ app.reports.splice(idx,1); }
+      else { app.reports[idx]={...app.reports[idx],...u}; }
+      applyFilters();
+      document.getElementById('stat-reports').textContent=app.reports.length;
     })
-    .subscribe((status) => {
-      document.getElementById('live-status').textContent =
-        status==='SUBSCRIBED' ? 'Connected' :
-        status==='CHANNEL_ERROR' ? 'Connection error' : status;
+    .subscribe((s)=>{
+      document.getElementById('live-status').textContent=
+        s==='SUBSCRIBED'?'Connected':s==='CHANNEL_ERROR'?'Error':s==='TIMED_OUT'?'Reconnecting...':s;
     });
 }
 
 function addLiveItem(r){
-  const list = document.getElementById('live-list');
-  const item = document.createElement('div');
-  item.className = 'live-item';
-  item.onclick = () => openReport(r.id);
-  item.innerHTML = `
-    <div class="live-item-cat">${r.category||'Research'}</div>
+  const list=document.getElementById('live-list');
+  const item=document.createElement('div');
+  item.className='live-item';
+  item.onclick=()=>openReport(r.id);
+  item.innerHTML=`<div class="live-item-cat">${r.category||'Research'}</div>
     <div class="live-item-title">${r.title||r.niche}</div>
     <div class="live-item-time">Just now</div>`;
-  list.insertBefore(item, list.firstChild);
-  // Keep max 20 live items
-  while(list.children.length > 20) list.removeChild(list.lastChild);
+  list.insertBefore(item,list.firstChild);
+  while(list.children.length>20) list.removeChild(list.lastChild);
 }
 
 function populateLiveFeed(){
-  const list = document.getElementById('live-list');
-  const recent = app.reports.slice(0, 10);
-  if(!recent.length){
-    list.innerHTML = '<div style="font-size:11px;color:var(--text3);padding:8px">No reports yet.</div>';
+  const list=document.getElementById('live-list');
+  if(!app.reports.length){
+    list.innerHTML='<div style="font-size:11px;color:var(--text3);padding:8px">No reports yet.</div>';
     return;
   }
-  list.innerHTML = recent.map(r=>`
+  list.innerHTML=app.reports.slice(0,10).map(r=>`
     <div class="live-item" onclick="openReport('${r.id}')">
       <div class="live-item-cat">${r.category||'Research'}</div>
       <div class="live-item-title">${r.title||r.niche}</div>
@@ -716,7 +735,7 @@ function populateLiveFeed(){
 }
 
 // ══════════════════════════════════════════════════════════
-// APP INIT
+// APP INIT — runs ONCE per session, called by onAuthStateChange
 // ══════════════════════════════════════════════════════════
 async function initApp(){
   renderUserUI();
@@ -726,20 +745,16 @@ async function initApp(){
 }
 
 // ══════════════════════════════════════════════════════════
-// BOOTSTRAP — runs immediately on page load
+// BOOTSTRAP
 // ══════════════════════════════════════════════════════════
 (function bootstrap(){
   const url = localStorage.getItem('nl_sb_url');
   const key = localStorage.getItem('nl_sb_key');
-
-  if(!url || !key){
-    showSetup();
-    return;
-  }
-
-  // Credentials exist — init Supabase immediately, no button required
+  if(!url||!key){ showSetup(); return; }
+  // Credentials present → init immediately.
+  // onAuthStateChange fires INITIAL_SESSION automatically
+  // and routes to showAuth or (showApp + initApp) — no button needed.
   initSupabase(url, key);
-  // onAuthStateChange will route to showAuth or showApp automatically
 })();
 </script>
 </body>
