@@ -330,15 +330,25 @@ function resetSetup(){
 // ══════════════════════════════════════════════════════════
 function initSupabase(url, key){
   const {createClient} = supabase;
-  // storageKey isolates this app's auth lock from any other Supabase
-  // clients on the same domain — prevents cross-tab lock contention.
+
+  // ── DEFINITIVE LOCK FIX ────────────────────────────────────
+  // Supabase v2 wraps localStorage with a Web Locks API adapter.
+  // When onAuthStateChange and autoRefreshToken fire concurrently,
+  // they both request the same Web Lock → one "steals" it from the
+  // other → "Lock was released because another request stole it".
+  //
+  // Passing `storage: window.localStorage` directly makes Supabase
+  // use the raw synchronous localStorage interface — NO Web Locks,
+  // NO lock contention, NO race condition. This is the correct fix.
+  // ──────────────────────────────────────────────────────────────
   const projectId = url.match(/https:\/\/([^\.]+)/)?.[1] || 'nichelab';
   app.sb = createClient(url, key, {
     auth:{
-      persistSession: true,
-      autoRefreshToken: true,
+      persistSession:     true,
+      autoRefreshToken:   true,
       detectSessionInUrl: true,
-      storageKey: `nl_auth_${projectId}`
+      storageKey:         `nl_auth_${projectId}`,
+      storage:            window.localStorage   // ← bypasses Web Locks wrapper
     }
   });
 
