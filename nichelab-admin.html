@@ -526,7 +526,10 @@ MANDATORY WRITING STANDARDS — NEVER VIOLATE:
 7. Never reference AI systems, language models, training data, or knowledge limitations
 8. Ground all claims in verifiable market data; cite real organizations (Gartner, McKinsey, Forrester, IBISWorld, Statista, relevant trade bodies)
 9. Format all output as clean, semantic HTML
-10. Tables must never split across pages — if a table is long, label continuations as "Part A" and "Part B"`;
+10. Tables must never split across pages — if a table is long, label continuations as "Part A" and "Part B"
+11. CRITICAL: Never output repeated punctuation characters. No sequences of "!!!", "---", "===", "...", "###" or similar. Use plain prose and proper HTML only.
+12. CRITICAL: Years must always be followed by a space or comma, never by punctuation marks. Write "2021," or "2021." never "2021!!!".
+13. Output must start directly with an HTML tag. No markdown fences, no backticks, no preamble text before the first "<" character.\`;
 }
 
 // ══════════════════════════════════════════════════════════
@@ -737,6 +740,53 @@ async function runQueue(){
   log('All queued reports complete.', 'success');
 }
 
+
+// ══════════════════════════════════════════════════════════
+// AI OUTPUT SANITIZER
+// Removes generation artifacts before storing section HTML.
+// Handles: repeated punctuation runs (!!!!!!), stray separator
+// lines (----, ====), and year-plus-garbage patterns (2021!!!).
+// ══════════════════════════════════════════════════════════
+function sanitizeHTML(raw){
+  if(!raw) return '';
+
+  // 1. Strip non-HTML preamble/postamble (```html fences etc.)
+  let s = raw.replace(/^```[\w]*\n?/,'').replace(/```\s*$/,'').trim();
+
+  // 2. Remove runs of 3+ identical punctuation/symbol characters
+  //    e.g. "!!!!!!" → "" | "-------" → "" | "=======" → ""
+  //    But preserve HTML entities and valid content
+  s = s.replace(/([!?\-=_~*#|^]{3,})/g, (match, p1) => {
+    // Keep table dividers inside <table> tags (handled by HTML renderer)
+    // Only strip if it's clearly a stray artifact (not inside a tag)
+    return '';
+  });
+
+  // 3. Fix year-glued-to-garbage: "2021!!!!!" → "2021"
+  //    Also handles "2022........" or "2023========="
+  s = s.replace(/(\b20[0-9]{2})([^0-9<\s][^<]{0,5}?)(?=\s|<|$)/g, (match, year, garbage) => {
+    // If garbage is all punctuation/symbols, strip it
+    if(/^[^a-zA-Z0-9]+$/.test(garbage)) return year;
+    return match;
+  });
+
+  // 4. Remove lines that are ONLY whitespace + punctuation (separator artifacts)
+  s = s.replace(/^[\s!?\-=_~*#|^.]{4,}$/gm, '');
+
+  // 5. Collapse 3+ consecutive blank lines → max 1 blank line
+  s = s.replace(/\n{3,}/g, '\n\n');
+
+  // 6. Ensure the output starts with a valid HTML tag (not stray text)
+  if(s && !s.trimStart().startsWith('<')){
+    const firstTag = s.indexOf('<');
+    if(firstTag > 0 && firstTag < 200){
+      s = s.substring(firstTag);
+    }
+  }
+
+  return s.trim();
+}
+
 async function generateReport(item){
   const date = new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
   const sysPr = getSystemPrompt(item.analystCode);
@@ -754,7 +804,8 @@ async function generateReport(item){
 
     try{
       const prompt = getSectionPrompt(sec, item.niche, state.category.label, item.analystCode, date);
-      const html = await callAI(sysPr, prompt);
+      const rawHtml = await callAI(sysPr, prompt);
+      const html = sanitizeHTML(rawHtml);
       item.sections.push(html);
       log(`  ✓ Section ${sec.n} complete (${html.length} chars)`, 'success');
     } catch(e){
