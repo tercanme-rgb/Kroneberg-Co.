@@ -296,6 +296,161 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
   .hero-act{flex-direction:column;align-items:flex-start}
   .btoggle{flex-wrap:wrap;gap:10px}
 }
+
+/* ── IDEA OF THE DAY ── */
+.iotd{background:#0F1117;border-radius:var(--rlg);overflow:hidden;border:1px solid rgba(255,255,255,.08);box-shadow:0 24px 64px rgba(0,0,0,.22);margin-top:60px;position:relative}
+.iotd-header{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;border-bottom:1px solid rgba(255,255,255,.07);background:#0A0C11}
+.iotd-label{font-family:var(--fm);font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.35)}
+.iotd-cats{display:flex;gap:8px;align-items:center}
+.iotd-cat{font-family:var(--fm);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.4);padding:3px 8px;border:1px solid rgba(255,255,255,.1);border-radius:4px}
+.iotd-new{padding:3px 10px;background:#16c784;color:#000;border-radius:4px;font-family:var(--fm);font-size:10px;font-weight:500;letter-spacing:1px;text-transform:uppercase}
+.iotd-body{padding:28px 24px 0}
+.iotd-title{font-family:var(--fd);font-size:22px;font-weight:600;color:#fff;line-height:1.2;margin-bottom:10px}
+.iotd-desc{font-size:13px;color:rgba(255,255,255,.5);line-height:1.65;font-weight:300;max-width:680px;margin-bottom:20px}
+.iotd-metrics{display:flex;gap:8px;flex-wrap:wrap;padding-bottom:20px;border-bottom:1px solid rgba(255,255,255,.06)}
+.iotd-metric{padding:5px 12px;border:1px solid rgba(255,255,255,.10);border-radius:100px;font-family:var(--fm);font-size:11px;color:rgba(255,255,255,.5);white-space:nowrap}
+.iotd-metric span{font-weight:500}
+.iotd-metric .sc-green{color:#16c784}
+.iotd-metric .sc-yellow{color:#F5C518}
+.iotd-metric .sc-orange{color:#ff9f43}
+.iotd-metric .sc-blue{color:#74b9ff}
+.iotd-metric .sc-cyan{color:#00cec9}
+.iotd-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid rgba(255,255,255,.06)}
+.iotd-col{padding:22px 24px;border-right:1px solid rgba(255,255,255,.06)}
+.iotd-col:last-child{border-right:none}
+.iotd-col-head{font-family:var(--fm);font-size:9.5px;letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:6px}
+.iotd-col-head::before{content:'●';font-size:6px}
+.col-why .iotd-col-head{color:#F5C518}
+.col-proof .iotd-col-head{color:#16c784}
+.col-plan .iotd-col-head{color:#74b9ff}
+.iotd-col p{font-size:12.5px;color:rgba(255,255,255,.55);line-height:1.70;font-weight:300}
+.iotd-col p strong{color:rgba(255,255,255,.85);font-weight:500}
+.iotd-col p em{font-style:normal;color:#F5C518}
+.iotd-signals{list-style:none;display:flex;flex-direction:column;gap:9px}
+.iotd-signals li{font-size:12.5px;color:rgba(255,255,255,.5);line-height:1.55;padding-left:14px;position:relative;font-weight:300}
+.iotd-signals li::before{content:'●';position:absolute;left:0;font-size:6px;color:#16c784;top:5px}
+.iotd-signals li strong{color:rgba(255,255,255,.8);font-weight:500}
+.iotd-signals li em{font-style:normal;color:#16c784}
+.iotd-steps{list-style:none;display:flex;flex-direction:column;gap:9px}
+.iotd-steps li{font-size:12.5px;color:rgba(255,255,255,.5);line-height:1.55;padding-left:22px;position:relative;font-weight:300}
+.iotd-steps li::before{position:absolute;left:0;font-family:var(--fm);font-size:9px;color:#74b9ff;font-weight:500;top:2px}
+.iotd-steps li:nth-child(1)::before{content:'01'}
+.iotd-steps li:nth-child(2)::before{content:'02'}
+.iotd-steps li:nth-child(3)::before{content:'03'}
+.iotd-steps li:nth-child(4)::before{content:'04'}
+.iotd-steps li:nth-child(5)::before{content:'05'}
+.iotd-steps li strong{color:rgba(255,255,255,.8);font-weight:500}
+.iotd-steps li em{font-style:normal;color:#74b9ff}
+.iotd-footer{padding:14px 24px;background:#0A0C11;border-top:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.iotd-ft-left{font-family:var(--fm);font-size:11px;color:rgba(255,255,255,.3)}
+.iotd-ft-left span{color:#F5C518}
+.iotd-ft-right{display:flex;gap:10px}
+.btn-iotd-save{padding:7px 18px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.6);border-radius:6px;font-size:12px;font-family:var(--fb);cursor:pointer;transition:all .2s}
+.btn-iotd-save:hover{background:rgba(255,255,255,.10);color:#fff}
+.btn-iotd-open{padding:7px 18px;background:var(--gold);color:#fff;border:none;border-radius:6px;font-size:12px;font-family:var(--fb);font-weight:500;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:6px}
+.btn-iotd-open:hover{background:var(--gold-mid)}
+.iotd-gate{display:none;position:absolute;inset:0;border-radius:var(--rlg);background:linear-gradient(to bottom,transparent 40%,rgba(15,17,23,.95) 70%,rgba(15,17,23,1) 100%);justify-content:flex-end;align-items:flex-end;padding:36px;pointer-events:none}
+@media(max-width:768px){
+  .iotd-cols{grid-template-columns:1fr}
+  .iotd-col{border-right:none;border-bottom:1px solid rgba(255,255,255,.06)}
+  .iotd-col:last-child{border-bottom:none}
+  .iotd-metrics{gap:6px}
+}
+
+/* ── ABOUT US PAGE ── */
+.about-hero{padding:64px 56px 52px;max-width:1200px;margin:0 auto}
+.about-tagline{font-family:var(--fd);font-size:clamp(36px,4.5vw,54px);font-weight:400;line-height:1.08;letter-spacing:-1.5px;margin-bottom:22px}
+.about-tagline em{font-style:italic;color:var(--gold)}
+.about-lead{font-size:17px;color:var(--ink-muted);line-height:1.80;font-weight:300;max-width:660px;margin-bottom:40px}
+.about-mission{background:var(--ink);padding:60px 56px;margin:0}
+.about-mission-in{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 2fr;gap:60px;align-items:start}
+.about-m-label{font-family:var(--fm);font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
+.about-m-head{font-family:var(--fd);font-size:32px;font-weight:400;color:#fff;letter-spacing:-1px;line-height:1.1}
+.about-m-body{font-size:15px;color:rgba(255,255,255,.55);line-height:1.85;font-weight:300}
+.about-m-body p{margin-bottom:16px}
+.about-m-body p:last-child{margin-bottom:0}
+.about-m-body em{font-style:italic;color:rgba(255,255,255,.8)}
+.team-section{max-width:1200px;margin:0 auto;padding:72px 56px}
+.team-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-top:48px}
+.team-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--rlg);padding:36px;transition:border-color .25s,box-shadow .25s}
+.team-card:hover{border-color:var(--gold-border);box-shadow:var(--shadow-md)}
+.tc-num{font-family:var(--fm);font-size:10px;letter-spacing:2px;color:var(--gold);margin-bottom:16px}
+.tc-role{font-family:var(--fd);font-size:20px;font-weight:500;line-height:1.2;color:var(--ink);margin-bottom:12px}
+.tc-bio{font-size:14px;color:var(--ink-muted);line-height:1.70;font-weight:300;margin-bottom:16px}
+.tc-tags{display:flex;gap:6px;flex-wrap:wrap}
+.tc-tag{padding:3px 10px;background:var(--gold-tint);border:1px solid var(--gold-border);border-radius:100px;font-family:var(--fm);font-size:9px;letter-spacing:.5px;color:var(--gold)}
+.about-disclaimer{background:var(--bg-warm);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:28px 56px}
+.about-disclaimer-in{max-width:1200px;margin:0 auto;font-size:13px;color:var(--ink-faint);line-height:1.75;font-weight:300;font-style:italic}
+.addr-section{max-width:1200px;margin:0 auto;padding:72px 56px}
+.addr-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:48px}
+.addr-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--rlg);padding:28px;transition:border-color .2s}
+.addr-card:hover{border-color:var(--gold-border)}
+.addr-flag{font-size:28px;margin-bottom:12px}
+.addr-city{font-family:var(--fd);font-size:19px;font-weight:500;color:var(--ink);margin-bottom:4px}
+.addr-region{font-family:var(--fm);font-size:9.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+.addr-lines{font-size:13px;color:var(--ink-muted);line-height:1.70;font-weight:300}
+.addr-notice{max-width:1200px;margin:0 auto;padding:0 56px 60px;font-size:13px;color:var(--ink-faint);line-height:1.75;font-style:italic;border-top:1px solid var(--border);padding-top:28px}
+@media(max-width:1024px){
+  .about-hero,.about-mission,.team-section,.addr-section,.addr-notice,.about-disclaimer{padding-left:32px;padding-right:32px}
+  .about-mission-in{grid-template-columns:1fr;gap:28px}
+}
+@media(max-width:768px){
+  .about-hero,.team-section,.addr-section,.addr-notice,.about-disclaimer{padding-left:24px;padding-right:24px}
+  .about-mission{padding:44px 24px}
+  .team-grid{grid-template-columns:1fr}
+  .addr-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:480px){.addr-grid{grid-template-columns:1fr}}
+/* ── IOTD TIER GATING ── */
+#idea-of-the-day{transition:opacity .3s}
+#idea-of-the-day.iotd-loading{opacity:0;pointer-events:none}
+.iotd-pro-wrap{position:relative}
+.iotd-pro-lock{
+  display:none;
+  position:absolute;inset:0;
+  border-radius:var(--rlg);
+  background:linear-gradient(to bottom,rgba(250,250,247,0) 0%,rgba(250,250,247,.82) 38%,rgba(250,250,247,.97) 62%,rgba(250,250,247,1) 100%);
+  z-index:10;
+  align-items:flex-end;justify-content:center;
+  padding-bottom:52px;
+}
+.iotd-pro-lock.show{display:flex}
+.iotd-lock-card{
+  background:var(--bg-card);
+  border:1px solid var(--gold-border);
+  border-radius:var(--rlg);
+  padding:28px 36px;
+  text-align:center;
+  box-shadow:var(--shadow-lg);
+  max-width:420px;
+  width:100%;
+}
+.iotd-lock-icon{font-size:28px;margin-bottom:10px}
+.iotd-lock-title{font-family:var(--fd);font-size:20px;font-weight:500;color:var(--ink);margin-bottom:8px}
+.iotd-lock-sub{font-size:13px;color:var(--ink-muted);line-height:1.65;margin-bottom:20px;font-weight:300}
+/* Nav auth badge */
+.nav-auth-badge{
+  display:none;
+  align-items:center;gap:8px;
+  padding:6px 14px;
+  background:var(--gold-tint);
+  border:1px solid var(--gold-border);
+  border-radius:100px;
+  font-family:var(--fm);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);
+  white-space:nowrap;
+}
+.nav-auth-badge.show{display:inline-flex}
+.nab-dot{width:5px;height:5px;background:var(--gold);border-radius:50%}
+/* Skeleton shimmer for IOTD while auth resolves */
+@keyframes shimmer{0%{background-position:-600px 0}100%{background-position:600px 0}}
+.iotd-skeleton{
+  background:linear-gradient(90deg,#f0efe8 25%,#e8e7e0 50%,#f0efe8 75%);
+  background-size:600px 100%;
+  animation:shimmer 1.4s infinite;
+  border-radius:var(--rlg);
+  height:480px;
+  margin-top:60px;
+}
   </style>
 </head>
 <body>
@@ -313,12 +468,17 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
     <button class="nl" data-pg="home"      onclick="go('home')">Home</button>
     <button class="nl" data-pg="services"  onclick="go('home','services')">Services</button>
     <button class="nl" data-pg="pricing"   onclick="go('home','pricing')">Pricing</button>
+    <button class="nl" data-pg="about"     onclick="go('about')">About Us</button>
     <button class="nl" data-pg="contact"   onclick="go('contact')">Contact</button>
     <button class="nl" data-pg="legal"     onclick="go('legal')">Legal</button>
   </div>
 
   <div class="nav-right">
-    <a href="admin.html" class="btn-console"><div class="cdot"></div>Admin Console</a>
+    <div class="nav-auth-badge" id="navAuthBadge">
+      <div class="nab-dot"></div>
+      <span id="navAuthLabel">PRO</span>
+    </div>
+    <a href="index.html" class="btn-console"><div class="cdot"></div>Members Access</a>
     <button class="hamburger" id="ham" onclick="toggleMob()" aria-label="Menu">
       <span></span><span></span><span></span>
     </button>
@@ -329,10 +489,11 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
   <button class="nl" onclick="go('home');closeMob()">Home</button>
   <button class="nl" onclick="go('home','services');closeMob()">Services</button>
   <button class="nl" onclick="go('home','pricing');closeMob()">Pricing</button>
+  <button class="nl" onclick="go('about');closeMob()">About Us</button>
   <button class="nl" onclick="go('contact');closeMob()">Contact</button>
   <button class="nl" onclick="go('legal');closeMob()">Legal</button>
   <div class="mob-div"></div>
-  <a href="admin.html" class="btn-console" style="align-self:flex-start"><div class="cdot"></div>Admin Console</a>
+  <a href="index.html" class="btn-console" style="align-self:flex-start"><div class="cdot"></div>Members Access</a>
 </div>
 
 
@@ -450,7 +611,108 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
 
   <hr class="hr" />
 
-  <section id="pricing">
+  <!-- IDEA OF THE DAY — free/guest preview -->
+  <section id="idea-of-the-day">
+    <div class="wrap sp">
+      <div class="rv">
+        <div class="eyebrow"><div class="eyebrow-ln"></div>Live Intelligence Preview</div>
+        <h2 class="headline">See what our research<br><em>looks like inside.</em></h2>
+        <p class="sub" style="margin-top:18px;max-width:560px">Every day, our analysts surface a high-signal market opportunity. Members receive the full 15-section brief. Here is today's executive snapshot.</p>
+      </div>
+
+      <div class="iotd-pro-wrap">
+        <!-- Skeleton shown while auth resolves -->
+        <div class="iotd-skeleton" id="iotdSkeleton" style="display:none"></div>
+
+        <div class="iotd rv rv-d1" id="iotdBlock">
+        <!-- Header bar -->
+        <div class="iotd-header">
+          <div style="display:flex;align-items:center;gap:12px">
+            <div class="iotd-label">IDEA OF THE DAY</div>
+            <div class="iotd-cats">
+              <span class="iotd-cat">MICRO-SAAS</span>
+              <span class="iotd-cat">DEV TOOLS</span>
+            </div>
+          </div>
+          <div class="iotd-new">New Today</div>
+        </div>
+
+        <!-- Body -->
+        <div class="iotd-body">
+          <div class="iotd-title">Webhook Reliability Platform for Indie Developers</div>
+          <p class="iotd-desc">Production-grade webhook management for teams that can't afford Datadog but can't afford downtime. Capture, debug, replay, and monitor every webhook event across your entire SaaS stack — in one place, under $80/month.</p>
+
+          <!-- Metrics row -->
+          <div class="iotd-metrics">
+            <div class="iotd-metric">Market <span class="sc-green">84</span><span style="color:rgba(255,255,255,.25)">/100</span></div>
+            <div class="iotd-metric">Revenue <span class="sc-green">78</span><span style="color:rgba(255,255,255,.25)">/100</span></div>
+            <div class="iotd-metric">Competition <span class="sc-yellow">61</span><span style="color:rgba(255,255,255,.25)">/100</span></div>
+            <div class="iotd-metric">Difficulty <span class="sc-orange">42</span><span style="color:rgba(255,255,255,.25)">/100</span></div>
+            <div class="iotd-metric">MVP Time <span class="sc-blue">10–14 wks</span></div>
+            <div class="iotd-metric">TAM <span class="sc-cyan">$7.0B</span></div>
+            <div class="iotd-metric">CAGR <span class="sc-green">18.2%</span></div>
+          </div>
+        </div>
+
+        <!-- Three-column insights -->
+        <div class="iotd-cols">
+          <div class="iotd-col col-why">
+            <div class="iotd-col-head">Why Now</div>
+            <p>Postman restricted its free tier in May 2023, triggering a developer exodus. <strong>Hoppscotch gained 25,000 GitHub stars in 6 months</strong> from that backlash — but no one captured the hosted webhook infrastructure market Postman vacated.</p>
+            <p style="margin-top:10px">Developer agents calling external APIs are exploding. <em>"AI agent debugging"</em> queries are up <strong>890%</strong> in 18 months. Incumbent tools weren't designed for this use case. The window is 6–9 months wide.</p>
+          </div>
+          <div class="iotd-col col-proof">
+            <div class="iotd-col-head">Proof Signals</div>
+            <ul class="iotd-signals">
+              <li><strong>+287% growth</strong> in "webhook debugging" searches over 36 months (Google Trends)</li>
+              <li>Hookdeck raised a <em>$7M Series A</em> in 2023 — validates the commercial model</li>
+              <li>Webhook.site founder disclosed <strong>$15K–$20K MRR</strong> with a simpler product (Indie Hackers, 2022)</li>
+              <li>Reddit r/webdev "Postman is dead to me": <strong>847 upvotes, 400+ comments</strong></li>
+              <li>EU AI Act Article 12 mandates <em>API audit logs</em> — compliance demand incoming</li>
+            </ul>
+          </div>
+          <div class="iotd-col col-plan">
+            <div class="iotd-col-head">30-Day Execution Plan</div>
+            <ul class="iotd-steps">
+              <li>Interview 20 engineers. Ask: <strong>"What's most frustrating about webhook integrations?"</strong> Do NOT pitch.</li>
+              <li>Ship landing page: <em>"Never lose a webhook event again."</em> Target 200 signups from HN + Reddit.</li>
+              <li>Map where <strong>Webhook.site ends and Hookdeck begins.</strong> That $29–$79 gap is your product.</li>
+              <li>Price at <strong>$29/mo Developer · $79/mo Team</strong> from day one. No launch discounts.</li>
+              <li>Ship <em>npx hookbase listen</em> CLI. Every run auto-creates a free account — your PLG engine.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Footer row -->
+        <div class="iotd-footer">
+          <div class="iotd-ft-left">⏱ <span>10–14 week</span> solo build &nbsp;·&nbsp; <span style="color:#16c784">$12,600 MRR</span> at Month 12 (Base Case)</div>
+          <div class="iotd-ft-right">
+            <button class="btn-iotd-save" onclick="go('home','pricing')">Save Idea</button>
+            <button class="btn-iotd-open" onclick="go('home','pricing')">Open Full Report →</button>
+          </div>
+        </div>
+      </div><!-- /iotd -->
+
+        <!-- Pro-member lock overlay — shown via JS if tier=pro -->
+        <div class="iotd-pro-lock" id="iotdProLock">
+          <div class="iotd-lock-card">
+            <div class="iotd-lock-icon">✦</div>
+            <div class="iotd-lock-title">You're a Pro Member</div>
+            <p class="iotd-lock-sub">You have full access to every intelligence brief in the vault — including today's complete 15-section report. Head to the Members Console to open it.</p>
+            <a href="index.html" class="btn-gold" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-size:14px;padding:11px 24px">
+              Open Members Console →
+            </a>
+          </div>
+        </div>
+      </div><!-- /iotd-pro-wrap -->
+
+      <p style="margin-top:18px;font-size:13px;color:var(--ink-faint);text-align:center;font-family:var(--fm);letter-spacing:.3px">
+        This is a condensed preview. <button onclick="go('home','pricing')" style="color:var(--gold);background:none;border:none;cursor:pointer;font-family:var(--fm);font-size:13px;letter-spacing:.3px">Become a member</button> to unlock the complete 15-section brief, financial models, and daily rotation.
+      </p>
+    </div>
+  </section>
+
+  <hr class="hr" />
     <div class="wrap sp">
       <div class="rv">
         <div class="eyebrow"><div class="eyebrow-ln"></div>Membership Tiers</div>
@@ -474,13 +736,15 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
           <div class="pc-cycle" id="c-s">per month</div>
           <ul class="pc-feats">
             <li>10 research briefs per week</li>
-            <li>All 15 methodology sections</li>
-            <li>PDF export on every report</li>
-            <li>Secure research dashboard</li>
-            <li>APA-7 citations included</li>
-            <li class="dim">Unlimited briefs</li>
-            <li class="dim">Priority processing queue</li>
-            <li class="dim">Direct analyst support</li>
+            <li>15-Point Comprehensive Analytical Framework</li>
+            <li>Premium Document Delivery (PDF &amp; Word)</li>
+            <li>Encrypted Research Environment</li>
+            <li>Rigorous APA-7 Citation Standard</li>
+            <li class="dim">Unrestricted Global Intelligence Access</li>
+            <li class="dim">Pro-Tier Executive Summaries</li>
+            <li class="dim">Priority Algorithmic Processing</li>
+            <li class="dim">Advance Intelligence on Emerging Verticals</li>
+            <li class="dim">Direct Analyst Correspondence</li>
           </ul>
           <a id="lnk-s" href="https://buy.stripe.com/9B63cw0A72uufWf5ywebu00" target="_blank" rel="noopener" class="btn-pg">Begin Starter Membership</a>
         </div>
@@ -489,21 +753,22 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
           <div class="pc-price">$<span id="v-p">84</span></div>
           <div class="pc-cycle" id="c-p">per month</div>
           <ul class="pc-feats">
-            <li>Unlimited research briefs</li>
-            <li>All 15 methodology sections</li>
-            <li>PDF export on every report</li>
-            <li>Secure research dashboard</li>
-            <li>APA-7 citations included</li>
-            <li>Priority processing queue</li>
-            <li>Early access to new verticals</li>
-            <li>Direct analyst support</li>
+            <li>Unrestricted Global Intelligence Access</li>
+            <li>15-Point Comprehensive Analytical Framework</li>
+            <li>Pro-Tier Executive Summaries</li>
+            <li>Premium Document Delivery (PDF &amp; Word)</li>
+            <li>Encrypted Research Environment</li>
+            <li>Rigorous APA-7 Citation Standard</li>
+            <li>Priority Algorithmic Processing</li>
+            <li>Advance Intelligence on Emerging Verticals</li>
+            <li>Direct Analyst Correspondence</li>
           </ul>
           <a id="lnk-p" href="https://buy.stripe.com/bJe00kbeLc547pJgdaebu02" target="_blank" rel="noopener" class="btn-pg-gold">Begin Pro Membership →</a>
         </div>
       </div>
 
       <p style="margin-top:20px;font-size:13px;color:var(--ink-faint);font-family:var(--fm);letter-spacing:.3px" class="rv rv-d3">
-        Secure payment via Stripe &nbsp;·&nbsp; Cancel anytime &nbsp;·&nbsp; All prices in USD
+        Secure payment via Stripe &nbsp;·&nbsp; All prices in USD &nbsp;·&nbsp; Memberships renew on selected billing cycle
       </p>
     </div>
   </section>
@@ -525,6 +790,126 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
 </div><!-- /home -->
 
 
+<!-- PAGE: ABOUT -->
+<div class="page" id="page-about">
+
+  <div class="about-hero">
+    <div class="eyebrow" style="margin-bottom:22px"><div class="eyebrow-ln"></div>Who We Are</div>
+    <h1 class="about-tagline">Built by who have<br>been <em>inside.</em></h1>
+    <p class="about-lead">NicheLab is a digitally distributed intelligence infrastructure providing institutional-grade research. With a global research coordination network spanning London, Dubai, Lisbon, Los Angeles, Tokyo, and The Hague, we deliver strategic market opportunity mapping for professional investors.</p>
+    <div style="display:flex;gap:12px;flex-wrap:wrap">
+      <button class="btn-gold" onclick="go('home','pricing')">View Membership Plans →</button>
+      <button class="btn-ol" onclick="go('contact')">Request a Briefing</button>
+    </div>
+  </div>
+
+  <div class="about-mission">
+    <div class="about-mission-in">
+      <div>
+        <div class="about-m-label">Our Foundation</div>
+        <h2 class="about-m-head">The methodology matters more than the biography.</h2>
+      </div>
+      <div class="about-m-body">
+        <p>NicheLab was not built by those who simply read about markets. It was built around the perspective of a system that spent years working within them — and recognised what independent founders and investors were consistently missing.</p>
+        <p>The platform draws on experience spanning global strategy consulting, venture capital, institutional market research and product development. These perspectives reflect years spent producing the kinds of analysis traditionally delivered to institutional clients at significant cost — but rarely accessible to independent builders at any price point.</p>
+        <p>NicheLab exists because its founders understood what institutional-grade intelligence looks like — and chose to make that level of insight accessible at a different price point.</p>
+        <p><em>Institutional-grade intelligence, re-engineered for independent builders.</em></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Team -->
+  <div class="team-section">
+    <div class="eyebrow" style="margin-bottom:12px"><div class="eyebrow-ln"></div>Research Leadership</div>
+    <h2 class="headline" style="font-size:clamp(32px,3.5vw,46px);margin-bottom:10px">The team behind<br>the <em>intelligence.</em></h2>
+    <p class="sub" style="max-width:520px;margin-bottom:0">Team members are not publicly named by choice. In a market intelligence business, the methodology matters more than the biography. We let the work speak.</p>
+
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="tc-num">01 ——</div>
+        <div class="tc-role">Strategy &amp; Market Intelligence Lead</div>
+        <p class="tc-bio">Former engagement manager at a global top-3 strategy consultancy. Led market entry and competitive intelligence projects across 12 markets. Wharton MBA.</p>
+        <div class="tc-tags"><span class="tc-tag">McKinsey-tier</span><span class="tc-tag">Market Entry</span><span class="tc-tag">Wharton</span></div>
+      </div>
+      <div class="team-card">
+        <div class="tc-num">02 ——</div>
+        <div class="tc-role">Venture &amp; Startup Intelligence</div>
+        <p class="tc-bio">Former analyst at a Tier 1 VC fund. Evaluated 400+ startups annually across SaaS, fintech and consumer. Prior stint at PwC Deals. London Business School.</p>
+        <div class="tc-tags"><span class="tc-tag">Tier 1 VC</span><span class="tc-tag">Big Four</span><span class="tc-tag">LBS</span></div>
+      </div>
+      <div class="team-card">
+        <div class="tc-num">03 ——</div>
+        <div class="tc-role">Data &amp; Product Architecture</div>
+        <p class="tc-bio">Previously led data products at a Series B fintech. Built market signal pipelines used by institutional clients. MIT Computer Science.</p>
+        <div class="tc-tags"><span class="tc-tag">Signal Systems</span><span class="tc-tag">Fintech</span><span class="tc-tag">MIT</span></div>
+      </div>
+      <div class="team-card">
+        <div class="tc-num">04 ——</div>
+        <div class="tc-role">Editorial &amp; Research Standards</div>
+        <p class="tc-bio">Former researcher at a top-5 global think tank. Published in FT, The Economist and Harvard Business Review. Oxford PPE.</p>
+        <div class="tc-tags"><span class="tc-tag">Think Tank</span><span class="tc-tag">HBR Published</span><span class="tc-tag">Oxford</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="about-disclaimer">
+    <div class="about-disclaimer-in">Additional analysts, domain specialists and senior advisors contribute to the research process but are not publicly listed. The broader team operates under a deliberate discretion policy. In market intelligence, visibility is often a liability. The profiles above represent composite professional backgrounds reflecting the experience areas that contribute to the platform's research methodology. Individual contributors may not correspond directly to the illustrative profiles presented.</div>
+  </div>
+
+  <!-- Global Locations -->
+  <div class="addr-section">
+    <div class="eyebrow" style="margin-bottom:12px"><div class="eyebrow-ln"></div>Global Research Network</div>
+    <h2 class="headline" style="font-size:clamp(32px,3.5vw,46px);margin-bottom:10px">Research coverage.<br><em>Six continents.</em></h2>
+    <p class="sub" style="max-width:540px;margin-bottom:0">Our correspondence coordination network spans six strategic locations. All locations operate as research coverage zones within our distributed global analytical infrastructure.</p>
+
+    <div class="addr-grid" style="margin-top:48px">
+      <div class="addr-card">
+        <div class="addr-flag">🇬🇧</div>
+        <div class="addr-city">London</div>
+        <div class="addr-region">UK Market Coverage</div>
+        <div class="addr-lines">Knightsbridge One<br>Hyde Park<br>London SW1X 7LJ<br>United Kingdom</div>
+      </div>
+      <div class="addr-card">
+        <div class="addr-flag">🇦🇪</div>
+        <div class="addr-city">Dubai</div>
+        <div class="addr-region">Middle East &amp; North Africa</div>
+        <div class="addr-lines">The Palm Jumeirah<br>Dubai<br>United Arab Emirates</div>
+      </div>
+      <div class="addr-card">
+        <div class="addr-flag">🇵🇹</div>
+        <div class="addr-city">Lisbon</div>
+        <div class="addr-region">European Research Coordination</div>
+        <div class="addr-lines">Quinta Patino Estates<br>Avenida da República<br>Cascais, Lisbon<br>Portugal</div>
+      </div>
+      <div class="addr-card">
+        <div class="addr-flag">🇺🇸</div>
+        <div class="addr-city">Los Angeles</div>
+        <div class="addr-region">Americas Research Coverage</div>
+        <div class="addr-lines">Benedict Canyon<br>Beverly Hills, CA 90210<br>United States of America</div>
+      </div>
+      <div class="addr-card">
+        <div class="addr-flag">🇯🇵</div>
+        <div class="addr-city">Tokyo</div>
+        <div class="addr-region">Asia-Pacific Research Coverage</div>
+        <div class="addr-lines">Hiroo Garden Hills<br>Shibuya<br>Tokyo 150-0012<br>Japan</div>
+      </div>
+      <div class="addr-card">
+        <div class="addr-flag">🇳🇱</div>
+        <div class="addr-city">The Hague</div>
+        <div class="addr-region">European Policy &amp; Regulatory</div>
+        <div class="addr-lines">Alexander Gogelweg<br>2517 JH Den Haag<br>Netherlands</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="addr-notice" style="max-width:1200px;margin:0 auto;padding:28px 56px 60px">
+    <p><strong>Discretion Policy:</strong> All NicheLab correspondence locations operate within secure, controlled-access residential or commercial estates. For operational security and privacy protection purposes, specific unit identifiers, internal building numbers, or detailed facility information are not publicly disclosed. Access to any correspondence location is strictly restricted. Visitors are not received without a prior written appointment confirmation. Physical mail without a confirmed reference identifier will not be accepted. All official correspondence should be initiated through official contact channels before any physical correspondence is attempted.</p>
+    <p style="margin-top:10px">The geographic references above represent regional research coverage areas and correspondence coordination points. Unless explicitly stated in official corporate filings, such locations should not be interpreted as permanent operational offices, registered corporate branches, or legal headquarters. NicheLab operates as a distributed digital research platform coordinating analytical activities through remote infrastructure, research partners, and secure digital communication systems across multiple jurisdictions.</p>
+  </div>
+
+</div><!-- /about -->
+
+
 <!-- PAGE: LEGAL -->
 <div class="page" id="page-legal">
   <div class="legal-wrap">
@@ -534,50 +919,59 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
     </div>
 
     <div class="lpanel on" id="lp-terms">
-      <h1>Terms of Service</h1>
+      <h1>Legal Terms &amp; User Agreement</h1>
       <p class="legal-dt">Last updated: January 1, 2025 &nbsp;·&nbsp; NicheLab Research Ltd.</p>
-      <p>Welcome to NicheLab. By accessing or using our platform and intelligence services, you agree to be bound by these Terms of Service in their entirety. Please read them carefully.</p>
-      <h2>1. Acceptance of Terms</h2>
-      <p>By creating an account or engaging with NicheLab's research platform, you confirm that you are at least 18 years of age, have read and understood these terms, and agree to be legally bound by them. If you do not agree with any provision, you must not use the service.</p>
-      <h2>2. Nature of Service</h2>
-      <p>NicheLab is a premium niche intelligence and market strategy firm. Our platform delivers structured market research briefs, competitive analyses, and strategic intelligence across ten vertical categories. All deliverables are produced through NicheLab's proprietary research infrastructure and methodology.</p>
-      <h2>3. User Accounts &amp; Responsibilities</h2>
-      <p>Access to NicheLab requires a registered account. You are solely responsible for:</p>
-      <ul>
-        <li>Maintaining the confidentiality of your access credentials and session tokens</li>
-        <li>All activities conducted under your account, regardless of authorisation</li>
-        <li>Promptly notifying NicheLab of any suspected unauthorised access</li>
-        <li>Providing accurate, complete, and current registration information at all times</li>
-        <li>Keeping your contact email accessible for service communications</li>
-      </ul>
-      <h2>4. Membership &amp; Billing</h2>
+      <p>This Legal Agreement ("Agreement") constitutes a comprehensive legally binding contract governing all access to, interaction with, and use of the digital platform, services, informational infrastructure, analytical systems, databases, and related technologies operated by <strong>NicheLab</strong> (the "Platform", "Company", "NicheLab", "we", "our", or "us"). By accessing, browsing, registering for, subscribing to, or otherwise utilizing any functionality of the Platform, the User acknowledges and affirms that they have read, understood, and voluntarily agreed to be legally bound by the provisions contained in this Agreement.</p>
+
+      <h2>1. Nature of the Platform</h2>
+      <p>The Platform operates as a digital research and informational intelligence environment designed to provide users with structured informational content relating to entrepreneurial ecosystems, market opportunities, technological developments, and strategic business insights. The Platform may provide, generate, aggregate, or distribute informational materials including market intelligence analyses, niche market opportunity research, proprietary datasets, algorithmic insights, predictive models, strategic opportunity mapping, business intelligence frameworks, and analytical data visualizations.</p>
+      <p>All materials made available through the Platform are provided strictly for informational, analytical, and educational purposes. Under no circumstances shall any information, analysis, or dataset published on the Platform be construed as constituting financial advice, investment advice, securities recommendations, legal advice, tax advice, accounting advice, fiduciary advisory services, brokerage services, or regulated financial consulting.</p>
+
+      <h2>2. No Investment Advice</h2>
+      <p>The informational materials provided on the Platform do not constitute investment advice within the meaning of applicable financial services legislation, securities regulation, or capital markets law. NicheLab is not registered, licensed, or authorized as an investment advisor, broker-dealer, securities intermediary, financial institution, asset management entity, or regulated financial service provider. Users acknowledge that all information available through the Platform is of a generalized informational nature and does not constitute personalized advice.</p>
+
+      <h2>3. Informational and Educational Content</h2>
+      <p>All research materials, datasets, reports, and analytical observations available on the Platform are provided solely for informational and educational purposes. The Company makes no representation that such materials predict future market performance, guarantee business success, guarantee investment returns, or represent definitive or complete analyses. Users acknowledge that entrepreneurial activities, technological innovation, and commercial ventures involve substantial uncertainty and risk. Users are solely responsible for conducting independent due diligence and obtaining professional consultation where necessary.</p>
+
+      <h2>4. Non-Reliance Clause</h2>
+      <p>Users expressly acknowledge and agree that they shall not rely exclusively upon any information, datasets, analytical insights, or research materials provided through the Platform when making financial, commercial, or investment decisions. The Platform operates solely as an informational research tool and preliminary intelligence resource. All decisions based upon information obtained from the Platform remain the exclusive responsibility of the User.</p>
+
+      <h2>5. User Responsibility and Assumption of Risk</h2>
+      <p>Users acknowledge that entrepreneurial ventures, technology startups, digital products, and investment activities involve significant economic, operational, and regulatory risk. The User assumes full responsibility for financial decisions, business strategies, commercial activities, market participation, and entrepreneurial experimentation. The Company shall bear no responsibility for financial losses, business failures, opportunity costs, or commercial outcomes resulting from user actions.</p>
+
+      <h2>6. Intellectual Property</h2>
+      <p>All intellectual property associated with the Platform — including proprietary datasets, research methodologies, analytical frameworks, platform architecture, software code, and related technologies — constitutes the exclusive property of NicheLab Research Ltd. Users are granted a limited, non-exclusive, non-transferable licence to access and use the Platform strictly for personal or internal business purposes. No ownership rights, licences, or intellectual property interests are transferred to users through Platform access.</p>
+
+      <h2>7. Membership &amp; Billing</h2>
       <p>NicheLab offers two membership tiers:</p>
       <ul>
-        <li><strong>Starter:</strong> $36/month or $299/year — 10 research briefs per week, full 15-section methodology, PDF export</li>
-        <li><strong>Pro:</strong> $84/month or $699/year — Unlimited research briefs, priority queue, direct analyst support, early feature access</li>
+        <li><strong>Starter:</strong> $36/month or $299/year — 10 research briefs per week, full 15-section methodology, PDF &amp; Word export</li>
+        <li><strong>Pro:</strong> $84/month or $699/year — Unrestricted global intelligence access, Pro-tier executive summaries, priority algorithmic processing, direct analyst correspondence, advance intelligence on emerging verticals</li>
       </ul>
-      <p>All memberships are billed through Stripe and renew automatically on the billing cycle you select. Cancellations take effect at the close of the current billing period. NicheLab does not offer pro-rated refunds unless required by applicable consumer protection law.</p>
-      <h2>5. Acceptable Use Policy</h2>
-      <p>You agree not to use NicheLab for or in connection with:</p>
-      <ul>
-        <li>Fraudulent investment schemes, market manipulation, or securities fraud of any kind</li>
-        <li>Reverse-engineering, scraping, or replicating NicheLab's research methodology or infrastructure</li>
-        <li>Commercial redistribution or white-labelling of reports without a separate licensing agreement</li>
-        <li>Circumventing usage limits through multiple accounts, bots, or automated access</li>
-        <li>Any activity that violates applicable law in your jurisdiction or that of Portugal</li>
-        <li>Transmitting malicious code or interfering with the integrity of platform operations</li>
-      </ul>
-      <h2>6. Intellectual Property</h2>
-      <p>Research briefs generated through NicheLab are licensed to you for personal and internal business use, including client-facing deliverables with attribution. NicheLab's brand, methodology, platform architecture, and underlying systems remain the exclusive intellectual property of NicheLab Research Ltd. No ownership rights in the platform or its technology are transferred by this licence.</p>
-      <h2>7. Disclaimer of Warranties</h2>
-      <p>NicheLab research deliverables are strategic intelligence tools provided for informational purposes. They do not constitute financial advice, investment recommendations, legal guidance, or professional consulting services. NicheLab makes no warranty regarding the accuracy, completeness, or commercial viability of any deliverable. All research is used at the sole discretion and risk of the subscriber.</p>
-      <h2>8. Limitation of Liability</h2>
-      <p>To the maximum extent permitted by Portuguese and EU law, NicheLab and its affiliates shall not be liable for any indirect, incidental, consequential, or punitive damages, including loss of profits or business opportunities, arising from your use of or inability to access the service.</p>
-      <h2>9. Amendments</h2>
+      <p>All memberships are billed through Stripe and renew automatically on the billing cycle selected at registration. Membership fees are charged in advance. NicheLab does not offer pro-rated refunds unless required by applicable consumer protection law in your jurisdiction.</p>
+
+      <h2>8. Data Protection &amp; Privacy</h2>
+      <p>NicheLab processes personal data in accordance with applicable data protection law, including the General Data Protection Regulation (GDPR) where applicable. All user data is stored on Supabase, a PostgreSQL-backed cloud infrastructure hosted within the European Union, encrypted at rest using AES-256 and in transit via TLS 1.3. Row Level Security policies are enforced at the database layer. NicheLab does not sell, rent, or trade personal data under any circumstances. For full details, please refer to our Privacy Policy tab.</p>
+
+      <h2>9. Data Moat &amp; Competitive Use Restriction</h2>
+      <p>The informational materials, datasets, and research insights made available through the Platform constitute proprietary informational assets. Users are strictly prohibited from using the Platform or its materials to create, develop, or operate any service, product, or platform that competes directly or indirectly with NicheLab. Prohibited activities include development of competing market intelligence platforms, creation of research intelligence databases, and commercialization of derivative analytical datasets.</p>
+
+      <h2>10. Acceptable Use Policy</h2>
+      <p>Users agree not to use NicheLab for fraudulent investment schemes, market manipulation, or securities fraud; reverse-engineering or replicating NicheLab's research methodology; commercial redistribution or white-labelling of reports without a separate licensing agreement; circumventing usage limits through multiple accounts or automated access; or transmitting malicious code or interfering with platform operations.</p>
+
+      <h2>11. Limitation of Liability</h2>
+      <p>To the maximum extent permitted by Portuguese and EU law, NicheLab and its affiliates shall not be liable for any indirect, incidental, consequential, or punitive damages, including loss of profits or business opportunities, arising from your use of or inability to access the service. The Company shall not be liable for losses arising from reliance on informational insights, startup creation, product development, entrepreneurial experimentation, or investment decisions. Users assume full responsibility for business outcomes.</p>
+
+      <h2>12. Platform Security</h2>
+      <p>The Company employs encrypted communications protocols, intrusion detection systems, anomaly monitoring algorithms, and access control systems. However, no digital infrastructure can guarantee absolute security. Users acknowledge that internet-based systems inherently involve cybersecurity risk and are responsible for maintaining secure login credentials and protecting authentication tokens.</p>
+
+      <h2>13. Governing Law &amp; Jurisdiction</h2>
+      <p>This Agreement is governed by the laws of Portugal without reference to conflict of law provisions. All disputes shall be subject to the exclusive jurisdiction of the competent courts of Lisbon, Portugal. All provisions relating to intellectual property, data licensing, limitation of liability, indemnification, and dispute resolution shall survive termination of Platform access.</p>
+
+      <h2>14. Amendments</h2>
       <p>NicheLab reserves the right to amend these terms at any time. Material changes will be communicated via email to registered subscribers. Continued use of the service constitutes acceptance of the revised terms.</p>
-      <h2>10. Governing Law &amp; Jurisdiction</h2>
-      <p>These terms are governed by the laws of Portugal. All disputes shall be subject to the exclusive jurisdiction of the competent courts of Lisbon, Portugal.</p>
-      <h2>11. Contact</h2>
+
+      <h2>15. Contact</h2>
       <p>For legal queries, use our <span class="lnk" onclick="go('contact')">contact form</span> or write to legal@nichelab.io.</p>
     </div>
 
@@ -708,6 +1102,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
       <div>
         <div class="fc-head">Company</div>
         <div class="fc-links">
+          <button class="flink" onclick="go('about')">About Us</button>
           <button class="flink" onclick="go('contact')">Contact</button>
           <button class="flink" onclick="go('legal');showLegal('terms')">Terms of Service</button>
           <button class="flink" onclick="go('legal');showLegal('privacy')">Privacy Policy</button>
@@ -719,6 +1114,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
           <a class="flink" href="index.html">Admin Console</a>
           <button class="flink" onclick="go('home','pricing')">Membership Plans</button>
           <button class="flink" onclick="go('contact')">Request Briefing</button>
+          <button class="flink" onclick="go('about')">Global Locations</button>
         </div>
       </div>
     </div>
@@ -737,12 +1133,12 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
 
 <script>
 const SB_URL = 'https://ctezbazpnqylufhrmcwn.supabase.co';
-const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ0aXdkdWxjcXR2a2R1cHNvdG54Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3NzY2NjcsImV4cCI6MjA5MDM1MjY2N30.RawdFhi84Zq95eZ29w8QwXPcBT9VDffFcHMB3fAzITA';
+const SB_KEY = 'YOUR_SUPABASE_ANON_KEY';
 let db = null;
 try { if (SB_KEY !== 'YOUR_SUPABASE_ANON_KEY') db = window.supabase.createClient(SB_URL, SB_KEY); } catch(e){}
 
 /* ── ROUTER ── */
-const PAGES = ['home','legal','contact'];
+const PAGES = ['home','legal','contact','about'];
 function go(pg, anch) {
   if (!PAGES.includes(pg)) pg = 'home';
   document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
@@ -866,8 +1262,107 @@ function cycleRM(){
   setTimeout(cycleRM,950);
 }
 
+/* ── TIER GATING — IDEA OF THE DAY ── */
+// States: 'guest' | 'starter' | 'pro' | 'admin'
+let _userTier = 'guest';
+let _authResolved = false;
+
+async function resolveUserTier() {
+  const section = document.getElementById('idea-of-the-day');
+  const skeleton = document.getElementById('iotdSkeleton');
+  const block    = document.getElementById('iotdBlock');
+  const lock     = document.getElementById('iotdProLock');
+  const badge    = document.getElementById('navAuthBadge');
+  const badgeLbl = document.getElementById('navAuthLabel');
+  if (!section) return;
+
+  // Show skeleton while resolving
+  if (block) block.style.display = 'none';
+  if (skeleton) skeleton.style.display = 'block';
+
+  try {
+    if (!db) {
+      // Supabase not initialised (key not set) — treat as guest, show IOTD
+      _userTier = 'guest';
+    } else {
+      const { data: { session } } = await db.auth.getSession();
+
+      if (!session) {
+        _userTier = 'guest';
+      } else {
+        // Fetch profile tier without touching any backend logic
+        const { data: profile } = await db
+          .from('profiles')
+          .select('tier, role')
+          .eq('id', session.user.id)
+          .single();
+
+        if (profile) {
+          _userTier = (profile.role === 'admin') ? 'admin'
+                    : (profile.tier === 'pro')   ? 'pro'
+                    : 'starter';
+        } else {
+          _userTier = 'starter';
+        }
+
+        // Show nav badge for authenticated users
+        if (badge && badgeLbl) {
+          badgeLbl.textContent = _userTier === 'admin' ? 'ADMIN'
+                               : _userTier === 'pro'   ? 'PRO'
+                               : 'STARTER';
+          badge.classList.add('show');
+        }
+      }
+    }
+  } catch(e) {
+    // On any auth error default to guest — never block content
+    _userTier = 'guest';
+  }
+
+  // Apply visibility
+  applyIotdGating(_userTier);
+  _authResolved = true;
+}
+
+function applyIotdGating(tier) {
+  const section  = document.getElementById('idea-of-the-day');
+  const skeleton = document.getElementById('iotdSkeleton');
+  const block    = document.getElementById('iotdBlock');
+  const lock     = document.getElementById('iotdProLock');
+
+  if (!section) return;
+
+  // Hide skeleton
+  if (skeleton) skeleton.style.display = 'none';
+
+  if (tier === 'pro' || tier === 'admin') {
+    // Pro / Admin: show block but overlay the lock card (they can still see the teaser)
+    if (block) block.style.display = 'block';
+    if (lock)  lock.classList.add('show');
+    // Dim the section label to signal it's not the relevant action for them
+    section.style.opacity = '0.7';
+  } else {
+    // Guest / Starter: full visibility, no lock
+    if (block) block.style.display = 'block';
+    if (lock)  lock.classList.remove('show');
+    section.style.opacity = '1';
+  }
+}
+
+// Re-run on auth state changes (login/logout during session)
+if (db) {
+  db.auth.onAuthStateChange((_event, session) => {
+    if (_authResolved) resolveUserTier();
+  });
+}
+
 /* ── INIT ── */
-window.addEventListener('load',()=>{resolveHash();initRv();setTimeout(cycleRM,2400);});
+window.addEventListener('load', () => {
+  resolveHash();
+  initRv();
+  setTimeout(cycleRM, 2400);
+  resolveUserTier();
+});
 </script>
 
 </body>
