@@ -2249,10 +2249,10 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
   <p>Continued use of the Platform after the effective date of an updated Privacy Policy constitutes acknowledgment of the revised policy to the extent permitted by law.</p>
 
   <hr>
-
   <h2>13. Contact</h2>
   <p>Privacy-related requests, legal notices, and data protection inquiries may be directed to the official contact channels identified on the Platform.</p>
 </div> <div class="page" id="page-contact">
+  <div id="contact"></div> 
   <div class="wrap" style="padding-top:64px;padding-bottom:100px">
     <div class="ct-layout">
       <div>
@@ -2263,88 +2263,29 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
       
       <div class="fcard">
         <div class="f-title">Send an Enquiry</div>
-        
         <div class="f-row2">
-          <div class="fg">
-            <label class="flbl" for="fc-n">Full Name *</label>
-            <input class="fctl" type="text" id="fc-n" placeholder="Jane Smith" autocomplete="name" />
-          </div>
-          <div class="fg">
-            <label class="flbl" for="fc-e">Email Address *</label>
-            <input class="fctl" type="email" id="fc-e" placeholder="jane@firm.com" autocomplete="email" />
-          </div>
+          <div class="fg"><label class="flbl" for="fc-n">Full Name *</label><input class="fctl" type="text" id="fc-n" placeholder="Jane Smith" /></div>
+          <div class="fg"><label class="flbl" for="fc-e">Email Address *</label><input class="fctl" type="email" id="fc-e" placeholder="jane@firm.com" /></div>
         </div>
-
-        <div class="fg">
-          <label class="flbl" for="fc-o">Organisation</label>
-          <input class="fctl" type="text" id="fc-o" placeholder="Firm or company name (optional)" autocomplete="organization" />
-        </div>
-
+        <div class="fg"><label class="flbl" for="fc-o">Organisation</label><input class="fctl" type="text" id="fc-o" placeholder="Firm or company name" /></div>
         <div class="fg">
           <label class="flbl" for="fc-s">Enquiry Type *</label>
           <select class="fctl" id="fc-s">
             <option value="">Select a category…</option>
             <option value="membership">Membership Enquiry</option>
-            <option value="briefing">Request Custom Briefing</option>
-            <option value="methodology">Methodology Question</option>
-            <option value="billing">Billing or Account</option>
-            <option value="partnership">Partnership Proposal</option>
             <option value="legal">Legal or Compliance</option>
             <option value="other">Other</option>
           </select>
         </div>
-
-        <div class="fg">
-          <label class="flbl" for="fc-m">Message *</label>
-          <textarea class="fctl" id="fc-m" placeholder="Please describe your enquiry in detail…"></textarea>
-        </div>
-
+        <div class="fg"><label class="flbl" for="fc-m">Message *</label><textarea class="fctl" id="fc-m" placeholder="Please describe your enquiry..."></textarea></div>
         <button class="btn-send" id="sendBtn" onclick="submitContact()">
           <span id="sendLbl">Send Enquiry</span><span id="sendArr">→</span>
         </button>
-        
         <div class="ffb" id="ffb"></div>
       </div>
     </div>
   </div>
-</div><footer>
-  <div class="ft-grid">
-    <div class="ft-top">
-      <div class="ft-brand">
-        <div class="nav-logo" onclick="go('home')" style="cursor:pointer">
-          <div class="nav-seal"><svg viewBox="0 0 20 20" fill="none"><path d="M4 16V4l12 12V4" stroke="#B8860B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-          <span class="nav-brand">NicheLab</span>
-        </div>
-        <p class="ft-brand-p">A premium niche intelligence and market strategy firm. Delivering institutional-grade research briefs to founders, operators, and investment professionals since 2024.</p>
-      </div>
-      <div>
-        <div class="fc-head">Platform</div>
-        <div class="fc-links">
-          <button class="flink" onclick="go('home')">Home</button>
-          <button class="flink" onclick="go('home','services')">Services</button>
-          <button class="flink" onclick="go('home','pricing')">Pricing</button>
-          <button class="flink" onclick="go('home','methodology')">Methodology</button>
-        </div>
-      </div>
-      <div>
-        <div class="fc-head">Company</div>
-        <div class="fc-links">
-          <button class="flink" onclick="go('about')">About Us</button>
-          <button class="flink" onclick="go('contact')">Contact</button>
-          <button class="flink" onclick="go('legal');showLegal('terms')">Terms of Service</button>
-          <button class="flink" onclick="go('legal');showLegal('privacy')">Privacy Policy</button>
-        </div>
-      </div>
-      <div>
-        <div class="fc-head">Access</div>
-        <div class="fc-links">
-          <a class="flink" href="index.html">Admin Console</a>
-          <button class="flink" onclick="go('home','pricing')">Membership Plans</button>
-          <button class="flink" onclick="go('contact')">Request Briefing</button>
-          <button class="flink" onclick="go('about')">Global Locations</button>
-        </div>
-      </div>
-    </div>
+</div>
     <div class="ft-bot">
       <div class="ft-copy">© 2025 NicheLab Research Ltd. · Lisbon, Portugal · All rights reserved</div>
       <div class="ft-ll">
