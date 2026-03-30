@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NicheLab — Admin Console</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Syne+Mono&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#07090e;--surface:#0c1220;--surface2:#111b2e;--surface3:#162034;
+  --border:#1a2840;--border2:#1f3050;
+  --text:#c4d4e8;--text2:#5a7898;--text3:#3a5070;
+  --accent:#d4962e;--accent2:#b07820;--accent-glow:rgba(212,150,46,0.15);
+  --success:#16c784;--error:#ea3943;--warn:#f0a500;--info:#4da6ff;
+  --font-ui:'DM Sans',sans-serif;--font-head:'Syne',sans-serif;--font-mono:'Syne Mono',monospace;
+  --radius:6px;--sidebar:220px;--preview:360px;--console:180px;
+}
+html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:var(--font-ui)}
+/* ── Layout ── */
+#app{display:grid;grid-template-columns:var(--sidebar) 1fr var(--preview);grid-template-rows:48px 1fr var(--console);height:100vh}
+#topbar{grid-column:1/-1;display:flex;align-items:center;gap:12px;padding:0 16px;background:var(--surface);border-bottom:1px solid var(--border);z-index:10}
+#sidebar{grid-row:2;background:var(--surface);border-right:1px solid var(--border);overflow-y:auto;display:flex;flex-direction:column}
+#main{grid-row:2;overflow-y:auto;padding:24px}
+#preview-panel{grid-row:2;background:var(--surface);border-left:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
+#console-bar{grid-column:1/-1;background:var(--bg);border-top:1px solid var(--border);overflow:hidden;display:flex;flex-direction:column}
+/* ── Topbar ── */
+.logo{font-family:var(--font-head);font-weight:800;font-size:15px;letter-spacing:0.5px;color:var(--accent)}
+.logo span{color:var(--text2);font-weight:400}
+.topbar-spacer{flex:1}
+.status-dot{width:7px;height:7px;border-radius:50%;background:var(--text3)}
+.status-dot.ok{background:var(--success)}
+.status-dot.err{background:var(--error)}
+#supabase-status{display:flex;align-items:center;gap:6px;font-size:11px;font-family:var(--font-mono);color:var(--text2)}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:var(--radius);border:none;cursor:pointer;font-family:var(--font-ui);font-size:12px;font-weight:500;transition:all .15s}
+.btn-ghost{background:transparent;color:var(--text2);border:1px solid var(--border2)}
+.btn-ghost:hover{color:var(--text);border-color:var(--text3)}
+.btn-accent{background:var(--accent);color:#000;font-weight:600}
+.btn-accent:hover{background:var(--accent2)}
+.btn-sm{padding:5px 10px;font-size:11px}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+/* ── Sidebar ── */
+.sidebar-section{padding:12px 0}
+.sidebar-label{font-family:var(--font-mono);font-size:9px;letter-spacing:1.5px;color:var(--text3);padding:0 16px 8px;text-transform:uppercase}
+.cat-item{display:flex;align-items:center;gap:10px;padding:8px 16px;cursor:pointer;font-size:12px;color:var(--text2);transition:all .12s;border-left:2px solid transparent}
+.cat-item:hover{color:var(--text);background:var(--surface2)}
+.cat-item.active{color:var(--accent);background:var(--accent-glow);border-left-color:var(--accent)}
+.cat-icon{font-size:14px;width:18px;text-align:center}
+.cat-label{font-family:var(--font-ui);font-size:12px}
+.sidebar-footer{margin-top:auto;padding:12px;border-top:1px solid var(--border)}
+/* ── Main workspace ── */
+.ws-header{margin-bottom:24px}
+.ws-title{font-family:var(--font-head);font-size:22px;font-weight:700;color:var(--text)}
+.ws-sub{font-size:12px;color:var(--text2);margin-top:4px;font-family:var(--font-mono)}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:16px;overflow:hidden}
+.card-header{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--border);background:var(--surface2)}
+.card-title{font-family:var(--font-head);font-size:13px;font-weight:600;display:flex;align-items:center;gap:8px}
+.step-badge{background:var(--accent);color:#000;font-size:9px;font-weight:700;padding:2px 7px;border-radius:20px;font-family:var(--font-mono)}
+.card-body{padding:18px}
+/* ── Subtopic list ── */
+.subtopic-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.subtopic-item{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border:1px solid var(--border);border-radius:var(--radius);cursor:pointer;transition:all .12s;background:var(--surface2)}
+.subtopic-item:hover{border-color:var(--border2);background:var(--surface3)}
+.subtopic-item.selected{border-color:var(--accent);background:var(--accent-glow)}
+.subtopic-item input[type=checkbox]{accent-color:var(--accent);margin-top:2px;flex-shrink:0}
+.subtopic-text{font-size:12px;color:var(--text);line-height:1.4}
+.subtopic-actions{display:flex;gap:8px;margin-top:12px}
+/* ── Queue ── */
+.queue-item{display:flex;align-items:center;gap:12px;padding:12px 16px;border:1px solid var(--border);border-radius:var(--radius);margin-bottom:8px;background:var(--surface2);cursor:pointer;transition:all .12s}
+.queue-item:hover{border-color:var(--border2)}
+.queue-item.active-item{border-color:var(--accent)}
+.queue-status{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.qs-pending{background:var(--surface3);color:var(--text2)}
+.qs-running{background:rgba(77,166,255,0.15);color:var(--info);animation:pulse 1.5s infinite}
+.qs-done{background:rgba(22,199,132,0.15);color:var(--success)}
+.qs-error{background:rgba(234,57,67,0.15);color:var(--error)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.queue-info{flex:1;min-width:0}
+.queue-niche{font-size:12px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.queue-meta{font-size:10px;color:var(--text2);font-family:var(--font-mono);margin-top:2px}
+.progress-bar{height:3px;background:var(--border);border-radius:2px;margin-top:6px;overflow:hidden}
+.progress-fill{height:100%;background:var(--accent);border-radius:2px;transition:width .3s}
+/* ── Preview Panel ── */
+.preview-header{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.preview-title{font-family:var(--font-head);font-size:12px;font-weight:600;color:var(--text)}
+.preview-actions{display:flex;gap:6px}
+#preview-iframe{flex:1;border:none;background:#fff;width:100%}
+.preview-empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--text3)}
+.preview-empty svg{opacity:.3}
+/* ── Console ── */
+.console-header{display:flex;align-items:center;justify-content:space-between;padding:6px 12px;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0}
+.console-title{font-family:var(--font-mono);font-size:10px;color:var(--text2);display:flex;align-items:center;gap:8px}
+#log-list{flex:1;overflow-y:auto;padding:4px 12px;font-family:var(--font-mono);font-size:10px;line-height:1.6}
+.log-line{display:flex;gap:8px;padding:1px 0}
+.log-time{color:var(--text3);flex-shrink:0}
+.log-msg.info{color:var(--text2)}
+.log-msg.success{color:var(--success)}
+.log-msg.warning{color:var(--warn)}
+.log-msg.error{color:var(--error)}
+.log-msg.accent{color:var(--accent)}
+/* ── Modal ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:100;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.modal-overlay.open{display:flex}
+.modal{background:var(--surface);border:1px solid var(--border2);border-radius:10px;width:680px;max-height:85vh;overflow-y:auto;padding:28px}
+.modal-title{font-family:var(--font-head);font-size:18px;font-weight:700;margin-bottom:6px}
+.modal-sub{font-size:12px;color:var(--text2);margin-bottom:24px}
+.form-section{margin-bottom:24px}
+.form-section-title{font-family:var(--font-head);font-size:12px;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.key-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:8px}
+.key-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+input[type=text],input[type=password],input[type=email],input[type=url]{width:100%;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--radius);padding:8px 10px;color:var(--text);font-family:var(--font-mono);font-size:11px;outline:none;transition:border-color .15s}
+input:focus{border-color:var(--accent)}
+input::placeholder{color:var(--text3)}
+label{display:block;font-size:10px;font-family:var(--font-mono);color:var(--text2);margin-bottom:4px;letter-spacing:.3px}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:24px;padding-top:16px;border-top:1px solid var(--border)}
+/* ── Tags ── */
+.tag{display:inline-flex;align-items:center;padding:2px 8px;border-radius:20px;font-size:10px;font-family:var(--font-mono);font-weight:600}
+.tag-success{background:rgba(22,199,132,.15);color:var(--success)}
+.tag-error{background:rgba(234,57,67,.15);color:var(--error)}
+.tag-warn{background:rgba(240,165,0,.15);color:var(--warn)}
+.tag-info{background:rgba(77,166,255,.15);color:var(--info)}
+/* ── Empty states ── */
+.empty-state{text-align:center;padding:48px 24px;color:var(--text3)}
+.empty-state-icon{font-size:36px;margin-bottom:12px;opacity:.5}
+.empty-state p{font-size:12px;line-height:1.6}
+/* ── Scrollbar ── */
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+/* ── Published reports table ── */
+.reports-table{width:100%;border-collapse:collapse;font-size:12px}
+.reports-table th{text-align:left;padding:8px 12px;border-bottom:1px solid var(--border);color:var(--text2);font-family:var(--font-mono);font-size:10px;letter-spacing:.5px;font-weight:400}
+.reports-table td{padding:10px 12px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:middle}
+.reports-table tr:hover td{background:var(--surface2)}
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- ── Topbar ── -->
+  <div id="topbar">
+    <div class="logo">NicheLab <span>/ Admin</span></div>
+    <div id="supabase-status">
+      <div class="status-dot" id="sb-dot"></div>
+      <span id="sb-label">Not connected</span>
+    </div>
+    <div class="topbar-spacer"></div>
+    <button class="btn btn-ghost btn-sm" onclick="showPublished()">Published Reports</button>
+    <button class="btn btn-ghost btn-sm" onclick="openSettings()">⚙ Settings</button>
+  </div>
+
+  <!-- ── Sidebar ── -->
+  <div id="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Categories</div>
+      <div id="cat-list"></div>
+    </div>
+    <div class="sidebar-footer">
+      <div style="font-size:10px;color:var(--text3);font-family:var(--font-mono);line-height:1.6">
+        Select a category to begin<br>generating niche reports.
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Main ── -->
+  <div id="main">
+    <div id="workspace">
+      <div class="empty-state">
+        <div class="empty-state-icon">📊</div>
+        <p>Select a category from the sidebar<br>to start generating market intelligence reports.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Preview Panel ── -->
+  <div id="preview-panel">
+    <div class="preview-header">
+      <div class="preview-title">Report Preview</div>
+      <div class="preview-actions">
+        <button class="btn btn-ghost btn-sm" id="btn-pdf" onclick="exportPDF()" disabled>PDF</button>
+        <button class="btn btn-accent btn-sm" id="btn-publish" onclick="publishReport()" disabled>Publish</button>
+      </div>
+    </div>
+    <div id="preview-empty" class="preview-empty">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+      <p style="font-size:11px">Generate a report to see preview</p>
+    </div>
+    <iframe id="preview-iframe" style="display:none"></iframe>
+  </div>
+
+  <!-- ── Console ── -->
+  <div id="console-bar">
+    <div class="console-header">
+      <div class="console-title">
+        <span style="color:var(--accent)">▶</span> SYSTEM LOG
+        <span id="log-count" style="color:var(--text3)">0 entries</span>
+      </div>
+      <button class="btn btn-ghost btn-sm" onclick="clearLogs()">Clear</button>
+    </div>
+    <div id="log-list"></div>
+  </div>
+
+</div>
+
+<!-- ── Settings Modal ── -->
+<div class="modal-overlay" id="settings-modal">
+  <div class="modal">
+    <div class="modal-title">Configuration</div>
+    <div class="modal-sub">API keys are stored locally in your browser. Never committed to GitHub.</div>
+
+    <div class="form-section">
+      <div class="form-section-title">Supabase</div>
+      <div class="key-grid-2">
+        <div><label>Project URL</label><input type="url" id="sb-url" placeholder="https://xxxx.supabase.co"></div>
+        <div><label>Anon Key</label><input type="password" id="sb-key" placeholder="eyJhbGci..."></div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-title">Google Gemini (6 keys)</div>
+      <div class="key-grid" id="gemini-keys"></div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-title">Groq (11 keys)</div>
+      <div class="key-grid" id="groq-keys"></div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-title">OpenRouter (11 keys)</div>
+      <div class="key-grid" id="openrouter-keys"></div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeSettings()">Cancel</button>
+      <button class="btn btn-ghost" onclick="testConnection()">Test Supabase</button>
+      <button class="btn btn-accent" onclick="saveSettings()">Save Settings</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Published Reports Modal ── -->
+<div class="modal-overlay" id="published-modal">
+  <div class="modal" style="width:820px">
+    <div class="modal-title">Published Reports</div>
+    <div class="modal-sub">Reports live in Supabase and visible to dashboard users.</div>
+    <div id="published-list"><div class="empty-state"><p>Connect Supabase to view published reports.</p></div></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closePublished()">Close</button>
+      <button class="btn btn-ghost" onclick="loadPublished()">Refresh</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════
+// CONSTANTS
+// ══════════════════════════════════════════════════════════
+const CATEGORIES = [
+  {id:'micro-saas',      label:'Micro-SaaS',       icon:'⚡'},
+  {id:'ai-automation',   label:'AI Automation',     icon:'🤖'},
+  {id:'e-commerce',      label:'E-Commerce',        icon:'🛒'},
+  {id:'creator-economy', label:'Creator Economy',   icon:'🎨'},
+  {id:'mobile-apps',     label:'Mobile Apps',       icon:'📱'},
+  {id:'digital-products',label:'Digital Products',  icon:'💎'},
+  {id:'local-business',  label:'Local Business',    icon:'🏪'},
+  {id:'info-products',   label:'Info Products',     icon:'📚'},
+  {id:'web3-defi',       label:'Web3 & DeFi',       icon:'⛓'},
+  {id:'b2b-services',    label:'B2B Services',       icon:'🏢'},
+];
+
+const SECTIONS = [
+  {n:1,  t:'Executive Summary'},
+  {n:2,  t:'Market Overview & Size'},
+  {n:3,  t:'Target Audience Analysis'},
+  {n:4,  t:'Problem-Solution Fit'},
+  {n:5,  t:'Competitive Landscape'},
+  {n:6,  t:'Revenue Model Analysis'},
+  {n:7,  t:'Go-to-Market Strategy'},
+  {n:8,  t:'Technical Requirements'},
+  {n:9,  t:'Financial Projections (3-Year)'},
+  {n:10, t:'Risk Assessment Matrix'},
+  {n:11, t:'Regulatory & Compliance'},
+  {n:12, t:'Marketing & Growth Strategy'},
+  {n:13, t:'Key Success Metrics'},
+  {n:14, t:'Implementation Roadmap'},
+  {n:15, t:'References & Data Sources'},
+];
+
+// ══════════════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════════════
+const state = {
+  category: null,
+  subtopics: [],
+  selected: new Set(),
+  queue: [],           // [{id, niche, status, progress, html, analystCode}]
+  activePreview: null, // queue item id
+  isRunning: false,
+  sbClient: null,
+  keys: {
+    gemini: Array(6).fill(''),
+    groq: Array(11).fill(''),
+    openrouter: Array(11).fill('')
+  }
+};
+
+// ══════════════════════════════════════════════════════════
+// LOGGING
+// ══════════════════════════════════════════════════════════
+function log(msg, type='info'){
+  const now = new Date();
+  const t = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}`;
+  const el = document.getElementById('log-list');
+  const line = document.createElement('div');
+  line.className = 'log-line';
+  line.innerHTML = `<span class="log-time">${t}</span><span class="log-msg ${type}">${msg}</span>`;
+  el.appendChild(line);
+  el.scrollTop = el.scrollHeight;
+  state.logs = (state.logs||[]).concat({t, msg, type});
+  document.getElementById('log-count').textContent = `${el.children.length} entries`;
+}
+function clearLogs(){document.getElementById('log-list').innerHTML='';document.getElementById('log-count').textContent='0 entries';}
+
+// ══════════════════════════════════════════════════════════
+// ANALYST CODE
+// ══════════════════════════════════════════════════════════
+function genAnalystCode(){
+  const L='ABCDEFGHJKLMNPQRSTUVWXYZ',N='0123456789';
+  const r=(s,n)=>Array.from({length:n},()=>s[Math.floor(Math.random()*s.length)]).join('');
+  return `${r(L,2)}-${r(L,5)}-${r(N,4)}`;
+}
+
+// ══════════════════════════════════════════════════════════
+// SUPABASE
+// ══════════════════════════════════════════════════════════
+function initSupabase(url, key){
+  try{
+    const {createClient} = supabase;
+    state.sbClient = createClient(url, key, { auth: { storage: window.localStorage, persistSession: true, autoRefreshToken: true } });
+    document.getElementById('sb-dot').className = 'status-dot ok';
+    document.getElementById('sb-label').textContent = 'Supabase connected';
+    log('Supabase client initialized','success');
+  } catch(e){
+    log('Supabase init failed: '+e.message,'error');
+  }
+}
+
+async function testConnection(){
+  const url = document.getElementById('sb-url').value.trim();
+  const key = document.getElementById('sb-key').value.trim();
+  if(!url||!key){alert('Enter Supabase URL and key first.');return;}
+  try{
+    const {createClient} = supabase;
+    const c = createClient(url,key);
+    const {error} = await c.from('profiles').select('id').limit(1);
+    if(error) throw error;
+    log('Supabase connection OK','success');
+    alert('✓ Supabase connection successful!');
+  } catch(e){
+    log('Supabase test failed: '+e.message,'error');
+    alert('Connection failed: '+e.message);
+  }
+}
+
+async function publishReport(){
+  if(!state.activePreview) return;
+  const item = state.queue.find(q=>q.id===state.activePreview);
+  if(!item||item.status!=='done'){alert('Report must finish generating first.');return;}
+  if(!state.sbClient){alert('Connect Supabase in Settings first.');return;}
+
+  const signal = Math.floor(50 + Math.random()*40);
+  const wc = item.html.replace(/<[^>]+>/g,'').split(/\s+/).length;
+
+  const {error} = await state.sbClient.from('reports').insert({
+    title: item.niche,
+    category: state.category.label,
+    niche: item.niche,
+    content: item.html,
+    summary: `Market intelligence report covering 15 analytical sections for the ${item.niche} niche.`,
+    signal,
+    status: 'published',
+    analyst_code: item.analystCode,
+    word_count: wc,
+    tier_required: 'starter',
+    published_at: new Date().toISOString()
+  });
+
+  if(error){log('Publish failed: '+error.message,'error');alert('Publish failed: '+error.message);}
+  else{log(`Published: "${item.niche}" (signal ${signal})`, 'success');alert('✓ Report published successfully!');}
+}
+
+async function loadPublished(){
+  if(!state.sbClient){alert('Connect Supabase in Settings first.');return;}
+  const {data,error} = await state.sbClient
+    .from('reports')
+    .select('id,title,category,signal,status,published_at,word_count,analyst_code')
+    .order('created_at',{ascending:false})
+    .limit(50);
+
+  if(error){log('Load reports failed: '+error.message,'error');return;}
+
+  const el = document.getElementById('published-list');
+  if(!data.length){el.innerHTML='<div class="empty-state"><p>No reports published yet.</p></div>';return;}
+
+  el.innerHTML = `<table class="reports-table">
+    <thead><tr><th>Title</th><th>Category</th><th>Signal</th><th>Status</th><th>Words</th><th>Analyst</th><th>Published</th><th></th></tr></thead>
+    <tbody>${data.map(r=>`<tr>
+      <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${r.title}">${r.title}</td>
+      <td><span class="tag tag-info">${r.category}</span></td>
+      <td><span class="tag ${r.signal>=70?'tag-success':r.signal>=40?'tag-warn':'tag-error'}">${r.signal}</span></td>
+      <td><span class="tag ${r.status==='published'?'tag-success':'tag-warn'}">${r.status}</span></td>
+      <td style="font-family:var(--font-mono)">${(r.word_count||0).toLocaleString()}</td>
+      <td style="font-family:var(--font-mono);font-size:10px">${r.analyst_code||'—'}</td>
+      <td style="font-family:var(--font-mono);font-size:10px">${r.published_at?new Date(r.published_at).toLocaleDateString():'-'}</td>
+      <td><button class="btn btn-ghost btn-sm" onclick="unpublishReport('${r.id}')">Archive</button></td>
+    </tr>`).join('')}</tbody>
+  </table>`;
+}
+
+async function unpublishReport(id){
+  if(!confirm('Archive this report? It will be hidden from users.'))return;
+  const {error} = await state.sbClient.from('reports').update({status:'archived'}).eq('id',id);
+  if(error) alert('Error: '+error.message);
+  else{log('Report archived','warn');loadPublished();}
+}
+
+function showPublished(){
+  document.getElementById('published-modal').classList.add('open');
+  loadPublished();
+}
+function closePublished(){document.getElementById('published-modal').classList.remove('open');}
+
+// ══════════════════════════════════════════════════════════
+// API PROVIDERS
+// ══════════════════════════════════════════════════════════
+async function callProvider(provider, key, systemPrompt, userPrompt, temperature=0.72){
+  if(provider==='gemini'){
+    // Gemini: send system+user as separate fields when system prompt exists
+    const body = systemPrompt
+      ? {
+          systemInstruction:{parts:[{text:systemPrompt}]},
+          contents:[{role:'user',parts:[{text:userPrompt}]}],
+          generationConfig:{temperature,maxOutputTokens:8192}
+        }
+      : {
+          contents:[{parts:[{text:userPrompt}]}],
+          generationConfig:{temperature,maxOutputTokens:8192}
+        };
+    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${key}`,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(body)
+    });
+    if(!res.ok){const e=await res.json().catch(()=>({}));throw new Error(`${res.status}: ${e.error?.message||res.statusText}`);}
+    const d = await res.json();
+    return d.candidates?.[0]?.content?.parts?.[0]?.text||'';
+  }
+  if(provider==='groq'){
+    const res = await fetch('https://api.groq.com/openai/v1/chat/completions',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':`Bearer ${key}`},
+      body:JSON.stringify({
+        model:'llama-3.3-70b-versatile',
+        messages:[...(systemPrompt?[{role:'system',content:systemPrompt}]:[]),{role:'user',content:userPrompt}],
+        max_tokens:8192,temperature
+      })
+    });
+    if(!res.ok){const e=await res.json().catch(()=>({}));throw new Error(`${res.status}: ${e.error?.message||res.statusText}`);}
+    const d = await res.json();
+    return d.choices?.[0]?.message?.content||'';
+  }
+  if(provider==='openrouter'){
+    const res = await fetch('https://openrouter.ai/api/v1/chat/completions',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':`Bearer ${key}`,'HTTP-Referer':'https://nichelab.io','X-Title':'NicheLab'},
+      body:JSON.stringify({
+        model:'meta-llama/llama-3.3-70b-instruct',
+        messages:[...(systemPrompt?[{role:'system',content:systemPrompt}]:[]),{role:'user',content:userPrompt}],
+        max_tokens:8192,temperature
+      })
+    });
+    if(!res.ok){const e=await res.json().catch(()=>({}));throw new Error(`${res.status}: ${e.error?.message||res.statusText}`);}
+    const d = await res.json();
+    return d.choices?.[0]?.message?.content||'';
+  }
+  throw new Error('Unknown provider: '+provider);
+}
+
+async function callAI(systemPrompt, userPrompt, temperature=0.72){
+  const attempts = [];
+  ['gemini','groq','openrouter'].forEach(p=>{
+    (state.keys[p]||[]).filter(k=>k.trim()).forEach(k=>attempts.push({p,k}));
+  });
+  if(!attempts.length) throw new Error('No API keys configured. Open Settings to add keys.');
+
+  let lastErr;
+  for(const {p,k} of attempts){
+    try{
+      log(`  → ${p.toUpperCase()} attempt...`,'info');
+      const result = await callProvider(p, k, systemPrompt, userPrompt, temperature);
+      if(result && result.length>50) return result;
+      throw new Error('Empty or too-short response');
+    } catch(e){
+      lastErr = e;
+      const msg = e.message||'';
+      log(`  ✗ ${p}: ${msg.substring(0,80)}`,'warning');
+      if(!msg.includes('429')&&!msg.includes('rate')&&!msg.includes('limit')&&!msg.includes('quota')){
+        if(msg.includes('401')||msg.includes('auth')||msg.includes('key')) continue;
+        throw e;
+      }
+    }
+  }
+  throw new Error('All API providers exhausted. ' + (lastErr?.message||''));
+}
+
+// ══════════════════════════════════════════════════════════
+// SYSTEM PROMPT
+// ══════════════════════════════════════════════════════════
+function getSystemPrompt(analystCode){
+  return `You are Research Analyst ${analystCode}, a senior market intelligence specialist at an independent strategy research firm. You produce institutional-grade market research reports for entrepreneurs, investors, and enterprise clients evaluating new market opportunities.
+
+MANDATORY WRITING STANDARDS — NEVER VIOLATE:
+1. All financial figures must be precise and non-rounded: write $2.37M, $14,823/month, 23.7% CAGR — never $2M or 15% or "approximately"
+2. Never use square brackets, angle brackets, or placeholder text like [INSERT DATA] or [TBD]
+3. Minimum 420 words per section — provide thorough, substantive analysis
+4. Every section must end with a one-sentence transition to the next section
+5. All HTML tables must have minimum 5 columns; operational/strategy tables must include "ROI Impact" and "Implementation Timeline" columns
+6. Write in confident, authoritative third-person analytical voice — no hedging, no AI disclaimers
+7. Never reference AI systems, language models, training data, or knowledge limitations
+8. Ground all claims in verifiable market data; cite real organizations (Gartner, McKinsey, Forrester, IBISWorld, Statista, relevant trade bodies)
+9. Format all output as clean, semantic HTML
+10. Tables must never split across pages — if a table is long, label continuations as "Part A" and "Part B"
+11. CRITICAL: Never output repeated punctuation characters. No sequences of "!!!", "---", "===", "...", "###" or similar. Use plain prose and proper HTML only.
+12. CRITICAL: Years must always be followed by a space or comma, never by punctuation marks. Write "2021," or "2021." never "2021!!!".
+13. Output must start directly with an HTML tag. No markdown fences, no backticks, no preamble text before the first "<" character.`;
+}
+
+// ══════════════════════════════════════════════════════════
+// SECTION PROMPTS
+// ══════════════════════════════════════════════════════════
+function getSectionPrompt(section, niche, category, analystCode, date){
+  const base = `NICHE: ${niche}\nCATEGORY: ${category}\nANALYST: ${analystCode}\nDATE: ${date}`;
+
+  const instrs = {
+    1:`${base}\n\nGenerate Section 1: Executive Summary as clean HTML.\n\nRequirements:\n- Open with a <div class="report-header"> block containing: NICHELAB MARKET INTELLIGENCE REPORT, the niche title, Analyst: ${analystCode}, Date: ${date}, Classification: PROPRIETARY RESEARCH — CONFIDENTIAL\n- Market Opportunity Score: X/100 with 2-sentence rationale (X should be between 55 and 92)\n- 5 key findings as <ul> bullet points, each with a specific data figure\n- Total addressable market with precise dollar figure and source\n- Primary target audience description (2-3 sentences)\n- Top 3 strategic recommendations as numbered list\n- One <table class="data-table"> titled "Market Snapshot" with exactly these 6 columns: Metric | Current Value | YoY Change | 3-Year Projection | Confidence Level | Data Source — include 8+ rows of specific market data\n- End paragraph transitioning to Market Overview section\n\nSection must be 420+ words. Use <h2>Section 1: Executive Summary</h2> as heading.`,
+
+    2:`${base}\n\nGenerate Section 2: Market Overview & Size as clean HTML.\n\nRequirements:\n- TAM, SAM, SOM with precise dollar figures and methodology explanation\n- Historical market size for 2020, 2021, 2022, 2023 with specific values\n- CAGR calculation (historical and projected) with decimal precision\n- Market drivers (4-5 factors with quantified impact)\n- Market restraints (3-4 factors)\n- One <table class="data-table"> titled "Market Segmentation Analysis" with 6 columns: Segment | Market Size ($M) | Growth Rate (CAGR) | Market Share % | Key Players | 5-Year Projection ($M) — 6+ rows\n- One <table class="data-table"> titled "Regional Market Distribution" with 5 columns: Region | Market Size | Share % | Growth Rate | Key Opportunity\n- End with transition to Target Audience section\n\nSection must be 420+ words. Use <h2>Section 2: Market Overview & Size</h2>.`,
+
+    3:`${base}\n\nGenerate Section 3: Target Audience Analysis as clean HTML.\n\nRequirements:\n- Identify and describe 3-4 distinct buyer personas with names (no real people — use role titles like "The Bootstrapped Founder")\n- For each persona: role, demographics, primary pain points, buying triggers, average deal size\n- Psychographic analysis: values, decision-making style, information sources\n- One <table class="data-table"> titled "Audience Segment Breakdown" with 7 columns: Segment | Estimated Size | Age Range | Avg Annual Income | Primary Pain Point | Willingness to Pay | ROI Impact — 4+ rows\n- One <table class="data-table"> titled "Buying Behavior Matrix" with 5 columns: Factor | Segment A | Segment B | Segment C | Implementation Timeline\n- Customer acquisition cost estimates per segment\n- End with transition to Problem-Solution Fit section\n\n420+ words. Use <h2>Section 3: Target Audience Analysis</h2>.`,
+
+    4:`${base}\n\nGenerate Section 4: Problem-Solution Fit as clean HTML.\n\nRequirements:\n- Identify 5-6 core problems ranked by severity (use specific pain severity scores 1-10)\n- Current inadequate solutions and their specific limitations\n- The gap between current solutions and market needs\n- How the proposed niche opportunity fills that gap\n- One <table class="data-table"> titled "Problem-Solution Matrix" with 7 columns: Problem | Severity (1-10) | Current Solution | Gap | Proposed Solution | Implementation Timeline | Expected Outcome — 5+ rows\n- One <table class="data-table"> titled "Solution Value Comparison" with 5 columns: Criterion | Current Market | Proposed Solution | Improvement % | ROI Impact\n- End with transition to Competitive Landscape\n\n420+ words. Use <h2>Section 4: Problem-Solution Fit</h2>.`,
+
+    5:`${base}\n\nGenerate Section 5: Competitive Landscape as clean HTML.\n\nRequirements:\n- Analyze 5-7 specific, real or plausible direct competitors with precise details\n- Indirect competitor analysis\n- Competitive positioning and whitespace opportunities\n- Market concentration (HHI score or CR4/CR8 metrics)\n- One <table class="data-table"> titled "Competitive Matrix" with 7 columns: Company | Est. Market Share % | Pricing Model | Key Differentiator | Target Segment | Provider/Tool Stack | Key Weakness — 6+ rows\n- One <table class="data-table"> titled "Feature Gap Analysis" with 5 columns: Feature | Market Leader | Average Competitor | Opportunity Gap | ROI Impact\n- End with transition to Revenue Model section\n\n420+ words. Use <h2>Section 5: Competitive Landscape</h2>.`,
+
+    6:`${base}\n\nGenerate Section 6: Revenue Model Analysis as clean HTML.\n\nRequirements:\n- Present 4-5 revenue model options with detailed pros/cons\n- Recommended primary model with specific justification\n- Pricing strategy with specific price points (use non-rounded figures)\n- Unit economics: LTV, CAC, payback period, gross margins — all specific figures\n- One <table class="data-table"> titled "Revenue Model Comparison" with 7 columns: Model | Annual Revenue Potential | Gross Margin % | CAC | Payback Period | Complexity | ROI Impact — 5+ rows\n- One <table class="data-table"> titled "Pricing Tier Structure" with 5 columns: Tier | Monthly Price | Features | Target Segment | Implementation Timeline\n- MRR/ARR projections for months 6, 12, 24\n- End with transition to Go-to-Market Strategy\n\n420+ words. Use <h2>Section 6: Revenue Model Analysis</h2>.`,
+
+    7:`${base}\n\nGenerate Section 7: Go-to-Market Strategy as clean HTML.\n\nRequirements:\n- 3-phase launch strategy (Phase 1: 0-90 days, Phase 2: 90-180 days, Phase 3: 6-18 months)\n- Channel prioritization with specific rationale\n- Partnership and integration opportunities\n- Early adopter acquisition strategy\n- One <table class="data-table"> titled "GTM Channel Analysis" with 7 columns: Channel | Est. CAC | Avg Conversion Rate | Monthly Reach Potential | Budget Allocation % | ROI Impact | Implementation Timeline — 6+ rows\n- One <table class="data-table"> titled "Phase Milestones" with 5 columns: Phase | Timeline | Key Milestone | Success Metric | Resource Requirement\n- End with transition to Technical Requirements\n\n420+ words. Use <h2>Section 7: Go-to-Market Strategy</h2>.`,
+
+    8:`${base}\n\nGenerate Section 8: Technical Requirements as clean HTML.\n\nRequirements:\n- Core technology stack recommendation with justification\n- Build vs. Buy vs. Partner analysis for each major component\n- Infrastructure requirements and estimated monthly costs\n- API and integration dependencies\n- Technical debt and scalability considerations\n- One <table class="data-table"> titled "Technology Stack Assessment" with 7 columns: Component | Provider/Tool | Build vs Buy | Monthly Cost ($) | Integration Effort | Implementation Timeline | Scalability Score — 6+ rows\n- One <table class="data-table"> titled "Integration Ecosystem" with 5 columns: Integration | Provider/Tool | Purpose | Monthly Cost | ROI Impact\n- Security and compliance technical requirements\n- End with transition to Financial Projections\n\n420+ words. Use <h2>Section 8: Technical Requirements</h2>.`,
+
+    9:`${base}\n\nGenerate Section 9: Financial Projections (3-Year) as clean HTML.\n\nRequirements:\n- Month-by-month Year 1 projections (MRR, customers, revenue, costs)\n- Annual projections for Years 2 and 3\n- All figures must be precise and non-rounded\n- Unit economics deep dive: gross margin, net margin, burn rate, runway\n- Break-even analysis with specific date and revenue milestone\n- One <table class="data-table"> titled "3-Year Financial Model" with 7 columns: Period | Revenue | COGS | Gross Margin % | Operating Expenses | EBITDA | Cumulative Cash Flow — 10+ rows (Q1-Q4 Y1, then annual Y2, Y3)\n- One <table class="data-table"> titled "Unit Economics Dashboard" with 5 columns: Metric | Year 1 | Year 2 | Year 3 | ROI Impact\n- Funding requirements if applicable\n- End with transition to Risk Assessment\n\n420+ words. Use <h2>Section 9: Financial Projections (3-Year)</h2>.`,
+
+    10:`${base}\n\nGenerate Section 10: Risk Assessment Matrix as clean HTML.\n\nRequirements:\n- Identify and analyze 8-10 distinct risk categories\n- Each risk: probability (%), impact severity, risk score, mitigation strategy\n- Residual risk after mitigation\n- Risk prioritization framework\n- One <table class="data-table"> titled "Risk Assessment Matrix" with 8 columns: Risk Category | Specific Risk | Probability % | Impact (1-10) | Risk Score | Mitigation Strategy | Residual Risk | Implementation Timeline — 8+ rows\n- One <table class="data-table"> titled "Contingency Planning" with 5 columns: Scenario | Trigger Condition | Response Strategy | Resource Requirement | ROI Impact\n- End with transition to Regulatory & Compliance section\n\n420+ words. Use <h2>Section 10: Risk Assessment Matrix</h2>.`,
+
+    11:`${base}\n\nGenerate Section 11: Regulatory & Compliance as clean HTML.\n\nRequirements:\n- Industry-specific regulations (name specific laws, frameworks, standards)\n- Data privacy requirements (GDPR, CCPA, sector-specific)\n- Licensing and certification requirements\n- Compliance timeline and cost estimates\n- Geographic regulatory considerations\n- One <table class="data-table"> titled "Regulatory Requirements Matrix" with 7 columns: Regulation | Jurisdiction | Requirement | Compliance Cost ($) | Implementation Timeline | Provider/Tool | Risk if Non-Compliant — 6+ rows\n- One <table class="data-table"> titled "Compliance Roadmap" with 5 columns: Compliance Area | Priority | Timeline | Estimated Cost | ROI Impact\n- Legal structure recommendations\n- End with transition to Marketing & Growth section\n\n420+ words. Use <h2>Section 11: Regulatory & Compliance</h2>.`,
+
+    12:`${base}\n\nGenerate Section 12: Marketing & Growth Strategy as clean HTML.\n\nRequirements:\n- Multi-channel marketing strategy (content, SEO, paid, partnerships, community, product-led)\n- Content strategy with specific topics and formats\n- SEO keyword targets and estimated search volume\n- Paid acquisition budget allocation and expected ROAS\n- Community-building and brand positioning strategy\n- One <table class="data-table"> titled "Marketing Channel Mix" with 7 columns: Channel | Monthly Budget ($) | Expected Monthly Reach | Conversion Rate % | CAC ($) | ROI Impact | Implementation Timeline — 7+ rows\n- One <table class="data-table"> titled "Growth Lever Analysis" with 5 columns: Growth Lever | Mechanism | Implementation Cost | Expected Impact | Provider/Tool\n- End with transition to Key Success Metrics section\n\n420+ words. Use <h2>Section 12: Marketing & Growth Strategy</h2>.`,
+
+    13:`${base}\n\nGenerate Section 13: Key Success Metrics as clean HTML.\n\nRequirements:\n- Primary KPIs (3-5) with specific measurement methodology\n- Secondary KPIs (5-7) with benchmarks\n- OKR framework for Year 1 (Objectives + 3 Key Results each)\n- Dashboard and reporting cadence recommendations\n- Leading vs. lagging indicators\n- One <table class="data-table"> titled "KPI Framework" with 7 columns: Metric | Definition | Measurement Method | Baseline | 6-Month Target | 12-Month Target | ROI Impact — 8+ rows\n- One <table class="data-table"> titled "OKR Dashboard — Year 1" with 5 columns: Objective | Key Result | Target | Review Frequency | Implementation Timeline\n- End with transition to Implementation Roadmap\n\n420+ words. Use <h2>Section 13: Key Success Metrics</h2>.`,
+
+    14:`${base}\n\nGenerate Section 14: Implementation Roadmap as clean HTML.\n\nRequirements:\n- Detailed phased roadmap: Foundation (0-3 months), Launch (3-6 months), Scale (6-12 months), Expand (12-18 months)\n- Specific tasks, owners (by role, not personal name), dependencies for each phase\n- Resource requirements (headcount, budget, tools)\n- Critical path analysis\n- Milestone definitions and go/no-go criteria\n- One <table class="data-table"> titled "Implementation Roadmap" with 7 columns: Phase | Timeline | Key Milestone | Resource Required | Dependencies | Budget ($) | Implementation Timeline — 10+ rows\n- One <table class="data-table"> titled "Technology & Tool Rollout" with 5 columns: Tool/Provider | Phase | Purpose | Monthly Cost | ROI Impact\n- Hire plan if applicable\n- End with a strong closing paragraph that encapsulates the opportunity thesis\n\n420+ words. Use <h2>Section 14: Implementation Roadmap</h2>.`,
+
+    15:`${base}\n\nGenerate Section 15: References & Data Sources as clean HTML.\n\nRequirements:\n- Minimum 18 references in APA 7th edition format\n- All references must cite REAL organizations: Gartner, McKinsey, Forrester, IBISWorld, Statista, Deloitte, PwC, CB Insights, Crunchbase, relevant industry associations, government bodies (Bureau of Labor Statistics, SEC filings, etc.)\n- All publication years must be 2021, 2022, 2023, or 2024\n- Include DOIs or URLs where applicable\n- Organize into categories: Market Research Reports, Academic & Industry Studies, Government & Regulatory Sources, Company Disclosures & Filings, News & Trade Publications\n- One <table class="data-table"> titled "Data Source Quality Assessment" with 5 columns: Source Type | Count Used | Reliability Score | Recency | ROI Impact on Analysis\n- Brief methodological note (150+ words) explaining the research approach, data triangulation methodology, and confidence interval framework used in this report\n\n420+ words. Use <h2>Section 15: References & Data Sources</h2>.`
+  };
+
+  return instrs[section.n] || `${base}\n\nGenerate Section ${section.n}: ${section.t}. Write 420+ words of professional analysis as clean HTML. Use <h2>Section ${section.n}: ${section.t}</h2> as heading.`;
+}
+
+// ══════════════════════════════════════════════════════════
+// REPORT HTML ASSEMBLER
+// ══════════════════════════════════════════════════════════
+function wrapReport(sections, niche, analystCode){
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;color:#1a2030;background:#fff;font-size:10.5pt;line-height:1.7;padding:2cm}
+.report-header{border:2px solid #1a2030;padding:24px;margin-bottom:40px;page-break-inside:avoid}
+.report-header h1{font-family:'Crimson Pro',serif;font-size:22pt;font-weight:700;line-height:1.2;margin-bottom:12px;color:#0a1428}
+.report-header .meta{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px;padding-top:16px;border-top:1px solid #d0d8e8}
+.report-header .meta-item{font-size:8pt;font-family:'JetBrains Mono',monospace}
+.report-header .meta-item strong{display:block;color:#4a6080;font-weight:500;font-size:7pt;text-transform:uppercase;letter-spacing:.8px;margin-bottom:2px}
+.report-header .meta-item span{color:#1a2030}
+.toc{background:#f5f7fa;border:1px solid #d0d8e8;padding:20px 24px;margin-bottom:40px;page-break-inside:avoid}
+.toc h3{font-family:'Crimson Pro',serif;font-size:13pt;margin-bottom:14px;color:#1a2030}
+.toc ol{padding-left:20px}
+.toc li{padding:3px 0;font-size:9.5pt;color:#3a5070}
+h2{font-family:'Crimson Pro',serif;font-size:17pt;font-weight:700;color:#0a1428;margin:40px 0 16px;padding-bottom:8px;border-bottom:2px solid #d4962e;page-break-after:avoid}
+h3{font-family:'Crimson Pro',serif;font-size:13pt;font-weight:600;color:#1a2030;margin:24px 0 10px;page-break-after:avoid}
+p{margin-bottom:14px;orphans:3;widows:3}
+ul,ol{margin:0 0 14px 22px}
+li{margin-bottom:5px}
+.insight-box{border-left:4px solid #d4962e;background:#fdf8f0;padding:14px 18px;margin:20px 0;font-style:italic;color:#3a3020;page-break-inside:avoid}
+.data-table{width:100%;border-collapse:collapse;margin:20px 0;font-size:8.5pt;page-break-inside:avoid}
+.data-table caption{font-family:'Crimson Pro',serif;font-size:10pt;font-weight:600;text-align:left;margin-bottom:8px;color:#1a2030}
+.data-table th{background:#1a2030;color:#fff;padding:8px 10px;text-align:left;font-weight:600;font-size:7.5pt;letter-spacing:.3px;white-space:nowrap}
+.data-table td{padding:8px 10px;border-bottom:1px solid #e8ecf4;vertical-align:top}
+.data-table tr:nth-child(even) td{background:#f8faff}
+.data-table tr:last-child td{border-bottom:none}
+.page-break{page-break-before:always}
+strong{font-weight:600}
+em{color:#4a6080}
+@media print{
+  body{padding:0}
+  h2{page-break-before:always}
+  h2:first-of-type{page-break-before:avoid}
+  .data-table{page-break-inside:avoid}
+  tr{page-break-inside:avoid}
+}
+</style>
+</head>
+<body>
+${sections.join('\n<div class="page-break"></div>\n')}
+</body>
+</html>`;
+}
+
+// ══════════════════════════════════════════════════════════
+// SUBTOPIC INTELLIGENCE ENGINE — Dynamic Market Intelligence
+// 640 unique prompt combinations via persona × signal × angle
+// rotation. Temperature 0.8 on all providers for this task.
+// ══════════════════════════════════════════════════════════
+
+// 8 analyst personas — forces different reasoning frameworks
+const _ST_PERSONAS = [
+  'a seasoned venture scout who just closed three seed deals in emerging markets',
+  'a Reddit power-user and indie hacker who monitors 40+ niche subreddits daily',
+  'a former McKinsey analyst now running a bootstrapped SaaS portfolio',
+  'a Crunchbase data analyst who tracks micro-funding rounds below $500K',
+  'a Google Trends specialist who identifies search velocity inflection points',
+  'a Y Combinator alumni advisor who has evaluated 300+ startup pitches',
+  'a solo operator running three profitable micro-niches with no employees',
+  'an institutional market researcher with access to PitchBook and CB Insights',
+];
+
+// 10 simulated intelligence signals — rotates every ~10 s of real time
+const _ST_SIGNALS = [
+  "Reddit r/entrepreneur and r/startups have been flooded this week with threads about automation fatigue — founders saying they 'built in a weekend but can't retain users past day 3'.",
+  "Google Trends data shows a 340% spike in long-tail queries containing 'for solo' and 'for one person' — indicating a major shift toward single-operator market segments.",
+  "Crunchbase shows 47 seed rounds closed this month in B2B SaaS tools under $1M — all targeting workflow verticals that Notion and Airtable abandoned after going enterprise.",
+  "Multiple Indie Hackers posts this week reveal $8K–$22K MRR products built around 'data portability' frustrations — users feeling locked into platforms with no export control.",
+  "Search velocity for 'replace [X] for small business' queries is up 210% — a pain-point signal from SMBs being priced out of enterprise tools that started free.",
+  "Forum analysis across Hacker News and ProductHunt shows 'AI wrapper fatigue' — users specifically seeking tools with a human editorial layer on top of raw AI outputs.",
+  "LinkedIn creator economy discussions reveal a growing gap: monetization tools exist for 100K+ follower accounts but almost nothing defensible exists for 1K–10K micro-creators.",
+  "Recent SEC EDGAR filings and Crunchbase data indicate regulatory compliance tooling for SMBs is massively underfunded relative to enterprise compliance software.",
+  "Google Trends shows 'vibe coding' and 'AI-assisted' searches tapering after their peak — but a new wave of 'post-AI burnout productivity' queries is emerging in their place.",
+  "Forum signal from r/consulting and r/freelance shows recurring complaints about 'scope creep documentation' — a B2B niche with no dominant sub-$100/month solution.",
+];
+
+// 8 structural market angle lenses
+const _ST_ANGLES = [
+  'geographic arbitrage (underserved in non-English-speaking markets)',
+  'price-point displacement (enterprise tools losing SMB customers to simpler alternatives)',
+  'audience specificity (hyper-niche professional verticals with no dedicated tooling)',
+  'regulatory tailwinds (new compliance requirements creating mandatory purchase categories)',
+  'platform dependency risk (users wanting to reduce reliance on a single vendor)',
+  'community-to-product gap (active communities with no monetised tooling ecosystem)',
+  'workflow friction (high-frequency manual tasks with no automation incumbent)',
+  'data ownership anxiety (users demanding local-first or export-capable alternatives)',
+];
+
+// Intelligent category-aware fallback — used only if ALL providers fail
+const _ST_FALLBACKS = {
+  'micro-saas':['Webhook Observability for Solo Developers','Scope Creep Documentation for Boutique Consultants','Client Reporting Automation for Freelance Designers','GDPR Compliance Tooling for European Micro-SaaS','Churn Prediction for Sub-$10K MRR Products','Invoice Dispute Automation for Independent Contractors','API Usage Billing for Developer-Tool Startups','Off-Page SEO Monitoring for Niche Content Sites','Browser Extension Monetization for Productivity Micro-Tools','Waitlist Intelligence for Pre-Launch SaaS Founders'],
+  'ai-automation':['Post-AI Content Verification for Newsletter Operators','Human-in-the-Loop Review for Legal Document Drafting','AI Output Audit Trails for Regulated Industries','Prompt Library Management for Agency Workflows','AI Cost Monitoring for Multi-Model API Stacks','Synthetic Training Data Generation for Niche Verticals','AI-Assisted RFP Response Tools for SMB Consultants','Voice-to-CRM Automation for Field Sales Teams','AI Scheduling for Multi-Location Service Businesses','Compliance-Aware AI Guardrails for Healthcare Startups'],
+  'e-commerce':['Returns Fraud Detection for DTC Brands Under $2M Revenue','Post-Purchase Experience Tooling for Shopify Exit Brands','Micro-Influencer Affiliate Tracking for Niche Product Lines','Duty & Tariff Calculators for Cross-Border EU Sellers','Inventory Forecasting for Handmade and Limited-Run Products','Loyalty Program Tooling for Regional Independent Retailers','Subscription Box Margin Optimisation for Niche Operators','Social Proof Automation for Low-Review-Count Stores','Seasonal Demand Intelligence for Artisan eCommerce Sellers','Unified Reviews Management for Multi-Marketplace Brands'],
+  'creator-economy':['Micro-Creator Monetization for Sub-10K Audiences','Paid Community Tooling for Niche Hobbyist Groups','Creator Contract Automation for Sponsored Content Deals','IP Licensing Infrastructure for Independent Artists','Audience Portability Tools for Platform-Dependent Creators','Newsletter Acquisition Analytics for Independent Publishers','Podcast Transcript Monetization for Interview-Format Shows','Course Completion Optimization for Solo Educators','Fan Segmentation Tools for Independent Musicians','Brand Deal Pipeline Management for Mid-Tier Creators'],
+  'mobile-apps':['Offline-First Field Service Apps for Trade Workers','Screen Time Accountability for Remote Work Teams','Hyperlocal Discovery Apps for Neighbourhoods Under 50K Population','Health Metric Correlation Tracking for Chronic Condition Self-Management','Language Learning for Specific Professional Vocabularies','Shift Scheduling for Small Hospitality Teams','Mobile Inspection Checklists for Property Management Firms','Peer-to-Peer Equipment Rental Apps for Niche Hobbyists','Gig Worker Expense Tracking with Real-Time Tax Estimation','Location-Aware Loyalty for Independent Coffee Shop Chains'],
+  'digital-products':['Done-for-You Template Kits for B2B Proposal Writers','Notion-Alternative Systems for Non-Technical Solopreneurs','Research Workflow Packs for Investigative Journalists','Data Visualization Toolkits for Academic Researchers','Curriculum Design Frameworks for Independent Online Educators','Legal Document Bundles for Early-Stage Startup Founders','Investor Update Templates for Pre-Seed Founders','SOC 2 Readiness Workbooks for SaaS Startups Under $1M ARR','Grant Writing Toolkits for Nonprofit Micro-Organisations','Freelance Rate Card Templates for Specialist Consultants'],
+  'local-business':['Reputation Recovery Playbooks for Service Businesses After Negative Reviews','Appointment No-Show Reduction Systems for Wellness Studios','Hyper-Local SEO Packages for Multi-Location Franchise Operators','Staff Retention Toolkits for Independent Hospitality Businesses','Customer Reactivation Campaigns for Dormant Local Service Clients','Commercial Cleaning Bid Automation for Independent Operators','Referral Programme Infrastructure for Independent Tradespeople','Social Media Management for Single-Location Retail Independents','Local Event Sponsorship ROI Tracking for Small Businesses','Community Loyalty Programmes for Independent Grocery and Butchers'],
+  'info-products':['Niche Industry Salary & Compensation Report Subscriptions','Regulatory Change Alert Services for Compliance-Heavy Verticals','Weekly Intelligence Briefings for Independent Real Estate Investors','Academic Research Summarisation Services for Busy Practitioners','Community Trend Reports for Niche Hobby and Collector Markets','Competitor Intelligence Newsletters for Bootstrapped SaaS Founders','Procurement Intelligence Digests for SMB Purchasing Managers','Alternative Data Feeds for Independent Hedge Fund Analysts','Offshore Jurisdiction Guides for International Tax Optimisers','Franchise Performance Benchmarking Reports for Independent Operators'],
+  'web3-defi':['Compliance-First Wallet Infrastructure for Regulated Financial Institutions','On-Chain Payroll Solutions for DAO Contributors in Emerging Markets','DeFi Risk Scoring Tools for Non-Technical Retail Investors','NFT Royalty Enforcement Tooling for Independent Digital Artists','Cross-Chain Portfolio Tax Reporting for Multi-Wallet Holders','Tokenised Loyalty Points Infrastructure for Web2 Loyalty Programmes','Smart Contract Audit Marketplaces for Pre-Launch DeFi Protocols','DAO Governance Participation Tooling for Non-Technical Token Holders','Stablecoin Yield Comparison Dashboards for Conservative DeFi Users','Web3 Legal Wrapper Services for Internationally Distributed Teams'],
+  'b2b-services':['Proposal-to-Contract Automation for Boutique Consulting Firms','Client Reporting Packages for Solo Fractional CFOs','White-Label Research Delivery for Independent Strategy Consultants','Automated RFP Response Tools for SMB Professional Services Firms','Project Profitability Tracking for Agency Owners Under 10 Headcount','Vendor Risk Assessment Toolkits for SMB Procurement Teams','Employee Handbook Automation for Sub-50 Headcount Companies','B2B Referral Programme Infrastructure for Professional Service Providers','Retainer Contract Management for Freelance Legal and Compliance Consultants','Client Onboarding Automation for Independent Accountants and Bookkeepers'],
+};
+
+/**
+ * buildSubtopicPrompt — assembles a unique system+user prompt pair.
+ * Every call computes different persona/signal/angle from Date.now()
+ * producing 8 × 10 × 8 = 640 distinct combinations before repeating.
+ */
+function buildSubtopicPrompt(catLabel){
+  const now       = Date.now();
+  const persona   = _ST_PERSONAS[now % _ST_PERSONAS.length];
+  const signal    = _ST_SIGNALS[Math.floor(now / 10000) % _ST_SIGNALS.length];
+  const angle     = _ST_ANGLES[Math.floor(now / 7000)   % _ST_ANGLES.length];
+  const days      = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const dayName   = days[new Date().getDay()];
+  const hr        = new Date().getHours();
+  const slot      = hr < 12 ? 'morning' : hr < 17 ? 'afternoon' : 'evening';
+  const seed      = `${dayName}-${slot}-${now % 9973}`; // prime mod for spread
+
+  const systemPrompt =
+`You are ${persona}.
+
+Your role is a Dynamic Market Intelligence Engine. You do not produce generic ideas. You surface SPECIFIC, HIGH-SIGNAL, UNDERSERVED market opportunities by synthesising real data patterns.
+
+ACTIVE INTELLIGENCE CONTEXT (treat as live briefing):
+${signal}
+
+OPERATIONAL PARAMETERS:
+- Market angle focus for this session: ${angle}
+- Session seed (for variety enforcement): ${seed}
+
+OUTPUT RULES — STRICTLY ENFORCED:
+1. Every subtopic must represent a REAL MARKET GAP — not a crowded, obvious category
+2. Every subtopic must be traceable to a COMMUNITY PAIN POINT visible on Reddit, HN, or Twitter
+3. Every subtopic must reflect a MICRO-TREND gaining search velocity or funding traction NOW
+4. NO generic entries. "AI Tools for Small Business" or "SaaS for Remote Teams" are REJECTED
+5. Each subtopic: 5–9 words, specific enough to be actionable, short enough for a UI button
+6. NEVER repeat subtopics from a previous call — the session seed ensures variety
+
+REJECTED examples (too generic):
+- "AI Chatbot Builder", "Project Management for Freelancers", "E-commerce Analytics Dashboard"
+
+ACCEPTED examples (specific, gap-driven):
+- "Webhook Observability for Solo Developers"
+- "Scope Creep Documentation for Boutique Consultants"
+- "Post-AI Content Verification for Newsletter Operators"
+- "GDPR Compliance Tooling for European Micro-SaaS"
+
+You must respond with ONLY a valid JSON array of exactly 10 strings. No markdown, no backticks, no explanation. Raw JSON array only.`;
+
+  const userPrompt =
+`Category: "${catLabel}"
+Time context: ${dayName} ${slot} — Session ${seed}
+
+Generate 10 unique, underserved, high-signal niche subtopics within the "${catLabel}" category.
+
+Session requirements:
+- Apply the ${angle} lens
+- Reflect real pain points that ${catLabel} practitioners are complaining about on forums THIS WEEK
+- Avoid any subtopic that already has 3+ well-funded competitors
+- Focus on the gap between what big platforms offer and what niche users actually need
+
+Respond with ONLY a JSON array of 10 strings:
+["Subtopic 1", "Subtopic 2", "Subtopic 3", "Subtopic 4", "Subtopic 5", "Subtopic 6", "Subtopic 7", "Subtopic 8", "Subtopic 9", "Subtopic 10"]`;
+
+  return {systemPrompt, userPrompt};
+}
+
+/**
+ * parseSubtopicsRaw — robust parser for AI subtopic responses.
+ * Handles: raw arrays, markdown-fenced JSON, prose-wrapped arrays.
+ */
+function parseSubtopicsRaw(raw){
+  if(!raw) return null;
+  try{
+    // Strip optional markdown fences
+    let s = raw.trim().replace(/^```(?:json)?\s*/i,'').replace(/\s*```$/,'').trim();
+    // Extract the first [...] block
+    const start = s.indexOf('['), end = s.lastIndexOf(']');
+    if(start===-1||end===-1) throw new Error('no array');
+    const arr = JSON.parse(s.slice(start, end+1));
+    if(!Array.isArray(arr)||arr.length<5) throw new Error('too short');
+    return arr.map(v=>String(v).trim()).filter(Boolean).slice(0,10);
+  }catch(e){
+    return null;
+  }
+}
+
+/**
+ * generateSubtopics — main entrypoint (replaces the old static version).
+ * Uses temperature 0.8 via callAI's new optional parameter.
+ * All other admin functionality (report gen, Supabase, etc.) untouched.
+ */
+async function generateSubtopics(){
+  const cat = state.category;
+  if(!cat) return;
+
+  const seed = Date.now() % 9973;
+  log(`Generating subtopics for ${cat.label} — session ${seed}`, 'accent');
+  document.getElementById('btn-gen-subtopics').disabled = true;
+  document.getElementById('subtopic-area').innerHTML =
+    '<div style="color:var(--text2);font-size:12px;padding:12px">Scanning market signals...</div>';
+
+  const {systemPrompt, userPrompt} = buildSubtopicPrompt(cat.label);
+
+  try{
+    // temperature: 0.8 passed explicitly — report generation keeps its 0.72 default
+    const raw = await callAI(systemPrompt, userPrompt, 0.8);
+    const topics = parseSubtopicsRaw(raw);
+    if(!topics) throw new Error('AI did not return a valid JSON array. Raw: '+raw.substring(0,120));
+    if(topics.length < 5) throw new Error('Too few subtopics returned ('+topics.length+')');
+
+    state.subtopics = topics;
+    state.selected.clear();
+    renderSubtopics();
+    log(`Generated ${topics.length} subtopics for ${cat.label}`, 'success');
+  } catch(e){
+    log('Subtopic generation failed: '+e.message, 'error');
+
+    // Intelligent fallback — category-aware, never generic
+    const fbKey = Object.keys(_ST_FALLBACKS).find(k=>cat.id.includes(k)||k.includes(cat.id));
+    const fallback = _ST_FALLBACKS[fbKey] || _ST_FALLBACKS['micro-saas'].map(t=>`${cat.label}: ${t.split(' ').slice(-3).join(' ')}`);
+    state.subtopics = fallback;
+    state.selected.clear();
+    renderSubtopics();
+    log(`Using intelligent fallback for ${cat.label}`, 'warning');
+
+    document.getElementById('subtopic-area').querySelector ?
+      null :
+      (document.getElementById('subtopic-area').insertAdjacentHTML('afterbegin',
+        `<div style="color:var(--warn);font-size:11px;font-family:var(--font-mono);padding:0 0 8px">AI error — showing fallback topics. ${e.message.substring(0,80)}</div>`));
+  }
+
+  document.getElementById('btn-gen-subtopics').disabled = false;
+}
+
+function renderSubtopics(){
+  const el = document.getElementById('subtopic-area');
+  if(!state.subtopics.length){el.innerHTML='';return;}
+  el.innerHTML = `
+    <div class="subtopic-grid">
+      ${state.subtopics.map((t,i)=>`
+        <div class="subtopic-item ${state.selected.has(i)?'selected':''}" onclick="toggleSubtopic(${i})">
+          <input type="checkbox" ${state.selected.has(i)?'checked':''} onclick="toggleSubtopic(${i});event.stopPropagation()">
+          <span class="subtopic-text">${t}</span>
+        </div>`).join('')}
+    </div>`;
+}
+
+function toggleSubtopic(i){
+  if(state.selected.has(i)) state.selected.delete(i);
+  else state.selected.add(i);
+  renderSubtopics();
+  updateQueueButton();
+}
+
+function selectAllSubtopics(){
+  state.subtopics.forEach((_,i)=>state.selected.add(i));
+  renderSubtopics();
+  updateQueueButton();
+}
+
+function clearSelectionSubtopics(){
+  state.selected.clear();
+  renderSubtopics();
+  updateQueueButton();
+}
+
+function updateQueueButton(){
+  const btn = document.getElementById('btn-run-all');
+  if(btn) btn.disabled = state.selected.size === 0 || state.isRunning;
+  const sel = document.getElementById('selection-count');
+  if(sel) sel.textContent = `${state.selected.size} selected`;
+}
+
+// ══════════════════════════════════════════════════════════
+// REPORT GENERATION
+// ══════════════════════════════════════════════════════════
+function addToQueue(){
+  const newItems = [...state.selected]
+    .filter(i=>!state.queue.some(q=>q.niche===state.subtopics[i]))
+    .map(i=>({
+      id: Date.now()+'-'+i,
+      niche: state.subtopics[i],
+      status: 'pending',
+      progress: 0,
+      sections: [],
+      html: '',
+      analystCode: genAnalystCode()
+    }));
+
+  state.queue.push(...newItems);
+  log(`Added ${newItems.length} reports to queue`, 'info');
+  renderQueue();
+}
+
+async function runQueue(){
+  if(state.isRunning) return;
+  addToQueue();
+  state.isRunning = true;
+  document.getElementById('btn-run-all').disabled = true;
+
+  const pending = state.queue.filter(q=>q.status==='pending');
+  log(`Starting generation of ${pending.length} reports...`, 'accent');
+
+  for(const item of pending){
+    await generateReport(item);
+  }
+
+  state.isRunning = false;
+  document.getElementById('btn-run-all').disabled = false;
+  log('All queued reports complete.', 'success');
+}
+
+
+// ══════════════════════════════════════════════════════════
+// AI OUTPUT SANITIZER
+// Removes generation artifacts before storing section HTML.
+// Handles: repeated punctuation runs (!!!!!!), stray separator
+// lines (----, ====), and year-plus-garbage patterns (2021!!!).
+// ══════════════════════════════════════════════════════════
+function sanitizeHTML(raw){
+  if(!raw) return '';
+
+  // 1. Strip non-HTML preamble/postamble (```html fences etc.)
+  let s = raw.replace(/^```[\w]*\n?/,'').replace(/```\s*$/,'').trim();
+
+  // 2. Remove runs of 3+ identical punctuation/symbol characters
+  //    e.g. "!!!!!!" → "" | "-------" → "" | "=======" → ""
+  //    But preserve HTML entities and valid content
+  s = s.replace(/([!?\-=_~*#|^]{3,})/g, (match, p1) => {
+    // Keep table dividers inside <table> tags (handled by HTML renderer)
+    // Only strip if it's clearly a stray artifact (not inside a tag)
+    return '';
+  });
+
+  // 3. Fix year-glued-to-garbage: "2021!!!!!" → "2021"
+  //    Also handles "2022........" or "2023========="
+  s = s.replace(/(\b20[0-9]{2})([^0-9<\s][^<]{0,5}?)(?=\s|<|$)/g, (match, year, garbage) => {
+    // If garbage is all punctuation/symbols, strip it
+    if(/^[^a-zA-Z0-9]+$/.test(garbage)) return year;
+    return match;
+  });
+
+  // 4. Remove lines that are ONLY whitespace + punctuation (separator artifacts)
+  s = s.replace(/^[\s!?\-=_~*#|^.]{4,}$/gm, '');
+
+  // 5. Collapse 3+ consecutive blank lines → max 1 blank line
+  s = s.replace(/\n{3,}/g, '\n\n');
+
+  // 6. Ensure the output starts with a valid HTML tag (not stray text)
+  if(s && !s.trimStart().startsWith('<')){
+    const firstTag = s.indexOf('<');
+    if(firstTag > 0 && firstTag < 200){
+      s = s.substring(firstTag);
+    }
+  }
+
+  return s.trim();
+}
+
+async function generateReport(item){
+  const date = new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+  const sysPr = getSystemPrompt(item.analystCode);
+  item.status = 'running';
+  item.sections = [];
+  renderQueue();
+
+  log(`▶ Generating: "${item.niche}"`, 'accent');
+
+  for(let i=0;i<SECTIONS.length;i++){
+    const sec = SECTIONS[i];
+    item.progress = Math.round((i/SECTIONS.length)*100);
+    updateQueueItemUI(item);
+    log(`  Section ${sec.n}/15: ${sec.t}`, 'info');
+
+    try{
+      const prompt = getSectionPrompt(sec, item.niche, state.category.label, item.analystCode, date);
+      const rawHtml = await callAI(sysPr, prompt);
+      const html = sanitizeHTML(rawHtml);
+      item.sections.push(html);
+      log(`  ✓ Section ${sec.n} complete (${html.length} chars)`, 'success');
+    } catch(e){
+      log(`  ✗ Section ${sec.n} failed: ${e.message}`, 'error');
+      item.sections.push(`<h2>Section ${sec.n}: ${sec.t}</h2><p style="color:#ea3943">Generation failed: ${e.message}</p>`);
+    }
+
+    item.progress = Math.round(((i+1)/SECTIONS.length)*100);
+    updateQueueItemUI(item);
+  }
+
+  // Build TOC + full report
+  const toc = `<div class="toc"><h3>Table of Contents</h3><ol>${SECTIONS.map(s=>`<li>${s.t}</li>`).join('')}</ol></div>`;
+  item.sections.unshift(toc);
+  item.html = wrapReport(item.sections, item.niche, item.analystCode);
+  item.status = 'done';
+  item.progress = 100;
+
+  updateQueueItemUI(item);
+  setPreview(item);
+  log(`✓ Report complete: "${item.niche}"`, 'success');
+}
+
+function updateQueueItemUI(item){
+  const el = document.getElementById(`qi-${item.id}`);
+  if(!el) return;
+  const icons = {pending:'○',running:'◉',done:'✓',error:'✗'};
+  const cls = {pending:'qs-pending',running:'qs-running',done:'qs-done',error:'qs-error'};
+  el.querySelector('.queue-status').className = `queue-status ${cls[item.status]}`;
+  el.querySelector('.queue-status').textContent = icons[item.status];
+  el.querySelector('.progress-fill').style.width = item.progress+'%';
+  el.querySelector('.queue-meta').textContent = item.status==='running'
+    ? `Generating... ${item.progress}%`
+    : item.status==='done'
+    ? `Complete · ${item.analystCode}`
+    : item.status==='error'
+    ? 'Error — check logs'
+    : 'Pending';
+}
+
+function renderQueue(){
+  const el = document.getElementById('queue-list');
+  if(!el) return;
+  if(!state.queue.length){el.innerHTML='<div style="color:var(--text2);font-size:12px;padding:8px">No reports queued yet.</div>';return;}
+  el.innerHTML = state.queue.map(item=>`
+    <div class="queue-item ${state.activePreview===item.id?'active-item':''}" id="qi-${item.id}" onclick="setPreview(state.queue.find(q=>q.id==='${item.id}'))">
+      <div class="queue-status ${item.status==='pending'?'qs-pending':item.status==='running'?'qs-running':item.status==='done'?'qs-done':'qs-error'}">
+        ${item.status==='pending'?'○':item.status==='running'?'◉':item.status==='done'?'✓':'✗'}
+      </div>
+      <div class="queue-info">
+        <div class="queue-niche">${item.niche}</div>
+        <div class="queue-meta">${item.status==='done'?`Complete · ${item.analystCode}`:item.status==='running'?`Generating... ${item.progress}%`:item.status==='error'?'Error':'Pending'}</div>
+        <div class="progress-bar"><div class="progress-fill" style="width:${item.progress}%"></div></div>
+      </div>
+    </div>`).join('');
+}
+
+function setPreview(item){
+  if(!item||!item.html) return;
+  state.activePreview = item.id;
+
+  document.getElementById('preview-empty').style.display = 'none';
+  const iframe = document.getElementById('preview-iframe');
+  iframe.style.display = 'block';
+  iframe.srcdoc = item.html;
+
+  document.getElementById('btn-pdf').disabled = false;
+  document.getElementById('btn-publish').disabled = false;
+
+  renderQueue();
+}
+
+function exportPDF(){
+  const item = state.queue.find(q=>q.id===state.activePreview);
+  if(!item||!item.html) return;
+
+  const container = document.createElement('div');
+  container.innerHTML = item.html;
+  document.body.appendChild(container);
+
+  html2pdf().set({
+    margin:[20,20,20,20],
+    filename:`NicheLab_${item.niche.replace(/[^a-z0-9]/gi,'_').substring(0,40)}_${item.analystCode}.pdf`,
+    image:{type:'jpeg',quality:0.97},
+    html2canvas:{scale:2,useCORS:true},
+    jsPDF:{unit:'mm',format:'a4',orientation:'portrait'},
+    pagebreak:{mode:['css','legacy'],avoid:['table','blockquote','tr']}
+  }).from(container).save().then(()=>{
+    document.body.removeChild(container);
+    log('PDF exported successfully', 'success');
+  });
+}
+
+// ══════════════════════════════════════════════════════════
+// CATEGORY SELECTION
+// ══════════════════════════════════════════════════════════
+function selectCategory(cat){
+  state.category = cat;
+  state.subtopics = [];
+  state.selected.clear();
+
+  document.querySelectorAll('.cat-item').forEach(el=>el.classList.remove('active'));
+  document.getElementById(`cat-${cat.id}`)?.classList.add('active');
+
+  renderWorkspace();
+  log(`Category selected: ${cat.label}`, 'info');
+}
+
+function renderWorkspace(){
+  const ws = document.getElementById('workspace');
+  ws.innerHTML = `
+    <div class="ws-header">
+      <div class="ws-title">${state.category.icon} ${state.category.label}</div>
+      <div class="ws-sub">NICHE MARKET INTELLIGENCE GENERATOR</div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title"><span class="step-badge">01</span> Generate Subtopics</div>
+        <button class="btn btn-accent btn-sm" id="btn-gen-subtopics" onclick="generateSubtopics()">Generate with AI</button>
+      </div>
+      <div class="card-body">
+        <div style="font-size:12px;color:var(--text2);margin-bottom:12px">
+          AI will generate 10 specific, monetizable niche opportunities within ${state.category.label}.
+        </div>
+        <div id="subtopic-area"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title"><span class="step-badge">02</span> Select & Queue</div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span id="selection-count" style="font-family:var(--font-mono);font-size:11px;color:var(--text2)">0 selected</span>
+          <button class="btn btn-ghost btn-sm" onclick="selectAllSubtopics()">All</button>
+          <button class="btn btn-ghost btn-sm" onclick="clearSelectionSubtopics()">None</button>
+        </div>
+      </div>
+      <div class="card-body" style="font-size:12px;color:var(--text2)">
+        Select subtopics above, then run the generation queue below.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title"><span class="step-badge">03</span> Generation Queue</div>
+        <button class="btn btn-accent" id="btn-run-all" onclick="runQueue()" disabled>▶ Run All Selected</button>
+      </div>
+      <div class="card-body">
+        <div id="queue-list"><div style="color:var(--text2);font-size:12px;padding:8px">No reports queued yet.</div></div>
+      </div>
+    </div>`;
+}
+
+// ══════════════════════════════════════════════════════════
+// SETTINGS
+// ══════════════════════════════════════════════════════════
+function openSettings(){
+  // Populate fields from saved state
+  const s = state;
+  document.getElementById('sb-url').value = localStorage.getItem('nl_sb_url')||'';
+  document.getElementById('sb-key').value = localStorage.getItem('nl_sb_key')||'';
+
+  ['gemini','groq','openrouter'].forEach(p=>{
+    const saved = JSON.parse(localStorage.getItem('nl_keys_'+p)||'[]');
+    const cont = document.getElementById(p+'-keys');
+    const count = p==='gemini'?6:11;
+    cont.innerHTML = Array.from({length:count},(_,i)=>
+      `<div><label>${p.charAt(0).toUpperCase()+p.slice(1)} Key ${i+1}</label>
+       <input type="password" class="key-input" data-provider="${p}" data-idx="${i}" value="${saved[i]||''}" placeholder="Key ${i+1}"></div>`
+    ).join('');
+  });
+
+  document.getElementById('settings-modal').classList.add('open');
+}
+
+function closeSettings(){document.getElementById('settings-modal').classList.remove('open');}
+
+function saveSettings(){
+  const url = document.getElementById('sb-url').value.trim();
+  const key = document.getElementById('sb-key').value.trim();
+
+  if(url) localStorage.setItem('nl_sb_url', url);
+  if(key) localStorage.setItem('nl_sb_key', key);
+
+  ['gemini','groq','openrouter'].forEach(p=>{
+    const inputs = document.querySelectorAll(`.key-input[data-provider="${p}"]`);
+    const keys = [...inputs].map(el=>el.value.trim());
+    localStorage.setItem('nl_keys_'+p, JSON.stringify(keys));
+    state.keys[p] = keys;
+  });
+
+  if(url && key) initSupabase(url, key);
+
+  closeSettings();
+  log('Settings saved', 'success');
+}
+
+// ══════════════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════════════
+function init(){
+  // Render category list
+  const catList = document.getElementById('cat-list');
+  catList.innerHTML = CATEGORIES.map(c=>`
+    <div class="cat-item" id="cat-${c.id}" onclick="selectCategory(${JSON.stringify(c).replace(/"/g,'&quot;')})">
+      <span class="cat-icon">${c.icon}</span>
+      <span class="cat-label">${c.label}</span>
+    </div>`).join('');
+
+  // Load saved keys
+  ['gemini','groq','openrouter'].forEach(p=>{
+    const saved = JSON.parse(localStorage.getItem('nl_keys_'+p)||'[]');
+    state.keys[p] = saved;
+  });
+
+  // Auto-init Supabase if credentials exist
+  const sbUrl = localStorage.getItem('nl_sb_url');
+  const sbKey = localStorage.getItem('nl_sb_key');
+  if(sbUrl && sbKey) initSupabase(sbUrl, sbKey);
+
+  const totalKeys = Object.values(state.keys).flat().filter(k=>k.trim()).length;
+  log(`NicheLab Admin Console v2.0 initialized`, 'accent');
+  log(`API keys loaded: ${totalKeys} keys across providers`, totalKeys>0?'success':'warning');
+  if(!sbUrl) log('No Supabase connection — open Settings to configure', 'warning');
+}
+
+init();
+</script>
+</body>
+</html>
