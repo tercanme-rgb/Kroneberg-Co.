@@ -158,11 +158,26 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .bt-track.yr .bt-thumb{transform:translateX(20px)}
 .bt-save{background:var(--gold);color:#fff;font-family:var(--fm);font-size:9px;font-weight:500;letter-spacing:1px;text-transform:uppercase;padding:5px 12px;border-radius:100px;white-space:nowrap}
 
-.pc-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;max-width:820px}
+.pc-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;max-width:1200px;align-items:start}
+.pc-feats li.locked{color:var(--ink-faint)}
+.pc-feats li.locked::before{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect x='4' y='7.5' width='8' height='6.5' rx='1.2' stroke='%23A8A898' stroke-width='1.5' fill='none'/%3E%3Cpath d='M5.5 7.5V5.5a2.5 2.5 0 015 0v2' stroke='%23A8A898' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");border-color:var(--border);background-color:transparent}
+
+/* UPGRADE MODAL */
+.upm-overlay{position:fixed;inset:0;background:rgba(20,20,16,.72);z-index:2000;display:none;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.upm-overlay.open{display:flex;animation:pin .25s ease both}
+.upm-box{background:var(--bg-card);border:1px solid var(--border-md);border-radius:var(--rlg);padding:48px 44px;max-width:500px;width:100%;text-align:center;box-shadow:var(--shadow-lg)}
+.upm-icon{width:58px;height:58px;background:var(--gold-tint);border:1.5px solid var(--gold-border);border-radius:50%;margin:0 auto 24px;display:flex;align-items:center;justify-content:center;font-size:26px}
+.upm-title{font-family:var(--fd);font-size:26px;font-weight:500;color:var(--ink);margin-bottom:10px;letter-spacing:-.5px;line-height:1.15}
+.upm-sub{font-size:14px;color:var(--ink-muted);line-height:1.78;font-weight:300;margin-bottom:26px;max-width:360px;margin-left:auto;margin-right:auto}
+.upm-chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:28px}
+.upm-chip{font-size:11px;padding:5px 13px;border-radius:100px;background:var(--gold-tint);border:1px solid var(--gold-border);color:var(--ink-muted);font-family:var(--fm);letter-spacing:.3px;white-space:nowrap}
+.upm-dismiss{background:none;border:none;font-size:13px;color:var(--ink-faint);cursor:pointer;font-family:var(--fb);padding:6px 12px;transition:color .18s;display:block;margin:10px auto 0}
+.upm-dismiss:hover{color:var(--ink-muted)}
 .pc{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--rlg);padding:44px;position:relative;transition:border-color .25s,box-shadow .25s,transform .25s}
 .pc:hover{border-color:var(--gold-border);box-shadow:var(--shadow-lg);transform:translateY(-4px)}
-.pc.feat{border-color:var(--gold-border);background:#FFFEF8}
-.pc.feat::before{content:'MOST SELECTED';position:absolute;top:-1px;right:28px;background:var(--gold);color:#fff;font-family:var(--fm);font-size:9px;font-weight:500;letter-spacing:1.5px;padding:5px 12px;border-radius:0 0 var(--r) var(--r)}
+.pc.feat{border-color:var(--gold-border);background:#FFFEF8;padding-top:64px;padding-bottom:64px;margin-top:-20px;box-shadow:0 20px 60px rgba(184,134,11,.14),0 4px 20px rgba(20,20,16,.10);transform:translateY(0)}
+.pc.feat:hover{transform:translateY(-4px);box-shadow:0 28px 72px rgba(184,134,11,.18),0 4px 24px rgba(20,20,16,.12)}
+.pc.feat::before{content:'MOST SELECTED';position:absolute;top:0;right:28px;background:var(--gold);color:#fff;font-family:var(--fm);font-size:9px;font-weight:500;letter-spacing:1.5px;padding:8px 14px 22px;border-radius:0 0 6px 6px;clip-path:polygon(0 0,100% 0,100% 75%,50% 100%,0 75%)}
 .pc-tier{font-family:var(--fm);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--ink-faint);margin-bottom:18px}
 .pc-price{font-family:var(--fd);font-size:64px;font-weight:400;line-height:1;letter-spacing:-2.5px;color:var(--ink);margin-bottom:4px;transition:all .25s}
 .pc-price sup{font-size:26px;vertical-align:top;margin-top:14px;display:inline-block;letter-spacing:0;font-weight:500}
@@ -280,7 +295,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
   .stat:nth-child(3){border-right:1px solid var(--border)}
   .svc-grid{grid-template-columns:1fr}
   .rm-grid{grid-template-columns:repeat(3,1fr)}
-  .pc-grid{grid-template-columns:1fr;max-width:440px}
+  .pc-grid{grid-template-columns:1fr;max-width:480px}
   .ct-layout{grid-template-columns:1fr;gap:48px}
   .f-row2{grid-template-columns:1fr}
   .sp{padding:72px 0}
@@ -616,7 +631,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
   <div class="nav-links">
     <button class="nl" data-pg="home"      onclick="go('home')">Home</button>
     <button class="nl" data-pg="services"  onclick="go('home','services')">Services</button>
-    <button class="nl" data-pg="pricing"   onclick="go('home','pricing')">Pricing</button>
+    <button class="nl" data-pg="pricing"   onclick="go('home','membership-tiers')">Pricing</button>
     <button class="nl" data-pg="about"     onclick="go('about')">About Us</button>
     <button class="nl" data-pg="contact"   onclick="go('contact')">Contact</button>
     <button class="nl" data-pg="legal"     onclick="go('legal')">Legal</button>
@@ -637,7 +652,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
 <div class="mob-menu" id="mobMenu">
   <button class="nl" onclick="go('home');closeMob()">Home</button>
   <button class="nl" onclick="go('home','services');closeMob()">Services</button>
-  <button class="nl" onclick="go('home','pricing');closeMob()">Pricing</button>
+  <button class="nl" onclick="go('home','membership-tiers');closeMob()">Pricing</button>
   <button class="nl" onclick="go('about');closeMob()">About Us</button>
   <button class="nl" onclick="go('contact');closeMob()">Contact</button>
   <button class="nl" onclick="go('legal');closeMob()">Legal</button>
@@ -658,7 +673,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
           <h1>Intelligence that<br><em>moves markets.</em></h1>
           <p class="hero-desc">NicheLab is a premier niche intelligence and market strategy firm delivering institutional-grade research to founders, operators, and investment professionals.</p>
           <div class="hero-act">
-            <button class="btn-gold" onclick="go('home','pricing')">View Membership Plans →</button>
+            <button class="btn-gold" onclick="go('home','membership-tiers')">View Membership Plans →</button>
             <button class="btn-ol" onclick="go('contact')">Request a Briefing</button>
           </div>
         </div>
@@ -1265,8 +1280,8 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
         <div class="iotd-footer">
           <div class="iotd-ft-left">⏱ <span>10–14 week</span> solo build &nbsp;·&nbsp; <span style="color:#16c784">$12,600 MRR</span> at Month 12 (Base Case)</div>
           <div class="iotd-ft-right">
-            <button class="btn-iotd-save" onclick="go('home','pricing')">Save Idea</button>
-            <button class="btn-iotd-open" onclick="go('home','pricing')">Open Full Report →</button>
+            <button class="btn-iotd-save" onclick="handleReportAction()">Save Idea</button>
+            <button class="btn-iotd-open" onclick="handleReportAction()">Open Full Report →</button>
           </div>
         </div>
       </div><!-- /iotd -->
@@ -1285,12 +1300,13 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
       </div><!-- /iotd-pro-wrap -->
 
       <p style="margin-top:18px;font-size:13px;color:var(--ink-faint);text-align:center;font-family:var(--fm);letter-spacing:.3px">
-        This is a condensed preview. <button onclick="go('home','pricing')" style="color:var(--gold);background:none;border:none;cursor:pointer;font-family:var(--fm);font-size:13px;letter-spacing:.3px">Become a member</button> to unlock the complete 15-section brief, financial models, and daily rotation.
+        This is a condensed preview. <button onclick="go('home','membership-tiers')" style="color:var(--gold);background:none;border:none;cursor:pointer;font-family:var(--fm);font-size:13px;letter-spacing:.3px">Become a member</button> to unlock the complete 15-section brief, financial models, and daily rotation.
       </p>
     </div>
   </section>
 
   <hr class="hr" />
+  <section id="membership-tiers">
     <div class="wrap sp">
       <div class="rv">
         <div class="eyebrow"><div class="eyebrow-ln"></div>Membership Tiers</div>
@@ -1308,6 +1324,41 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
       </div>
 
       <div class="pc-grid rv rv-d2">
+
+        <!-- ── FREE TIER ── -->
+        <div class="pc">
+          <div class="pc-tier">Free</div>
+          <div class="pc-price">$<span>0</span></div>
+          <div class="pc-cycle">per month</div>
+          <ul class="pc-feats">
+            <li>Access to Dashboard</li>
+            <li>View Market Titles &amp; Categories</li>
+            <li class="locked">Full 15-Section Reports</li>
+            <li class="locked">PDF / Word Exports</li>
+          </ul>
+          <a href="engine.html" class="btn-pg" id="btn-free">Sign Up Free →</a>
+        </div>
+
+        <!-- ── PRO TIER (center — featured) ── -->
+        <div class="pc feat">
+          <div class="pc-tier">Pro</div>
+          <div class="pc-price">$<span id="v-p">84</span></div>
+          <div class="pc-cycle" id="c-p">per month</div>
+          <ul class="pc-feats">
+            <li>Unrestricted Global Intelligence Access</li>
+            <li>15-Point Comprehensive Analytical Framework</li>
+            <li>Pro-Tier Executive Summaries</li>
+            <li>Premium Document Delivery (PDF &amp; Word)</li>
+            <li>Encrypted Research Environment</li>
+            <li>Rigorous APA-7 Citation Standard</li>
+            <li>Priority Algorithmic Processing</li>
+            <li>Advance Intelligence on Emerging Verticals</li>
+            <li>Direct Analyst Correspondence</li>
+          </ul>
+          <a id="lnk-p" href="https://buy.stripe.com/bJe00kbeLc547pJgdaebu02" target="_blank" rel="noopener" class="btn-pg-gold">Begin Pro Membership →</a>
+        </div>
+
+        <!-- ── STARTER TIER ── -->
         <div class="pc">
           <div class="pc-tier">Starter</div>
           <div class="pc-price">$<span id="v-s">36</span></div>
@@ -1326,23 +1377,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
           </ul>
           <a id="lnk-s" href="https://buy.stripe.com/9B63cw0A72uufWf5ywebu00" target="_blank" rel="noopener" class="btn-pg">Begin Starter Membership</a>
         </div>
-        <div class="pc feat">
-          <div class="pc-tier">Pro</div>
-          <div class="pc-price">$<span id="v-p">84</span></div>
-          <div class="pc-cycle" id="c-p">per month</div>
-          <ul class="pc-feats">
-            <li>Unrestricted Global Intelligence Access</li>
-            <li>15-Point Comprehensive Analytical Framework</li>
-            <li>Pro-Tier Executive Summaries</li>
-            <li>Premium Document Delivery (PDF &amp; Word)</li>
-            <li>Encrypted Research Environment</li>
-            <li>Rigorous APA-7 Citation Standard</li>
-            <li>Priority Algorithmic Processing</li>
-            <li>Advance Intelligence on Emerging Verticals</li>
-            <li>Direct Analyst Correspondence</li>
-          </ul>
-          <a id="lnk-p" href="https://buy.stripe.com/bJe00kbeLc547pJgdaebu02" target="_blank" rel="noopener" class="btn-pg-gold">Begin Pro Membership →</a>
-        </div>
+
       </div>
 
       <p style="margin-top:20px;font-size:13px;color:var(--ink-faint);font-family:var(--fm);letter-spacing:.3px" class="rv rv-d3">
@@ -1359,7 +1394,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
       <h2>Ready to surface your<br><em>next opportunity?</em></h2>
       <p>Select a membership tier and begin researching today. No contracts, no hidden terms.</p>
       <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
-        <button class="btn-gold" onclick="go('home','pricing')">View Membership Plans →</button>
+        <button class="btn-gold" onclick="go('home','membership-tiers')">View Membership Plans →</button>
         <button class="btn-ol" onclick="go('contact')" style="color:#fff;border-color:rgba(255,255,255,.2)">Request a Briefing</button>
       </div>
     </div>
@@ -1376,7 +1411,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
     <h1 class="about-tagline">Built by who have<br>been <em>inside.</em></h1>
     <p class="about-lead">NicheLab is a digitally distributed intelligence infrastructure providing institutional-grade research. With a global research coordination network spanning London, Dubai, Lisbon, Los Angeles, Tokyo, and The Hague, we deliver strategic market opportunity mapping for professional investors.</p>
     <div style="display:flex;gap:12px;flex-wrap:wrap">
-      <button class="btn-gold" onclick="go('home','pricing')">View Membership Plans →</button>
+      <button class="btn-gold" onclick="go('home','membership-tiers')">View Membership Plans →</button>
       <button class="btn-ol" onclick="go('contact')">Request a Briefing</button>
     </div>
   </div>
@@ -1495,7 +1530,6 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
       <button class="ltab on" id="lt-terms"   onclick="showLegal('terms',this)">Terms of Service</button>
       <button class="ltab"    id="lt-privacy" onclick="showLegal('privacy',this)">Privacy Policy</button>
     </div>
-<div ```html
 <div class="lpanel on" id="lp-terms">
   <h1>Terms of Service</h1>
   <p class="legal-dt">Last updated: January 1, 2025 &nbsp;·&nbsp; NicheLab Research Ltd.</p>
@@ -2252,7 +2286,11 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
 
   <h2>13. Contact</h2>
   <p>Privacy-related requests, legal notices, and data protection inquiries may be directed to the official contact channels identified on the Platform.</p>
-</div> <div class="page" id="page-contact">
+</div><!-- /lp-privacy -->
+  </div><!-- /legal-wrap -->
+</div><!-- /page-legal -->
+
+<div class="page" id="page-contact">
   <div class="wrap" style="padding-top:64px;padding-bottom:100px">
     <div class="ct-layout">
       <div>
@@ -2297,7 +2335,25 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
   </div>
 </footer>
 
-<div class="toast" id="toastEl"><span id="toastIco"></span><span id="toastMsg"></span></div>
+<!-- UPGRADE MODAL -->
+<div class="upm-overlay" id="upgradeModal" onclick="closeUpgradeModal(event)">
+  <div class="upm-box">
+    <div class="upm-icon">🔒</div>
+    <h2 class="upm-title">Upgrade to Unlock</h2>
+    <p class="upm-sub">Full 15-section market intelligence briefs are available on the <strong style="color:var(--gold)">Starter</strong> and <strong style="color:var(--gold)">Pro</strong> plans. Choose the tier that matches your research cadence.</p>
+    <div class="upm-chips">
+      <span class="upm-chip">15-Section Deep Analysis</span>
+      <span class="upm-chip">Financial Projections</span>
+      <span class="upm-chip">PDF &amp; Word Export</span>
+      <span class="upm-chip">Risk Assessment Matrix</span>
+      <span class="upm-chip">Go-to-Market Strategy</span>
+    </div>
+    <button class="btn-gold" style="width:100%;justify-content:center;font-size:15px" onclick="closeUpgradeModal();go('home','membership-tiers')">View Membership Plans →</button>
+    <button class="upm-dismiss" onclick="closeUpgradeModal()">Maybe later</button>
+  </div>
+</div>
+
+
 
 <script>
 const SB_URL = 'https://ctezbazpnqylufhrmcwn.supabase.co';
@@ -2413,6 +2469,34 @@ document.addEventListener('click',e=>{
   if(m.classList.contains('open')&&!m.contains(e.target)&&!h.contains(e.target))closeMob();
 });
 
+/* ── UPGRADE MODAL ── */
+function openUpgradeModal() {
+  document.getElementById('upgradeModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeUpgradeModal(e) {
+  // Close on backdrop click or explicit call
+  if (e && e.target !== document.getElementById('upgradeModal')) return;
+  document.getElementById('upgradeModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+// Also close on Escape key
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeUpgradeModal();
+});
+
+/* ── REPORT ACTION — paywall gate for free tier ── */
+function handleReportAction() {
+  if (_userTier === 'free') {
+    openUpgradeModal();
+  } else if (_userTier === 'starter' || _userTier === 'admin') {
+    window.location.href = 'engine.html';
+  } else {
+    // guest — take to pricing
+    go('home', 'pricing');
+  }
+}
+
 /* ── SCROLL ── */
 window.addEventListener('scroll',()=>document.getElementById('mainNav').classList.toggle('scrolled',scrollY>12),{passive:true});
 
@@ -2466,18 +2550,20 @@ async function resolveUserTier() {
           .single();
 
         if (profile) {
-          _userTier = (profile.role === 'admin') ? 'admin'
-                    : (profile.tier === 'pro')   ? 'pro'
-                    : 'starter';
+          _userTier = (profile.role === 'admin')   ? 'admin'
+                    : (profile.tier === 'pro')     ? 'pro'
+                    : (profile.tier === 'starter') ? 'starter'
+                    : 'free';
         } else {
-          _userTier = 'starter';
+          _userTier = 'free';
         }
 
         // Show nav badge for authenticated users
         if (badge && badgeLbl) {
-          badgeLbl.textContent = _userTier === 'admin' ? 'ADMIN'
-                               : _userTier === 'pro'   ? 'PRO'
-                               : 'STARTER';
+          badgeLbl.textContent = _userTier === 'admin'   ? 'ADMIN'
+                               : _userTier === 'pro'     ? 'PRO'
+                               : _userTier === 'starter' ? 'STARTER'
+                               : 'FREE';
           badge.classList.add('show');
         }
       }
