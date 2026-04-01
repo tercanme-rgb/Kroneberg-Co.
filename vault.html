@@ -9,7 +9,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Cormorant+Garamond:wght@500;600;700&display=swap" rel="stylesheet">
 
   <script>
     tailwind.config = {
@@ -17,21 +17,21 @@
         extend: {
           fontFamily: {
             sans: ['Inter', 'sans-serif'],
-            display: ['Playfair Display', 'serif']
+            display: ['Cormorant Garamond', 'serif']
           },
           colors: {
-            sand: '#F7F5F2',
-            paper: '#FCFBF8',
-            ink: '#1B1B1B',
-            muted: '#6B6B6B',
-            line: '#E6E0D6',
-            amberbrand: '#F59E0B',
-            ambersoft: '#FCE7B2',
-            olive: '#7A8B5A'
+            cream: '#F3F0EA',
+            panel: '#FBF9F5',
+            line: '#DBD5CA',
+            ink: '#1F1E1B',
+            muted: '#6C675D',
+            gold: '#D7B36A',
+            goldDeep: '#B88E3C',
+            shadow: 'rgba(0,0,0,0.08)'
           },
           boxShadow: {
-            soft: '0 10px 30px rgba(15, 23, 42, 0.06)',
-            card: '0 8px 20px rgba(0, 0, 0, 0.05)'
+            panel: '0 8px 24px rgba(0,0,0,0.06)',
+            soft: '0 4px 14px rgba(0,0,0,0.06)'
           }
         }
       }
@@ -39,756 +39,590 @@
   </script>
 
   <style>
-    html { scroll-behavior: smooth; }
-    body { background: #F7F5F2; color: #1B1B1B; }
-    .progress-fill { transition: width .45s ease; }
-    .heat-cell { transition: transform .15s ease, box-shadow .15s ease; }
-    .heat-cell:hover { transform: translateY(-1px); box-shadow: 0 8px 16px rgba(0,0,0,.06); }
-    .modal-enter { animation: fadeIn .18s ease; }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
+    body {
+      background:
+        radial-gradient(circle at top left, rgba(255,255,255,.85), rgba(243,240,234,.96)),
+        #F3F0EA;
+      color: #1F1E1B;
     }
-    .blur-lock {
-      filter: blur(4px);
-      user-select: none;
+    .noise:before {
+      content: "";
+      position: fixed;
+      inset: 0;
       pointer-events: none;
+      opacity: .08;
+      background-image:
+        linear-gradient(rgba(255,255,255,.4) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.35) 1px, transparent 1px);
+      background-size: 3px 3px, 3px 3px;
+      mix-blend-mode: multiply;
     }
+    .card-progress > div, .metric-fill { transition: width .35s ease; }
+    .modal-blur { filter: blur(4px); user-select: none; pointer-events: none; }
   </style>
 </head>
-<body class="font-sans">
+<body class="font-sans noise">
 
-  <div id="app" class="min-h-screen">
-    <div class="grid min-h-screen grid-cols-1 xl:grid-cols-[260px_minmax(0,1fr)]">
+<div class="min-h-screen">
+  <div class="grid min-h-screen grid-cols-[220px_minmax(0,1fr)]">
 
-      <!-- Sidebar -->
-      <aside class="border-r border-line bg-[#F2EFE9] xl:sticky xl:top-0 xl:h-screen">
-        <div class="px-6 py-6 border-b border-line">
-          <div class="flex items-center gap-3">
-            <div class="h-9 w-9 rounded-xl bg-white shadow-card flex items-center justify-center text-amberbrand font-extrabold">N</div>
-            <div>
-              <div class="text-[28px] leading-none font-display">NicheLab</div>
-              <div class="text-xs tracking-[0.18em] uppercase text-muted mt-1">Intelligence Platform</div>
+    <!-- Sidebar -->
+    <aside class="border-r border-line bg-[rgba(255,255,255,0.48)] backdrop-blur-sm">
+      <div class="px-6 pt-7 pb-6 border-b border-line">
+        <div class="flex items-center gap-3">
+          <div class="h-10 w-10 rounded-xl bg-white shadow-soft flex items-center justify-center text-goldDeep font-extrabold text-lg">N</div>
+          <div class="text-[22px] font-medium tracking-[-0.02em]">NicheLab</div>
+        </div>
+      </div>
+
+      <div class="px-5 py-7">
+        <div class="text-[13px] leading-[1.05] font-semibold tracking-[0.02em] uppercase text-ink">
+          Main<br>Categories
+        </div>
+
+        <nav id="categoryNav" class="mt-5 space-y-2"></nav>
+
+        <div class="my-7 h-px bg-line"></div>
+
+        <button id="signOutBtn" class="w-full rounded-xl border border-line bg-white px-4 py-3 text-sm font-medium shadow-soft hover:bg-stone-50">
+          Sign Out
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="min-w-0">
+      <div class="mx-auto max-w-[1480px] px-6 py-6">
+
+        <!-- Top -->
+        <div class="flex items-start justify-between gap-8 border-b border-line pb-5">
+          <div>
+            <h1 class="font-display text-[58px] leading-[0.95] tracking-[-0.03em]">Intelligence Vault</h1>
+            <div class="mt-2 h-[2px] w-[345px] bg-stone-600/70"></div>
+          </div>
+
+          <div class="pt-2 flex items-center gap-12 text-[19px] font-medium tracking-[-0.01em] text-ink">
+            <a href="#" class="hover:text-goldDeep">HOME</a>
+            <a href="#" class="hover:text-goldDeep">SEARCH</a>
+            <a href="#" class="hover:text-goldDeep">SUPPORT</a>
+            <a href="#" class="hover:text-goldDeep">MY ACCOUNT</a>
+          </div>
+        </div>
+
+        <!-- Signal Banner -->
+        <div class="mt-5">
+          <div class="text-[11px] font-semibold uppercase tracking-[0.12em] text-ink">Intelligence Signal Banner</div>
+          <div class="mt-2 rounded-xl border border-[#CFB076] bg-gradient-to-r from-[#E8C778] to-[#D7AE62] px-6 py-4 shadow-soft">
+            <div class="flex items-center gap-4">
+              <div class="text-xl text-[#B9852F]">⟡</div>
+              <div id="signalText" class="text-[18px] font-semibold text-[#231F18]">Signal: Loading latest market signal.</div>
             </div>
           </div>
         </div>
 
-        <div class="px-6 pt-7">
-          <div class="text-[13px] font-semibold tracking-[0.18em] uppercase text-muted">Ana Başlıklar</div>
-          <nav id="categoryNav" class="mt-4 space-y-1"></nav>
+        <!-- Content -->
+        <div class="mt-7 grid grid-cols-[minmax(0,1fr)_290px] gap-6">
+
+          <!-- Cards -->
+          <section>
+            <div class="mb-4 flex items-center justify-between gap-4">
+              <div class="flex items-center gap-3">
+                <div class="rounded-xl border border-line bg-white px-4 py-3 text-sm shadow-soft">
+                  <span class="text-muted">User:</span>
+                  <span id="userEmail" class="font-medium text-ink">—</span>
+                </div>
+                <div class="rounded-xl border border-line bg-white px-4 py-3 text-sm shadow-soft">
+                  <span class="text-muted">Plan:</span>
+                  <span id="planLabel" class="font-medium text-ink">Starter</span>
+                </div>
+                <div class="rounded-xl border border-line bg-white px-4 py-3 text-sm shadow-soft">
+                  <span class="text-muted">Allowance:</span>
+                  <span id="allowanceLabel" class="font-medium text-ink">10 reads / week</span>
+                </div>
+              </div>
+
+              <div class="flex items-center gap-3">
+                <input id="searchInput" type="text" placeholder="Search reports..." class="w-64 rounded-xl border border-line bg-white px-4 py-3 text-sm outline-none">
+                <select id="tierFilter" class="rounded-xl border border-line bg-white px-4 py-3 text-sm outline-none">
+                  <option value="all">All</option>
+                  <option value="starter">Starter</option>
+                  <option value="pro">Pro</option>
+                </select>
+              </div>
+            </div>
+
+            <div id="cardsGrid" class="grid grid-cols-3 gap-5"></div>
+          </section>
+
+          <!-- Right widgets -->
+          <aside class="space-y-4">
+            <div class="rounded-xl border border-line bg-[rgba(255,255,255,0.65)] p-5 shadow-panel">
+              <div class="text-[20px] font-semibold tracking-[-0.02em]">Upcoming Reports</div>
+              <div id="upcomingReports" class="mt-5 space-y-5"></div>
+            </div>
+
+            <div class="rounded-xl border border-line bg-[rgba(255,255,255,0.65)] p-5 shadow-panel">
+              <div class="text-[20px] font-semibold tracking-[-0.02em]">Niche Trends Heatmap</div>
+              <div id="heatmapGrid" class="mt-4 grid grid-cols-3 gap-[3px]"></div>
+            </div>
+          </aside>
         </div>
 
-        <div class="mx-6 my-6 h-px bg-line"></div>
-
-        <div class="px-6 pb-8">
-          <button id="signoutBtn" class="w-full rounded-2xl border border-line bg-white px-4 py-3 text-sm font-medium shadow-soft hover:bg-stone-50">
-            Sign Out
-          </button>
-
-          <div class="mt-5 rounded-2xl border border-line bg-white p-4 shadow-soft">
-            <div class="text-[11px] tracking-[0.16em] uppercase text-muted">Membership</div>
-            <div id="membershipTier" class="mt-2 text-xl font-semibold text-ink">Starter</div>
-            <div id="membershipMeta" class="mt-1 text-sm text-muted">10 full reports / week</div>
-          </div>
-        </div>
-      </aside>
-
-      <!-- Main -->
-      <main class="min-w-0">
-        <!-- Top nav -->
-        <header class="border-b border-line bg-paper/90 backdrop-blur">
-          <div class="mx-auto max-w-[1600px] px-6 py-6">
-            <div class="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
-              <div>
-                <h1 class="font-display text-4xl md:text-5xl leading-none">Intelligence Vault</h1>
-                <p class="mt-2 text-sm text-muted">Structured market intelligence, signal-driven opportunity mapping, and analyst-grade category monitoring.</p>
-              </div>
-
-              <div class="flex flex-wrap gap-6 text-[13px] font-medium uppercase tracking-[0.12em] text-ink">
-                <a href="#" class="hover:text-amberbrand">Home</a>
-                <a href="#" class="hover:text-amberbrand">Search</a>
-                <a href="#" class="hover:text-amberbrand">Support</a>
-                <a href="#" class="hover:text-amberbrand">My Account</a>
-              </div>
-            </div>
-
-            <div id="signalBanner" class="mt-5 rounded-2xl border border-[#EAC46A] bg-gradient-to-r from-[#F9E7B6] to-[#E8C370] px-5 py-4 shadow-soft">
-              <div class="flex items-start gap-3">
-                <div class="mt-0.5 text-lg">📡</div>
-                <div class="min-w-0">
-                  <div class="text-[11px] font-semibold uppercase tracking-[0.18em] text-stone-700">Intelligence Signal Banner</div>
-                  <div id="signalText" class="mt-1 text-sm md:text-[15px] font-semibold text-stone-900">Loading active signal...</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </header>
-
-        <section class="mx-auto max-w-[1600px] px-6 py-6">
-          <div class="grid grid-cols-1 gap-6 2xl:grid-cols-[minmax(0,1fr)_320px]">
-
-            <!-- Center -->
-            <div class="min-w-0">
-              <div class="mb-5 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-                <div class="flex flex-wrap items-center gap-3">
-                  <div class="rounded-2xl border border-line bg-white px-4 py-3 shadow-soft">
-                    <div class="text-[11px] uppercase tracking-[0.16em] text-muted">Session</div>
-                    <div id="userEmail" class="mt-1 text-sm font-medium text-ink">—</div>
-                  </div>
-                  <div class="rounded-2xl border border-line bg-white px-4 py-3 shadow-soft">
-                    <div class="text-[11px] uppercase tracking-[0.16em] text-muted">Reports</div>
-                    <div id="reportCount" class="mt-1 text-sm font-medium text-ink">0 loaded</div>
-                  </div>
-                  <div class="rounded-2xl border border-line bg-white px-4 py-3 shadow-soft">
-                    <div class="text-[11px] uppercase tracking-[0.16em] text-muted">Access</div>
-                    <div id="starterRemaining" class="mt-1 text-sm font-medium text-ink">Checking allowance...</div>
-                  </div>
-                </div>
-
-                <div class="flex flex-wrap items-center gap-3">
-                  <input id="searchInput" type="text" placeholder="Search title, category, niche..." class="w-full lg:w-72 rounded-2xl border border-line bg-white px-4 py-3 text-sm outline-none focus:border-stone-400" />
-                  <select id="tierFilter" class="rounded-2xl border border-line bg-white px-4 py-3 text-sm outline-none">
-                    <option value="all">All tiers</option>
-                    <option value="starter">Starter</option>
-                    <option value="pro">Pro</option>
-                  </select>
-                </div>
-              </div>
-
-              <div id="cardsGrid" class="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3"></div>
-            </div>
-
-            <!-- Right panel -->
-            <aside class="space-y-6">
-              <div class="rounded-3xl border border-line bg-white p-5 shadow-soft">
-                <div class="text-[12px] font-semibold uppercase tracking-[0.18em] text-muted">Upcoming Reports</div>
-                <div class="mt-4 space-y-4" id="upcomingReports"></div>
-                <p class="mt-4 text-xs text-muted">This widget can be edited manually inside the <code>UPCOMING_REPORTS</code> array.</p>
-              </div>
-
-              <div class="rounded-3xl border border-line bg-white p-5 shadow-soft">
-                <div class="flex items-center justify-between gap-3">
-                  <div class="text-[12px] font-semibold uppercase tracking-[0.18em] text-muted">Niche Trends Heatmap</div>
-                  <div class="text-xs text-muted">Signal weighted</div>
-                </div>
-                <div id="heatmapGrid" class="mt-4 grid grid-cols-3 gap-2"></div>
-              </div>
-            </aside>
-          </div>
-        </section>
-      </main>
-    </div>
+      </div>
+    </main>
   </div>
+</div>
 
-  <!-- Modal -->
-  <div id="modalBackdrop" class="fixed inset-0 z-50 hidden bg-black/35 p-4 md:p-8">
-    <div class="flex min-h-full items-center justify-center">
-      <div id="modalPanel" class="modal-enter w-full max-w-4xl overflow-hidden rounded-[28px] border border-line bg-paper shadow-2xl">
-        <div class="border-b border-line px-6 py-4">
-          <div class="flex items-start justify-between gap-4">
-            <div>
-              <div id="modalTierBadge" class="inline-flex rounded-full border border-line bg-white px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.15em] text-muted">Starter</div>
-              <h2 id="modalTitle" class="mt-3 text-2xl md:text-3xl font-display leading-tight">Report title</h2>
-              <p id="modalMeta" class="mt-2 text-sm text-muted">Category · Analyst · Status</p>
+<!-- Modal -->
+<div id="modalBackdrop" class="fixed inset-0 z-50 hidden bg-black/20 backdrop-blur-[2px] px-4 py-8">
+  <div class="mx-auto flex min-h-full max-w-[1480px] items-start justify-center pt-16">
+    <div class="w-full max-w-[560px] overflow-hidden rounded-[18px] border border-[#D5CFC3] bg-[rgba(249,246,240,0.92)] shadow-2xl backdrop-blur-xl">
+      <div class="flex items-center justify-between border-b border-line px-5 py-4">
+        <button id="closeModalBtn" class="text-[15px] font-medium text-ink hover:text-goldDeep">✕ Close</button>
+        <div class="flex items-center gap-3">
+          <span class="text-xl text-stone-700">⌕</span>
+          <button class="rounded-lg border border-stone-400 bg-white px-3 py-2 text-sm font-medium">Download PDF</button>
+        </div>
+      </div>
+
+      <div class="max-h-[78vh] overflow-y-auto px-6 py-6">
+        <div id="modalTier" class="inline-flex rounded-md bg-[#E9DEC9] px-2 py-1 text-[12px] font-semibold text-stone-700">Starter</div>
+        <h2 id="modalTitle" class="mt-4 text-[22px] font-semibold leading-tight">Report title</h2>
+
+        <div class="mt-6">
+          <div class="text-[16px] font-semibold">Executive Summary</div>
+          <div id="modalSummary" class="mt-3 text-[15px] leading-7 text-stone-800"></div>
+        </div>
+
+        <div class="mt-7">
+          <div class="flex items-center justify-between">
+            <div class="text-[16px] font-semibold">Pro-Tier Deep Market Analysis</div>
+            <div id="deepLockLabel" class="hidden rounded-full bg-[#B6914C] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-white">Locked</div>
+          </div>
+          <div class="relative mt-3 border-t border-line pt-4">
+            <div id="modalDeepAnalysis" class="text-[15px] leading-7 text-stone-800"></div>
+            <div id="deepOverlay" class="hidden absolute inset-0 flex items-center justify-center">
+              <div class="rounded-full bg-[#C6A05B] px-4 py-3 text-white shadow-lg">🔒</div>
             </div>
-            <button id="closeModalBtn" class="rounded-full border border-line bg-white px-3 py-2 text-sm font-medium hover:bg-stone-50">Close</button>
           </div>
         </div>
 
-        <div class="max-h-[80vh] overflow-y-auto px-6 py-6">
-          <div class="grid grid-cols-1 gap-5 lg:grid-cols-[minmax(0,1fr)_280px]">
-            <div class="space-y-5">
-              <section class="rounded-3xl border border-line bg-white p-5 shadow-soft">
-                <div class="text-[12px] font-semibold uppercase tracking-[0.16em] text-muted">Executive Summary</div>
-                <div id="modalExecutiveSummary" class="mt-3 text-[15px] leading-7 text-stone-800"></div>
-              </section>
+        <div class="mt-7 border-t border-line pt-5">
+          <div class="text-[16px] font-semibold">Analyst Recommendations</div>
+          <div id="modalRecommendations" class="mt-3 text-[15px] leading-7 text-stone-800"></div>
+        </div>
 
-              <section class="rounded-3xl border border-line bg-white p-5 shadow-soft">
-                <div class="flex items-center justify-between gap-3">
-                  <div class="text-[12px] font-semibold uppercase tracking-[0.16em] text-muted">Pro-Tier Deep Analysis</div>
-                  <div id="deepLockBadge" class="hidden rounded-full bg-stone-900 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-white">Locked</div>
-                </div>
-                <div class="mt-3 relative">
-                  <div id="modalDeepAnalysis" class="text-[15px] leading-7 text-stone-800"></div>
-                  <div id="deepAnalysisOverlay" class="hidden absolute inset-0 rounded-2xl bg-gradient-to-b from-transparent via-white/65 to-white flex items-end">
-                    <div class="w-full rounded-2xl border border-[#E9D59C] bg-[#FFF7DD] p-4 shadow-soft">
-                      <div class="text-sm font-semibold text-stone-900">Pro access required</div>
-                      <div class="mt-1 text-sm text-stone-700">Starter members can review summaries and open up to 10 full starter reports per week. Upgrade to Pro for unlimited deep analysis.</div>
-                    </div>
-                  </div>
-                </div>
-              </section>
-
-              <section class="rounded-3xl border border-line bg-white p-5 shadow-soft">
-                <div class="text-[12px] font-semibold uppercase tracking-[0.16em] text-muted">Analyst Recommendations</div>
-                <div id="modalRecommendations" class="mt-3 text-[15px] leading-7 text-stone-800"></div>
-              </section>
+        <div class="mt-7 border-t border-line pt-5">
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <div class="mb-1 text-[13px] font-medium">Market Gap</div>
+              <div class="flex items-center justify-between text-sm"><span></span><span id="gapValue" class="font-semibold">0</span></div>
+              <div class="mt-2 h-[6px] rounded-full bg-stone-300"><div id="gapBar" class="metric-fill h-[6px] rounded-full bg-[#D0AE66]" style="width:0%"></div></div>
             </div>
-
-            <div class="space-y-5">
-              <section class="rounded-3xl border border-line bg-white p-5 shadow-soft">
-                <div class="text-[12px] font-semibold uppercase tracking-[0.16em] text-muted">Report Metrics</div>
-                <div class="mt-4 space-y-4">
-                  <div>
-                    <div class="mb-2 flex items-center justify-between text-sm">
-                      <span>Market Gap</span>
-                      <span id="modalMarketGapValue" class="font-semibold">0</span>
-                    </div>
-                    <div class="h-2 w-full rounded-full bg-stone-200">
-                      <div id="modalMarketGapBar" class="progress-fill h-2 rounded-full bg-[#D6A64A]" style="width:0%"></div>
-                    </div>
-                  </div>
-
-                  <div>
-                    <div class="mb-2 flex items-center justify-between text-sm">
-                      <span>Ease of Entry</span>
-                      <span id="modalEntryEaseValue" class="font-semibold">0</span>
-                    </div>
-                    <div class="h-2 w-full rounded-full bg-stone-200">
-                      <div id="modalEntryEaseBar" class="progress-fill h-2 rounded-full bg-stone-600" style="width:0%"></div>
-                    </div>
-                  </div>
-
-                  <div class="grid grid-cols-2 gap-3 pt-2">
-                    <div class="rounded-2xl border border-line bg-sand p-3">
-                      <div class="text-[11px] uppercase tracking-[0.14em] text-muted">Signal</div>
-                      <div id="modalSignal" class="mt-1 text-lg font-semibold">0</div>
-                    </div>
-                    <div class="rounded-2xl border border-line bg-sand p-3">
-                      <div class="text-[11px] uppercase tracking-[0.14em] text-muted">Word Count</div>
-                      <div id="modalWordCount" class="mt-1 text-lg font-semibold">—</div>
-                    </div>
-                  </div>
-                </div>
-              </section>
-
-              <section class="rounded-3xl border border-line bg-white p-5 shadow-soft">
-                <div class="text-[12px] font-semibold uppercase tracking-[0.16em] text-muted">Publishing Data</div>
-                <div id="publishingMeta" class="mt-3 space-y-2 text-sm text-stone-700"></div>
-              </section>
+            <div>
+              <div class="mb-1 text-[13px] font-medium">Ease of Entry</div>
+              <div class="flex items-center justify-between text-sm"><span></span><span id="easeValue" class="font-semibold">0</span></div>
+              <div class="mt-2 h-[6px] rounded-full bg-stone-300"><div id="easeBar" class="metric-fill h-[6px] rounded-full bg-stone-700" style="width:0%"></div></div>
             </div>
+          </div>
+
+          <div class="mt-5 grid grid-cols-2 gap-3 text-sm">
+            <div class="rounded-xl border border-line bg-white px-4 py-3"><span class="text-muted">Signal:</span> <span id="signalValue" class="font-semibold">0</span></div>
+            <div class="rounded-xl border border-line bg-white px-4 py-3"><span class="text-muted">Status:</span> <span id="statusValue" class="font-semibold">—</span></div>
+            <div class="rounded-xl border border-line bg-white px-4 py-3"><span class="text-muted">Analyst:</span> <span id="analystValue" class="font-semibold">—</span></div>
+            <div class="rounded-xl border border-line bg-white px-4 py-3"><span class="text-muted">Updated:</span> <span id="updatedValue" class="font-semibold">—</span></div>
           </div>
         </div>
       </div>
     </div>
   </div>
+</div>
 
 <script>
-  // ===================== CONFIG =====================
-  const SUPABASE_URL = 'https://btiwdulcqtvkdupsotnx.supabase.co';
-  const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ0aXdkdWxjcXR2a2R1cHNvdG54Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3NzY2NjcsImV4cCI6MjA5MDM1MjY2N30.RawdFhi84Zq95eZ29w8QwXPcBT9VDffFcHMB3fAzITA';
-  const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {
-    auth: {
-      storage: window.localStorage,
-      autoRefreshToken: true,
-      persistSession: true,
-      detectSessionInUrl: true
-    }
-  });
+const SUPABASE_URL = 'https://btiwdulcqtvkdupsotnx.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ0aXdkdWxjcXR2a2R1cHNvdG54Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3NzY2NjcsImV4cCI6MjA5MDM1MjY2N30.RawdFhi84Zq95eZ29w8QwXPcBT9VDffFcHMB3fAzITA';
 
-  const DEFAULT_CATEGORIES = [
-    'AI Automation',
-    'B2B Services',
-    'Fintech',
-    'SaaS Vertical',
-    'The Analyst Line'
-  ];
+const supa = supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {
+  auth: {
+    storage: window.localStorage,
+    autoRefreshToken: true,
+    persistSession: true,
+    detectSessionInUrl: true
+  }
+});
 
-  const UPCOMING_REPORTS = [
-    { stage: 'Yazım', color: 'green', title: 'SaaS Giriş Bariyerleri Global Özeti', time: '3 Gün' },
-    { stage: 'Analiz', color: 'amber', title: 'İngiltere Fintech Düzenlemeleri', time: '1 Hafta' },
-    { stage: 'Veri Toplama', color: 'gray', title: 'Alman E‑Ticaret Lojistik Pazarı', time: '2 Hafta' }
-  ];
+const DEFAULT_CATEGORIES = [
+  'AI Automation',
+  'B2B Services',
+  'Fintech',
+  'SaaS Vertical',
+  'The Analyst Line'
+];
 
-  const APP = {
-    session: null,
-    user: null,
-    profileTier: 'starter',
-    reports: [],
-    filteredReports: [],
-    activeCategory: 'all',
-    selectedReport: null
+const UPCOMING = [
+  { stage: 'Writing', color: 'green', title: 'Global SaaS Entry Barrier Overview', time: '3 Days' },
+  { stage: 'Analysis', color: 'amber', title: 'UK Fintech Regulatory Intelligence', time: '1 Week' },
+  { stage: 'Data Collection', color: 'gray', title: 'German E-Commerce Logistics Market', time: '2 Weeks' }
+];
+
+const STATE = {
+  user: null,
+  tier: 'starter',
+  reports: [],
+  activeCategory: 'all'
+};
+
+function esc(str) {
+  return String(str ?? '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;');
+}
+
+function toInt(v, fallback = 0) {
+  const n = parseInt(v, 10);
+  return Number.isFinite(n) ? Math.max(0, Math.min(100, n)) : fallback;
+}
+
+function normalizeTier(v) {
+  const s = String(v || '').toLowerCase();
+  return s.includes('pro') ? 'pro' : 'starter';
+}
+
+function formatDate(v) {
+  if (!v) return '—';
+  try {
+    return new Date(v).toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
+  } catch {
+    return '—';
+  }
+}
+
+function weekKey() {
+  const now = new Date();
+  const start = new Date(now.getFullYear(), 0, 1);
+  const week = Math.ceil((((now - start) / 86400000) + start.getDay() + 1) / 7);
+  return `${now.getFullYear()}-W${week}`;
+}
+
+function getStarterReads() {
+  try {
+    return JSON.parse(localStorage.getItem(`nichelab_reads_${weekKey()}`) || '[]');
+  } catch {
+    return [];
+  }
+}
+
+function saveStarterReads(ids) {
+  localStorage.setItem(`nichelab_reads_${weekKey()}`, JSON.stringify(ids));
+}
+
+function remainingReads() {
+  return Math.max(0, 10 - getStarterReads().length);
+}
+
+function markRead(id) {
+  const ids = getStarterReads();
+  if (!ids.includes(id)) {
+    ids.push(id);
+    saveStarterReads(ids);
+  }
+}
+
+function renderUpcoming() {
+  const el = document.getElementById('upcomingReports');
+  const colors = {
+    green: 'bg-green-500',
+    amber: 'bg-[#C9A256]',
+    gray: 'bg-stone-400'
   };
 
-  // ===================== HELPERS =====================
-  function esc(str) {
-    return String(str ?? '')
-      .replaceAll('&', '&amp;')
-      .replaceAll('<', '&lt;')
-      .replaceAll('>', '&gt;')
-      .replaceAll('"', '&quot;');
-  }
-
-  function normalizeTier(value) {
-    const v = String(value || '').toLowerCase().trim();
-    if (v.includes('pro')) return 'pro';
-    return 'starter';
-  }
-
-  function toInt(value, fallback = 0) {
-    const n = parseInt(value, 10);
-    return Number.isFinite(n) ? Math.max(0, Math.min(n, 100)) : fallback;
-  }
-
-  function formatDate(value) {
-    if (!value) return '—';
-    try {
-      return new Date(value).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
-    } catch {
-      return '—';
-    }
-  }
-
-  function truncate(text, len = 110) {
-    const t = String(text || '').trim();
-    if (t.length <= len) return t;
-    return t.slice(0, len).trim() + '...';
-  }
-
-  function colorForSignal(signal) {
-    const s = toInt(signal, 0);
-    if (s >= 85) return '#C97B0C';
-    if (s >= 70) return '#D9931A';
-    if (s >= 55) return '#E7A932';
-    if (s >= 40) return '#F0BF63';
-    return '#F5D89E';
-  }
-
-  function getCurrentWeekKey() {
-    const now = new Date();
-    const jan1 = new Date(now.getFullYear(), 0, 1);
-    const dayMs = 86400000;
-    const week = Math.ceil((((now - jan1) / dayMs) + jan1.getDay() + 1) / 7);
-    return `${now.getFullYear()}-W${week}`;
-  }
-
-  function getStarterViews() {
-    const key = `nichelab_starter_views_${getCurrentWeekKey()}`;
-    try {
-      return JSON.parse(localStorage.getItem(key) || '[]');
-    } catch {
-      return [];
-    }
-  }
-
-  function setStarterViews(ids) {
-    const key = `nichelab_starter_views_${getCurrentWeekKey()}`;
-    localStorage.setItem(key, JSON.stringify(ids));
-  }
-
-  function getStarterRemaining() {
-    const used = getStarterViews().length;
-    return Math.max(0, 10 - used);
-  }
-
-  function markStarterView(reportId) {
-    const ids = getStarterViews();
-    if (!ids.includes(reportId)) {
-      ids.push(reportId);
-      setStarterViews(ids);
-    }
-  }
-
-  function splitContentForDeepAnalysis(content) {
-    const text = String(content || '').trim();
-    if (!text) return 'Detailed analysis will appear here once content is populated in Supabase.';
-    if (text.length < 420) return text;
-    return text;
-  }
-
-  // ===================== UI RENDER =====================
-  function renderUpcomingReports() {
-    const el = document.getElementById('upcomingReports');
-    const stageDot = {
-      green: 'bg-green-500',
-      amber: 'bg-amber-500',
-      gray: 'bg-stone-400'
-    };
-
-    el.innerHTML = UPCOMING_REPORTS.map(item => `
-      <div class="flex items-start gap-3">
-        <span class="mt-1 inline-block h-3 w-3 rounded-full ${stageDot[item.color] || 'bg-stone-400'}"></span>
-        <div>
-          <div class="text-sm font-semibold text-ink">${esc(item.stage)}</div>
-          <div class="mt-1 text-sm text-stone-700">${esc(item.title)}</div>
-          <div class="mt-1 text-xs text-muted">Time: ${esc(item.time)}</div>
-        </div>
+  el.innerHTML = UPCOMING.map(item => `
+    <div class="flex items-start gap-3">
+      <span class="mt-1 h-4 w-4 rounded-full ${colors[item.color] || 'bg-stone-400'}"></span>
+      <div class="text-[15px] leading-6">
+        <div class="font-semibold">${esc(item.stage)} <span class="font-normal text-muted">• ${esc(item.title)}</span></div>
+        <div class="text-muted">Time: ${esc(item.time)}</div>
       </div>
-    `).join('');
-  }
+    </div>
+  `).join('');
+}
 
-  function renderCategoryNav() {
-    const nav = document.getElementById('categoryNav');
+function renderCategories() {
+  const nav = document.getElementById('categoryNav');
+  const dynamic = [...new Set(STATE.reports.map(r => String(r.category || r.niche || '').trim()).filter(Boolean))];
+  const cats = ['all', ...DEFAULT_CATEGORIES, ...dynamic.filter(c => !DEFAULT_CATEGORIES.includes(c))];
 
-    const dynamicCategories = [...new Set(APP.reports.map(r => String(r.category || r.niche || '').trim()).filter(Boolean))];
-    const merged = ['all', ...DEFAULT_CATEGORIES, ...dynamicCategories.filter(c => !DEFAULT_CATEGORIES.includes(c))];
-
-    nav.innerHTML = merged.map(cat => {
-      const label = cat === 'all' ? 'Intelligence Vault' : cat;
-      const active = APP.activeCategory === cat;
-      return `
-        <button
-          class="flex w-full items-center justify-between rounded-2xl px-4 py-3 text-left text-sm transition ${
-            active
-              ? 'bg-[#EADFCB] text-ink shadow-soft border border-[#DDD0BA]'
-              : 'text-stone-700 hover:bg-white hover:shadow-soft'
-          }"
-          onclick="setCategory(${JSON.stringify(cat)})"
-        >
-          <span>${esc(label)}</span>
-          ${active ? '<span class="text-[11px] uppercase tracking-[0.12em] text-muted">Active</span>' : ''}
-        </button>
-      `;
-    }).join('');
-  }
-
-  function renderSignalBanner() {
-    const signalTarget = document.getElementById('signalText');
-    if (!APP.reports.length) {
-      signalTarget.textContent = 'No active signal available.';
-      return;
-    }
-
-    const top = [...APP.reports].sort((a, b) => toInt(b.signal) - toInt(a.signal) || new Date(b.updated_at || b.created_at || 0) - new Date(a.updated_at || a.created_at || 0))[0];
-    const category = top.category || top.niche || 'Uncategorized';
-    const signal = toInt(top.signal);
-    signalTarget.textContent = `Signal: ${category} — ${truncate(top.summary || top.title || 'Emerging opportunity detected.', 120)} (signal ${signal}/100).`;
-  }
-
-  function renderHeatmap() {
-    const grid = document.getElementById('heatmapGrid');
-    const items = [...APP.reports]
-      .sort((a, b) => toInt(b.signal) - toInt(a.signal))
-      .slice(0, 12);
-
-    if (!items.length) {
-      grid.innerHTML = '<div class="col-span-3 rounded-2xl border border-line bg-sand p-4 text-sm text-muted">No signal data found.</div>';
-      return;
-    }
-
-    grid.innerHTML = items.map(item => {
-      const sig = toInt(item.signal);
-      const label = truncate(item.title || item.category || item.niche || 'Signal', 26);
-      return `
-        <button onclick='openModalById(${JSON.stringify(item.id)})'
-          class="heat-cell rounded-2xl p-3 text-left text-stone-900"
-          style="background:${colorForSignal(sig)}">
-          <div class="text-[11px] leading-4 font-medium">${esc(label)}</div>
-          <div class="mt-2 text-sm font-bold">${sig}</div>
-        </button>
-      `;
-    }).join('');
-  }
-
-  function renderCards() {
-    const grid = document.getElementById('cardsGrid');
-    const q = document.getElementById('searchInput').value.trim().toLowerCase();
-    const tierFilter = document.getElementById('tierFilter').value;
-
-    APP.filteredReports = APP.reports.filter(r => {
-      const cat = String(r.category || r.niche || '').trim();
-      const passCategory = APP.activeCategory === 'all' || cat === APP.activeCategory;
-      const passTier = tierFilter === 'all' || normalizeTier(r.tier_required) === tierFilter;
-      const hay = [r.title, r.summary, r.category, r.niche, r.analyst_code].join(' ').toLowerCase();
-      const passSearch = !q || hay.includes(q);
-      return passCategory && passTier && passSearch;
-    });
-
-    document.getElementById('reportCount').textContent = `${APP.filteredReports.length} visible`;
-
-    if (!APP.filteredReports.length) {
-      grid.innerHTML = `
-        <div class="col-span-full rounded-3xl border border-line bg-white p-10 text-center shadow-soft">
-          <div class="text-lg font-semibold">No reports match the current filters.</div>
-          <div class="mt-2 text-sm text-muted">Adjust category, search, or tier filters.</div>
-        </div>
-      `;
-      return;
-    }
-
-    grid.innerHTML = APP.filteredReports.map(r => {
-      const tier = normalizeTier(r.tier_required);
-      const tierClass = tier === 'pro'
-        ? 'border-amber-300 bg-amber-50 text-amber-800'
-        : 'border-stone-300 bg-stone-50 text-stone-700';
-
-      const gap = toInt(r.market_gap_score);
-      const ease = toInt(r.entry_ease);
-      const cat = r.category || r.niche || 'Uncategorized';
-      const canOpenFully = APP.profileTier === 'pro' || (tier !== 'pro' && getStarterRemaining() > 0) || getStarterViews().includes(r.id);
-      const accessText = tier === 'pro' && APP.profileTier !== 'pro'
-        ? 'Summary available · Pro analysis locked'
-        : (APP.profileTier === 'starter' ? `Starter access · ${getStarterRemaining()} weekly reads left` : 'Pro unlimited access');
-
-      return `
-        <article class="rounded-[26px] border border-line bg-white p-5 shadow-soft hover:shadow-card">
-          <div class="flex items-start justify-between gap-4">
-            <span class="inline-flex rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] ${tierClass}">
-              ${tier}
-            </span>
-            <span class="text-xs text-muted">${formatDate(r.updated_at || r.created_at)}</span>
-          </div>
-
-          <button onclick='openModalById(${JSON.stringify(r.id)})' class="mt-4 block text-left">
-            <h3 class="text-[24px] leading-7 font-display">${esc(r.title || 'Untitled report')}</h3>
-          </button>
-
-          <p class="mt-2 text-sm leading-6 text-stone-700">${esc(truncate(r.summary || r.content || 'No summary available.', 165))}</p>
-
-          <div class="mt-4 text-xs uppercase tracking-[0.14em] text-muted">${esc(cat)}</div>
-
-          <div class="mt-5 space-y-4">
-            <div>
-              <div class="mb-2 flex items-center justify-between text-sm">
-                <span>Market Gap</span>
-                <span class="font-semibold">${gap}</span>
-              </div>
-              <div class="h-2 w-full rounded-full bg-stone-200">
-                <div class="progress-fill h-2 rounded-full bg-[#D6A64A]" style="width:${gap}%"></div>
-              </div>
-            </div>
-
-            <div>
-              <div class="mb-2 flex items-center justify-between text-sm">
-                <span>Ease of Entry</span>
-                <span class="font-semibold">${ease}</span>
-              </div>
-              <div class="h-2 w-full rounded-full bg-stone-200">
-                <div class="progress-fill h-2 rounded-full bg-stone-700" style="width:${ease}%"></div>
-              </div>
-            </div>
-          </div>
-
-          <div class="mt-5 flex items-center justify-between gap-3">
-            <div class="text-xs text-muted">${esc(accessText)}</div>
-            <button onclick='openModalById(${JSON.stringify(r.id)})' class="rounded-2xl border border-line bg-sand px-4 py-2 text-sm font-medium hover:bg-stone-100">
-              ${canOpenFully ? 'Open report' : 'View summary'}
-            </button>
-          </div>
-        </article>
-      `;
-    }).join('');
-  }
-
-  function renderMembership() {
-    const tierEl = document.getElementById('membershipTier');
-    const metaEl = document.getElementById('membershipMeta');
-    const allowanceEl = document.getElementById('starterRemaining');
-
-    if (APP.profileTier === 'pro') {
-      tierEl.textContent = 'Pro';
-      metaEl.textContent = 'Unlimited report access';
-      allowanceEl.textContent = 'Pro unlimited';
-    } else {
-      tierEl.textContent = 'Starter';
-      metaEl.textContent = '10 full reports / week';
-      allowanceEl.textContent = `${getStarterRemaining()} reads remaining this week`;
-    }
-  }
-
-  function renderPublishingMeta(report) {
-    const wrap = document.getElementById('publishingMeta');
-    wrap.innerHTML = `
-      <div><span class="text-muted">Status:</span> <span class="font-medium text-ink">${esc(report.status || '—')}</span></div>
-      <div><span class="text-muted">Published:</span> <span class="font-medium text-ink">${report.published_ ? 'Yes' : 'No'}</span></div>
-      <div><span class="text-muted">Created:</span> <span class="font-medium text-ink">${formatDate(report.created_at)}</span></div>
-      <div><span class="text-muted">Updated:</span> <span class="font-medium text-ink">${formatDate(report.updated_at)}</span></div>
-      <div><span class="text-muted">Analyst Code:</span> <span class="font-medium text-ink">${esc(report.analyst_code || '—')}</span></div>
-      <div><span class="text-muted">Category:</span> <span class="font-medium text-ink">${esc(report.category || report.niche || '—')}</span></div>
+  nav.innerHTML = cats.map(cat => {
+    const active = STATE.activeCategory === cat;
+    const label = cat === 'all' ? 'Intelligence Vault' : cat;
+    return `
+      <button onclick='setCategory(${JSON.stringify(cat)})'
+        class="flex w-full items-center justify-between rounded-lg px-4 py-3 text-left text-[14px] ${
+          active
+            ? 'bg-[#E8DDC6] border border-[#D3C3A3] shadow-soft'
+            : 'hover:bg-white'
+        }">
+        <span>${esc(label)}</span>
+        ${active ? '<span class="text-[11px] text-muted">Active</span>' : ''}
+      </button>
     `;
+  }).join('');
+}
+
+function renderSignalBanner() {
+  const el = document.getElementById('signalText');
+  if (!STATE.reports.length) {
+    el.textContent = 'Signal: No reports available.';
+    return;
   }
 
-  // ===================== MODAL =====================
-  function openModalById(id) {
-    const report = APP.reports.find(r => String(r.id) === String(id));
-    if (!report) return;
-    APP.selectedReport = report;
-    openReportModal(report);
+  const top = [...STATE.reports].sort((a,b) => toInt(b.signal) - toInt(a.signal))[0];
+  const title = top.title || 'Emerging opportunity detected';
+  el.textContent = `Signal: ${title}.`;
+}
+
+function renderHeatmap() {
+  const el = document.getElementById('heatmapGrid');
+  const items = [...STATE.reports].sort((a,b) => toInt(b.signal) - toInt(a.signal)).slice(0, 12);
+
+  function bg(signal) {
+    const s = toInt(signal);
+    if (s >= 85) return '#C88932';
+    if (s >= 72) return '#D79A48';
+    if (s >= 58) return '#E3B36E';
+    if (s >= 42) return '#EBC78E';
+    return '#585B63';
   }
 
-  function openReportModal(report) {
-    const requiredTier = normalizeTier(report.tier_required);
-    const isProMember = APP.profileTier === 'pro';
-    const starterViewedIds = getStarterViews();
-    const starterHasReadBudget = starterViewedIds.includes(report.id) || getStarterRemaining() > 0;
-    const hasFullStarterAccess = requiredTier !== 'pro' && (isProMember || starterHasReadBudget);
-
-    if (!isProMember && requiredTier !== 'pro' && !starterViewedIds.includes(report.id) && getStarterRemaining() > 0) {
-      markStarterView(report.id);
-      renderMembership();
-      renderCards();
-    }
-
-    document.getElementById('modalTitle').textContent = report.title || 'Untitled report';
-    document.getElementById('modalMeta').textContent = `${report.category || report.niche || 'Uncategorized'} · Analyst ${report.analyst_code || '—'} · ${report.status || 'Draft'}`;
-    document.getElementById('modalTierBadge').textContent = requiredTier;
-    document.getElementById('modalExecutiveSummary').textContent =
-      report.summary || truncate(report.content || 'No summary available.', 900);
-
-    const deepText = splitContentForDeepAnalysis(report.content);
-    const recommendations = buildRecommendations(report);
-
-    document.getElementById('modalDeepAnalysis').textContent = deepText;
-    document.getElementById('modalRecommendations').innerHTML = recommendations;
-    document.getElementById('modalMarketGapValue').textContent = toInt(report.market_gap_score);
-    document.getElementById('modalEntryEaseValue').textContent = toInt(report.entry_ease);
-    document.getElementById('modalSignal').textContent = toInt(report.signal);
-    document.getElementById('modalWordCount').textContent = report.word_count ?? '—';
-    document.getElementById('modalMarketGapBar').style.width = `${toInt(report.market_gap_score)}%`;
-    document.getElementById('modalEntryEaseBar').style.width = `${toInt(report.entry_ease)}%`;
-    renderPublishingMeta(report);
-
-    const deepLockBadge = document.getElementById('deepLockBadge');
-    const overlay = document.getElementById('deepAnalysisOverlay');
-    const deep = document.getElementById('modalDeepAnalysis');
-
-    if (isProMember) {
-      deepLockBadge.classList.add('hidden');
-      overlay.classList.add('hidden');
-      deep.classList.remove('blur-lock');
-    } else if (requiredTier === 'pro') {
-      deepLockBadge.classList.remove('hidden');
-      overlay.classList.remove('hidden');
-      deep.classList.add('blur-lock');
-    } else if (hasFullStarterAccess) {
-      deepLockBadge.classList.add('hidden');
-      overlay.classList.add('hidden');
-      deep.classList.remove('blur-lock');
-    } else {
-      deepLockBadge.classList.remove('hidden');
-      overlay.classList.remove('hidden');
-      deep.classList.add('blur-lock');
-    }
-
-    document.getElementById('modalBackdrop').classList.remove('hidden');
+  if (!items.length) {
+    el.innerHTML = '<div class="col-span-3 rounded-lg bg-stone-200 p-4 text-sm text-muted">No signal data.</div>';
+    return;
   }
 
-  function buildRecommendations(report) {
-    const gap = toInt(report.market_gap_score);
-    const ease = toInt(report.entry_ease);
-    const signal = toInt(report.signal);
-    const tier = normalizeTier(report.tier_required);
-    const recommendations = [
-      gap >= 70
-        ? 'Prioritize this segment for near-term validation. Market gap is structurally meaningful.'
-        : 'Treat as a watchlist segment. Gap exists, but differentiation thesis should be sharpened.',
-      ease >= 60
-        ? 'Low-to-moderate implementation friction. Fast MVP or service wedge appears viable.'
-        : 'Entry complexity is elevated. Consider niche narrowing, partnerships, or phased go-to-market.',
-      signal >= 65
-        ? 'Signal momentum is strong. Monitor weekly updates and competitor movement closely.'
-        : 'Signal intensity is moderate. Re-check trend persistence before committing capital or build cycles.'
-    ];
+  el.innerHTML = items.map(item => {
+    const dark = toInt(item.signal) < 40;
+    return `
+      <button onclick='openReport(${JSON.stringify(item.id)})'
+        class="min-h-[102px] p-3 text-left"
+        style="background:${bg(item.signal)}; color:${dark ? '#F5F3EE' : '#2B241B'}">
+        <div class="text-[12px] leading-4 font-medium">${esc((item.category || item.niche || item.title || 'Signal').slice(0, 28))}</div>
+        <div class="mt-2 text-[20px] font-bold">${toInt(item.signal)}</div>
+      </button>
+    `;
+  }).join('');
+}
 
-    if (tier === 'pro') {
-      recommendations.push('Deep analysis is designated as Pro-only. Use this report for higher-confidence prioritization and diligence.');
-    }
+function buildRecommendations(report) {
+  const gap = toInt(report.market_gap_score);
+  const ease = toInt(report.entry_ease);
+  const signal = toInt(report.signal);
 
-    return `<ul class="list-disc pl-5 space-y-2">${recommendations.map(r => `<li>${esc(r)}</li>`).join('')}</ul>`;
-  }
+  const lines = [
+    gap >= 70
+      ? 'This opportunity shows a structurally meaningful gap and should move into near-term validation.'
+      : 'The gap is moderate. Sharpen the positioning thesis before prioritization.',
+    ease >= 60
+      ? 'Entry conditions are comparatively favorable. A focused MVP or service wedge is viable.'
+      : 'Entry friction is elevated. Consider partnerships, narrower segmentation, or phased rollout.',
+    signal >= 65
+      ? 'Signal intensity is strong. Monitor category movement weekly.'
+      : 'Signal momentum is present but not yet decisive. Continue observation before full commitment.'
+  ];
 
-  function closeModal() {
-    document.getElementById('modalBackdrop').classList.add('hidden');
-  }
+  return lines.map(line => `<p class="mb-3">${esc(line)}</p>`).join('');
+}
 
-  // ===================== FILTERS =====================
-  function setCategory(cat) {
-    APP.activeCategory = cat;
-    renderCategoryNav();
-    renderCards();
-  }
+function renderCards() {
+  const q = document.getElementById('searchInput').value.trim().toLowerCase();
+  const tierFilter = document.getElementById('tierFilter').value;
+  const grid = document.getElementById('cardsGrid');
 
-  document.addEventListener('input', (e) => {
-    if (e.target.id === 'searchInput') renderCards();
+  const visible = STATE.reports.filter(r => {
+    const category = String(r.category || r.niche || '').trim();
+    const passCategory = STATE.activeCategory === 'all' || category === STATE.activeCategory;
+    const passTier = tierFilter === 'all' || normalizeTier(r.tier_required) === tierFilter;
+    const hay = [r.title, r.summary, r.category, r.niche, r.content].join(' ').toLowerCase();
+    const passSearch = !q || hay.includes(q);
+    return passCategory && passTier && passSearch;
   });
 
-  document.addEventListener('change', (e) => {
-    if (e.target.id === 'tierFilter') renderCards();
-  });
-
-  document.getElementById('closeModalBtn').addEventListener('click', closeModal);
-  document.getElementById('modalBackdrop').addEventListener('click', (e) => {
-    if (e.target.id === 'modalBackdrop') closeModal();
-  });
-
-  // ===================== DATA =====================
-  async function fetchProfileTier(userId) {
-    const attempts = [
-      { table: 'profiles', columns: 'tier' },
-      { table: 'profiles', columns: 'plan' },
-      { table: 'profiles', columns: 'membership_tier' }
-    ];
-
-    for (const attempt of attempts) {
-      try {
-        const { data, error } = await sb.from(attempt.table).select(attempt.columns).eq('id', userId).maybeSingle();
-        if (!error && data) {
-          const value = data.tier || data.plan || data.membership_tier;
-          if (value) return normalizeTier(value);
-        }
-      } catch (_) {}
-    }
-
-    return 'starter';
+  if (!visible.length) {
+    grid.innerHTML = '<div class="col-span-3 rounded-xl border border-line bg-white p-10 text-center text-muted">No reports match the current filters.</div>';
+    return;
   }
 
-  async function fetchReports() {
-    const { data, error } = await sb
-      .from('reports')
-      .select('id,title,category,niche,content,summary,signal,status,tier_required,analyst_code,published_,created_at,updated_at,market_gap_score,entry_ease,word_count')
-      .order('updated_at', { ascending: false });
+  grid.innerHTML = visible.map(r => {
+    const tier = normalizeTier(r.tier_required);
+    const gap = toInt(r.market_gap_score);
+    const ease = toInt(r.entry_ease);
 
-    if (error) throw error;
-    return Array.isArray(data) ? data : [];
-  }
+    return `
+      <article class="rounded-[14px] border border-line bg-[rgba(255,255,255,0.72)] p-4 shadow-panel">
+        <div class="inline-flex rounded-md bg-[#E9DEC9] px-2 py-1 text-[12px] font-semibold text-stone-700">${tier === 'pro' ? 'Pro' : 'Starter'}</div>
 
-  // ===================== INIT =====================
-  async function init() {
-    renderUpcomingReports();
+        <button onclick='openReport(${JSON.stringify(r.id)})' class="mt-3 block text-left">
+          <h3 class="text-[21px] leading-6 font-semibold tracking-[-0.02em]">${esc(r.title || 'Untitled Report')}</h3>
+        </button>
 
-    const { data: { session }, error } = await sb.auth.getSession();
-    if (error || !session) {
-      window.location.replace('login.html');
-      return;
-    }
+        <p class="mt-2 text-[15px] leading-6 text-stone-800">${esc((r.summary || 'No summary available.').slice(0, 120))}${(r.summary || '').length > 120 ? '...' : ''}</p>
 
-    APP.session = session;
-    APP.user = session.user;
-    document.getElementById('userEmail').textContent = session.user.email || '—';
+        <div class="mt-4 text-[13px] font-semibold">Proprietary Opportunity Metrics</div>
 
-    APP.profileTier = await fetchProfileTier(session.user.id);
-    renderMembership();
-
-    try {
-      const reports = await fetchReports();
-      APP.reports = reports.filter(r => r && r.id);
-      renderCategoryNav();
-      renderSignalBanner();
-      renderHeatmap();
-      renderCards();
-    } catch (err) {
-      console.error(err);
-      document.getElementById('cardsGrid').innerHTML = `
-        <div class="col-span-full rounded-3xl border border-red-200 bg-red-50 p-8 text-red-700">
-          Failed to load reports. Check table permissions, RLS policies, and column names.
-          <div class="mt-2 text-sm">${esc(err.message || 'Unknown error')}</div>
+        <div class="mt-3">
+          <div class="flex items-center justify-between text-[13px]">
+            <span>Market Gap</span><span class="font-semibold">${gap}</span>
+          </div>
+          <div class="card-progress mt-2 h-[6px] rounded-full bg-stone-300"><div class="h-[6px] rounded-full bg-[#D0AE66]" style="width:${gap}%"></div></div>
         </div>
-      `;
-    }
+
+        <div class="mt-3">
+          <div class="flex items-center justify-between text-[13px]">
+            <span>Ease of Entry</span><span class="font-semibold">${ease}</span>
+          </div>
+          <div class="card-progress mt-2 h-[6px] rounded-full bg-stone-300"><div class="h-[6px] rounded-full bg-stone-700" style="width:${ease}%"></div></div>
+        </div>
+      </article>
+    `;
+  }).join('');
+}
+
+function updateMembershipLabels() {
+  document.getElementById('planLabel').textContent = STATE.tier === 'pro' ? 'Pro' : 'Starter';
+  document.getElementById('allowanceLabel').textContent = STATE.tier === 'pro'
+    ? 'Unlimited reads'
+    : `${remainingReads()} reads left this week`;
+}
+
+async function fetchTier(userId) {
+  const attempts = [
+    { table: 'profiles', col: 'tier' },
+    { table: 'profiles', col: 'plan' },
+    { table: 'profiles', col: 'membership_tier' }
+  ];
+
+  for (const a of attempts) {
+    try {
+      const { data, error } = await supa.from(a.table).select(a.col).eq('id', userId).maybeSingle();
+      if (!error && data && data[a.col]) return normalizeTier(data[a.col]);
+    } catch (_) {}
   }
 
-  document.getElementById('signoutBtn').addEventListener('click', async () => {
-    await sb.auth.signOut();
+  return 'starter';
+}
+
+async function fetchReports() {
+  const { data, error } = await supa
+    .from('reports')
+    .select('id,title,category,niche,content,summary,signal,status,tier_required,analyst_code,published_,created_at,updated_at,market_gap_score,entry_ease,word_count')
+    .order('updated_at', { ascending: false });
+
+  if (error) throw error;
+  return Array.isArray(data) ? data : [];
+}
+
+function setCategory(cat) {
+  STATE.activeCategory = cat;
+  renderCategories();
+  renderCards();
+}
+
+function openReport(id) {
+  const report = STATE.reports.find(x => String(x.id) === String(id));
+  if (!report) return;
+
+  const requiredTier = normalizeTier(report.tier_required);
+  const reads = getStarterReads();
+  const alreadyOpened = reads.includes(report.id);
+  const fullStarterAccess = STATE.tier === 'starter' && requiredTier !== 'pro' && (alreadyOpened || remainingReads() > 0);
+
+  if (STATE.tier === 'starter' && requiredTier !== 'pro' && !alreadyOpened && remainingReads() > 0) {
+    markRead(report.id);
+    updateMembershipLabels();
+  }
+
+  document.getElementById('modalTier').textContent = requiredTier === 'pro' ? 'Pro' : 'Starter';
+  document.getElementById('modalTitle').textContent = report.title || 'Untitled Report';
+  document.getElementById('modalSummary').textContent = report.summary || 'No summary available.';
+  document.getElementById('modalDeepAnalysis').textContent = report.content || 'No deep analysis available.';
+  document.getElementById('modalRecommendations').innerHTML = buildRecommendations(report);
+  document.getElementById('gapValue').textContent = toInt(report.market_gap_score);
+  document.getElementById('easeValue').textContent = toInt(report.entry_ease);
+  document.getElementById('gapBar').style.width = `${toInt(report.market_gap_score)}%`;
+  document.getElementById('easeBar').style.width = `${toInt(report.entry_ease)}%`;
+  document.getElementById('signalValue').textContent = toInt(report.signal);
+  document.getElementById('statusValue').textContent = report.status || '—';
+  document.getElementById('analystValue').textContent = report.analyst_code || '—';
+  document.getElementById('updatedValue').textContent = formatDate(report.updated_at || report.created_at);
+
+  const deep = document.getElementById('modalDeepAnalysis');
+  const overlay = document.getElementById('deepOverlay');
+  const lock = document.getElementById('deepLockLabel');
+
+  if (STATE.tier === 'pro' || fullStarterAccess) {
+    deep.classList.remove('modal-blur');
+    overlay.classList.add('hidden');
+    lock.classList.add('hidden');
+  } else {
+    deep.classList.add('modal-blur');
+    overlay.classList.remove('hidden');
+    lock.classList.remove('hidden');
+  }
+
+  document.getElementById('modalBackdrop').classList.remove('hidden');
+}
+
+function closeModal() {
+  document.getElementById('modalBackdrop').classList.add('hidden');
+}
+
+document.getElementById('closeModalBtn').addEventListener('click', closeModal);
+document.getElementById('modalBackdrop').addEventListener('click', (e) => {
+  if (e.target.id === 'modalBackdrop') closeModal();
+});
+document.getElementById('searchInput').addEventListener('input', renderCards);
+document.getElementById('tierFilter').addEventListener('change', renderCards);
+document.getElementById('signOutBtn').addEventListener('click', async () => {
+  await supa.auth.signOut();
+  window.location.replace('login.html');
+});
+
+async function init() {
+  renderUpcoming();
+
+  const { data: { session }, error } = await supa.auth.getSession();
+  if (error || !session) {
     window.location.replace('login.html');
-  });
+    return;
+  }
 
-  sb.auth.onAuthStateChange((event, session) => {
-    if ((event === 'SIGNED_OUT' || event === 'USER_DELETED') || !session) {
-      window.location.replace('login.html');
-    }
-  });
+  STATE.user = session.user;
+  document.getElementById('userEmail').textContent = session.user.email || '—';
+  STATE.tier = await fetchTier(session.user.id);
+  updateMembershipLabels();
 
-  init();
+  try {
+    STATE.reports = await fetchReports();
+    renderCategories();
+    renderSignalBanner();
+    renderHeatmap();
+    renderCards();
+  } catch (err) {
+    document.getElementById('cardsGrid').innerHTML =
+      `<div class="col-span-3 rounded-xl border border-red-200 bg-red-50 p-8 text-red-700">
+        Failed to load reports. ${esc(err.message || 'Unknown error')}
+      </div>`;
+  }
+}
+
+supa.auth.onAuthStateChange((event, session) => {
+  if ((event === 'SIGNED_OUT' || event === 'USER_DELETED') || !session) {
+    window.location.replace('login.html');
+  }
+});
+
+init();
 </script>
 </body>
 </html>
