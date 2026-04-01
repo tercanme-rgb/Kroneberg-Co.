@@ -1,690 +1,783 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>NicheLab — Intelligence Vault</title>
 
+  <!-- Supabase v2 CDN -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
 
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            cream: '#F6F1E8',
-            panel: '#FBF7F1',
-            ink: '#1E1B16',
-            muted: '#6D6458',
-            line: '#DDD1C0',
-            gold: '#C9982B',
-            goldSoft: '#EAC97E',
-            amberheat: '#F59E0B'
-          },
-          boxShadow: {
-            soft: '0 8px 30px rgba(36, 29, 18, 0.08)',
-            card: '0 6px 20px rgba(36, 29, 18, 0.06)',
-            modal: '0 25px 70px rgba(24, 20, 14, 0.18)'
-          },
-          fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-            display: ['Playfair Display', 'serif']
-          }
-        }
-      }
-    }
-  </script>
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
 
   <style>
-    .scrollbar-thin::-webkit-scrollbar { width: 8px; height: 8px; }
-    .scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
-    .scrollbar-thin::-webkit-scrollbar-thumb { background: rgba(120,94,58,.20); border-radius: 999px; }
-    .line-clamp-2 {
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
+    /* ─── RESET & ROOT ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:        #050507;
+      --surface:    #0D0D0F;
+      --panel:      #111115;
+      --panel-hi:   #15151A;
+      --border:     rgba(201,168,76,0.14);
+      --border-hi:  rgba(201,168,76,0.50);
+      --gold:       #C9A84C;
+      --gold-dim:   #9A7C36;
+      --gold-faint: rgba(201,168,76,0.07);
+      --text:       #E8E4DC;
+      --muted:      #7A7670;
+      --dim:        #3E3A34;
+      --error:      #E05252;
+      --success:    #52A87E;
+      --mono:       'IBM Plex Mono', monospace;
+      --serif:      'Cormorant Garamond', Georgia, serif;
+      --nav-h:      64px;
     }
-    .line-clamp-3 {
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
+
+    html { scroll-behavior: smooth; }
+
+    /* CRITICAL: body starts invisible — revealed only after auth check */
+    body {
+      visibility: hidden;
+      background: var(--ink);
+      color: var(--text);
+      font-family: var(--mono);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
     }
-    .blur-lock {
-      filter: blur(7px);
-      user-select: none;
+
+    body.auth-ready { visibility: visible; }
+
+    /* ─── GLOBAL BACKGROUND ────────────────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 70% 45% at 15% 0%,  rgba(201,168,76,0.06) 0%, transparent 55%),
+        radial-gradient(ellipse 55% 35% at 85% 100%, rgba(201,168,76,0.04) 0%, transparent 50%);
       pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ─── NAVIGATION ───────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 200;
+      height: var(--nav-h);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 3rem;
+      border-bottom: 1px solid var(--border);
+      background: rgba(5,5,7,0.90);
+      backdrop-filter: blur(14px);
+    }
+
+    .nav-left { display: flex; align-items: center; gap: 2.5rem; }
+
+    .nav-logo {
+      font-family: var(--serif);
+      font-size: 1.2rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: var(--text);
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .nav-logo span { color: var(--gold); }
+
+    .nav-sep {
+      width: 1px; height: 20px;
+      background: var(--border-hi);
+    }
+
+    .nav-context {
+      font-size: 0.58rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold-dim);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+
+    /* Members Access — admin only, hidden by default */
+    .nav-members {
+      display: none;
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold) !important;
+      padding: 0.35rem 0.8rem;
+      border: 1px solid var(--border-hi);
+      transition: background 0.2s, color 0.2s;
+    }
+    .nav-members:hover {
+      background: var(--gold-faint);
+    }
+    .nav-members.visible { display: inline-block !important; }
+
+    /* User pill */
+    .nav-user {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .user-badge {
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      max-width: 180px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .user-tier {
+      font-size: 0.52rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      padding: 0.2rem 0.5rem;
+      border: 1px solid var(--border-hi);
+    }
+
+    .btn-signout {
+      background: none;
+      border: 1px solid var(--dim);
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 0.55rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.7rem;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-signout:hover {
+      border-color: var(--error);
+      color: var(--error);
+    }
+
+    /* ─── PAGE LAYOUT ──────────────────────────────────────────── */
+    .page-wrap {
+      position: relative;
+      z-index: 1;
+      padding-top: calc(var(--nav-h) + 3rem);
+      padding-bottom: 4rem;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 3rem;
+    }
+
+    /* ─── HERO / GREETING ──────────────────────────────────────── */
+    .hero {
+      padding-bottom: 3rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 3rem;
+      animation: fadeUp 0.5s cubic-bezier(0.16,1,0.3,1) both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-eyebrow {
+      font-size: 0.58rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+
+    .hero-title {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 500;
+      line-height: 1.1;
+      color: var(--text);
+    }
+
+    .hero-subtitle {
+      margin-top: 1rem;
+      font-size: 0.72rem;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      max-width: 520px;
+    }
+
+    /* ─── STATS BAR ────────────────────────────────────────────── */
+    .stats-bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      margin-bottom: 3rem;
+      animation: fadeUp 0.5s 0.1s cubic-bezier(0.16,1,0.3,1) both;
+    }
+
+    .stat {
+      background: var(--panel);
+      padding: 1.5rem;
+    }
+
+    .stat-label {
+      font-size: 0.55rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-value {
+      font-family: var(--serif);
+      font-size: 1.9rem;
+      font-weight: 400;
+      color: var(--text);
+      line-height: 1;
+    }
+
+    .stat-unit {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      color: var(--gold-dim);
+      margin-top: 0.3rem;
+    }
+
+    /* ─── SECTION HEADING ──────────────────────────────────────── */
+    .section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+      animation: fadeUp 0.5s 0.15s cubic-bezier(0.16,1,0.3,1) both;
+    }
+
+    .section-title {
+      font-size: 0.62rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .section-title span {
+      color: var(--gold);
+      margin-left: 0.5rem;
+    }
+
+    .section-rule {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+      margin: 0 1.5rem;
+    }
+
+    /* ─── REPORTS TABLE ────────────────────────────────────────── */
+    .reports-wrap {
+      border: 1px solid var(--border);
+      background: var(--panel);
+      animation: fadeUp 0.5s 0.2s cubic-bezier(0.16,1,0.3,1) both;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    thead {
+      border-bottom: 1px solid var(--border);
+      background: rgba(201,168,76,0.04);
+    }
+
+    thead th {
+      font-size: 0.55rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold-dim);
+      font-weight: 400;
+      padding: 1rem 1.25rem;
+      text-align: left;
+      white-space: nowrap;
+    }
+
+    thead th:first-child { padding-left: 1.75rem; }
+    thead th:last-child  { padding-right: 1.75rem; text-align: right; }
+
+    tbody tr {
+      border-bottom: 1px solid var(--border);
+      transition: background 0.15s;
+      cursor: pointer;
+    }
+
+    tbody tr:last-child { border-bottom: none; }
+
+    tbody tr:hover { background: var(--gold-faint); }
+
+    tbody td {
+      font-size: 0.72rem;
+      color: var(--text);
+      padding: 1rem 1.25rem;
+      vertical-align: middle;
+    }
+
+    tbody td:first-child { padding-left: 1.75rem; }
+    tbody td:last-child  { padding-right: 1.75rem; text-align: right; }
+
+    .td-id {
+      font-size: 0.6rem;
+      color: var(--muted);
+      font-weight: 300;
+      letter-spacing: 0.05em;
+    }
+
+    .td-title {
+      font-family: var(--serif);
+      font-size: 0.92rem;
+      font-weight: 500;
+      max-width: 300px;
+    }
+
+    .td-tier {
+      display: inline-block;
+      font-size: 0.52rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.6rem;
+    }
+
+    .td-tier.pro     { color: var(--gold); border: 1px solid rgba(201,168,76,0.35); }
+    .td-tier.starter { color: var(--muted); border: 1px solid var(--dim); }
+
+    .td-date {
+      font-size: 0.62rem;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+    }
+
+    .td-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .td-status::before {
+      content: '';
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--success);
+      flex-shrink: 0;
+    }
+
+    /* ─── EMPTY / LOADING STATES ───────────────────────────────── */
+    .state-row td {
+      padding: 4rem 1.75rem;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+    }
+
+    .state-spinner {
+      display: inline-block;
+      width: 16px; height: 16px;
+      border: 1px solid var(--dim);
+      border-top-color: var(--gold-dim);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      vertical-align: middle;
+      margin-right: 0.75rem;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .empty-icon {
+      display: block;
+      font-size: 1.5rem;
+      margin-bottom: 0.75rem;
+      opacity: 0.3;
+    }
+
+    /* ─── BOTTOM STRIP ─────────────────────────────────────────── */
+    .bottom-strip {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      height: 36px;
+      border-top: 1px solid var(--border);
+      background: rgba(5,5,7,0.80);
+      backdrop-filter: blur(8px);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 3rem;
+    }
+
+    .strip-left, .strip-right {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .strip-item {
+      font-size: 0.55rem;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+    }
+
+    .strip-sep {
+      width: 1px; height: 12px;
+      background: var(--dim);
+    }
+
+    #live-time {
+      font-size: 0.55rem;
+      color: var(--gold-dim);
+      letter-spacing: 0.06em;
+    }
+
+    /* ─── RESPONSIVE ───────────────────────────────────────────── */
+    @media (max-width: 768px) {
+      nav { padding: 0 1.25rem; }
+      .container { padding: 0 1.25rem; }
+      .stats-bar { grid-template-columns: repeat(2, 1fr); }
+      .bottom-strip { display: none; }
+      .nav-context, .nav-sep { display: none; }
+    }
+
+    @media (max-width: 480px) {
+      .stats-bar { grid-template-columns: 1fr; }
     }
   </style>
 </head>
-<body class="bg-cream text-ink font-sans min-h-screen">
-  <div id="authGate" class="fixed inset-0 bg-cream z-[100] flex items-center justify-center">
-    <div class="text-center">
-      <div class="w-10 h-10 rounded-full border-2 border-[#D8C6A8] border-t-gold animate-spin mx-auto"></div>
-      <p class="mt-4 text-sm tracking-[0.18em] uppercase text-muted">Vault initializing</p>
+
+<body>
+
+  <!-- ── NAVIGATION ──────────────────────────────────────────────── -->
+  <nav>
+    <div class="nav-left">
+      <a class="nav-logo" href="#">Niche<span>Lab</span></a>
+      <div class="nav-sep"></div>
+      <span class="nav-context" id="nav-context">Intelligence Vault</span>
+    </div>
+
+    <ul class="nav-links">
+      <li><a href="#">Pricing</a></li>
+      <li><a href="#">About Us</a></li>
+      <li><a href="#">Contact</a></li>
+      <!-- Members Access: admin-only, shown by JS -->
+      <li><a href="#" class="nav-members" id="nav-members">Members Access</a></li>
+    </ul>
+
+    <div class="nav-user">
+      <span class="user-badge" id="user-email">—</span>
+      <span class="user-tier" id="user-tier">—</span>
+      <button class="btn-signout" id="signout-btn" type="button">Sign Out</button>
+    </div>
+  </nav>
+
+  <!-- ── PAGE CONTENT ─────────────────────────────────────────────── -->
+  <div class="page-wrap">
+    <div class="container">
+
+      <!-- HERO / GREETING -->
+      <div class="hero">
+        <p class="hero-eyebrow" id="hero-eyebrow">Market Intelligence Platform</p>
+        <h1 class="hero-title" id="hero-title">Intelligence<br/>Vault</h1>
+        <p class="hero-subtitle" id="hero-subtitle">
+          Access your curated niche market intelligence reports, sector analyses, and strategic briefs.
+        </p>
+      </div>
+
+      <!-- STATS BAR -->
+      <div class="stats-bar">
+        <div class="stat">
+          <p class="stat-label">Reports Available</p>
+          <p class="stat-value" id="stat-count">—</p>
+          <p class="stat-unit">in vault</p>
+        </div>
+        <div class="stat">
+          <p class="stat-label">Access Level</p>
+          <p class="stat-value" id="stat-tier" style="font-size:1.4rem;">—</p>
+          <p class="stat-unit">current tier</p>
+        </div>
+        <div class="stat">
+          <p class="stat-label">Market Coverage</p>
+          <p class="stat-value">10</p>
+          <p class="stat-unit">business categories</p>
+        </div>
+        <div class="stat">
+          <p class="stat-label">Analysis Depth</p>
+          <p class="stat-value">15</p>
+          <p class="stat-unit">sections per report</p>
+        </div>
+      </div>
+
+      <!-- REPORTS TABLE -->
+      <div class="section-head">
+        <span class="section-title">Reports <span id="reports-count-label"></span></span>
+        <div class="section-rule"></div>
+      </div>
+
+      <div class="reports-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Report ID</th>
+              <th>Title</th>
+              <th>Category</th>
+              <th>Tier</th>
+              <th>Created</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="reports-tbody">
+            <!-- Loading state -->
+            <tr class="state-row">
+              <td colspan="6">
+                <div class="state-spinner"></div>
+                Initializing vault…
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
     </div>
   </div>
 
-  <div class="min-h-screen flex">
-    <aside class="w-[280px] shrink-0 border-r border-line bg-[#F0E9DE] px-6 py-6 hidden lg:flex lg:flex-col">
-      <div class="flex items-center gap-3 mb-8">
-        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-[#1F1B17] to-[#A3792A] text-white flex items-center justify-center font-bold">N</div>
-        <div>
-          <div class="text-[13px] uppercase tracking-[0.20em] text-muted">NicheLab</div>
-          <div class="text-xl font-semibold leading-none">Vault</div>
-        </div>
-      </div>
-
-      <div>
-        <p class="text-[11px] tracking-[0.22em] uppercase text-muted mb-4">Ana Başlıklar</p>
-        <nav id="categoryNav" class="space-y-1.5"></nav>
-      </div>
-
-      <div class="mt-auto pt-8 border-t border-line/80">
-        <div class="rounded-2xl bg-panel border border-line p-4 shadow-card">
-          <p class="text-[11px] uppercase tracking-[0.18em] text-muted mb-2">Membership</p>
-          <div class="flex items-center justify-between">
-            <span id="sidebarTier" class="text-lg font-semibold">Starter</span>
-            <span id="sidebarReadQuota" class="text-xs text-muted">10 full reports / week</span>
-          </div>
-          <div class="mt-3 h-2 rounded-full bg-[#E7DDCF] overflow-hidden">
-            <div id="quotaBar" class="h-full rounded-full bg-gold" style="width:0%"></div>
-          </div>
-          <p id="quotaText" class="mt-2 text-xs text-muted">Loading usage...</p>
-        </div>
-      </div>
-    </aside>
-
-    <main class="flex-1 min-w-0">
-      <header class="border-b border-line bg-panel/80 backdrop-blur sticky top-0 z-30">
-        <div class="px-5 lg:px-8 py-5 flex items-center justify-between gap-4">
-          <div>
-            <h1 class="font-display text-3xl lg:text-5xl leading-none">Intelligence Vault</h1>
-            <p class="mt-2 text-sm text-muted">Curated market intelligence, opportunity scoring, and founder-grade signal analysis.</p>
-          </div>
-          <div class="flex items-center gap-4 shrink-0">
-            <nav class="hidden md:flex items-center gap-8 text-[13px] tracking-[0.12em] uppercase text-ink/85">
-              <a href="#" class="hover:text-gold transition">Home</a>
-              <a href="#" class="hover:text-gold transition">Search</a>
-              <a href="#" class="hover:text-gold transition">Support</a>
-              <a href="#" class="hover:text-gold transition">My Account</a>
-            </nav>
-            <div class="hidden xl:flex items-center gap-3 rounded-full border border-line bg-white/70 px-4 py-2 shadow-sm">
-              <div class="w-2.5 h-2.5 rounded-full bg-emerald-500"></div>
-              <span id="userEmail" class="text-sm text-muted">—</span>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      <div class="px-5 lg:px-8 py-6">
-        <div class="mb-6">
-          <p class="text-[11px] tracking-[0.22em] uppercase text-muted mb-2">Intelligence Signal Banner</p>
-          <div class="rounded-2xl border border-[#E0C68F] bg-gradient-to-r from-[#EAC97E] via-[#E3BC67] to-[#D9AE52] shadow-soft px-5 py-4 flex items-center gap-3">
-            <div class="w-9 h-9 rounded-full bg-white/25 backdrop-blur flex items-center justify-center text-lg">📡</div>
-            <div class="min-w-0">
-              <p id="signalBanner" class="font-semibold text-base lg:text-lg text-[#33250B] line-clamp-2">Signal loading...</p>
-              <p id="signalMeta" class="text-xs text-[#5E4312] mt-1">Daily signal summary from latest report intelligence.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_300px] gap-6">
-          <section class="min-w-0">
-            <div class="flex items-center justify-between mb-4">
-              <div>
-                <p class="text-[11px] tracking-[0.22em] uppercase text-muted">Reports Grid</p>
-                <p class="text-sm text-muted mt-1">Starter can read 10 full reports per week. Pro has unlimited full access.</p>
-              </div>
-              <div class="flex items-center gap-2">
-                <button id="mobileCategoryBtn" class="lg:hidden rounded-xl border border-line bg-panel px-3 py-2 text-xs uppercase tracking-[0.18em] text-muted">Categories</button>
-              </div>
-            </div>
-
-            <div id="reportsGrid" class="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-5"></div>
-          </section>
-
-          <aside class="space-y-5">
-            <section class="rounded-3xl border border-line bg-panel p-5 shadow-card">
-              <div class="flex items-center justify-between mb-4">
-                <h2 class="text-[28px] leading-none font-display">Upcoming Reports</h2>
-              </div>
-              <div id="upcomingReports" class="space-y-4">
-                <div class="flex gap-3">
-                  <div class="w-3 h-3 rounded-full bg-emerald-500 mt-1.5"></div>
-                  <div>
-                    <p class="font-semibold">Yazım</p>
-                    <p class="text-sm text-muted">Yeni rapor başlıklarını buraya manuel girebilirsin.</p>
-                  </div>
-                </div>
-                <div class="flex gap-3">
-                  <div class="w-3 h-3 rounded-full bg-amber-400 mt-1.5"></div>
-                  <div>
-                    <p class="font-semibold">Analiz</p>
-                    <p class="text-sm text-muted">Analiz aşamasındaki raporları burada gösterebilirsin.</p>
-                  </div>
-                </div>
-                <div class="flex gap-3">
-                  <div class="w-3 h-3 rounded-full bg-gray-400 mt-1.5"></div>
-                  <div>
-                    <p class="font-semibold">Veri Toplama</p>
-                    <p class="text-sm text-muted">Pipeline içine alınan yeni konu başlıkları.</p>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            <section class="rounded-3xl border border-line bg-panel p-5 shadow-card">
-              <div class="flex items-center justify-between mb-4">
-                <h2 class="text-[28px] leading-none font-display">Niche Trends Heatmap</h2>
-              </div>
-              <div id="heatmapGrid" class="grid grid-cols-3 gap-2"></div>
-            </section>
-          </aside>
-        </div>
-      </div>
-    </main>
-  </div>
-
-  <div id="mobileCategoryDrawer" class="fixed inset-0 bg-black/35 z-40 hidden lg:hidden">
-    <div class="absolute left-0 top-0 bottom-0 w-[290px] bg-[#F0E9DE] border-r border-line p-6 shadow-modal overflow-y-auto">
-      <div class="flex items-center justify-between mb-6">
-        <p class="text-[11px] tracking-[0.22em] uppercase text-muted">Ana Başlıklar</p>
-        <button id="closeMobileDrawer" class="text-sm text-muted">Kapat</button>
-      </div>
-      <div id="mobileCategoryNav" class="space-y-1.5"></div>
+  <!-- ── BOTTOM STRIP ─────────────────────────────────────────────── -->
+  <div class="bottom-strip">
+    <div class="strip-left">
+      <span class="strip-item">NicheLab Intelligence Platform</span>
+      <div class="strip-sep"></div>
+      <span class="strip-item">Secure Session Active</span>
+    </div>
+    <div class="strip-right">
+      <span class="strip-item" id="session-email-strip">—</span>
+      <div class="strip-sep"></div>
+      <span id="live-time">—</span>
     </div>
   </div>
 
-  <div id="reportModal" class="fixed inset-0 bg-black/40 backdrop-blur-[2px] z-50 hidden items-center justify-center p-4">
-    <div class="w-full max-w-4xl rounded-[32px] border border-line bg-[#F8F3EB] shadow-modal overflow-hidden">
-      <div class="border-b border-line px-6 py-4 flex items-start justify-between gap-4">
-        <div>
-          <div class="flex items-center gap-2 mb-2">
-            <span id="modalTierBadge" class="inline-flex items-center rounded-full px-3 py-1 text-[11px] uppercase tracking-[0.18em] font-semibold bg-[#F2E5CC] text-[#7A5612]">Starter</span>
-            <span id="modalCategory" class="text-xs uppercase tracking-[0.18em] text-muted">—</span>
-          </div>
-          <h3 id="modalTitle" class="font-display text-3xl leading-tight">Report Title</h3>
-          <p id="modalAbstract" class="text-sm text-muted mt-2 max-w-3xl">—</p>
-        </div>
-        <button id="closeModalBtn" class="rounded-xl border border-line px-4 py-2 text-xs uppercase tracking-[0.18em] text-muted bg-white/70">Close</button>
-      </div>
-
-      <div class="grid grid-cols-1 lg:grid-cols-[1fr_260px] gap-0">
-        <div class="p-6 lg:p-7 max-h-[78vh] overflow-y-auto scrollbar-thin">
-          <section class="mb-8">
-            <h4 class="text-2xl font-display mb-3">Executive Summary</h4>
-            <div id="modalExecutiveSummary" class="text-[15px] leading-7 text-[#3A3228] whitespace-pre-line"></div>
-          </section>
-
-          <section class="mb-8 relative">
-            <div class="flex items-center justify-between mb-3">
-              <h4 class="text-2xl font-display">Pro-Tier Deep Analysis</h4>
-              <span id="deepAnalysisLockLabel" class="text-xs uppercase tracking-[0.18em] text-muted">Locked for Starter</span>
-            </div>
-            <div class="relative rounded-3xl border border-line bg-white/70 p-5 overflow-hidden">
-              <div id="modalDeepAnalysis" class="text-[15px] leading-7 text-[#3A3228] blur-lock whitespace-pre-line"></div>
-              <div id="deepOverlay" class="absolute inset-0 flex items-center justify-center bg-gradient-to-t from-[#F8F3EB] via-[#F8F3EB]/80 to-transparent">
-                <div class="text-center px-6">
-                  <div class="w-12 h-12 rounded-full bg-[#F2E5CC] border border-[#E0C68F] flex items-center justify-center mx-auto mb-3 text-xl">🔒</div>
-                  <p class="font-semibold text-lg">Pro analysis locked</p>
-                  <p class="text-sm text-muted mt-1">Starter üyeler özet görür. Pro üyeler derin analize sınırsız erişir.</p>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <section>
-            <h4 class="text-2xl font-display mb-3">Analyst Recommendations</h4>
-            <div id="modalRecommendations" class="text-[15px] leading-7 text-[#3A3228] whitespace-pre-line"></div>
-          </section>
-        </div>
-
-        <aside class="border-t lg:border-t-0 lg:border-l border-line bg-white/40 p-6">
-          <p class="text-[11px] tracking-[0.22em] uppercase text-muted mb-4">Opportunity Metrics</p>
-          <div class="space-y-5">
-            <div>
-              <div class="flex items-center justify-between text-sm mb-2">
-                <span>Market Gap</span>
-                <span id="modalMarketGap">0</span>
-              </div>
-              <div class="h-2.5 rounded-full bg-[#E7DDCF] overflow-hidden">
-                <div id="modalMarketGapBar" class="h-full rounded-full bg-[#C9982B]" style="width:0%"></div>
-              </div>
-            </div>
-            <div>
-              <div class="flex items-center justify-between text-sm mb-2">
-                <span>Ease of Entry</span>
-                <span id="modalEaseEntry">0</span>
-              </div>
-              <div class="h-2.5 rounded-full bg-[#E7DDCF] overflow-hidden">
-                <div id="modalEaseEntryBar" class="h-full rounded-full bg-[#54483A]" style="width:0%"></div>
-              </div>
-            </div>
-            <div class="pt-5 border-t border-line">
-              <p class="text-[11px] tracking-[0.18em] uppercase text-muted mb-2">Access Policy</p>
-              <p id="modalAccessText" class="text-sm text-muted">Starter plan can open 10 full reports per week.</p>
-            </div>
-          </div>
-        </aside>
-      </div>
-    </div>
-  </div>
-
+  <!-- ── AUTH + VAULT LOGIC ───────────────────────────────────────── -->
   <script>
-    const SUPABASE_URL = 'https://btiwdulcqtvkdupsotnx.supabase.co';
-    const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ0aXdkdWxjcXR2a2R1cHNvdG54Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3NzY2NjcsImV4cCI6MjA5MDM1MjY2N30.RawdFhi84Zq95eZ29w8QwXPcBT9VDffFcHMB3fAzITA';
-    const ADMIN_EMAIL = 'tercan.me@gmail.com';
-    const WEEKLY_STARTER_LIMIT = 10;
+    // ─── CONFIG ─────────────────────────────────────────────────────
+    // IMPORTANT: Replace YOUR_SUPABASE_ANON_KEY with your actual key
+    // from Supabase Dashboard → Settings → API → anon / public
+    const SUPABASE_URL  = 'https://btiwdulcqtvkdupsotnx.supabase.co';
+    const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ0aXdkdWxjcXR2a2R1cHNvdG54Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3NzY2NjcsImV4cCI6MjA5MDM1MjY2N30.RawdFhi84Zq95eZ29w8QwXPcBT9VDffFcHMB3fAzITA'; // ← REPLACE THIS
 
-    const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {
+    const ADMIN_EMAIL   = 'tercan.me@gmail.com';
+
+    // ─── CLIENT INIT (with localStorage fix for Web Locks race condition)
+    const _sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {
       auth: {
-        storage: window.localStorage,
-        autoRefreshToken: true,
-        persistSession: true,
+        storage:            window.localStorage,
+        autoRefreshToken:   true,
+        persistSession:     true,
         detectSessionInUrl: true
       }
     });
 
-    const CATEGORY_FALLBACKS = [
-      'AI Automation',
-      'B2B Services',
-      'Fintech',
-      'SaaS Vertical',
-      'The Analyst Line'
-    ];
+    // ─── GUARD: _appInitialized prevents onAuthStateChange multi-fire
+    let _appInitialized = false;
 
-    const state = {
-      user: null,
-      plan: 'starter',
-      activeCategory: 'AI Automation',
-      categories: [],
-      reports: [],
-      allReports: []
-    };
+    // ═══════════════════════════════════════════════════════════════
+    //  STEP 1: IMMEDIATE SESSION CHECK
+    //  Body is visibility:hidden until we confirm auth.
+    //  On failure → redirect to login (no loop: login redirects
+    //  back only if a session EXISTS, which it won't after logout).
+    // ═══════════════════════════════════════════════════════════════
+    (async () => {
+      const { data: { session }, error } = await _sb.auth.getSession();
 
-    async function bootstrap() {
-      try {
-        const { data: { session } } = await sb.auth.getSession();
+      if (!session || error) {
+        // No session — redirect immediately. Page stays blank.
+        window.location.replace('login.html');
+        return;
+      }
+
+      // Session confirmed — reveal page and initialize
+      document.body.classList.add('auth-ready');
+      if (!_appInitialized) {
+        _appInitialized = true;
+        initVault(session.user);
+      }
+    })();
+
+    // ─── AUTH STATE LISTENER ─────────────────────────────────────────
+    // Handles token refresh and sign-out events during active session.
+    _sb.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_OUT' || event === 'TOKEN_REFRESHED') {
         if (!session) {
           window.location.replace('login.html');
-          return;
         }
-        state.user = session.user;
-        document.getElementById('userEmail').textContent = session.user.email || 'Member';
+      }
+    });
 
-        await resolvePlan(session.user);
-        await loadVaultData();
-        bindUI();
-      } catch (error) {
-        console.error('Vault bootstrap error:', error);
-        alert('Vault yüklenemedi: ' + (error.message || 'Unknown error'));
-      } finally {
-        document.getElementById('authGate').classList.add('hidden');
+    // ═══════════════════════════════════════════════════════════════
+    //  STEP 2: VAULT INITIALIZATION
+    // ═══════════════════════════════════════════════════════════════
+    async function initVault(user) {
+      const isAdmin = user.email === ADMIN_EMAIL;
+      applyIdentity(user, isAdmin);
+      await loadReports(isAdmin);
+    }
+
+    // ─── IDENTITY & UI ───────────────────────────────────────────────
+    function applyIdentity(user, isAdmin) {
+      const tierLabel = isAdmin ? 'Admin' : 'Member';
+
+      // Nav: user info
+      document.getElementById('user-email').textContent = user.email;
+      document.getElementById('user-tier').textContent  = tierLabel;
+
+      // Bottom strip
+      document.getElementById('session-email-strip').textContent = user.email;
+
+      // Stats tier
+      document.getElementById('stat-tier').textContent = tierLabel;
+
+      if (isAdmin) {
+        // ── ADMIN BRANCH ─────────────────────────────────────────────
+        // Show "Members Access" nav item
+        document.getElementById('nav-members').classList.add('visible');
+
+        // Contextual nav label
+        document.getElementById('nav-context').textContent = 'Admin Console';
+
+        // Hero: admin greeting
+        document.getElementById('hero-eyebrow').textContent = 'Administrative Access — All Data Visible';
+        document.getElementById('hero-title').innerHTML =
+          'Intelligence<br/>Command';
+        document.getElementById('hero-subtitle').textContent =
+          'Full access granted. All reports in the system are displayed below.';
       }
     }
 
-    async function resolvePlan(user) {
-      const email = (user.email || '').toLowerCase();
-      if (email === ADMIN_EMAIL.toLowerCase()) {
-        state.plan = 'pro';
-        applyMembershipUI();
-        return;
-      }
+    // ─── LOAD REPORTS ────────────────────────────────────────────────
+    async function loadReports(isAdmin) {
+      const tbody = document.getElementById('reports-tbody');
 
       try {
-        const { data, error } = await sb
-          .from('profiles')
-          .select('tier, plan, membership_tier')
-          .eq('id', user.id)
-          .maybeSingle();
+        let query = _sb.from('reports').select('*').order('created_at', { ascending: false });
 
-        if (!error && data) {
-          const raw = (data.tier || data.plan || data.membership_tier || 'starter').toString().toLowerCase();
-          state.plan = raw.includes('pro') ? 'pro' : 'starter';
-        } else {
-          state.plan = 'starter';
+        // Admin: fetch ALL records. Non-admin: fetch only their own or public
+        // (extend the filter below if row-level policies require it)
+
+        const { data, error } = await query;
+
+        if (error) throw error;
+
+        const reports = data || [];
+
+        // Update stats
+        document.getElementById('stat-count').textContent = reports.length;
+        document.getElementById('reports-count-label').textContent =
+          reports.length > 0 ? `— ${reports.length} records` : '';
+
+        if (reports.length === 0) {
+          tbody.innerHTML = `
+            <tr class="state-row">
+              <td colspan="6">
+                <span class="empty-icon">▣</span>
+                No reports found in the vault.
+              </td>
+            </tr>`;
+          return;
         }
-      } catch (e) {
-        state.plan = 'starter';
-      }
 
-      applyMembershipUI();
-    }
+        // Render rows
+        tbody.innerHTML = reports.map(r => {
+          const date       = r.created_at
+            ? new Date(r.created_at).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
+            : '—';
+          const shortId    = r.id ? String(r.id).slice(0, 8).toUpperCase() : '—';
+          const title      = escHtml(r.title || r.name || 'Untitled Report');
+          const category   = escHtml(r.category || r.niche || '—');
+          const tierRaw    = (r.tier || r.access_tier || 'starter').toLowerCase();
+          const tierClass  = tierRaw.includes('pro') ? 'pro' : 'starter';
+          const tierLabel  = tierRaw.charAt(0).toUpperCase() + tierRaw.slice(1);
 
-    function applyMembershipUI() {
-      const isPro = state.plan === 'pro';
-      document.getElementById('sidebarTier').textContent = isPro ? 'Pro' : 'Starter';
-      document.getElementById('sidebarReadQuota').textContent = isPro ? 'Unlimited full reports' : '10 full reports / week';
-      document.getElementById('quotaBar').style.width = isPro ? '100%' : '35%';
-      document.getElementById('quotaText').textContent = isPro
-        ? 'Pro plan: unlimited access enabled.'
-        : 'Starter plan: 10 full reports per rolling week.';
-    }
+          return `
+          <tr onclick="openReport('${r.id}')">
+            <td class="td-id">${shortId}</td>
+            <td class="td-title">${title}</td>
+            <td>${category}</td>
+            <td><span class="td-tier ${tierClass}">${tierLabel}</span></td>
+            <td class="td-date">${date}</td>
+            <td><span class="td-status">Active</span></td>
+          </tr>`;
+        }).join('');
 
-    async function loadVaultData() {
-      await Promise.all([
-        loadCategories(),
-        loadReports()
-      ]);
-
-      renderCategories();
-      renderReports();
-      renderSignalBanner();
-      renderHeatmap();
-    }
-
-    async function loadCategories() {
-      const candidates = [
-        { table: 'categories', labelKeys: ['name', 'title', 'category_name'] },
-        { table: 'report_categories', labelKeys: ['name', 'title', 'category_name'] }
-      ];
-
-      for (const candidate of candidates) {
-        try {
-          const { data, error } = await sb.from(candidate.table).select('*').limit(50);
-          if (!error && Array.isArray(data) && data.length) {
-            const normalized = data
-              .map(row => candidate.labelKeys.map(k => row[k]).find(Boolean))
-              .filter(Boolean);
-            if (normalized.length) {
-              state.categories = dedupeStrings(normalized);
-              if (!state.categories.includes(state.activeCategory)) {
-                state.activeCategory = state.categories[0];
-              }
-              return;
-            }
-          }
-        } catch (e) {}
-      }
-
-      state.categories = CATEGORY_FALLBACKS;
-    }
-
-    async function loadReports() {
-      const { data, error } = await sb
-        .from('reports')
-        .select('*')
-        .order('created_at', { ascending: false })
-        .limit(150);
-
-      if (error) {
-        throw error;
-      }
-
-      state.allReports = Array.isArray(data) ? data : [];
-      const availableCategories = dedupeStrings(
-        state.allReports.map(r => normalizeCategory(r.category || r.niche || r.topic || r.segment)).filter(Boolean)
-      );
-      if (!state.categories.length) {
-        state.categories = availableCategories.length ? availableCategories : CATEGORY_FALLBACKS;
-      }
-      if (!state.categories.includes(state.activeCategory)) {
-        state.activeCategory = state.categories[0] || CATEGORY_FALLBACKS[0];
+      } catch (err) {
+        console.error('[NicheLab] Report fetch error:', err);
+        tbody.innerHTML = `
+          <tr class="state-row">
+            <td colspan="6" style="color:var(--error)">
+              Failed to load reports — ${escHtml(err.message)}
+            </td>
+          </tr>`;
       }
     }
 
-    function renderCategories() {
-      const nav = document.getElementById('categoryNav');
-      const mobileNav = document.getElementById('mobileCategoryNav');
-      const html = state.categories.map(category => {
-        const active = category === state.activeCategory;
-        return `
-          <button
-            data-category="${escapeHtml(category)}"
-            class="category-btn w-full text-left rounded-2xl px-4 py-3 transition border ${active ? 'bg-[#E9D7B3] border-[#D3B37A] text-[#3B2E18] shadow-sm' : 'border-transparent hover:bg-panel text-ink'}">
-            <div class="flex items-center justify-between gap-3">
-              <span class="font-medium">${escapeHtml(category)}</span>
-              <span class="text-[10px] uppercase tracking-[0.16em] ${active ? 'text-[#8A6217]' : 'text-muted'}">${active ? 'Active' : ''}</span>
-            </div>
-          </button>
-        `;
-      }).join('');
+    // ─── SIGN OUT ────────────────────────────────────────────────────
+    document.getElementById('signout-btn').addEventListener('click', async () => {
+      await _sb.auth.signOut();
+      window.location.replace('login.html');
+    });
 
-      nav.innerHTML = html;
-      mobileNav.innerHTML = html;
-
-      document.querySelectorAll('.category-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          state.activeCategory = btn.dataset.category;
-          renderCategories();
-          renderReports();
-          closeMobileDrawer();
-        });
-      });
+    // ─── REPORT ROW CLICK (extend as needed) ─────────────────────────
+    function openReport(id) {
+      // Placeholder: navigate to report detail page or modal
+      console.log('[NicheLab] Open report:', id);
     }
 
-    function renderReports() {
-      const grid = document.getElementById('reportsGrid');
-      const active = state.activeCategory;
-
-      let filtered = state.allReports.filter(report => {
-        const category = normalizeCategory(report.category || report.niche || report.topic || report.segment);
-        return !active || category === active;
-      });
-
-      if (!filtered.length) {
-        filtered = state.allReports.slice(0, 9);
-      }
-
-      state.reports = filtered;
-
-      if (!filtered.length) {
-        grid.innerHTML = `
-          <div class="col-span-full rounded-3xl border border-line bg-panel p-10 text-center text-muted shadow-card">
-            Bu kategoride gösterilecek rapor bulunamadı.
-          </div>`;
-        return;
-      }
-
-      grid.innerHTML = filtered.map(report => renderCard(report)).join('');
-      document.querySelectorAll('[data-open-report]').forEach(button => {
-        button.addEventListener('click', () => {
-          const id = button.getAttribute('data-open-report');
-          const report = state.reports.find(r => String(r.id) === id) || state.allReports.find(r => String(r.id) === id);
-          if (report) openReportModal(report);
-        });
-      });
-    }
-
-    function renderCard(report) {
-      const title = report.title || report.name || 'Untitled report';
-      const summary = report.summary || report.abstract || report.description || 'No summary available.';
-      const marketGap = clampScore(report.market_gap || report.marketGap || report.gap_score || report.signal_score || 68);
-      const ease = clampScore(report.ease_of_entry || report.easeEntry || report.entry_score || report.feasibility_score || 54);
-      const isProReport = (report.tier || report.access_tier || '').toString().toLowerCase().includes('pro');
-      const badge = isProReport ? 'Pro' : 'Starter';
-      const badgeClass = isProReport
-        ? 'bg-[#2F2413] text-[#F3D08A] border-[#7D5E20]'
-        : 'bg-[#F2E5CC] text-[#7A5612] border-[#E0C68F]';
-
-      return `
-        <article data-open-report="${escapeHtml(String(report.id))}" class="cursor-pointer rounded-[28px] border border-line bg-panel p-5 shadow-card hover:shadow-soft hover:-translate-y-0.5 transition">
-          <div class="flex items-start justify-between gap-4 mb-4">
-            <span class="inline-flex items-center rounded-full border px-3 py-1 text-[11px] uppercase tracking-[0.18em] font-semibold ${badgeClass}">${badge}</span>
-            <span class="text-[11px] uppercase tracking-[0.18em] text-muted">${escapeHtml(normalizeCategory(report.category || report.niche || report.topic || report.segment || 'General'))}</span>
-          </div>
-          <h3 class="text-[27px] leading-[1.05] font-display mb-3">${escapeHtml(title)}</h3>
-          <p class="text-sm text-muted line-clamp-3 min-h-[64px]">${escapeHtml(summary)}</p>
-          <div class="mt-5 space-y-4">
-            <div>
-              <div class="flex items-center justify-between text-sm mb-1.5">
-                <span>Market Gap</span>
-                <span class="font-medium">${marketGap}</span>
-              </div>
-              <div class="h-2 rounded-full bg-[#E7DDCF] overflow-hidden">
-                <div class="h-full rounded-full bg-[#C9982B]" style="width:${marketGap}%"></div>
-              </div>
-            </div>
-            <div>
-              <div class="flex items-center justify-between text-sm mb-1.5">
-                <span>Ease of Entry</span>
-                <span class="font-medium">${ease}</span>
-              </div>
-              <div class="h-2 rounded-full bg-[#E7DDCF] overflow-hidden">
-                <div class="h-full rounded-full bg-[#4D4337]" style="width:${ease}%"></div>
-              </div>
-            </div>
-          </div>
-        </article>
-      `;
-    }
-
-    function renderSignalBanner() {
-      const latest = state.allReports[0] || {};
-      const signalText = latest.signal || latest.summary_signal || latest.banner_signal || latest.title || 'Emerging market gap detected from latest signal cluster.';
-      const signalSource = normalizeCategory(latest.category || latest.niche || latest.topic || 'Cross-category intelligence');
-      document.getElementById('signalBanner').textContent = signalText;
-      document.getElementById('signalMeta').textContent = `Daily signal from ${signalSource} · latest report intelligence`; 
-    }
-
-    function renderHeatmap() {
-      const heatmap = document.getElementById('heatmapGrid');
-      const topSignals = state.allReports
-        .slice(0, 12)
-        .map((report, index) => ({
-          label: report.signal || report.title || report.name || `Signal ${index + 1}`,
-          score: clampScore(report.signal_value || report.signal_score || report.market_gap || (92 - index * 5))
-        }));
-
-      const fallback = [
-        { label: 'UK Energy Logistics', score: 85 },
-        { label: 'Fintech Data Compliance', score: 79 },
-        { label: 'German B2B SaaS', score: 82 },
-        { label: 'Industrial AI Ops', score: 76 },
-        { label: 'Creator Tax Automation', score: 67 },
-        { label: 'SMB Workflow Infra', score: 63 },
-        { label: 'Mobility Claims Data', score: 71 },
-        { label: 'Climate Compliance Data', score: 74 },
-        { label: 'Micro-SaaS Backoffice', score: 61 },
-        { label: 'Niche Payments Risk', score: 69 },
-        { label: 'RegTech Intake Tools', score: 66 },
-        { label: 'AI Agent Evaluation', score: 77 }
-      ];
-
-      const cells = (topSignals.length ? topSignals : fallback).slice(0, 12);
-      heatmap.innerHTML = cells.map(cell => {
-        const opacity = Math.max(0.28, Math.min(0.95, cell.score / 100));
-        return `
-          <div class="rounded-2xl p-3 min-h-[96px] border border-[#E6D5BC] flex flex-col justify-between"
-               style="background: rgba(245, 158, 11, ${opacity});">
-            <p class="text-[12px] leading-4 font-medium text-[#3B2E18] line-clamp-3">${escapeHtml(cell.label)}</p>
-            <p class="text-xs font-semibold text-[#4A3410] mt-2">${cell.score}</p>
-          </div>
-        `;
-      }).join('');
-    }
-
-    function openReportModal(report) {
-      const isProUser = state.plan === 'pro';
-      const reportTier = (report.tier || report.access_tier || 'starter').toString().toLowerCase();
-      const needsPro = reportTier.includes('pro');
-      const fullLock = needsPro && !isProUser;
-
-      document.getElementById('modalTierBadge').textContent = needsPro ? 'Pro' : 'Starter';
-      document.getElementById('modalTierBadge').className = `inline-flex items-center rounded-full px-3 py-1 text-[11px] uppercase tracking-[0.18em] font-semibold ${needsPro ? 'bg-[#2F2413] text-[#F3D08A]' : 'bg-[#F2E5CC] text-[#7A5612]'}`;
-      document.getElementById('modalCategory').textContent = normalizeCategory(report.category || report.niche || report.topic || 'General');
-      document.getElementById('modalTitle').textContent = report.title || report.name || 'Untitled report';
-      document.getElementById('modalAbstract').textContent = report.summary || report.abstract || report.description || 'No abstract available.';
-      document.getElementById('modalExecutiveSummary').textContent = report.executive_summary || report.summary || report.abstract || 'Executive summary not available.';
-      document.getElementById('modalDeepAnalysis').textContent = report.deep_analysis || report.pro_analysis || report.analysis || 'Deep analysis content not available.';
-      document.getElementById('modalRecommendations').textContent = report.analyst_recommendations || report.recommendations || 'No analyst recommendations available.';
-
-      const marketGap = clampScore(report.market_gap || report.marketGap || report.gap_score || report.signal_score || 68);
-      const ease = clampScore(report.ease_of_entry || report.easeEntry || report.entry_score || report.feasibility_score || 54);
-      document.getElementById('modalMarketGap').textContent = marketGap;
-      document.getElementById('modalMarketGapBar').style.width = `${marketGap}%`;
-      document.getElementById('modalEaseEntry').textContent = ease;
-      document.getElementById('modalEaseEntryBar').style.width = `${ease}%`;
-
-      const deepEl = document.getElementById('modalDeepAnalysis');
-      const overlay = document.getElementById('deepOverlay');
-      const lockLabel = document.getElementById('deepAnalysisLockLabel');
-      const accessText = document.getElementById('modalAccessText');
-
-      if (fullLock) {
-        deepEl.classList.add('blur-lock');
-        overlay.classList.remove('hidden');
-        lockLabel.textContent = 'Locked for Starter';
-        accessText.textContent = 'Bu rapor Pro tier içerik içeriyor. Starter plan haftada 10 tam rapor okur; Pro sınırsız erişim sağlar.';
-      } else {
-        deepEl.classList.remove('blur-lock');
-        overlay.classList.add('hidden');
-        lockLabel.textContent = state.plan === 'pro' ? 'Full Pro Access' : 'Starter Access';
-        accessText.textContent = state.plan === 'pro'
-          ? 'Pro membership active. Unlimited full report access enabled.'
-          : 'Starter plan active. Full access available for Starter-tier reports.';
-      }
-
-      const modal = document.getElementById('reportModal');
-      modal.classList.remove('hidden');
-      modal.classList.add('flex');
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeModal() {
-      const modal = document.getElementById('reportModal');
-      modal.classList.add('hidden');
-      modal.classList.remove('flex');
-      document.body.style.overflow = '';
-    }
-
-    function bindUI() {
-      document.getElementById('closeModalBtn').addEventListener('click', closeModal);
-      document.getElementById('reportModal').addEventListener('click', (e) => {
-        if (e.target.id === 'reportModal') closeModal();
-      });
-
-      document.getElementById('mobileCategoryBtn').addEventListener('click', () => {
-        document.getElementById('mobileCategoryDrawer').classList.remove('hidden');
-      });
-      document.getElementById('closeMobileDrawer').addEventListener('click', closeMobileDrawer);
-      document.getElementById('mobileCategoryDrawer').addEventListener('click', (e) => {
-        if (e.target.id === 'mobileCategoryDrawer') closeMobileDrawer();
-      });
-
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-          closeModal();
-          closeMobileDrawer();
-        }
-      });
-    }
-
-    function closeMobileDrawer() {
-      document.getElementById('mobileCategoryDrawer').classList.add('hidden');
-    }
-
-    function normalizeCategory(value) {
-      if (!value) return '';
-      return String(value).trim();
-    }
-
-    function clampScore(value) {
-      const number = Number(value);
-      if (Number.isNaN(number)) return 0;
-      return Math.max(0, Math.min(100, Math.round(number)));
-    }
-
-    function dedupeStrings(list) {
-      return [...new Set(list.map(v => String(v).trim()).filter(Boolean))];
-    }
-
-    function escapeHtml(value) {
-      return String(value)
+    // ─── UTILITIES ───────────────────────────────────────────────────
+    function escHtml(str) {
+      return String(str)
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#039;');
+        .replace(/"/g, '&quot;');
     }
 
-    bootstrap();
+    // ─── LIVE CLOCK ─────────────────────────────────────────────────
+    const liveTime = document.getElementById('live-time');
+    function updateClock() {
+      liveTime.textContent = new Date().toUTCString().slice(0, -4) + ' UTC';
+    }
+    updateClock();
+    setInterval(updateClock, 1000);
   </script>
+
 </body>
 </html>
