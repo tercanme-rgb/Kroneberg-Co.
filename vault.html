@@ -10,594 +10,1067 @@
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
 
   <style>
-    /* ─── RESET & ROOT ─────────────────────────────────────────── */
+    /* ═══════════════════════════════════════════════
+       RESET & TOKENS
+    ═══════════════════════════════════════════════ */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --ink:        #050507;
-      --surface:    #0D0D0F;
-      --panel:      #111115;
-      --panel-hi:   #15151A;
-      --border:     rgba(201,168,76,0.14);
-      --border-hi:  rgba(201,168,76,0.50);
-      --gold:       #C9A84C;
-      --gold-dim:   #9A7C36;
-      --gold-faint: rgba(201,168,76,0.07);
-      --text:       #E8E4DC;
-      --muted:      #7A7670;
-      --dim:        #3E3A34;
-      --error:      #E05252;
-      --success:    #52A87E;
-      --mono:       'IBM Plex Mono', monospace;
-      --serif:      'Cormorant Garamond', Georgia, serif;
-      --nav-h:      64px;
+      /* Palette — warm institutional light theme */
+      --bg:           #ECEAE3;
+      --bg-alt:       #E4E1D9;
+      --panel:        #F3F0E8;
+      --card:         #FAFAF6;
+      --card-hover:   #FFFFFF;
+      --border:       rgba(60,50,30,0.11);
+      --border-strong:rgba(60,50,30,0.20);
+      --border-gold:  rgba(180,140,50,0.45);
+      --gold:         #B8920E;
+      --gold-bright:  #C9A84C;
+      --gold-dim:     #8A6E10;
+      --gold-faint:   rgba(184,146,14,0.07);
+      --gold-light:   rgba(184,146,14,0.13);
+      --text:         #1A1714;
+      --text-2:       #48433C;
+      --text-3:       #6E6860;
+      --muted:        #968E84;
+      --dim:          #C8C3BB;
+      --error:        #B83232;
+      --success:      #2A7A50;
+      --info:         #2A5C8A;
+
+      /* Type */
+      --mono:  'IBM Plex Mono', monospace;
+      --serif: 'Cormorant Garamond', 'Georgia', serif;
+
+      /* Layout */
+      --nav-h:     58px;
+      --left-w:    224px;
+      --right-w:   290px;
+      --strip-h:   30px;
     }
 
     html { scroll-behavior: smooth; }
 
-    /* CRITICAL: body starts invisible — revealed only after auth check */
+    /* CRITICAL: invisible until auth resolves */
     body {
       visibility: hidden;
-      background: var(--ink);
+      background: var(--bg);
       color: var(--text);
       font-family: var(--mono);
       min-height: 100vh;
       -webkit-font-smoothing: antialiased;
     }
-
     body.auth-ready { visibility: visible; }
 
-    /* ─── GLOBAL BACKGROUND ────────────────────────────────────── */
+    /* Subtle paper texture overlay */
     body::before {
       content: '';
-      position: fixed;
-      inset: 0;
-      background:
-        radial-gradient(ellipse 70% 45% at 15% 0%,  rgba(201,168,76,0.06) 0%, transparent 55%),
-        radial-gradient(ellipse 55% 35% at 85% 100%, rgba(201,168,76,0.04) 0%, transparent 50%);
+      position: fixed; inset: 0; z-index: 0;
+      background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
       pointer-events: none;
-      z-index: 0;
     }
 
-    /* ─── NAVIGATION ───────────────────────────────────────────── */
+    /* ═══════════════════════════════════════════════
+       TOP NAVIGATION
+    ═══════════════════════════════════════════════ */
     nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 200;
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 400;
       height: var(--nav-h);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 3rem;
-      border-bottom: 1px solid var(--border);
-      background: rgba(5,5,7,0.90);
-      backdrop-filter: blur(14px);
+      background: var(--panel);
+      border-bottom: 1px solid var(--border-strong);
     }
 
-    .nav-left { display: flex; align-items: center; gap: 2.5rem; }
-
-    .nav-logo {
-      font-family: var(--serif);
-      font-size: 1.2rem;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      color: var(--text);
+    .nav-brand {
+      display: flex; align-items: center; gap: 0.55rem;
+      width: var(--left-w);
+      height: 100%;
+      padding: 0 1.4rem;
+      border-right: 1px solid var(--border);
+      flex-shrink: 0;
       text-decoration: none;
-      white-space: nowrap;
-    }
-    .nav-logo span { color: var(--gold); }
-
-    .nav-sep {
-      width: 1px; height: 20px;
-      background: var(--border-hi);
     }
 
-    .nav-context {
-      font-size: 0.58rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--gold-dim);
+    .brand-mark {
+      width: 26px; height: 26px;
+      border: 1.5px solid var(--gold);
+      border-radius: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--serif);
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--gold);
+      flex-shrink: 0;
+      position: relative;
+    }
+    .brand-mark::after {
+      content: '';
+      position: absolute; inset: 2px;
+      border: 0.5px solid rgba(184,146,14,0.25);
     }
 
+    .brand-name {
+      font-family: var(--serif);
+      font-size: 1.05rem;
+      font-weight: 500;
+      color: var(--text);
+      letter-spacing: 0.01em;
+    }
+    .brand-name em { color: var(--gold); font-style: normal; }
+
+    /* Nav links */
     .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 2rem;
+      display: flex; align-items: center;
+      gap: 0.25rem;
       list-style: none;
+      flex: 1;
+      justify-content: center;
     }
 
     .nav-links a {
-      font-size: 0.6rem;
+      display: inline-block;
+      font-size: 0.575rem;
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: var(--muted);
+      color: var(--text-3);
       text-decoration: none;
-      transition: color 0.2s;
+      padding: 0.3rem 0.85rem;
+      transition: color 0.15s;
     }
-    .nav-links a:hover { color: var(--gold); }
+    .nav-links a:hover { color: var(--text); }
+    .nav-links a.active {
+      color: var(--text);
+      font-weight: 500;
+      border-bottom: 1px solid var(--gold);
+    }
 
-    /* Members Access — admin only, hidden by default */
-    .nav-members {
+    /* Admin nav badge */
+    .nav-admin {
       display: none;
-      font-size: 0.6rem;
-      letter-spacing: 0.18em;
+      font-size: 0.55rem;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
       color: var(--gold) !important;
-      padding: 0.35rem 0.8rem;
-      border: 1px solid var(--border-hi);
-      transition: background 0.2s, color 0.2s;
+      border: 1px solid var(--border-gold);
+      padding: 0.25rem 0.6rem !important;
     }
-    .nav-members:hover {
-      background: var(--gold-faint);
-    }
-    .nav-members.visible { display: inline-block !important; }
+    .nav-admin.visible { display: inline-block !important; }
 
-    /* User pill */
-    .nav-user {
+    /* Nav right */
+    .nav-right {
+      display: flex; align-items: center;
+      padding: 0 1.4rem;
+      gap: 0.5rem;
+    }
+
+    /* ═══════════════════════════════════════════════
+       APP SHELL
+    ═══════════════════════════════════════════════ */
+    .shell {
+      position: relative; z-index: 1;
       display: flex;
-      align-items: center;
-      gap: 0.75rem;
+      min-height: 100vh;
+      padding-top: var(--nav-h);
+      padding-bottom: var(--strip-h);
     }
 
-    .user-badge {
-      font-size: 0.6rem;
-      letter-spacing: 0.1em;
-      color: var(--muted);
-      max-width: 180px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+    /* ═══════════════════════════════════════════════
+       LEFT SIDEBAR
+    ═══════════════════════════════════════════════ */
+    .sidebar-left {
+      position: fixed;
+      top: var(--nav-h); left: 0;
+      width: var(--left-w);
+      height: calc(100vh - var(--nav-h) - var(--strip-h));
+      background: var(--panel);
+      border-right: 1px solid var(--border);
+      display: flex; flex-direction: column;
+      overflow-y: auto;
+      z-index: 200;
     }
 
-    .user-tier {
-      font-size: 0.52rem;
-      letter-spacing: 0.15em;
+    /* Scrollbar styling */
+    .sidebar-left::-webkit-scrollbar { width: 3px; }
+    .sidebar-left::-webkit-scrollbar-track { background: transparent; }
+    .sidebar-left::-webkit-scrollbar-thumb { background: var(--dim); }
+
+    .sb-section {
+      padding: 1.25rem 0;
+    }
+
+    .sb-label {
+      font-size: 0.48rem;
+      letter-spacing: 0.26em;
       text-transform: uppercase;
-      color: var(--gold);
-      padding: 0.2rem 0.5rem;
-      border: 1px solid var(--border-hi);
+      color: var(--muted);
+      padding: 0 1.4rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .sb-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 0.25rem 1.4rem;
+    }
+
+    /* Category nav items */
+    .sb-item {
+      display: flex; align-items: center;
+      padding: 0.48rem 1.4rem;
+      font-size: 0.6rem;
+      letter-spacing: 0.03em;
+      color: var(--text-2);
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+      border-left: 2px solid transparent;
+      gap: 0.5rem;
+      background: none;
+      border: none;
+      border-left: 2px solid transparent;
+      width: 100%;
+      text-align: left;
+      font-family: var(--mono);
+    }
+    .sb-item:hover { background: var(--gold-faint); color: var(--text); }
+    .sb-item.active {
+      background: var(--gold-light);
+      color: var(--text);
+      border-left-color: var(--gold);
+      font-weight: 500;
+    }
+
+    .sb-item-badge {
+      margin-left: auto;
+      font-size: 0.42rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #fff;
+      background: var(--gold);
+      padding: 0.12rem 0.35rem;
+      flex-shrink: 0;
+    }
+
+    .sb-item-lock {
+      margin-left: auto;
+      font-size: 0.65rem;
+      opacity: 0.5;
+    }
+
+    /* Analyst Line locked state */
+    .analyst-line-locked {
+      opacity: 0.42;
+      pointer-events: none;
+      cursor: default !important;
+    }
+
+    /* Sidebar bottom */
+    .sb-bottom {
+      margin-top: auto;
+      padding: 1rem 1.4rem;
+      border-top: 1px solid var(--border);
     }
 
     .btn-signout {
+      display: block; width: 100%;
       background: none;
       border: 1px solid var(--dim);
       color: var(--muted);
       font-family: var(--mono);
-      font-size: 0.55rem;
+      font-size: 0.52rem;
       letter-spacing: 0.15em;
       text-transform: uppercase;
-      padding: 0.3rem 0.7rem;
+      padding: 0.48rem 0;
       cursor: pointer;
       transition: border-color 0.2s, color 0.2s;
     }
-    .btn-signout:hover {
-      border-color: var(--error);
-      color: var(--error);
+    .btn-signout:hover { border-color: var(--error); color: var(--error); }
+
+    /* ═══════════════════════════════════════════════
+       MAIN CONTENT
+    ═══════════════════════════════════════════════ */
+    .main {
+      flex: 1;
+      margin-left: var(--left-w);
+      margin-right: var(--right-w);
+      padding: 2.4rem 2rem 3rem;
+      min-width: 0;
     }
 
-    /* ─── PAGE LAYOUT ──────────────────────────────────────────── */
-    .page-wrap {
-      position: relative;
-      z-index: 1;
-      padding-top: calc(var(--nav-h) + 3rem);
-      padding-bottom: 4rem;
-    }
-
-    .container {
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 0 3rem;
-    }
-
-    /* ─── HERO / GREETING ──────────────────────────────────────── */
-    .hero {
-      padding-bottom: 3rem;
-      border-bottom: 1px solid var(--border);
-      margin-bottom: 3rem;
-      animation: fadeUp 0.5s cubic-bezier(0.16,1,0.3,1) both;
+    /* Page heading */
+    .vault-heading {
+      margin-bottom: 1.6rem;
+      animation: fadeUp 0.45s cubic-bezier(0.16,1,0.3,1) both;
     }
 
     @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(14px); }
+      from { opacity: 0; transform: translateY(10px); }
       to   { opacity: 1; transform: translateY(0); }
     }
 
-    .hero-eyebrow {
-      font-size: 0.58rem;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 1rem;
-    }
-
-    .hero-title {
+    .vault-title {
       font-family: var(--serif);
-      font-size: clamp(2rem, 4vw, 3.2rem);
-      font-weight: 500;
-      line-height: 1.1;
-      color: var(--text);
-    }
-
-    .hero-subtitle {
-      margin-top: 1rem;
-      font-size: 0.72rem;
-      color: var(--muted);
-      letter-spacing: 0.06em;
-      max-width: 520px;
-    }
-
-    /* ─── STATS BAR ────────────────────────────────────────────── */
-    .stats-bar {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1px;
-      background: var(--border);
-      border: 1px solid var(--border);
-      margin-bottom: 3rem;
-      animation: fadeUp 0.5s 0.1s cubic-bezier(0.16,1,0.3,1) both;
-    }
-
-    .stat {
-      background: var(--panel);
-      padding: 1.5rem;
-    }
-
-    .stat-label {
-      font-size: 0.55rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 0.5rem;
-    }
-
-    .stat-value {
-      font-family: var(--serif);
-      font-size: 1.9rem;
+      font-size: clamp(2.2rem, 3.5vw, 3.2rem);
       font-weight: 400;
       color: var(--text);
       line-height: 1;
+      letter-spacing: -0.01em;
     }
 
-    .stat-unit {
-      font-family: var(--mono);
-      font-size: 0.65rem;
-      color: var(--gold-dim);
-      margin-top: 0.3rem;
+    .vault-title-underline {
+      display: block;
+      width: 100%;
+      height: 1px;
+      background: var(--border-strong);
+      margin-top: 0.5rem;
+      position: relative;
+    }
+    .vault-title-underline::after {
+      content: '';
+      position: absolute; left: 0; top: 0;
+      width: 72px; height: 1px;
+      background: var(--gold);
     }
 
-    /* ─── SECTION HEADING ──────────────────────────────────────── */
-    .section-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 1.5rem;
-      animation: fadeUp 0.5s 0.15s cubic-bezier(0.16,1,0.3,1) both;
-    }
-
-    .section-title {
-      font-size: 0.62rem;
-      letter-spacing: 0.2em;
+    /* ─── SIGNAL BANNER ─────────────────── */
+    .signal-label {
+      font-size: 0.48rem;
+      letter-spacing: 0.22em;
       text-transform: uppercase;
       color: var(--muted);
+      margin-bottom: 0.45rem;
     }
 
-    .section-title span {
-      color: var(--gold);
-      margin-left: 0.5rem;
+    .signal-banner {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.95rem 1.4rem;
+      background: rgba(184,146,14,0.10);
+      border: 1px solid rgba(184,146,14,0.32);
+      margin-bottom: 1.4rem;
+      animation: fadeUp 0.45s 0.06s cubic-bezier(0.16,1,0.3,1) both;
     }
 
-    .section-rule {
-      flex: 1;
-      height: 1px;
-      background: var(--border);
-      margin: 0 1.5rem;
+    .signal-pulse {
+      width: 9px; height: 9px;
+      border-radius: 50%;
+      background: var(--gold);
+      flex-shrink: 0;
+      animation: pulseGlow 2.2s ease-in-out infinite;
     }
 
-    /* ─── REPORTS TABLE ────────────────────────────────────────── */
-    .reports-wrap {
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(184,146,14,0.4); }
+      50%       { opacity: 0.5; box-shadow: 0 0 0 5px rgba(184,146,14,0); }
+    }
+
+    .signal-content {
+      font-size: 0.7rem;
+      color: var(--text);
+      letter-spacing: 0.02em;
+      line-height: 1.4;
+    }
+    .signal-content strong { font-weight: 500; }
+
+    /* ─── USER INFO BAR ──────────────────── */
+    .user-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+      animation: fadeUp 0.45s 0.12s cubic-bezier(0.16,1,0.3,1) both;
+    }
+
+    .ub-pill {
+      display: flex; align-items: center;
+      gap: 0.35rem;
+      padding: 0.38rem 0.85rem;
       border: 1px solid var(--border);
-      background: var(--panel);
-      animation: fadeUp 0.5s 0.2s cubic-bezier(0.16,1,0.3,1) both;
-      overflow-x: auto;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    thead {
-      border-bottom: 1px solid var(--border);
-      background: rgba(201,168,76,0.04);
-    }
-
-    thead th {
-      font-size: 0.55rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--gold-dim);
-      font-weight: 400;
-      padding: 1rem 1.25rem;
-      text-align: left;
+      background: var(--card);
+      font-size: 0.58rem;
+      color: var(--text-3);
+      letter-spacing: 0.03em;
       white-space: nowrap;
     }
+    .ub-pill strong { color: var(--text); font-weight: 500; }
 
-    thead th:first-child { padding-left: 1.75rem; }
-    thead th:last-child  { padding-right: 1.75rem; text-align: right; }
+    .ub-search {
+      flex: 1; min-width: 160px;
+      display: flex; align-items: center;
+      gap: 0.5rem;
+      padding: 0.38rem 0.85rem;
+      border: 1px solid var(--border);
+      background: var(--card);
+      transition: border-color 0.2s;
+    }
+    .ub-search:focus-within { border-color: var(--border-gold); }
 
-    tbody tr {
-      border-bottom: 1px solid var(--border);
-      transition: background 0.15s;
+    .ub-search input {
+      flex: 1;
+      background: none; border: none; outline: none;
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      color: var(--text);
+    }
+    .ub-search input::placeholder { color: var(--muted); }
+
+    .ub-search svg { flex-shrink: 0; opacity: 0.45; }
+
+    .ub-select {
+      padding: 0.38rem 0.85rem;
+      border: 1px solid var(--border);
+      background: var(--card);
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      color: var(--text);
+      outline: none;
       cursor: pointer;
     }
 
-    tbody tr:last-child { border-bottom: none; }
-
-    tbody tr:hover { background: var(--gold-faint); }
-
-    tbody td {
-      font-size: 0.72rem;
-      color: var(--text);
-      padding: 1rem 1.25rem;
-      vertical-align: middle;
+    /* ─── REPORT GRID ────────────────────── */
+    .report-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.9rem;
+      animation: fadeUp 0.45s 0.18s cubic-bezier(0.16,1,0.3,1) both;
     }
 
-    tbody td:first-child { padding-left: 1.75rem; }
-    tbody td:last-child  { padding-right: 1.75rem; text-align: right; }
-
-    .td-id {
-      font-size: 0.6rem;
-      color: var(--muted);
-      font-weight: 300;
-      letter-spacing: 0.05em;
+    .report-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 1.3rem 1.3rem 1rem;
+      cursor: pointer;
+      transition: box-shadow 0.2s, border-color 0.2s, transform 0.18s;
+      position: relative;
+      display: flex; flex-direction: column;
     }
-
-    .td-title {
-      font-family: var(--serif);
-      font-size: 0.92rem;
-      font-weight: 500;
-      max-width: 300px;
-    }
-
-    .td-tier {
-      display: inline-block;
-      font-size: 0.52rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      padding: 0.25rem 0.6rem;
-    }
-
-    .td-tier.pro     { color: var(--gold); border: 1px solid rgba(201,168,76,0.35); }
-    .td-tier.starter { color: var(--muted); border: 1px solid var(--dim); }
-
-    .td-date {
-      font-size: 0.62rem;
-      color: var(--muted);
-      letter-spacing: 0.04em;
-    }
-
-    .td-status {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      font-size: 0.6rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-    }
-
-    .td-status::before {
+    .report-card::before {
       content: '';
-      width: 5px; height: 5px;
-      border-radius: 50%;
-      background: var(--success);
+      position: absolute; top: 0; left: 0;
+      width: 3px; height: 0;
+      background: var(--gold);
+      transition: height 0.22s;
+    }
+    .report-card:hover {
+      border-color: rgba(184,146,14,0.35);
+      box-shadow: 0 4px 22px rgba(0,0,0,0.08);
+      transform: translateY(-2px);
+    }
+    .report-card:hover::before { height: 100%; }
+
+    .rc-title {
+      font-family: var(--serif);
+      font-size: 1.05rem;
+      font-weight: 500;
+      color: var(--text);
+      line-height: 1.25;
+      margin-bottom: 0.55rem;
+    }
+
+    .rc-abstract {
+      font-size: 0.6rem;
+      color: var(--text-2);
+      line-height: 1.65;
+      margin-bottom: 1rem;
+      flex: 1;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .rc-metrics-label {
+      font-size: 0.48rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.55rem;
+    }
+
+    .rc-metric {
+      display: flex; align-items: center;
+      gap: 0.55rem;
+      margin-bottom: 0.38rem;
+    }
+
+    .rc-metric-name {
+      font-size: 0.56rem;
+      color: var(--text-2);
+      width: 78px; flex-shrink: 0;
+    }
+
+    .rc-bar {
+      flex: 1; height: 2.5px;
+      background: var(--dim);
+      position: relative;
+    }
+
+    .rc-bar-fill {
+      height: 100%;
+      background: var(--gold);
+    }
+
+    .rc-metric-val {
+      font-size: 0.56rem;
+      color: var(--text);
+      width: 22px; text-align: right;
       flex-shrink: 0;
     }
 
-    /* ─── EMPTY / LOADING STATES ───────────────────────────────── */
-    .state-row td {
-      padding: 4rem 1.75rem;
-      text-align: center;
-      color: var(--muted);
-      font-size: 0.7rem;
-      letter-spacing: 0.1em;
-    }
-
-    .state-spinner {
-      display: inline-block;
-      width: 16px; height: 16px;
-      border: 1px solid var(--dim);
-      border-top-color: var(--gold-dim);
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-      vertical-align: middle;
-      margin-right: 0.75rem;
-    }
-
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    .empty-icon {
-      display: block;
-      font-size: 1.5rem;
-      margin-bottom: 0.75rem;
-      opacity: 0.3;
-    }
-
-    /* ─── BOTTOM STRIP ─────────────────────────────────────────── */
-    .bottom-strip {
-      position: fixed;
-      bottom: 0; left: 0; right: 0;
-      height: 36px;
+    .rc-footer {
+      margin-top: 0.9rem;
+      padding-top: 0.7rem;
       border-top: 1px solid var(--border);
-      background: rgba(5,5,7,0.80);
-      backdrop-filter: blur(8px);
-      z-index: 100;
+      font-size: 0.5rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 3rem;
     }
 
-    .strip-left, .strip-right {
-      display: flex;
-      align-items: center;
-      gap: 1.5rem;
+    /* Loading / empty states */
+    .grid-state {
+      grid-column: 1 / -1;
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 0.75rem;
+      padding: 5rem 2rem;
+      color: var(--muted);
+      font-size: 0.65rem;
+      letter-spacing: 0.06em;
     }
+
+    .grid-spinner {
+      width: 18px; height: 18px;
+      border: 1.5px solid var(--dim);
+      border-top-color: var(--gold);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ═══════════════════════════════════════════════
+       RIGHT SIDEBAR
+    ═══════════════════════════════════════════════ */
+    .sidebar-right {
+      position: fixed;
+      top: var(--nav-h); right: 0;
+      width: var(--right-w);
+      height: calc(100vh - var(--nav-h) - var(--strip-h));
+      background: var(--panel);
+      border-left: 1px solid var(--border);
+      display: flex; flex-direction: column;
+      overflow-y: auto;
+      z-index: 200;
+    }
+    .sidebar-right::-webkit-scrollbar { width: 3px; }
+    .sidebar-right::-webkit-scrollbar-thumb { background: var(--dim); }
+
+    .rs-section {
+      padding: 1.4rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .rs-title {
+      font-size: 0.6rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text);
+      font-weight: 500;
+      margin-bottom: 1.1rem;
+    }
+
+    /* Upcoming Reports */
+    .upcoming-item {
+      display: flex; align-items: flex-start;
+      gap: 0.7rem;
+      margin-bottom: 1rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .upcoming-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+    .stage-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .dot-green  { background: #2A7A50; }
+    .dot-amber  { background: #B8920E; }
+    .dot-slate  { background: var(--dim); }
+
+    .up-stage {
+      font-size: 0.47rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.2rem;
+    }
+
+    .up-title {
+      font-size: 0.62rem;
+      color: var(--text);
+      line-height: 1.4;
+      margin-bottom: 0.2rem;
+    }
+
+    .up-time {
+      font-size: 0.54rem;
+      color: var(--muted);
+    }
+
+    /* Niche Trends Heatmap */
+    .heatmap {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+    }
+
+    .hm-cell {
+      padding: 0.45rem 0.3rem;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      min-height: 54px;
+      cursor: default;
+      transition: filter 0.15s;
+    }
+    .hm-cell:hover { filter: brightness(1.08); }
+
+    .hm-label {
+      font-size: 0.46rem;
+      color: rgba(255,255,255,0.88);
+      text-align: center;
+      line-height: 1.25;
+      margin-bottom: 0.18rem;
+      font-weight: 500;
+    }
+
+    .hm-score {
+      font-size: 0.65rem;
+      color: #fff;
+      font-weight: 600;
+      font-family: var(--serif);
+    }
+
+    /* ═══════════════════════════════════════════════
+       REPORT MODAL
+    ═══════════════════════════════════════════════ */
+    .modal-veil {
+      position: fixed; inset: 0; z-index: 600;
+      background: rgba(26,23,20,0.52);
+      backdrop-filter: blur(7px);
+      -webkit-backdrop-filter: blur(7px);
+      display: none;
+      align-items: center; justify-content: center;
+      padding: 2rem;
+    }
+    .modal-veil.open { display: flex; animation: fadeIn 0.2s ease; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    .modal-box {
+      width: 100%;
+      max-width: 700px;
+      max-height: 88vh;
+      overflow-y: auto;
+      display: flex; flex-direction: column;
+      background: rgba(243,240,232,0.96);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(184,146,14,0.28);
+      box-shadow: 0 30px 90px rgba(0,0,0,0.20);
+      animation: scaleIn 0.2s cubic-bezier(0.16,1,0.3,1);
+    }
+    @keyframes scaleIn {
+      from { opacity: 0; transform: scale(0.97) translateY(8px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .modal-box::-webkit-scrollbar { width: 3px; }
+    .modal-box::-webkit-scrollbar-thumb { background: var(--dim); }
+
+    .modal-head {
+      display: flex; align-items: center; justify-content: flex-start;
+      gap: 0.6rem;
+      padding: 0.85rem 1.4rem;
+      border-bottom: 1px solid var(--border);
+      background: rgba(184,146,14,0.05);
+      position: sticky; top: 0;
+    }
+
+    .modal-btn {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      background: none;
+      border: 1px solid var(--border);
+      padding: 0.32rem 0.75rem;
+      font-family: var(--mono);
+      font-size: 0.56rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-3);
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .modal-btn:hover { border-color: var(--gold); color: var(--gold-dim); }
+    .modal-btn.danger:hover { border-color: var(--error); color: var(--error); }
+
+    .modal-body { padding: 1.8rem 2rem 2.5rem; display: flex; flex-direction: column; gap: 1.6rem; }
+
+    .modal-title {
+      font-family: var(--serif);
+      font-size: 1.7rem;
+      font-weight: 400;
+      color: var(--text);
+      line-height: 1.15;
+    }
+
+    .modal-meta { display: flex; flex-wrap: wrap; gap: 1.2rem; }
+
+    .modal-meta-tag {
+      font-size: 0.52rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .modal-section-hd {
+      font-size: 0.55rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold-dim);
+      margin-bottom: 0.7rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .modal-text {
+      font-size: 0.7rem;
+      color: var(--text-2);
+      line-height: 1.75;
+    }
+
+    /* Gated / Pro-locked sections */
+    .locked-wrap {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .locked-content {
+      filter: blur(4px);
+      user-select: none;
+      pointer-events: none;
+    }
+
+    .lock-overlay {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      background: rgba(243,240,232,0.72);
+      backdrop-filter: blur(3px);
+    }
+
+    .lock-icon {
+      font-size: 1.6rem;
+      margin-bottom: 0.5rem;
+      opacity: 0.6;
+    }
+
+    .lock-msg {
+      font-size: 0.62rem;
+      color: var(--text-2);
+      text-align: center;
+      line-height: 1.5;
+      margin-bottom: 0.8rem;
+    }
+
+    .lock-cta {
+      padding: 0.42rem 1.1rem;
+      background: var(--gold);
+      border: none;
+      color: #fff;
+      font-family: var(--mono);
+      font-size: 0.56rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .lock-cta:hover { background: var(--gold-dim); }
+
+    /* ═══════════════════════════════════════════════
+       BOTTOM STRIP
+    ═══════════════════════════════════════════════ */
+    .bottom-strip {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      z-index: 300;
+      height: var(--strip-h);
+      background: var(--panel);
+      border-top: 1px solid var(--border);
+      display: flex; align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+    }
+
+    .strip-group { display: flex; align-items: center; gap: 1.25rem; }
 
     .strip-item {
-      font-size: 0.55rem;
+      font-size: 0.5rem;
       letter-spacing: 0.08em;
       color: var(--muted);
     }
 
     .strip-sep {
-      width: 1px; height: 12px;
+      width: 1px; height: 10px;
       background: var(--dim);
     }
 
     #live-time {
-      font-size: 0.55rem;
+      font-size: 0.5rem;
       color: var(--gold-dim);
-      letter-spacing: 0.06em;
+      letter-spacing: 0.05em;
     }
 
-    /* ─── RESPONSIVE ───────────────────────────────────────────── */
-    @media (max-width: 768px) {
-      nav { padding: 0 1.25rem; }
-      .container { padding: 0 1.25rem; }
-      .stats-bar { grid-template-columns: repeat(2, 1fr); }
+    /* Status indicator */
+    .status-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--success);
+    }
+
+    /* ═══════════════════════════════════════════════
+       RESPONSIVE
+    ═══════════════════════════════════════════════ */
+    @media (max-width: 1260px) {
+      .report-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 1100px) {
+      .sidebar-right { display: none; }
+      .main { margin-right: 0; }
+    }
+
+    @media (max-width: 860px) {
+      :root { --left-w: 0px; }
+      .sidebar-left { display: none; }
+      .main { margin-left: 0; padding: 1.5rem 1rem 3rem; }
+      .report-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 600px) {
+      .nav-links { display: none; }
       .bottom-strip { display: none; }
-      .nav-context, .nav-sep { display: none; }
-    }
-
-    @media (max-width: 480px) {
-      .stats-bar { grid-template-columns: 1fr; }
+      .modal-box { max-height: 94vh; }
     }
   </style>
 </head>
 
 <body>
 
-  <!-- ── NAVIGATION ──────────────────────────────────────────────── -->
+  <!-- ════════════════════════════════════════════
+       NAVIGATION
+  ════════════════════════════════════════════ -->
   <nav>
-    <div class="nav-left">
-      <a class="nav-logo" href="#">Niche<span>Lab</span></a>
-      <div class="nav-sep"></div>
-      <span class="nav-context" id="nav-context">Intelligence Vault</span>
-    </div>
+    <a class="nav-brand" href="#">
+      <div class="brand-mark">N</div>
+      <span class="brand-name">Niche<em>Lab</em></span>
+    </a>
 
     <ul class="nav-links">
-      <li><a href="#">Pricing</a></li>
-      <li><a href="#">About Us</a></li>
-      <li><a href="#">Contact</a></li>
-      <!-- Members Access: admin-only, shown by JS -->
-      <li><a href="#" class="nav-members" id="nav-members">Members Access</a></li>
+      <li><a href="#" class="active">Home</a></li>
+      <li><a href="#">Search</a></li>
+      <li><a href="#">Support</a></li>
+      <li><a href="#">My Account</a></li>
+      <li><a href="index.html" class="nav-admin" id="nav-members">Members Access</a></li>
     </ul>
 
-    <div class="nav-user">
-      <span class="user-badge" id="user-email">—</span>
-      <span class="user-tier" id="user-tier">—</span>
-      <button class="btn-signout" id="signout-btn" type="button">Sign Out</button>
+    <div class="nav-right">
+      <!-- intentionally empty — user info is in the main bar -->
     </div>
   </nav>
 
-  <!-- ── PAGE CONTENT ─────────────────────────────────────────────── -->
-  <div class="page-wrap">
-    <div class="container">
+  <!-- ════════════════════════════════════════════
+       APP SHELL
+  ════════════════════════════════════════════ -->
+  <div class="shell">
 
-      <!-- HERO / GREETING -->
-      <div class="hero">
-        <p class="hero-eyebrow" id="hero-eyebrow">Market Intelligence Platform</p>
-        <h1 class="hero-title" id="hero-title">Intelligence<br/>Vault</h1>
-        <p class="hero-subtitle" id="hero-subtitle">
-          Access your curated niche market intelligence reports, sector analyses, and strategic briefs.
-        </p>
-      </div>
+    <!-- ── LEFT SIDEBAR ──────────────────────── -->
+    <aside class="sidebar-left">
 
-      <!-- STATS BAR -->
-      <div class="stats-bar">
-        <div class="stat">
-          <p class="stat-label">Reports Available</p>
-          <p class="stat-value" id="stat-count">—</p>
-          <p class="stat-unit">in vault</p>
-        </div>
-        <div class="stat">
-          <p class="stat-label">Access Level</p>
-          <p class="stat-value" id="stat-tier" style="font-size:1.4rem;">—</p>
-          <p class="stat-unit">current tier</p>
-        </div>
-        <div class="stat">
-          <p class="stat-label">Market Coverage</p>
-          <p class="stat-value">10</p>
-          <p class="stat-unit">business categories</p>
-        </div>
-        <div class="stat">
-          <p class="stat-label">Analysis Depth</p>
-          <p class="stat-value">15</p>
-          <p class="stat-unit">sections per report</p>
+      <div class="sb-section">
+        <p class="sb-label">Main Categories</p>
+        <div id="sb-categories">
+          <button class="sb-item active" data-cat="all">All Reports</button>
         </div>
       </div>
 
-      <!-- REPORTS TABLE -->
-      <div class="section-head">
-        <span class="section-title">Reports <span id="reports-count-label"></span></span>
-        <div class="section-rule"></div>
+      <div class="sb-divider"></div>
+
+      <div class="sb-section" style="padding-top:0.5rem">
+        <p class="sb-label">Navigation</p>
+        <button class="sb-item active">Intelligence Vault</button>
+        <button class="sb-item">AI Automation</button>
+        <button class="sb-item">B2B Services</button>
+        <button class="sb-item">Fintech</button>
+        <button class="sb-item">SaaS Vertical</button>
       </div>
 
-      <div class="reports-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Report ID</th>
-              <th>Title</th>
-              <th>Category</th>
-              <th>Tier</th>
-              <th>Created</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody id="reports-tbody">
-            <!-- Loading state -->
-            <tr class="state-row">
-              <td colspan="6">
-                <div class="state-spinner"></div>
-                Initializing vault…
-              </td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="sb-divider"></div>
+
+      <!-- The Analyst Line — Pro/Admin Only -->
+      <div class="sb-section" style="padding-top:0.5rem">
+        <button class="sb-item analyst-line-locked" id="analyst-line-btn">
+          The Analyst Line
+          <span class="sb-item-badge">Pro</span>
+        </button>
       </div>
 
-    </div>
+      <div class="sb-bottom">
+        <button class="btn-signout" id="signout-btn" type="button">Sign Out</button>
+      </div>
+    </aside>
+
+    <!-- ── MAIN CONTENT ─────────────────────── -->
+    <main class="main">
+
+      <!-- Page Title -->
+      <div class="vault-heading">
+        <h1 class="vault-title" id="hero-title">Intelligence Vault</h1>
+        <span class="vault-title-underline"></span>
+      </div>
+
+      <!-- Signal Banner -->
+      <p class="signal-label">Intelligence Signal Banner</p>
+      <div class="signal-banner" id="signal-banner">
+        <div class="signal-pulse"></div>
+        <div class="signal-content" id="signal-text">
+          <strong>Signal:</strong> Loading latest market signal…
+        </div>
+      </div>
+
+      <!-- User Info Bar -->
+      <div class="user-bar">
+        <div class="ub-pill">User: <strong id="user-email">—</strong></div>
+        <div class="ub-pill">Plan: <strong id="user-tier">—</strong></div>
+        <div class="ub-pill">Allowance: <strong id="user-allowance">—</strong></div>
+
+        <div class="ub-search">
+          <svg width="11" height="11" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="6" cy="6" r="4.5"/><line x1="9.5" y1="9.5" x2="13" y2="13"/>
+          </svg>
+          <input type="text" id="search-input" placeholder="Search reports…" autocomplete="off" />
+        </div>
+
+        <select class="ub-select" id="cat-filter">
+          <option value="all">All</option>
+        </select>
+      </div>
+
+      <!-- Report Grid -->
+      <div class="report-grid" id="report-grid">
+        <div class="grid-state">
+          <div class="grid-spinner"></div>
+          <span>Initializing vault…</span>
+        </div>
+      </div>
+
+    </main>
+
+    <!-- ── RIGHT SIDEBAR ─────────────────────── -->
+    <aside class="sidebar-right">
+
+      <!-- Upcoming Reports -->
+      <div class="rs-section">
+        <p class="rs-title">Upcoming Reports</p>
+        <div id="upcoming-reports"></div>
+      </div>
+
+      <!-- Niche Trends Heatmap -->
+      <div class="rs-section">
+        <p class="rs-title">Niche Trends Heatmap</p>
+        <div class="heatmap" id="heatmap-grid"></div>
+      </div>
+
+    </aside>
   </div>
 
-  <!-- ── BOTTOM STRIP ─────────────────────────────────────────────── -->
+  <!-- ════════════════════════════════════════════
+       BOTTOM STRIP
+  ════════════════════════════════════════════ -->
   <div class="bottom-strip">
-    <div class="strip-left">
+    <div class="strip-group">
+      <div class="status-dot"></div>
       <span class="strip-item">NicheLab Intelligence Platform</span>
       <div class="strip-sep"></div>
       <span class="strip-item">Secure Session Active</span>
     </div>
-    <div class="strip-right">
+    <div class="strip-group">
       <span class="strip-item" id="session-email-strip">—</span>
       <div class="strip-sep"></div>
       <span id="live-time">—</span>
     </div>
   </div>
 
-  <!-- ── AUTH + VAULT LOGIC ───────────────────────────────────────── -->
-  <script>
-    // ─── CONFIG ─────────────────────────────────────────────────────
-    // IMPORTANT: Replace YOUR_SUPABASE_ANON_KEY with your actual key
-    // from Supabase Dashboard → Settings → API → anon / public
-    const SUPABASE_URL  = 'https://btiwdulcqtvkdupsotnx.supabase.co';
-    const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ0aXdkdWxjcXR2a2R1cHNvdG54Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3NzY2NjcsImV4cCI6MjA5MDM1MjY2N30.RawdFhi84Zq95eZ29w8QwXPcBT9VDffFcHMB3fAzITA'; // ← REPLACE THIS
+  <!-- ════════════════════════════════════════════
+       REPORT MODAL
+  ════════════════════════════════════════════ -->
+  <div class="modal-veil" id="report-modal">
+    <div class="modal-box">
 
+      <div class="modal-head">
+        <button class="modal-btn danger" id="modal-close">
+          <svg width="9" height="9" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5">
+            <line x1="1" y1="1" x2="9" y2="9"/><line x1="9" y1="1" x2="1" y2="9"/>
+          </svg>
+          Close
+        </button>
+
+        <button class="modal-btn" id="modal-search-btn">
+          <svg width="10" height="10" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="6" cy="6" r="4.5"/><line x1="9.5" y1="9.5" x2="13" y2="13"/>
+          </svg>
+        </button>
+
+        <button class="modal-btn" id="modal-download">
+          <svg width="10" height="10" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M7 1v8M4 7l3 3 3-3M2 12h10"/>
+          </svg>
+          Download PDF
+        </button>
+      </div>
+
+      <div class="modal-body" id="modal-body">
+        <!-- Populated dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════
+       AUTH + VAULT LOGIC
+       ─────────────────────────────────────────
+       PRESERVED: Supabase client init (localStorage
+       Web Locks fix), _appInitialized guard,
+       getSession() redirect, onAuthStateChange,
+       ADMIN_EMAIL check, signOut.
+  ════════════════════════════════════════════ -->
+  <script>
+    // ─── CONFIG ──────────────────────────────────────────────
+    const SUPABASE_URL  = 'https://btiwdulcqtvkdupsotnx.supabase.co';
+    const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ0aXdkdWxjcXR2a2R1cHNvdG54Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3NzY2NjcsImV4cCI6MjA5MDM1MjY2N30.RawdFhi84Zq95eZ29w8QwXPcBT9VDffFcHMB3fAzITA';
     const ADMIN_EMAIL   = 'tercan.me@gmail.com';
 
-    // ─── CLIENT INIT (with localStorage fix for Web Locks race condition)
+    // ─── CLIENT INIT (localStorage fix for Web Locks race condition) ───
     const _sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {
       auth: {
         storage:            window.localStorage,
@@ -607,25 +1080,28 @@
       }
     });
 
-    // ─── GUARD: _appInitialized prevents onAuthStateChange multi-fire
+    // ─── GUARD: prevents onAuthStateChange multi-fire re-init ─────────
     let _appInitialized = false;
 
-    // ═══════════════════════════════════════════════════════════════
-    //  STEP 1: IMMEDIATE SESSION CHECK
-    //  Body is visibility:hidden until we confirm auth.
-    //  On failure → redirect to login (no loop: login redirects
-    //  back only if a session EXISTS, which it won't after logout).
-    // ═══════════════════════════════════════════════════════════════
+    // ─── STATE ────────────────────────────────────────────────────────
+    let _currentUser  = null;
+    let _isAdmin      = false;
+    let _userTier     = 'starter';   // 'starter' | 'pro'
+    let _allReports   = [];
+
+    // ═════════════════════════════════════════════════════════════════
+    //  STEP 1 — IMMEDIATE SESSION CHECK
+    //  Body stays visibility:hidden until confirmed.
+    //  Redirect to login.html on no-session (no loop).
+    // ═════════════════════════════════════════════════════════════════
     (async () => {
       const { data: { session }, error } = await _sb.auth.getSession();
 
       if (!session || error) {
-        // No session — redirect immediately. Page stays blank.
         window.location.replace('login.html');
         return;
       }
 
-      // Session confirmed — reveal page and initialize
       document.body.classList.add('auth-ready');
       if (!_appInitialized) {
         _appInitialized = true;
@@ -633,135 +1109,417 @@
       }
     })();
 
-    // ─── AUTH STATE LISTENER ─────────────────────────────────────────
+    // ─── AUTH STATE LISTENER ──────────────────────────────────────────
     // Handles token refresh and sign-out events during active session.
     _sb.auth.onAuthStateChange((event, session) => {
       if (event === 'SIGNED_OUT' || event === 'TOKEN_REFRESHED') {
-        if (!session) {
-          window.location.replace('login.html');
-        }
+        if (!session) window.location.replace('login.html');
       }
     });
 
-    // ═══════════════════════════════════════════════════════════════
-    //  STEP 2: VAULT INITIALIZATION
-    // ═══════════════════════════════════════════════════════════════
+    // ═════════════════════════════════════════════════════════════════
+    //  STEP 2 — VAULT INITIALIZATION
+    // ═════════════════════════════════════════════════════════════════
     async function initVault(user) {
-      const isAdmin = user.email === ADMIN_EMAIL;
-      applyIdentity(user, isAdmin);
-      await loadReports(isAdmin);
+      _currentUser = user;
+      _isAdmin     = user.email === ADMIN_EMAIL;
+
+      // Fetch profile for tier
+      try {
+        const { data: profile } = await _sb
+          .from('profiles')
+          .select('tier, role')
+          .eq('id', user.id)
+          .single();
+
+        if (profile) {
+          _userTier = (profile.tier || 'starter').toLowerCase();
+          if (profile.role === 'admin') _isAdmin = true;
+        }
+      } catch (_) { /* fallback: use email-based admin check */ }
+
+      applyIdentity(user);
+      buildUpcomingReports();
+      await loadReports();
     }
 
-    // ─── IDENTITY & UI ───────────────────────────────────────────────
-    function applyIdentity(user, isAdmin) {
-      const tierLabel = isAdmin ? 'Admin' : 'Member';
+    // ─── APPLY IDENTITY ───────────────────────────────────────────────
+    function applyIdentity(user) {
+      const isPro      = _isAdmin || _userTier === 'pro';
+      const tierLabel  = _isAdmin ? 'Admin' : (_userTier === 'pro' ? 'Pro' : 'Starter');
+      const allowance  = isPro ? 'Unlimited reads' : 'Limited reads';
 
-      // Nav: user info
-      document.getElementById('user-email').textContent = user.email;
-      document.getElementById('user-tier').textContent  = tierLabel;
-
-      // Bottom strip
+      document.getElementById('user-email').textContent     = user.email;
+      document.getElementById('user-tier').textContent      = tierLabel;
+      document.getElementById('user-allowance').textContent = allowance;
       document.getElementById('session-email-strip').textContent = user.email;
 
-      // Stats tier
-      document.getElementById('stat-tier').textContent = tierLabel;
-
-      if (isAdmin) {
-        // ── ADMIN BRANCH ─────────────────────────────────────────────
-        // Show "Members Access" nav item
+      // Admin: show Members Access nav link
+      if (_isAdmin) {
         document.getElementById('nav-members').classList.add('visible');
+      }
 
-        // Contextual nav label
-        document.getElementById('nav-context').textContent = 'Admin Console';
-
-        // Hero: admin greeting
-        document.getElementById('hero-eyebrow').textContent = 'Administrative Access — All Data Visible';
-        document.getElementById('hero-title').innerHTML =
-          'Intelligence<br/>Command';
-        document.getElementById('hero-subtitle').textContent =
-          'Full access granted. All reports in the system are displayed below.';
+      // The Analyst Line: unlock for Pro or Admin
+      if (isPro) {
+        document.getElementById('analyst-line-btn').classList.remove('analyst-line-locked');
       }
     }
 
-    // ─── LOAD REPORTS ────────────────────────────────────────────────
-    async function loadReports(isAdmin) {
-      const tbody = document.getElementById('reports-tbody');
+    // ─── LOAD REPORTS ─────────────────────────────────────────────────
+    async function loadReports() {
+      const grid = document.getElementById('report-grid');
 
       try {
-        let query = _sb.from('reports').select('*').order('created_at', { ascending: false });
-
-        // Admin: fetch ALL records. Non-admin: fetch only their own or public
-        // (extend the filter below if row-level policies require it)
-
-        const { data, error } = await query;
+        // Admin: all records visible; non-admin relies on RLS policies
+        const { data, error } = await _sb
+          .from('reports')
+          .select('*')
+          .order('created_at', { ascending: false });
 
         if (error) throw error;
 
-        const reports = data || [];
+        _allReports = data || [];
 
-        // Update stats
-        document.getElementById('stat-count').textContent = reports.length;
-        document.getElementById('reports-count-label').textContent =
-          reports.length > 0 ? `— ${reports.length} records` : '';
-
-        if (reports.length === 0) {
-          tbody.innerHTML = `
-            <tr class="state-row">
-              <td colspan="6">
-                <span class="empty-icon">▣</span>
-                No reports found in the vault.
-              </td>
-            </tr>`;
-          return;
-        }
-
-        // Render rows
-        tbody.innerHTML = reports.map(r => {
-          const date       = r.created_at
-            ? new Date(r.created_at).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
-            : '—';
-          const shortId    = r.id ? String(r.id).slice(0, 8).toUpperCase() : '—';
-          const title      = escHtml(r.title || r.name || 'Untitled Report');
-          const category   = escHtml(r.category || r.niche || '—');
-          const tierRaw    = (r.tier || r.access_tier || 'starter').toLowerCase();
-          const tierClass  = tierRaw.includes('pro') ? 'pro' : 'starter';
-          const tierLabel  = tierRaw.charAt(0).toUpperCase() + tierRaw.slice(1);
-
-          return `
-          <tr onclick="openReport('${r.id}')">
-            <td class="td-id">${shortId}</td>
-            <td class="td-title">${title}</td>
-            <td>${category}</td>
-            <td><span class="td-tier ${tierClass}">${tierLabel}</span></td>
-            <td class="td-date">${date}</td>
-            <td><span class="td-status">Active</span></td>
-          </tr>`;
-        }).join('');
+        populateCategories(_allReports);
+        buildSignalBanner(_allReports);
+        buildHeatmap(_allReports);
+        renderGrid(_allReports);
 
       } catch (err) {
         console.error('[NicheLab] Report fetch error:', err);
-        tbody.innerHTML = `
-          <tr class="state-row">
-            <td colspan="6" style="color:var(--error)">
-              Failed to load reports — ${escHtml(err.message)}
-            </td>
-          </tr>`;
+        grid.innerHTML = `
+          <div class="grid-state" style="color:var(--error)">
+            Failed to load reports — ${escHtml(err.message)}
+          </div>`;
       }
     }
 
-    // ─── SIGN OUT ────────────────────────────────────────────────────
+    // ─── RENDER REPORT GRID ───────────────────────────────────────────
+    function renderGrid(reports) {
+      const grid = document.getElementById('report-grid');
+
+      if (!reports.length) {
+        grid.innerHTML = `<div class="grid-state">No reports found in the vault.</div>`;
+        return;
+      }
+
+      grid.innerHTML = reports.map(r => {
+        const title    = escHtml(r.title || r.name || 'Untitled Report');
+        const abstract = escHtml(
+          r.abstract || r.summary || r.description ||
+          'A significant opportunity has emerged in the specialized market sector. Proprietary analysis indicates strong entry potential for focused operators.'
+        );
+        const cat      = escHtml(r.category || r.niche || 'General');
+        const date     = r.created_at
+          ? new Date(r.created_at).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
+          : '—';
+
+        // Signal / metrics — graceful fallback
+        const signal = typeof r.signal === 'number'
+          ? r.signal
+          : Math.floor(60 + Math.abs(hashCode(r.id || title)) % 30);
+        const ease   = typeof r.ease_of_entry === 'number'
+          ? r.ease_of_entry
+          : Math.max(35, signal - Math.floor(10 + Math.abs(hashCode(title)) % 18));
+
+        return `
+          <div class="report-card" data-id="${escAttr(String(r.id))}">
+            <div class="rc-title">${title}</div>
+            <div class="rc-abstract">${abstract}</div>
+
+            <div class="rc-metrics-label">Proprietary Opportunity Metrics</div>
+
+            <div class="rc-metric">
+              <span class="rc-metric-name">Market Gap</span>
+              <div class="rc-bar">
+                <div class="rc-bar-fill" style="width:${Math.min(signal,100)}%"></div>
+              </div>
+              <span class="rc-metric-val">${signal}</span>
+            </div>
+            <div class="rc-metric">
+              <span class="rc-metric-name">Ease of Entry</span>
+              <div class="rc-bar">
+                <div class="rc-bar-fill" style="width:${Math.min(ease,100)}%;background:var(--gold-dim)"></div>
+              </div>
+              <span class="rc-metric-val">${ease}</span>
+            </div>
+
+            <div class="rc-footer">
+              <span>${cat}</span>
+              <span>${date}</span>
+            </div>
+          </div>`;
+      }).join('');
+
+      // Delegate click to cards
+      grid.addEventListener('click', e => {
+        const card = e.target.closest('.report-card');
+        if (card) openModal(card.dataset.id);
+      }, { once: true });
+
+      // Re-attach after filter re-renders
+      grid._delegated = true;
+    }
+
+    // ─── CATEGORIES SIDEBAR + FILTER ──────────────────────────────────
+    function populateCategories(reports) {
+      const seen = new Set();
+      reports.forEach(r => {
+        const c = r.category || r.niche;
+        if (c) seen.add(c);
+      });
+      const cats = [...seen];
+
+      // Sidebar
+      const container = document.getElementById('sb-categories');
+      container.innerHTML =
+        `<button class="sb-item active" data-cat="all">All Reports</button>` +
+        cats.map(c =>
+          `<button class="sb-item" data-cat="${escAttr(c)}">${escHtml(c)}</button>`
+        ).join('');
+
+      container.querySelectorAll('.sb-item').forEach(btn => {
+        btn.addEventListener('click', () => {
+          container.querySelectorAll('.sb-item').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          document.getElementById('cat-filter').value = btn.dataset.cat;
+          applyFilters();
+        });
+      });
+
+      // Filter <select>
+      const sel = document.getElementById('cat-filter');
+      sel.innerHTML = `<option value="all">All</option>` +
+        cats.map(c => `<option value="${escAttr(c)}">${escHtml(c)}</option>`).join('');
+    }
+
+    // ─── SEARCH & FILTER ──────────────────────────────────────────────
+    document.getElementById('search-input').addEventListener('input', applyFilters);
+    document.getElementById('cat-filter').addEventListener('change', applyFilters);
+
+    function applyFilters() {
+      const q   = document.getElementById('search-input').value.toLowerCase().trim();
+      const cat = document.getElementById('cat-filter').value;
+
+      const filtered = _allReports.filter(r => {
+        const matchQ   = (r.title || r.name || '').toLowerCase().includes(q);
+        const rCat     = r.category || r.niche || '';
+        const matchCat = cat === 'all' || rCat === cat;
+        return matchQ && matchCat;
+      });
+
+      const grid = document.getElementById('report-grid');
+      renderGrid(filtered);
+
+      // Re-attach click delegate (renderGrid uses { once: true })
+      grid.addEventListener('click', e => {
+        const card = e.target.closest('.report-card');
+        if (card) openModal(card.dataset.id);
+      }, { once: true });
+    }
+
+    // ─── SIGNAL BANNER (daily rotating pick) ──────────────────────────
+    function buildSignalBanner(reports) {
+      if (!reports.length) return;
+
+      const now       = new Date();
+      const dayOfYear = Math.floor(
+        (now - new Date(now.getFullYear(), 0, 0)) / 86400000
+      );
+      const picked    = reports[dayOfYear % reports.length];
+      const title     = picked.title || picked.name || 'Niche Opportunity';
+      const cat       = picked.category || picked.niche || 'Market';
+      const signal    = typeof picked.signal === 'number' ? picked.signal : 75;
+
+      const phrases = [
+        () => `Emerging SaaS gap in <strong>${escHtml(cat)}</strong> detected — ${escHtml(title)}`,
+        () => `High-signal opportunity in <strong>${escHtml(cat)}</strong> sector — Signal index: ${signal}`,
+        () => `Analyst alert: Underserved niche in <strong>${escHtml(cat)}</strong> — ${escHtml(title)}`,
+        () => `Market intelligence: <strong>${escHtml(cat)}</strong> gap confirmed — Entry score ${signal}`,
+        () => `New intelligence filed: <strong>${escHtml(cat)}</strong> — ${escHtml(title)}`,
+      ];
+
+      document.getElementById('signal-text').innerHTML =
+        `<strong>Signal:</strong> ${phrases[dayOfYear % phrases.length]()}.`;
+    }
+
+    // ─── UPCOMING REPORTS (weekly auto-rotating queue) ────────────────
+    function buildUpcomingReports() {
+      const pool = [
+        { stage:'Writing',         dot:'dot-green', title:'Global SaaS Entry Barrier Overview',         time:'3 Days'  },
+        { stage:'Analysis',        dot:'dot-amber', title:'UK Fintech Regulatory Intelligence',          time:'1 Week'  },
+        { stage:'Data Collection', dot:'dot-slate', title:'German E-Commerce Logistics Market',          time:'2 Weeks' },
+        { stage:'Writing',         dot:'dot-green', title:'B2B SaaS Pricing Intelligence Report',        time:'4 Days'  },
+        { stage:'Analysis',        dot:'dot-amber', title:'SEA Micro-SaaS Opportunity Map',              time:'1 Week'  },
+        { stage:'Data Collection', dot:'dot-slate', title:'Nordic Green Tech Venture Analysis',          time:'10 Days' },
+        { stage:'Writing',         dot:'dot-green', title:'AI Infrastructure Cost Benchmarking',         time:'2 Days'  },
+        { stage:'Analysis',        dot:'dot-amber', title:'Healthcare SaaS Regulatory Landscape',        time:'5 Days'  },
+        { stage:'Data Collection', dot:'dot-slate', title:'DACH Region B2B Sales Technology Gap',        time:'3 Weeks' },
+        { stage:'Writing',         dot:'dot-green', title:'ClimateTech SaaS Procurement Intelligence',   time:'6 Days'  },
+        { stage:'Analysis',        dot:'dot-amber', title:'Legal Tech Compliance Automation Overview',   time:'9 Days'  },
+        { stage:'Data Collection', dot:'dot-slate', title:'Iberian Peninsula E-Commerce Infrastructure', time:'2 Weeks' },
+      ];
+
+      // Seed by ISO week number for weekly rotation (picks 3 consecutive)
+      const weekNum = Math.floor(Date.now() / (7 * 24 * 3600 * 1000));
+      const offset  = weekNum % pool.length;
+      const items   = [0, 1, 2].map(i => pool[(offset + i) % pool.length]);
+
+      document.getElementById('upcoming-reports').innerHTML = items.map(item => `
+        <div class="upcoming-item">
+          <div class="stage-dot ${item.dot}"></div>
+          <div>
+            <div class="up-stage">${escHtml(item.stage)}</div>
+            <div class="up-title">${escHtml(item.title)}</div>
+            <div class="up-time">Time: ${escHtml(item.time)}</div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // ─── NICHE TRENDS HEATMAP ─────────────────────────────────────────
+    function buildHeatmap(reports) {
+      const grid = document.getElementById('heatmap-grid');
+      if (!reports.length) { grid.textContent = 'No data'; return; }
+
+      // Top 9 by signal score for heatmap cells
+      const sorted = [...reports]
+        .map(r => ({
+          ...r,
+          _sig: typeof r.signal === 'number'
+            ? r.signal
+            : Math.floor(60 + Math.abs(hashCode(r.id || r.title || '')) % 30)
+        }))
+        .sort((a, b) => b._sig - a._sig)
+        .slice(0, 9);
+
+      grid.innerHTML = sorted.map(r => {
+        const score = r._sig;
+        const words = (r.title || r.name || 'Report').split(' ');
+        const label = words.length > 3
+          ? words.slice(0, 3).join(' ')
+          : words.join(' ');
+
+        return `
+          <div class="hm-cell" style="background:${heatColor(score)}" title="${escAttr(r.title || '')}">
+            <span class="hm-label">${escHtml(label)}</span>
+            <span class="hm-score">${score}</span>
+          </div>`;
+      }).join('');
+    }
+
+    function heatColor(score) {
+      if (score >= 88) return '#6B5010';
+      if (score >= 80) return '#8A6A18';
+      if (score >= 72) return '#A88A28';
+      if (score >= 64) return '#C9A84C';
+      if (score >= 56) return '#7A8A94';
+      if (score >= 48) return '#8A9498';
+      return '#9EAAAE';
+    }
+
+    // ─── OPEN MODAL ───────────────────────────────────────────────────
+    function openModal(id) {
+      const report = _allReports.find(r => String(r.id) === String(id));
+      if (!report) return;
+
+      const isPro  = _isAdmin || _userTier === 'pro';
+      const title  = escHtml(report.title || report.name || 'Untitled');
+      const cat    = escHtml(report.category || report.niche || '—');
+      const date   = report.created_at
+        ? new Date(report.created_at).toLocaleDateString('en-GB',
+            { day: '2-digit', month: 'long', year: 'numeric' })
+        : '—';
+      const signal = report.signal || '—';
+
+      // Content fields — graceful fallback to report.content
+      const exec   = escHtml(
+        report.executive_summary || report.summary ||
+        report.description || report.content ||
+        'Executive summary is not yet available for this report. Full briefing content will appear here once the analysis pipeline completes.'
+      );
+      const deep   = escHtml(
+        report.deep_analysis || report.analysis ||
+        'Comprehensive deep-dive analysis covering competitive landscape mapping, total addressable market sizing, revenue model blueprints, and risk-adjusted entry strategy frameworks with proprietary scoring methodology.'
+      );
+      const recs   = escHtml(
+        report.recommendations ||
+        'Strategic analyst recommendations based on NicheLab proprietary intelligence data — including prioritized market entry vectors, positioning differentiation strategy, and capital allocation guidance for this specific niche opportunity.'
+      );
+
+      const gatedSection = (heading, content) => {
+        if (isPro) {
+          return `
+            <div>
+              <div class="modal-section-hd">${heading}</div>
+              <div class="modal-text">${content}</div>
+            </div>`;
+        }
+        return `
+          <div class="locked-wrap">
+            <div class="modal-section-hd">${heading}</div>
+            <div class="locked-content modal-text">${content}</div>
+            <div class="lock-overlay">
+              <div class="lock-icon">🔒</div>
+              <div class="lock-msg">Pro-tier access required<br/>to unlock this section</div>
+              <button class="lock-cta" onclick="window.location.href='pricing.html'">Upgrade to Pro</button>
+            </div>
+          </div>`;
+      };
+
+      document.getElementById('modal-body').innerHTML = `
+        <div>
+          <div class="modal-title">${title}</div>
+          <div class="modal-meta" style="margin-top:0.6rem">
+            <span class="modal-meta-tag">Category: ${cat}</span>
+            <span class="modal-meta-tag">Published: ${date}</span>
+            <span class="modal-meta-tag">Signal Index: ${signal}</span>
+          </div>
+        </div>
+
+        <div>
+          <div class="modal-section-hd">Executive Summary</div>
+          <div class="modal-text">${exec}</div>
+        </div>
+
+        ${gatedSection('Pro-Tier · Deep Market Analysis', deep)}
+        ${gatedSection('Analyst Recommendations', recs)}
+      `;
+
+      document.getElementById('report-modal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      document.getElementById('report-modal').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    document.getElementById('modal-close').addEventListener('click', closeModal);
+    document.getElementById('report-modal').addEventListener('click', e => {
+      if (e.target === e.currentTarget) closeModal();
+    });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+    document.getElementById('modal-download').addEventListener('click', () => {
+      window.print();
+    });
+
+    // ─── SIGN OUT ─────────────────────────────────────────────────────
     document.getElementById('signout-btn').addEventListener('click', async () => {
       await _sb.auth.signOut();
       window.location.replace('login.html');
     });
 
-    // ─── REPORT ROW CLICK (extend as needed) ─────────────────────────
-    function openReport(id) {
-      // Placeholder: navigate to report detail page or modal
-      console.log('[NicheLab] Open report:', id);
+    // ─── LIVE CLOCK ───────────────────────────────────────────────────
+    const liveTime = document.getElementById('live-time');
+    function updateClock() {
+      liveTime.textContent = new Date().toUTCString().slice(0, -4) + ' UTC';
     }
+    updateClock();
+    setInterval(updateClock, 1000);
 
-    // ─── UTILITIES ───────────────────────────────────────────────────
+    // ─── UTILITIES ────────────────────────────────────────────────────
     function escHtml(str) {
       return String(str)
         .replace(/&/g, '&amp;')
@@ -770,13 +1528,19 @@
         .replace(/"/g, '&quot;');
     }
 
-    // ─── LIVE CLOCK ─────────────────────────────────────────────────
-    const liveTime = document.getElementById('live-time');
-    function updateClock() {
-      liveTime.textContent = new Date().toUTCString().slice(0, -4) + ' UTC';
+    function escAttr(str) {
+      return String(str).replace(/"/g, '&quot;').replace(/'/g, '&#39;');
     }
-    updateClock();
-    setInterval(updateClock, 1000);
+
+    // Deterministic hash for fallback metric generation
+    function hashCode(str) {
+      let h = 0;
+      for (let i = 0; i < String(str).length; i++) {
+        h = ((h << 5) - h) + String(str).charCodeAt(i);
+        h |= 0;
+      }
+      return h;
+    }
   </script>
 
 </body>
