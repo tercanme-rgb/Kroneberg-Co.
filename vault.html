@@ -1947,26 +1947,35 @@
       if (!str) return '';
 
       const raw = String(str).trim();
-      const looksLikeHtml = /<(html|head|body|style|table|thead|tbody|tr|td|th|h1|h2|h3|p|div|ol|ul|li|section|article)/i.test(raw);
+      const looksLikeHtml = /<\/?[a-z][\s\S]*?>/i.test(raw);
 
-      if (!looksLikeHtml) return `<div class="modal-report-render">${safeContent(raw)}</div>`;
+      if (!looksLikeHtml) {
+        return `<div class="modal-report-render">${safeContent(raw)}</div>`;
+      }
 
-      const bodyMatch = raw.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
-      let content = bodyMatch
-        ? bodyMatch[1]
-        : raw
-            .replace(/<!DOCTYPE[^>]*>/gi, '')
-            .replace(/<html[^>]*>/gi, '')
-            .replace(/<\/html>/gi, '')
-            .replace(/<head[\s\S]*?<\/head>/gi, '')
-            .replace(/<body[^>]*>/gi, '')
-            .replace(/<\/body>/gi, '')
-            .trim();
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(raw, 'text/html');
 
-      // Prevent report-level CSS/scripts from leaking into the main Vault layout.
+      doc.querySelectorAll('script, iframe, object, embed, link[rel="preload"], link[rel="modulepreload"]').forEach(el => el.remove());
+      doc.querySelectorAll('style').forEach(el => el.remove());
+
+      const contentRoot = doc.body && doc.body.innerHTML.trim()
+        ? doc.body
+        : doc.documentElement;
+
+      let content = contentRoot.innerHTML || '';
       content = content
-        .replace(/<style[\s\S]*?<\/style>/gi, '')
-        .replace(/<script[\s\S]*?<\/script>/gi, '');
+        .replace(/<!DOCTYPE[^>]*>/gi, '')
+        .replace(/<html[^>]*>/gi, '')
+        .replace(/<\/html>/gi, '')
+        .replace(/<head[\s\S]*?<\/head>/gi, '')
+        .replace(/<body[^>]*>/gi, '')
+        .replace(/<\/body>/gi, '')
+        .trim();
+
+      if (!content) {
+        return `<div class="modal-report-render">${safeContent(raw)}</div>`;
+      }
 
       return `<div class="modal-report-render">${content}</div>`;
     }
