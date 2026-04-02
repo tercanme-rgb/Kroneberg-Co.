@@ -8,9 +8,7 @@
   <!-- Supabase v2 CDN -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+  <!-- Fonts: Helvetica system stack — no external font load required -->
 
   <style>
     /* ═══════════════════════════════════════════════
@@ -43,8 +41,8 @@
       --info:         #2A5C8A;
 
       /* Type */
-      --mono:  'IBM Plex Mono', monospace;
-      --serif: 'Cormorant Garamond', 'Georgia', serif;
+      --mono:  'Helvetica Neue', Helvetica, Arial, sans-serif;
+      --serif: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 
       /* Layout */
       --nav-h:     58px;
@@ -132,7 +130,8 @@
       gap: 0.25rem;
       list-style: none;
       flex: 1;
-      justify-content: center;
+      justify-content: flex-end;
+      padding-right: 0.5rem;
     }
 
     .nav-links a {
@@ -681,7 +680,7 @@
 
     .modal-box {
       width: 100%;
-      max-width: 700px;
+      max-width: 840px;
       max-height: 88vh;
       overflow-y: auto;
       display: flex; flex-direction: column;
@@ -850,8 +849,109 @@
     }
 
     /* ═══════════════════════════════════════════════
-       RESPONSIVE
+       ANALYST LINE MODAL & MY ACCOUNT MODAL
     ═══════════════════════════════════════════════ */
+    .modal-form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+
+    .modal-form-label {
+      font-size: 0.52rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .modal-form-input,
+    .modal-form-textarea {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border-strong);
+      padding: 0.65rem 0.9rem;
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s;
+      resize: none;
+    }
+    .modal-form-input:focus,
+    .modal-form-textarea:focus {
+      border-color: var(--border-gold);
+    }
+    .modal-form-input::placeholder,
+    .modal-form-textarea::placeholder { color: var(--muted); }
+
+    .modal-form-textarea { min-height: 130px; line-height: 1.6; }
+
+    .modal-submit-btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: 0.45rem;
+      background: var(--gold);
+      border: none;
+      color: #fff;
+      font-family: var(--mono);
+      font-size: 0.56rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 0.65rem 1.5rem;
+      cursor: pointer;
+      transition: background 0.2s;
+      align-self: flex-start;
+    }
+    .modal-submit-btn:hover { background: var(--gold-dim); }
+
+    /* My Account info rows */
+    .acct-row {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      padding: 0.7rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .acct-row:last-child { border-bottom: none; }
+
+    .acct-key {
+      font-size: 0.5rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      width: 120px;
+      flex-shrink: 0;
+    }
+
+    .acct-val {
+      font-size: 0.68rem;
+      color: var(--text);
+      flex: 1;
+    }
+
+    .acct-badge {
+      display: inline-block;
+      font-size: 0.46rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #fff;
+      background: var(--gold);
+      padding: 0.14rem 0.5rem;
+    }
+
+    .acct-badge.admin { background: var(--gold-dim); }
+
+    .nav-links a[data-modal] { cursor: pointer; }
+
+    /* Members Access gold highlight */
+    .nav-members-access {
+      color: var(--gold) !important;
+      border: 1px solid var(--border-gold);
+      padding: 0.25rem 0.6rem !important;
+      font-size: 0.55rem !important;
+      letter-spacing: 0.14em !important;
+    }
+
+    
     @media (max-width: 1260px) {
       .report-grid { grid-template-columns: repeat(2, 1fr); }
     }
@@ -888,11 +988,8 @@
     </a>
 
     <ul class="nav-links">
-      <li><a href="#" class="active">Home</a></li>
-      <li><a href="#">Search</a></li>
-      <li><a href="#">Support</a></li>
-      <li><a href="#">My Account</a></li>
-      <li><a href="index.html" class="nav-admin" id="nav-members">Members Access</a></li>
+      <li><a href="#" data-modal="account-modal" id="nav-my-account" style="margin-left:auto">My Account</a></li>
+      <li><a href="index.html" class="nav-admin nav-members-access" id="nav-members">Members Access</a></li>
     </ul>
 
     <div class="nav-right">
@@ -959,22 +1056,13 @@
         </div>
       </div>
 
-      <!-- User Info Bar -->
-      <div class="user-bar">
-        <div class="ub-pill">User: <strong id="user-email">—</strong></div>
-        <div class="ub-pill">Plan: <strong id="user-tier">—</strong></div>
-        <div class="ub-pill">Allowance: <strong id="user-allowance">—</strong></div>
-
-        <div class="ub-search">
-          <svg width="11" height="11" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
-            <circle cx="6" cy="6" r="4.5"/><line x1="9.5" y1="9.5" x2="13" y2="13"/>
-          </svg>
-          <input type="text" id="search-input" placeholder="Search reports…" autocomplete="off" />
-        </div>
-
-        <select class="ub-select" id="cat-filter">
-          <option value="all">All</option>
-        </select>
+      <!-- Hidden compatibility layer for JS filter state and identity fields -->
+      <div style="display:none">
+        <input type="text" id="search-input" />
+        <select id="cat-filter"><option value="all">All</option></select>
+        <span id="user-email"></span>
+        <span id="user-tier"></span>
+        <span id="user-allowance"></span>
       </div>
 
       <!-- Report Grid -->
@@ -1006,7 +1094,147 @@
   </div>
 
   <!-- ════════════════════════════════════════════
-       BOTTOM STRIP
+       THE ANALYST LINE MODAL (Pro/Admin Only)
+  ════════════════════════════════════════════ -->
+  <div class="modal-veil" id="analyst-modal">
+    <div class="modal-box">
+
+      <div class="modal-head">
+        <button class="modal-btn danger" id="analyst-modal-close">
+          <svg width="9" height="9" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5">
+            <line x1="1" y1="1" x2="9" y2="9"/><line x1="9" y1="1" x2="1" y2="9"/>
+          </svg>
+          Close
+        </button>
+        <span style="font-size:0.52rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);margin-left:0.3rem">The Analyst Line · Direct Briefing Request</span>
+      </div>
+
+      <div class="modal-body">
+        <div>
+          <div class="modal-title">The Analyst Line</div>
+          <div class="modal-meta" style="margin-top:0.6rem">
+            <span class="modal-meta-tag">Pro &amp; Admin Access</span>
+            <span class="modal-meta-tag">Direct Channel · tercan.me@gmail.com</span>
+          </div>
+        </div>
+
+        <div style="font-size:0.68rem;color:var(--text-2);line-height:1.75;border-left:2px solid var(--border-gold);padding-left:1rem;">
+          Submit a direct briefing request to the NicheLab analyst team. Requests are reviewed within 48 hours. Please be specific about the market, sector, or intelligence gap you wish to investigate.
+        </div>
+
+        <form id="analyst-form" style="display:flex;flex-direction:column;gap:1.2rem;"
+              onsubmit="submitAnalystLine(event)">
+
+          <div class="modal-form-group">
+            <label class="modal-form-label" for="analyst-subject">Subject</label>
+            <input class="modal-form-input" id="analyst-subject" type="text"
+                   placeholder="e.g. Emerging SaaS gap in Nordic legal tech market"
+                   required autocomplete="off" />
+          </div>
+
+          <div class="modal-form-group">
+            <label class="modal-form-label" for="analyst-message">Message</label>
+            <textarea class="modal-form-textarea" id="analyst-message"
+                      placeholder="Describe the specific market, niche, or intelligence question you'd like the analyst team to investigate. Include any relevant context, geographic focus, or competitive angle."
+                      required></textarea>
+          </div>
+
+          <button class="modal-submit-btn" type="submit">
+            <svg width="10" height="10" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M1 7h12M8 2l5 5-5 5"/>
+            </svg>
+            Submit Briefing Request
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════
+       MY ACCOUNT MODAL
+  ════════════════════════════════════════════ -->
+  <div class="modal-veil" id="account-modal">
+    <div class="modal-box">
+
+      <div class="modal-head">
+        <button class="modal-btn danger" id="account-modal-close">
+          <svg width="9" height="9" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5">
+            <line x1="1" y1="1" x2="9" y2="9"/><line x1="9" y1="1" x2="1" y2="9"/>
+          </svg>
+          Close
+        </button>
+        <span style="font-size:0.52rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);margin-left:0.3rem">Account · Member Profile</span>
+      </div>
+
+      <div class="modal-body">
+        <div>
+          <div class="modal-title">My Account</div>
+          <div class="modal-meta" style="margin-top:0.6rem">
+            <span class="modal-meta-tag">NicheLab Intelligence Platform</span>
+            <span class="modal-meta-tag" id="acct-tier-meta">—</span>
+          </div>
+        </div>
+
+        <!-- Profile Info -->
+        <div>
+          <div class="modal-section-hd">Profile Information</div>
+          <div class="acct-row">
+            <span class="acct-key">First Name</span>
+            <span class="acct-val" id="acct-first-name">—</span>
+          </div>
+          <div class="acct-row">
+            <span class="acct-key">Last Name</span>
+            <span class="acct-val" id="acct-last-name">—</span>
+          </div>
+          <div class="acct-row">
+            <span class="acct-key">Email</span>
+            <span class="acct-val" id="acct-email">—</span>
+          </div>
+          <div class="acct-row">
+            <span class="acct-key">Plan</span>
+            <span class="acct-val"><span class="acct-badge" id="acct-plan-badge">—</span></span>
+          </div>
+        </div>
+
+        <!-- Change Password -->
+        <div>
+          <div class="modal-section-hd">Change Password</div>
+          <div style="display:flex;flex-direction:column;gap:0.9rem;">
+            <div class="modal-form-group">
+              <label class="modal-form-label" for="acct-pw-new">New Password</label>
+              <input class="modal-form-input" id="acct-pw-new" type="password" placeholder="Enter new password" autocomplete="new-password" />
+            </div>
+            <div class="modal-form-group">
+              <label class="modal-form-label" for="acct-pw-confirm">Confirm Password</label>
+              <input class="modal-form-input" id="acct-pw-confirm" type="password" placeholder="Confirm new password" autocomplete="new-password" />
+            </div>
+            <div id="acct-pw-msg" style="font-size:0.58rem;color:var(--muted);display:none;"></div>
+            <button class="modal-submit-btn" type="button" onclick="handlePasswordChange()">
+              Update Password
+            </button>
+          </div>
+        </div>
+
+        <!-- Subscription -->
+        <div>
+          <div class="modal-section-hd">Subscription &amp; Billing</div>
+          <div class="acct-row">
+            <span class="acct-key">Renewal Date</span>
+            <span class="acct-val" id="acct-renewal">—</span>
+          </div>
+          <div class="acct-row">
+            <span class="acct-key">Billing Cycle</span>
+            <span class="acct-val">Monthly · Stripe</span>
+          </div>
+          <div class="acct-row">
+            <span class="acct-key">Status</span>
+            <span class="acct-val" style="color:var(--success)">Active</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
   ════════════════════════════════════════════ -->
   <div class="bottom-strip">
     <div class="strip-group">
@@ -1149,10 +1377,32 @@
       const tierLabel  = _isAdmin ? 'Admin' : (_userTier === 'pro' ? 'Pro' : 'Starter');
       const allowance  = isPro ? 'Unlimited reads' : 'Limited reads';
 
+      // Legacy compat fields (hidden)
       document.getElementById('user-email').textContent     = user.email;
       document.getElementById('user-tier').textContent      = tierLabel;
       document.getElementById('user-allowance').textContent = allowance;
       document.getElementById('session-email-strip').textContent = user.email;
+
+      // My Account modal population
+      const nameParts  = (user.user_metadata?.full_name || '').split(' ');
+      const firstName  = nameParts[0] || '—';
+      const lastName   = nameParts.slice(1).join(' ') || '—';
+
+      document.getElementById('acct-email').textContent      = user.email;
+      document.getElementById('acct-first-name').textContent = firstName;
+      document.getElementById('acct-last-name').textContent  = lastName;
+
+      const planBadge = document.getElementById('acct-plan-badge');
+      planBadge.textContent = tierLabel;
+      if (_isAdmin) planBadge.classList.add('admin');
+
+      document.getElementById('acct-tier-meta').textContent = `Tier: ${tierLabel}`;
+
+      // Renewal date placeholder (30 days from today as billing cycle)
+      const renewal = new Date();
+      renewal.setDate(renewal.getDate() + 30);
+      document.getElementById('acct-renewal').textContent =
+        renewal.toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' });
 
       // Admin: show Members Access nav link
       if (_isAdmin) {
@@ -1409,13 +1659,13 @@
     }
 
     function heatColor(score) {
-      if (score >= 88) return '#6B5010';
-      if (score >= 80) return '#8A6A18';
-      if (score >= 72) return '#A88A28';
-      if (score >= 64) return '#C9A84C';
-      if (score >= 56) return '#7A8A94';
-      if (score >= 48) return '#8A9498';
-      return '#9EAAAE';
+      if (score >= 88) return '#145a2e';   /* dark green */
+      if (score >= 80) return '#1e7a40';   /* medium green */
+      if (score >= 72) return '#28a050';   /* green */
+      if (score >= 64) return '#c8a020';   /* yellow-gold (neutral) */
+      if (score >= 56) return '#c05820';   /* orange-red */
+      if (score >= 48) return '#a03020';   /* red */
+      return '#7a1a1a';                     /* dark red */
     }
 
     // ─── OPEN MODAL ───────────────────────────────────────────────────
@@ -1504,6 +1754,97 @@
     document.getElementById('modal-download').addEventListener('click', () => {
       window.print();
     });
+
+    // ─── ANALYST LINE MODAL ───────────────────────────────────────────
+    document.getElementById('analyst-line-btn').addEventListener('click', () => {
+      document.getElementById('analyst-modal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    });
+
+    document.getElementById('analyst-modal-close').addEventListener('click', () => {
+      document.getElementById('analyst-modal').classList.remove('open');
+      document.body.style.overflow = '';
+    });
+
+    document.getElementById('analyst-modal').addEventListener('click', e => {
+      if (e.target === e.currentTarget) {
+        e.currentTarget.classList.remove('open');
+        document.body.style.overflow = '';
+      }
+    });
+
+    function submitAnalystLine(e) {
+      e.preventDefault();
+      const subject = document.getElementById('analyst-subject').value.trim();
+      const message = document.getElementById('analyst-message').value.trim();
+      if (!subject || !message) return;
+
+      const userEmail   = _currentUser ? _currentUser.email : '';
+      const mailSubject = encodeURIComponent(`[NicheLab Analyst Line] ${subject}`);
+      const mailBody    = encodeURIComponent(
+        `From: ${userEmail}\n\n${message}`
+      );
+
+      window.location.href =
+        `mailto:tercan.me@gmail.com?subject=${mailSubject}&body=${mailBody}`;
+
+      document.getElementById('analyst-form').reset();
+      document.getElementById('analyst-modal').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    // ─── MY ACCOUNT MODAL ────────────────────────────────────────────
+    document.getElementById('nav-my-account').addEventListener('click', e => {
+      e.preventDefault();
+      document.getElementById('account-modal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    });
+
+    document.getElementById('account-modal-close').addEventListener('click', () => {
+      document.getElementById('account-modal').classList.remove('open');
+      document.body.style.overflow = '';
+    });
+
+    document.getElementById('account-modal').addEventListener('click', e => {
+      if (e.target === e.currentTarget) {
+        e.currentTarget.classList.remove('open');
+        document.body.style.overflow = '';
+      }
+    });
+
+    async function handlePasswordChange() {
+      const pw1 = document.getElementById('acct-pw-new').value;
+      const pw2 = document.getElementById('acct-pw-confirm').value;
+      const msg = document.getElementById('acct-pw-msg');
+
+      msg.style.display = 'block';
+
+      if (!pw1 || pw1.length < 8) {
+        msg.style.color = 'var(--error)';
+        msg.textContent = 'Password must be at least 8 characters.';
+        return;
+      }
+      if (pw1 !== pw2) {
+        msg.style.color = 'var(--error)';
+        msg.textContent = 'Passwords do not match.';
+        return;
+      }
+
+      msg.style.color = 'var(--muted)';
+      msg.textContent = 'Updating…';
+
+      try {
+        const { error } = await _sb.auth.updateUser({ password: pw1 });
+        if (error) throw error;
+        msg.style.color = 'var(--success)';
+        msg.textContent = 'Password updated successfully.';
+        document.getElementById('acct-pw-new').value = '';
+        document.getElementById('acct-pw-confirm').value = '';
+      } catch (err) {
+        msg.style.color = 'var(--error)';
+        msg.textContent = `Error: ${err.message}`;
+      }
+    }
 
     // ─── SIGN OUT ─────────────────────────────────────────────────────
     document.getElementById('signout-btn').addEventListener('click', async () => {
