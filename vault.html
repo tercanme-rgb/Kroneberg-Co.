@@ -521,22 +521,6 @@
     }
     .report-card:hover::before { height: 100%; }
 
-    .report-card.locked-card {
-      border-color: rgba(184,146,14,0.22);
-    }
-
-    .rc-lock-note {
-      margin-top: 0.75rem;
-      padding: 0.42rem 0.6rem;
-      border: 1px solid rgba(184,146,14,0.22);
-      background: rgba(184,146,14,0.07);
-      font-size: 0.5rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--gold-dim);
-      line-height: 1.5;
-    }
-
     .rc-title {
       font-family: var(--serif);
       font-size: 1.05rem;
@@ -850,98 +834,6 @@
     }
     .modal-btn:hover { border-color: var(--gold); color: var(--gold-dim); }
     .modal-btn.danger:hover { border-color: var(--error); color: var(--error); }
-
-    .modal-btn.is-locked,
-    .modal-btn[aria-disabled="true"] {
-      opacity: 0.58;
-    }
-
-    .free-gate-panel {
-      border: 1px solid var(--border-gold);
-      background: linear-gradient(180deg, rgba(184,146,14,0.08) 0%, rgba(250,250,246,0.9) 100%);
-      padding: 1.6rem;
-    }
-
-    .free-gate-eyebrow {
-      font-size: 0.5rem;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--gold-dim);
-      margin-bottom: 0.7rem;
-    }
-
-    .free-gate-title {
-      font-family: var(--serif);
-      font-size: 1.8rem;
-      line-height: 1.1;
-      color: var(--text);
-      margin-bottom: 0.8rem;
-    }
-
-    .free-gate-text {
-      font-size: 0.72rem;
-      color: var(--text-2);
-      line-height: 1.7;
-      max-width: 40rem;
-      margin-bottom: 1rem;
-    }
-
-    .free-gate-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-bottom: 1.1rem;
-    }
-
-    .free-gate-chip {
-      display: inline-flex;
-      align-items: center;
-      padding: 0.38rem 0.72rem;
-      border: 1px solid var(--border-gold);
-      background: rgba(255,255,255,0.72);
-      font-size: 0.56rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--text-2);
-    }
-
-    .free-gate-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.65rem;
-    }
-
-    .free-gate-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 168px;
-      padding: 0.72rem 1rem;
-      border: 1px solid var(--border-strong);
-      color: var(--text);
-      text-decoration: none;
-      font-size: 0.6rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      transition: border-color 0.2s, background 0.2s, color 0.2s;
-    }
-
-    .free-gate-btn:hover {
-      border-color: var(--gold);
-      color: var(--gold-dim);
-    }
-
-    .free-gate-btn-primary {
-      background: var(--text);
-      color: #fff;
-      border-color: var(--text);
-    }
-
-    .free-gate-btn-primary:hover {
-      background: var(--gold-dim);
-      border-color: var(--gold-dim);
-      color: #fff;
-    }
 
     .modal-body { padding: 1.8rem 2rem 2.5rem; display: flex; flex-direction: column; gap: 1.6rem; }
 
@@ -1638,7 +1530,8 @@
           .single();
 
         if (profile) {
-          _userTier = (profile.tier || 'free').toLowerCase();
+          _userTier = (profile?.tier || 'free').toLowerCase();
+          if (!['free', 'starter', 'pro'].includes(_userTier)) _userTier = 'free';
           if (profile.role === 'admin') _isAdmin = true;
         }
       } catch (_) { /* fallback: use email-based admin check */ }
@@ -1649,46 +1542,10 @@
     }
 
     // ─── APPLY IDENTITY ───────────────────────────────────────────────
-    function canReadReports() {
-      return _isAdmin || _userTier === 'starter' || _userTier === 'pro';
-    }
-
-    function isProAccess() {
-      return _isAdmin || _userTier === 'pro';
-    }
-
-    function getTierLabel() {
-      if (_isAdmin) return 'Admin';
-      if (_userTier === 'pro') return 'Pro';
-      if (_userTier === 'starter') return 'Starter';
-      return 'Free';
-    }
-
-    function getPricingHref() {
-      return 'index.html#pricing';
-    }
-
-    function applyFeatureLocks() {
-      const bookmarkBtn = document.getElementById('modal-bookmark');
-      const downloadBtn = document.getElementById('modal-download');
-      const locked = !canReadReports();
-      if (bookmarkBtn) {
-        bookmarkBtn.title = locked ? 'Bookmarks require Starter or Pro' : 'Bookmark report';
-        bookmarkBtn.classList.toggle('is-locked', locked);
-        bookmarkBtn.setAttribute('aria-disabled', locked ? 'true' : 'false');
-      }
-      if (downloadBtn) {
-        downloadBtn.title = locked ? 'PDF export requires Starter or Pro' : 'Download PDF';
-        downloadBtn.classList.toggle('is-locked', locked);
-        downloadBtn.setAttribute('aria-disabled', locked ? 'true' : 'false');
-      }
-    }
-
     function applyIdentity(user) {
-      const hasReadAccess = canReadReports();
-      const isPro         = isProAccess();
-      const tierLabel     = getTierLabel();
-      const allowance     = hasReadAccess ? 'Full report access' : 'Browse-only access';
+      const isPro      = _isAdmin || _userTier === 'pro';
+      const tierLabel  = _isAdmin ? 'Admin' : (_userTier === 'pro' ? 'Pro' : _userTier === 'starter' ? 'Starter' : 'Free');
+      const allowance  = isPro ? 'Unlimited reads' : 'Limited reads';
 
       // Legacy compat fields (hidden)
       document.getElementById('user-email').textContent     = user.email;
@@ -1721,8 +1578,6 @@
       if (_isAdmin) {
         document.getElementById('nav-members').classList.add('visible');
       }
-
-      applyFeatureLocks();
 
       // The Analyst Line: unlock for Pro or Admin
       if (isPro) {
@@ -1763,11 +1618,6 @@
       const wrap = document.getElementById('sb-bookmarks');
       if (!wrap) return;
 
-      if (!canReadReports()) {
-        wrap.innerHTML = '<div class="sb-empty-note">Bookmarks are available on Starter and Pro.</div>';
-        return;
-      }
-
       const bookmarkIds = getBookmarks();
       const reports = bookmarkIds
         .map(id => _allReports.find(r => String(r.id) === String(id)))
@@ -1788,17 +1638,6 @@
     function syncBookmarkButton() {
       const btn = document.getElementById('modal-bookmark');
       if (!btn || !_currentModalReportId) return;
-      if (!canReadReports()) {
-        btn.classList.remove('active-bookmark');
-        btn.innerHTML = `
-          <svg width="10" height="10" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path d="M4 1.5h6a1 1 0 0 1 1 1V13l-4-2.6L3 13V2.5a1 1 0 0 1 1-1z"/>
-          </svg>
-          Locked
-        `;
-        return;
-      }
-
       const active = isBookmarked(_currentModalReportId);
       btn.classList.toggle('active-bookmark', active);
       btn.innerHTML = `
@@ -1872,7 +1711,7 @@
           : Math.max(35, signal - Math.floor(10 + Math.abs(hashCode(title)) % 18));
 
         return `
-          <div class="report-card ${!canReadReports() ? 'locked-card' : ''}" data-id="${escAttr(String(r.id))}">
+          <div class="report-card" data-id="${escAttr(String(r.id))}">
             <div class="rc-title">${title}</div>
             <div class="rc-abstract">${abstract}</div>
 
@@ -1897,7 +1736,6 @@
               <span>${cat}</span>
               <span>${date}</span>
             </div>
-            ${!canReadReports() ? '<div class="rc-lock-note">Starter / Pro required for full report access</div>' : ''}
           </div>`;
       }).join('');
 
@@ -1941,9 +1779,7 @@
     // even after innerHTML is replaced by filters.
     document.getElementById('report-grid').addEventListener('click', e => {
       const card = e.target.closest('.report-card');
-      if (!card) return;
-      const report = _allReports.find(r => String(r.id) === String(card.dataset.id));
-      if (report) openReportModal(report);
+      if (card) openModal(card.dataset.id);
     });
 
     // Sidebar deep search input
@@ -2176,13 +2012,13 @@
 </html>`;
     }
 
-    function openReportModal(report) {
+    function openModal(id) {
+      const report = _allReports.find(r => String(r.id) === String(id));
       if (!report) return;
 
       _currentModalReportId = String(report.id);
 
-      const hasReadAccess = canReadReports();
-      const isPro  = isProAccess();
+      const isPro  = _isAdmin || _userTier === 'pro';
       const titleText = report.title || report.name || 'Untitled';
       const title  = escHtml(titleText);
       const catText = report.category || report.niche || '—';
@@ -2236,7 +2072,7 @@
         : '<p style="color:var(--muted);font-style:italic">No full report content available.</p>';
 
       const gatedSection = (heading, contentHtml) => {
-        if (hasReadAccess) {
+        if (isPro) {
           return `
             <div>
               <div class="modal-section-hd">${heading}</div>
@@ -2249,8 +2085,8 @@
             <div class="locked-content modal-text" style="white-space:normal">${contentHtml}</div>
             <div class="lock-overlay">
               <div class="lock-icon">🔒</div>
-              <div class="lock-msg">Paid membership required<br/>to unlock this section</div>
-              <button class="lock-cta" onclick="window.location.href='${getPricingHref()}'">Upgrade to Starter or Pro</button>
+              <div class="lock-msg">Pro-tier access required<br/>to unlock this section</div>
+              <button class="lock-cta" onclick="window.location.href='pricing.html'">Upgrade to Pro</button>
             </div>
           </div>`;
       };
@@ -2263,53 +2099,11 @@
               <div class="modal-text" style="white-space:normal">${execHtml}</div>
             </div>
 
-            ${gatedSection('Starter / Pro · Deep Market Analysis', deepHtml)}
+            ${gatedSection('Pro-Tier · Deep Market Analysis', deepHtml)}
             ${gatedSection('Analyst Recommendations', recsHtml)}
           `;
 
       const modalBody = document.getElementById('modal-body');
-
-      if (!hasReadAccess) {
-        modalBody.innerHTML = `
-          <div>
-            <div class="modal-title">${title}</div>
-            <div class="modal-meta" style="margin-top:0.6rem">
-              <span class="modal-meta-tag">Category: ${cat}</span>
-              <span class="modal-meta-tag">Published: ${date}</span>
-              <span class="modal-meta-tag">Signal Index: ${signal}</span>
-              <span class="modal-meta-tag">Plan: Free</span>
-            </div>
-          </div>
-
-          <div class="free-gate-panel">
-            <div class="free-gate-eyebrow">Vault Preview Access</div>
-            <div class="free-gate-title">Unlock the full report</div>
-            <div class="free-gate-text">
-              Free members can browse the Vault and view the report catalog, but full report content,
-              bookmarks, and PDF exports are reserved for Starter and Pro members.
-            </div>
-            <div class="free-gate-list">
-              <span class="free-gate-chip">15-section report access</span>
-              <span class="free-gate-chip">PDF exports</span>
-              <span class="free-gate-chip">Bookmarks</span>
-            </div>
-            <div class="free-gate-actions">
-              <a class="free-gate-btn free-gate-btn-primary" href="${getPricingHref()}">Upgrade Membership</a>
-              <a class="free-gate-btn" href="${getPricingHref()}">View Plans</a>
-            </div>
-          </div>
-        `;
-
-        modalBody.dataset.printTitle = titleText;
-        modalBody.dataset.printMeta = `Category: ${catText} · Published: ${dateText} · Signal Index: ${signalText}`;
-        modalBody.dataset.printContent = '';
-
-        document.getElementById('report-modal').classList.add('open');
-        document.body.style.overflow = 'hidden';
-        syncBookmarkButton();
-        return;
-      }
-
       modalBody.innerHTML = `
         <div>
           <div class="modal-title">${title}</div>
@@ -2330,11 +2124,6 @@
       document.getElementById('report-modal').classList.add('open');
       document.body.style.overflow = 'hidden';
       syncBookmarkButton();
-    }
-
-    function openModal(id) {
-      const report = _allReports.find(r => String(r.id) === String(id));
-      if (report) openReportModal(report);
     }
 
     function closeModal() {
@@ -2360,11 +2149,6 @@
     });
 
     document.getElementById('modal-download').addEventListener('click', () => {
-      if (!canReadReports()) {
-        window.location.href = getPricingHref();
-        return;
-      }
-
       const modalBody = document.getElementById('modal-body');
       const printable = buildPrintableReport(
         escHtml(modalBody.dataset.printTitle || 'NicheLab Report'),
@@ -2388,10 +2172,6 @@
     });
 
     document.getElementById('modal-bookmark').addEventListener('click', () => {
-      if (!canReadReports()) {
-        window.location.href = getPricingHref();
-        return;
-      }
       if (!_currentModalReportId) return;
       toggleBookmark(_currentModalReportId);
     });

@@ -558,8 +558,6 @@ html, body {
 
   </div><!-- /card -->
 
-  <div style="margin-top:18px;text-align:center;font-size:11.5px;color:var(--text-sec);">Already have an account? <a href="login.html" style="color:var(--link);text-decoration:underline;text-underline-offset:2px;font-weight:600;">Sign in</a></div>
-
   <!-- Page footer -->
   <div class="page-footer">
     Secured connection &nbsp;·&nbsp; <a href="index.html">NicheLab</a>
@@ -606,7 +604,7 @@ const $fill     = document.getElementById('redirect-fill');
 
 const _params = new URLSearchParams(window.location.search);
 const _tierRaw = (_params.get('tier') || 'free').toLowerCase();
-const _tier = ['free','starter','pro'].includes(_tierRaw) ? _tierRaw : 'free';
+const _tier = ['free', 'starter', 'pro'].includes(_tierRaw) ? _tierRaw : 'free';
 
 
 /* ── URL param email pre-fill ─────────────────────────── */
@@ -773,7 +771,7 @@ async function handleSubmit() {
 
     /* User-friendly error mapping */
     if (/already registered|already exists|user already/i.test(raw)) {
-      showError('An account with this email address already exists. Please sign in via login.html or use a different email.');
+      showError('An account with this email address already exists. Please sign in at vault.html or use a different email.');
     } else if (/password.*characters|too short/i.test(raw)) {
       showError('Password must be at least 8 characters.');
     } else if (/invalid email/i.test(raw)) {
