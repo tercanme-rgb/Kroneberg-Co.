@@ -642,13 +642,27 @@ async function callProvider(provider, key, systemPrompt, userPrompt, temperature
   throw new Error('Unknown provider: '+provider);
 }
 
-function isFatalTokenErrorMessage(msg=''){
+function isRateLimitOrQuotaErrorMessage(msg=''){
   const m = String(msg).toLowerCase();
 
   return (
-    m.includes('token') ||
-    m.includes('tokens') ||
-    m.includes('max_tokens') ||
+    m.includes('429') ||
+    m.includes('quota exceeded') ||
+    m.includes('quota') ||
+    m.includes('rate limit') ||
+    m.includes('rate-limit') ||
+    m.includes('too many requests') ||
+    m.includes('resource exhausted') ||
+    m.includes('retry later')
+  );
+}
+
+function isFatalTokenErrorMessage(msg=''){
+  const m = String(msg).toLowerCase();
+
+  if(isRateLimitOrQuotaErrorMessage(m)) return false;
+
+  return (
     m.includes('maximum context') ||
     m.includes('max context') ||
     m.includes('context length') ||
@@ -659,10 +673,15 @@ function isFatalTokenErrorMessage(msg=''){
     m.includes('request too large') ||
     m.includes('maximum input') ||
     m.includes('input length exceeded') ||
-    m.includes('this request requires more credits') ||
+    m.includes('maximum number of input tokens') ||
+    m.includes('maximum output tokens') ||
+    m.includes('input token count') ||
+    m.includes('token count') ||
+    m.includes('context_length_exceeded') ||
+    m.includes('finish_reason: length') ||
+    (m.includes('max_tokens') && !m.includes('quota')) ||
     (m.includes('requires more credits') && m.includes('max_tokens')) ||
-    m.includes('can only afford') ||
-    m.includes('finish_reason: length')
+    m.includes('can only afford')
   );
 }
 
@@ -692,11 +711,7 @@ async function callAI(systemPrompt, userPrompt, temperature=0.72){
         throw fatal;
       }
 
-      const isRetryableRateError =
-        msg.includes('429') ||
-        lower.includes('rate') ||
-        lower.includes('limit') ||
-        lower.includes('quota');
+      const isRetryableRateError = isRateLimitOrQuotaErrorMessage(msg);
 
       const isAuthError =
         msg.includes('401') ||
