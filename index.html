@@ -158,7 +158,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .bt-track.yr .bt-thumb{transform:translateX(20px)}
 .bt-save{background:var(--gold);color:#fff;font-family:var(--fm);font-size:9px;font-weight:500;letter-spacing:1px;text-transform:uppercase;padding:5px 12px;border-radius:100px;white-space:nowrap}
 
-.pc-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;max-width:1200px;align-items:stretch}
+.pc-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;max-width:1200px;align-items:start}
 .pc-feats li.locked{color:var(--ink-faint)}
 .pc-feats li.locked::before{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect x='4' y='7.5' width='8' height='6.5' rx='1.2' stroke='%23A8A898' stroke-width='1.5' fill='none'/%3E%3Cpath d='M5.5 7.5V5.5a2.5 2.5 0 015 0v2' stroke='%23A8A898' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");border-color:var(--border);background-color:transparent}
 
@@ -173,17 +173,16 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .upm-chip{font-size:11px;padding:5px 13px;border-radius:100px;background:var(--gold-tint);border:1px solid var(--gold-border);color:var(--ink-muted);font-family:var(--fm);letter-spacing:.3px;white-space:nowrap}
 .upm-dismiss{background:none;border:none;font-size:13px;color:var(--ink-faint);cursor:pointer;font-family:var(--fb);padding:6px 12px;transition:color .18s;display:block;margin:10px auto 0}
 .upm-dismiss:hover{color:var(--ink-muted)}
-.pc{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--rlg);padding:44px;position:relative;transition:border-color .25s,box-shadow .25s,transform .25s;display:flex;flex-direction:column;height:100%;min-height:100%}
+.pc{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--rlg);padding:44px;position:relative;transition:border-color .25s,box-shadow .25s,transform .25s}
 .pc:hover{border-color:var(--gold-border);box-shadow:var(--shadow-lg);transform:translateY(-4px)}
-.pc.feat{border-color:rgba(184,134,11,.34);background:linear-gradient(180deg,#fffef9 0%,#fffdf6 100%);padding-top:44px;padding-bottom:44px;box-shadow:0 24px 70px rgba(184,134,11,.16),0 6px 24px rgba(20,20,16,.10);isolation:isolate;overflow:visible}
-.pc.feat::after{content:'';position:absolute;inset:-14px;z-index:-1;border-radius:calc(var(--rlg) + 12px);background:radial-gradient(circle at 50% 0%,rgba(245,197,24,.22) 0%,rgba(212,160,23,.14) 28%,rgba(184,134,11,.08) 52%,rgba(184,134,11,0) 78%);filter:blur(14px);pointer-events:none}
-.pc.feat:hover{transform:translateY(-6px);box-shadow:0 32px 84px rgba(184,134,11,.22),0 8px 28px rgba(20,20,16,.12)}
+.pc.feat{border-color:var(--gold-border);background:#FFFEF8;padding-top:64px;padding-bottom:64px;margin-top:-20px;box-shadow:0 20px 60px rgba(184,134,11,.14),0 4px 20px rgba(20,20,16,.10);transform:translateY(0)}
+.pc.feat:hover{transform:translateY(-4px);box-shadow:0 28px 72px rgba(184,134,11,.18),0 4px 24px rgba(20,20,16,.12)}
 .pc.feat::before{content:'MOST SELECTED';position:absolute;top:0;right:28px;background:var(--gold);color:#fff;font-family:var(--fm);font-size:9px;font-weight:500;letter-spacing:1.5px;padding:8px 14px 22px;border-radius:0 0 6px 6px;clip-path:polygon(0 0,100% 0,100% 75%,50% 100%,0 75%)}
 .pc-tier{font-family:var(--fm);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--ink-faint);margin-bottom:18px}
 .pc-price{font-family:var(--fd);font-size:64px;font-weight:400;line-height:1;letter-spacing:-2.5px;color:var(--ink);margin-bottom:4px;transition:all .25s}
 .pc-price sup{font-size:26px;vertical-align:top;margin-top:14px;display:inline-block;letter-spacing:0;font-weight:500}
 .pc-cycle{font-size:13px;color:var(--ink-faint);margin-bottom:28px;min-height:20px}
-.pc-feats{list-style:none;margin-bottom:34px;display:flex;flex-direction:column;gap:10px;flex:1}
+.pc-feats{list-style:none;margin-bottom:34px;display:flex;flex-direction:column;gap:10px}
 .pc-feats li{display:flex;align-items:flex-start;gap:11px;font-size:14px;color:var(--ink-muted);line-height:1.5}
 .pc-feats li::before{content:'';width:16px;height:16px;border-radius:50%;background:var(--gold-tint);border:1px solid var(--gold-border);flex-shrink:0;margin-top:1px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8l3 3 6-6' stroke='%23B8860B' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-size:14px;background-position:center;background-repeat:no-repeat}
 .pc-feats li.dim{color:var(--ink-faint)}
@@ -1343,8 +1342,8 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
         <!-- ── PRO TIER (center — featured) ── -->
         <div class="pc feat">
           <div class="pc-tier">Pro</div>
-          <div class="pc-price">$<span id="v-p">84</span></div>
-          <div class="pc-cycle" id="c-p">per month</div>
+          <div class="pc-price">$<span id="v-p">699</span></div>
+          <div class="pc-cycle" id="c-p">per year  (billed annually)</div>
           <ul class="pc-feats">
             <li>Unrestricted Global Intelligence Access</li>
             <li><strong>Direct Analyst Correspondence</strong></li>
@@ -1356,14 +1355,14 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
             <li>Priority Algorithmic Processing</li>
             <li>Advance Intelligence on Emerging Verticals</li>
           </ul>
-          <a id="lnk-p" href="https://buy.stripe.com/bJe00kbeLc547pJgdaebu02" target="_blank" rel="noopener" class="btn-pg-gold">Begin Pro Membership →</a>
+          <a id="lnk-p" href="https://buy.stripe.com/aFa6oI0A7glk6lFf96ebu03" target="_blank" rel="noopener" class="btn-pg-gold">Begin Pro Membership →</a>
         </div>
 
         <!-- ── STARTER TIER ── -->
         <div class="pc">
           <div class="pc-tier">Starter</div>
-          <div class="pc-price">$<span id="v-s">36</span></div>
-          <div class="pc-cycle" id="c-s">per month</div>
+          <div class="pc-price">$<span id="v-s">299</span></div>
+          <div class="pc-cycle" id="c-s">per year  (billed annually)</div>
           <ul class="pc-feats">
             <li>10 research briefs per week</li>
             <li>15-Point Comprehensive Analytical Framework</li>
@@ -1376,7 +1375,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
             <li class="dim">Advance Intelligence on Emerging Verticals</li>
             <li class="dim">Direct Analyst Correspondence</li>
           </ul>
-          <a id="lnk-s" href="https://buy.stripe.com/9B63cw0A72uufWf5ywebu00" target="_blank" rel="noopener" class="btn-pg">Begin Starter Membership</a>
+          <a id="lnk-s" href="https://buy.stripe.com/aFa4gAdmT8SS5hB1igebu01" target="_blank" rel="noopener" class="btn-pg">Begin Starter Membership</a>
         </div>
 
       </div>
@@ -2443,6 +2442,11 @@ function applyPrices() {
   document.getElementById('c-p').textContent = d.p.c;
   document.getElementById('lnk-p').href      = d.p.href;
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+  billing = 'yearly';
+  applyPrices();
+});
 
 /* ── CONTACT ── */
 async function submitContact() {
