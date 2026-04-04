@@ -1,5 +1,5 @@
 /**
- * NicheLab — Auth Callback Handler
+ * Kroneberg & Co. — Auth Callback Handler
  * File: app/auth/callback/route.ts  (Next.js App Router)
  *
  * Called when user clicks the email verification link.
