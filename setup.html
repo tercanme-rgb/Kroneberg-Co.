@@ -632,6 +632,7 @@ const tierMap = {
   starter: 'core',
   pro: 'elite'
 };
+const resolvedTier = tierMap[rawTier] || 'free';
 
 /* ── URL param email pre-fill ─────────────────────────── */
 (function prefillEmail() {
@@ -736,7 +737,7 @@ async function handleSubmit() {
   try {
     let finalUser = null;
 
-    /* ── Step 1: Try sign up ───────────────────────────── */
+    /* ── Step 1: Create or recover authenticated session ── */
     const { data: signUpData, error: signUpError } = await sb.auth.signUp({
       email,
       password,
@@ -768,6 +769,27 @@ async function handleSubmit() {
       }
     } else {
       finalUser = signUpData?.user || null;
+
+      const signUpSession = signUpData?.session || null;
+      if (!signUpSession) {
+        const { data: signInData, error: signInError } = await sb.auth.signInWithPassword({
+          email,
+          password
+        });
+
+        if (signInError) {
+          throw new Error('Account created, but authenticated session could not be established. Check whether email confirmation is enabled in Supabase Auth.');
+        }
+
+        finalUser = signInData?.user || finalUser;
+      }
+    }
+
+    const { data: sessionData, error: sessionError } = await sb.auth.getSession();
+    if (sessionError) throw sessionError;
+
+    if (!sessionData?.session) {
+      throw new Error('No authenticated session found. Please disable email confirmation in Supabase Auth or complete confirmation before continuing.');
     }
 
     if (!finalUser) {
@@ -781,22 +803,25 @@ async function handleSubmit() {
     }
 
     /* ── Step 2: Upsert profile with resolved tier ─────── */
+    const profilePayload = {
+      id: finalUser.id,
+      email: finalUser.email || email,
+      first_name: firstName,
+      last_name: lastName,
+      full_name: `${firstName} ${lastName}`,
+      tier: resolvedTier,
+      updated_at: new Date().toISOString()
+    };
+
     const { error: profileError } = await sb
       .from('profiles')
-      .upsert({
-        id: finalUser.id,
-        email: email,
-        first_name: firstName,
-        last_name: lastName,
-        full_name: `${firstName} ${lastName}`,
-        updated_at: new Date().toISOString()
-      }, { onConflict: 'id' });
+      .upsert(profilePayload, { onConflict: 'id' });
 
     if (profileError) {
       throw profileError;
     }
 
-    console.log('Profile tier set to:', resolvedTier);
+    console.log('Profile saved for user:', finalUser.id, 'tier:', resolvedTier);
 
     /* ── Step 3: Success → redirect ───────────────────── */
     $formBody.style.display = 'none';
