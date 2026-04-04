@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Account Configuration — NicheLab</title>
+<title>Account Configuration — Kroneberg &amp; Co.</title>
 
 <!-- ─── Supabase v2 ─────────────────────────────────────── -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
@@ -58,14 +58,17 @@ html, body {
    WORDMARK
 ═══════════════════════════════════════════════════════════ */
 .wordmark {
-  font-family: Helvetica, Arial, sans-serif;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--text-pri);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin-bottom: 28px;
-  tracking: 4px;
+}
+
+.wordmark img {
+  height: 58px;
+  width: auto;
+  object-fit: contain;
+  display: block;
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -456,7 +459,7 @@ html, body {
 <div class="page-wrapper">
 
   <!-- Wordmark -->
-  <div class="wordmark">NicheLab</div>
+  <div class="wordmark"><img src="LOGO.png" alt="Kroneberg &amp; Co."></div>
 
   <!-- Card -->
   <div class="card" id="card-main">
@@ -560,7 +563,7 @@ html, body {
 
   <!-- Page footer -->
   <div class="page-footer">
-    Secured connection &nbsp;·&nbsp; <a href="index.html">NicheLab</a>
+    Secured connection &nbsp;·&nbsp; <a href="index.html">Kroneberg &amp; Co.</a>
   </div>
 
 </div><!-- /page-wrapper -->
