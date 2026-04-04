@@ -632,7 +632,6 @@ const tierMap = {
   starter: 'core',
   pro: 'elite'
 };
-const resolvedTier = tierMap[rawTier] || 'free';
 
 /* ── URL param email pre-fill ─────────────────────────── */
 (function prefillEmail() {
@@ -790,7 +789,6 @@ async function handleSubmit() {
         first_name: firstName,
         last_name: lastName,
         full_name: `${firstName} ${lastName}`,
-        tier: resolvedTier,
         updated_at: new Date().toISOString()
       }, { onConflict: 'id' });
 
