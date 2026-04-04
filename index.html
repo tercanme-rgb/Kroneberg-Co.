@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NicheLab — Premium Niche Intelligence & Market Strategy</title>
-  <meta name="description" content="NicheLab delivers institutional-grade niche market intelligence. Trusted by founders, operators, and investment professionals." />
+  <title>Kroneberg & Co. — Premium Market Intelligence & Strategy</title>
+  <meta name="description" content="Kroneberg & Co. delivers institutional-grade market intelligence and strategy. Trusted by founders, operators, and investment professionals." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Instrument+Sans:ital,wght@0,300;0,400;0,500;0,600&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -34,8 +34,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .nav{position:fixed;top:0;left:0;right:0;z-index:1000;height:66px;padding:0 56px;display:flex;align-items:center;justify-content:space-between;background:rgba(250,250,247,.93);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);border-bottom:1px solid var(--border);transition:box-shadow .3s,border-color .3s}
 .nav.scrolled{box-shadow:0 2px 24px rgba(20,20,16,.06);border-bottom-color:var(--border-md)}
 .nav-logo{display:flex;align-items:center;gap:11px;cursor:pointer;user-select:none;flex-shrink:0}
-.nav-seal{width:36px;height:36px;background:var(--ink);border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.nav-seal svg{width:20px;height:20px}
+.nav-logo-image{height:44px;width:auto;object-fit:contain;display:block}
 .nav-brand{font-family:var(--fd);font-size:20px;font-weight:500;color:var(--ink);letter-spacing:.2px}
 .nav-links{display:flex;align-items:center;gap:2px}
 .nl{padding:7px 16px;font-size:14px;font-weight:400;color:var(--ink-muted);border-radius:var(--r);transition:all .18s;cursor:pointer;white-space:nowrap;background:none;border:none;font-family:var(--fb)}
@@ -622,10 +621,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
 <!-- NAV -->
 <nav class="nav" id="mainNav">
   <div class="nav-logo" onclick="go('home')">
-    <div class="nav-seal">
-      <svg viewBox="0 0 20 20" fill="none"><path d="M4 16V4l12 12V4" stroke="#B8860B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </div>
-    <span class="nav-brand">NicheLab</span>
+    <img class="nav-logo-image" src="kroneberg-logo.png" alt="Kroneberg &amp; Co. logo" />
   </div>
 
   <div class="nav-links">
@@ -671,7 +667,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
         <div>
           <div class="hero-badge"><span class="badge-pill">Est. 2024</span>Premium Market Strategy Firm</div>
           <h1>Intelligence that<br><em>moves markets.</em></h1>
-          <p class="hero-desc">NicheLab is a premier niche intelligence and market strategy firm delivering institutional-grade research to founders, operators, and investment professionals.</p>
+          <p class="hero-desc">Kroneberg & Co. is a premier niche intelligence and market strategy firm delivering institutional-grade research to founders, operators, and investment professionals.</p>
           <div class="hero-act">
             <button class="btn-gold" onclick="go('home','membership-tiers')">View Membership Plans →</button>
             <button class="btn-ol" onclick="go('contact')">Request a Briefing</button>
@@ -726,7 +722,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
     <div class="infra-hero rv">
       <div class="eyebrow" style="justify-content:center"><div class="eyebrow-ln"></div>Intelligence Infrastructure<div class="eyebrow-ln"></div></div>
       <h2>Where the <em>signal comes from.</em></h2>
-      <p>Reddit sentiment, search velocity, funding signals, and competitor gaps do not emerge from guesswork. Every NicheLab analysis is built on the same intelligence infrastructure that informs decisions at the world's largest hedge funds, strategy consultancies, and sovereign wealth offices. The data layer doesn't change. Only who gets to act on it does.</p>
+      <p>Reddit sentiment, search velocity, funding signals, and competitor gaps do not emerge from guesswork. Every Kroneberg & Co. analysis is built on the same intelligence infrastructure that informs decisions at the world's largest hedge funds, strategy consultancies, and sovereign wealth offices. The data layer doesn't change. Only who gets to act on it does.</p>
     </div>
 
     <div class="infra-price-band">
@@ -746,9 +742,9 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
           <div class="ipc"><div class="ipc-name">McKinsey Reports (avg.)</div><div class="ipc-val">$22,000</div><div class="ipc-note">$22K/yr</div></div>
           <div class="ipc"><div class="ipc-name">Euromonitor Passport</div><div class="ipc-val">$18,400</div><div class="ipc-note">$18.4K/yr</div></div>
           <div class="ipc"><div class="ipc-name">IBISWorld Industry Suite</div><div class="ipc-val">$11,000</div><div class="ipc-note">$11K/yr</div></div>
-          <div class="ipc" style="background:rgba(184,134,11,.10);border-left:2px solid var(--gold-bright)"><div class="ipc-name" style="color:var(--gold-bright)">NicheLab Membership</div><div class="ipc-val" style="color:var(--gold-bright)">From $36</div><div class="ipc-note" style="color:rgba(245,197,24,.5)">$36/mo · Same data layer</div></div>
+          <div class="ipc" style="background:rgba(184,134,11,.10);border-left:2px solid var(--gold-bright)"><div class="ipc-name" style="color:var(--gold-bright)">Kroneberg & Co. Membership</div><div class="ipc-val" style="color:var(--gold-bright)">From $36</div><div class="ipc-note" style="color:rgba(245,197,24,.5)">$36/mo · Same data layer</div></div>
         </div>
-        <div class="infra-price-foot">Figures reflect publicly available institutional pricing. For reference only. NicheLab is an independent platform and is not affiliated with any referenced service.</div>
+        <div class="infra-price-foot">Figures reflect publicly available institutional pricing. For reference only. Kroneberg & Co. is an independent platform and is not affiliated with any referenced service.</div>
       </div>
     </div>
 
@@ -815,8 +811,8 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
     <div class="infra-why">
       <div class="infra-why-in">
         <div class="rv" style="text-align:center;margin-bottom:36px">
-          <div class="eyebrow" style="justify-content:center"><div class="eyebrow-ln"></div>Why NicheLab<div class="eyebrow-ln"></div></div>
-          <h3 style="font-family:var(--fd);font-size:clamp(28px,3.5vw,42px);font-weight:400;letter-spacing:-1px;color:#0F172A">The conventional approach<br>vs. <em style="color:var(--gold);font-style:italic">the NicheLab standard.</em></h3>
+          <div class="eyebrow" style="justify-content:center"><div class="eyebrow-ln"></div>Why Kroneberg & Co.<div class="eyebrow-ln"></div></div>
+          <h3 style="font-family:var(--fd);font-size:clamp(28px,3.5vw,42px);font-weight:400;letter-spacing:-1px;color:#0F172A">The conventional approach<br>vs. <em style="color:var(--gold);font-style:italic">the Kroneberg & Co. standard.</em></h3>
         </div>
         <div class="why-grid rv rv-d1">
           <div class="why-col bad">
@@ -834,7 +830,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
           <div class="why-col good">
             <div class="why-col-head">
               <div class="why-mark ok">✓</div>
-              <div class="why-col-title">The NicheLab Standard</div>
+              <div class="why-col-title">The Kroneberg & Co. Standard</div>
             </div>
             <div class="why-item"><span class="why-item-ico">📡</span>47 monitored real-world sources — every claim cited</div>
             <div class="why-item"><span class="why-item-ico">⏱</span>200+ hours of research condensed into a 15-minute read</div>
@@ -849,7 +845,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
 
     <div class="infra-disclaimer">
       <div class="infra-disclaimer-in">
-        All analytical outputs are produced through proprietary synthesis methodologies drawing from publicly available and licensed data sources. Institutional designations serve as reference points to contextualise the scale of market intelligence infrastructure NicheLab synthesises from. NicheLab is an independent research platform and is not affiliated with, endorsed by, or acting as a reseller of any referenced institutional service. Pricing figures are approximate and sourced from publicly available market information as of 2024–2025.
+        All analytical outputs are produced through proprietary synthesis methodologies drawing from publicly available and licensed data sources. Institutional designations serve as reference points to contextualise the scale of market intelligence infrastructure Kroneberg & Co. synthesises from. Kroneberg & Co. is an independent research platform and is not affiliated with, endorsed by, or acting as a reseller of any referenced institutional service. Pricing figures are approximate and sourced from publicly available market information as of 2024–2025.
       </div>
     </div>
 
@@ -884,7 +880,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
         <div class="rv" style="text-align:center">
           <div class="eyebrow" style="justify-content:center"><div class="eyebrow-ln"></div>What Our Members Say<div class="eyebrow-ln"></div></div>
           <h2 class="headline" style="font-size:clamp(34px,4vw,54px);margin-bottom:14px">Trusted by analysts<br>and investors <em>worldwide.</em></h2>
-          <p class="sub" style="max-width:500px;margin:0 auto">From venture partners in London to quantitative analysts in Seoul — professionals across 20 markets rely on NicheLab daily.</p>
+          <p class="sub" style="max-width:500px;margin:0 auto">From venture partners in London to quantitative analysts in Seoul — professionals across 20 markets rely on Kroneberg & Co. daily.</p>
         </div>
 
         <div class="testi-grid">
@@ -899,7 +895,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
           </div>
           <div class="tc-card rv rv-d1">
             <div class="tc-stars">★★★★★</div>
-            <p class="tc-quote">"NicheLab identifies trends months before they hit the mainstream media. It is now an essential part of my daily investment workflow."</p>
+            <p class="tc-quote">"Kroneberg & Co. identifies trends months before they hit the mainstream media. It is now an essential part of my daily investment workflow."</p>
             <div class="tc-author">
               <div class="tc-avatar" style="background:#0D9488">ER</div>
               <div><div class="tc-name">Elena R.</div><div class="tc-role">Growth Strategist · Madrid</div></div>
@@ -924,7 +920,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
           </div>
           <div class="tc-card rv rv-d1">
             <div class="tc-stars">★★★★★</div>
-            <p class="tc-quote">"NicheLab's data visualization makes complex, high-barrier markets easy to digest at a glance. It helped me secure my last two seed-round investments."</p>
+            <p class="tc-quote">"Kroneberg & Co.'s data visualization makes complex, high-barrier markets easy to digest at a glance. It helped me secure my last two seed-round investments."</p>
             <div class="tc-author">
               <div class="tc-avatar" style="background:#B8860B">AK</div>
               <div><div class="tc-name">Ahmed K.</div><div class="tc-role">Angel Investor · Dubai</div></div>
@@ -999,7 +995,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
           </div>
           <div class="tc-card rv rv-d1">
             <div class="tc-stars">★★★★★</div>
-            <p class="tc-quote">"The NicheLab delivers consistent, high-quality data every single time. It has become my primary source for emerging market trends."</p>
+            <p class="tc-quote">"The Kroneberg & Co. delivers consistent, high-quality data every single time. It has become my primary source for emerging market trends."</p>
             <div class="tc-author">
               <div class="tc-avatar" style="background:#0D9488">SV</div>
               <div><div class="tc-name">Sofi V.</div><div class="tc-role">Economic Consultant · Amsterdam</div></div>
@@ -1016,7 +1012,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
           <!-- Row 6 -->
           <div class="tc-card rv">
             <div class="tc-stars">★★★★★</div>
-            <p class="tc-quote">"I now recommend NicheLab to all my clients who are looking for new market entry points. It provides the competitive edge needed in today's crowded landscape."</p>
+            <p class="tc-quote">"I now recommend Kroneberg & Co. to all my clients who are looking for new market entry points. It provides the competitive edge needed in today's crowded landscape."</p>
             <div class="tc-author">
               <div class="tc-avatar" style="background:#475569">NE</div>
               <div><div class="tc-name">Nadia E.</div><div class="tc-role">Startup Advisor · Cairo</div></div>
@@ -1041,7 +1037,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
           <!-- Row 7 -->
           <div class="tc-card rv">
             <div class="tc-stars">★★★★★</div>
-            <p class="tc-quote">"The ROI I've seen from just a few NicheLab reports has been absolutely astronomical. It's an indispensable asset for identifying early-stage opportunities."</p>
+            <p class="tc-quote">"The ROI I've seen from just a few Kroneberg & Co. reports has been absolutely astronomical. It's an indispensable asset for identifying early-stage opportunities."</p>
             <div class="tc-author">
               <div class="tc-avatar" style="background:#2563EB">HM</div>
               <div><div class="tc-name">Hans M.</div><div class="tc-role">Venture Scout · Zurich</div></div>
@@ -1057,7 +1053,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
           </div>
           <div class="tc-card rv rv-d2" style="background:linear-gradient(135deg,#FFFEF8 0%,#FFF9E6 100%);border-color:var(--gold-border)">
             <div class="tc-stars">★★★★★</div>
-            <p class="tc-quote" style="font-style:italic;color:#374151">"I invested in NicheLab on a Friday. By Monday, I had identified two high-signal niches and drafted investor memos for both. The speed of insight is unmatched."</p>
+            <p class="tc-quote" style="font-style:italic;color:#374151">"I invested in Kroneberg & Co. on a Friday. By Monday, I had identified two high-signal niches and drafted investor memos for both. The speed of insight is unmatched."</p>
             <div class="tc-author">
               <div class="tc-avatar" style="background:#B8860B">+</div>
               <div><div class="tc-name" style="color:var(--gold)">Join 1,200+ Members</div><div class="tc-role">Global Investors &amp; Analysts</div></div>
@@ -1081,7 +1077,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
       <div class="report-anat-in">
         <div class="rv" style="text-align:center">
           <div class="eyebrow" style="justify-content:center"><div class="eyebrow-ln"></div>Inside the Report<div class="eyebrow-ln"></div></div>
-          <h2 class="headline" style="font-size:clamp(34px,4vw,54px);margin-bottom:14px">The anatomy of a<br><em>NicheLab intelligence brief.</em></h2>
+          <h2 class="headline" style="font-size:clamp(34px,4vw,54px);margin-bottom:14px">The anatomy of a<br><em>Kroneberg & Co. intelligence brief.</em></h2>
           <p class="sub" style="max-width:520px;margin:0 auto">Every deliverable follows the same uncompromising architecture. This is what institutional intelligence looks like — and what you receive with every brief.</p>
         </div>
         <div class="ra-layout">
@@ -1139,13 +1135,13 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
               <div class="ra-preview-dot" style="background:#FF5F57"></div>
               <div class="ra-preview-dot" style="background:#FEBC2E"></div>
               <div class="ra-preview-dot" style="background:#28C840"></div>
-              <span style="font-family:var(--fm);font-size:10px;color:rgba(255,255,255,.35);margin-left:10px;letter-spacing:.5px">NicheLab Intelligence Brief.docx</span>
+              <span style="font-family:var(--fm);font-size:10px;color:rgba(255,255,255,.35);margin-left:10px;letter-spacing:.5px">Kroneberg & Co. Intelligence Brief.docx</span>
             </div>
             <div class="ra-preview-body">
               <div class="ra-doc-header">
                 <div class="ra-doc-title">INTELLIGENCE BRIEF · PROPRIETARY</div>
                 <div class="ra-doc-name">Webhook Reliability Platform<br>for Indie Developers</div>
-                <div class="ra-doc-meta">Analyst: GB-47291-2025 · NicheLab Pro · +20 Pages · APA-7</div>
+                <div class="ra-doc-meta">Analyst: GB-47291-2025 · Kroneberg & Co. Elite · +20 Pages · APA-7</div>
               </div>
               <div class="ra-doc-secs">
                 <div class="ra-doc-sec"><div class="ra-doc-sec-l"><span class="ra-doc-sec-n">§ 01</span><span class="ra-doc-sec-t">Executive Summary</span></div><div class="ra-doc-sec-bar"><div class="ra-doc-sec-fill" style="width:100%"></div></div></div>
@@ -1175,7 +1171,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
       <div class="rv">
         <div class="eyebrow"><div class="eyebrow-ln"></div>Research Methodology</div>
         <h2 class="headline">Fifteen sections.<br><em>No exceptions.</em></h2>
-        <p class="sub" style="margin-top:18px;max-width:540px">Every NicheLab intelligence brief follows an identical, uncompromising structure. Consistent depth. Consistent standards. Consistent authority.</p>
+        <p class="sub" style="margin-top:18px;max-width:540px">Every Kroneberg & Co. intelligence brief follows an identical, uncompromising structure. Consistent depth. Consistent standards. Consistent authority.</p>
       </div>
       <div class="rm rv rv-d1">
         <div class="rm-head">
@@ -1410,7 +1406,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
   <div class="about-hero">
     <div class="eyebrow" style="margin-bottom:22px"><div class="eyebrow-ln"></div>Who We Are</div>
     <h1 class="about-tagline">Built by who have<br>been <em>inside.</em></h1>
-    <p class="about-lead">NicheLab is a digitally distributed intelligence infrastructure providing institutional-grade research. With a global research coordination network spanning London, Dubai, Lisbon, Los Angeles, Tokyo, and The Hague, we deliver strategic market opportunity mapping for professional investors.</p>
+    <p class="about-lead">Kroneberg & Co. is a digitally distributed intelligence infrastructure providing institutional-grade research. With a global research coordination network spanning London, Dubai, Lisbon, Los Angeles, Tokyo, and The Hague, we deliver strategic market opportunity mapping for professional investors.</p>
     <div style="display:flex;gap:12px;flex-wrap:wrap">
       <button class="btn-gold" onclick="go('home','membership-tiers')">View Membership Plans →</button>
       <button class="btn-ol" onclick="go('contact')">Request a Briefing</button>
@@ -1424,9 +1420,9 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
         <h2 class="about-m-head">The methodology matters more than the biography.</h2>
       </div>
       <div class="about-m-body">
-        <p>NicheLab was not built by those who simply read about markets. It was built around the perspective of a system that spent years working within them — and recognised what independent founders and investors were consistently missing.</p>
+        <p>Kroneberg & Co. was not built by those who simply read about markets. It was built around the perspective of a system that spent years working within them — and recognised what independent founders and investors were consistently missing.</p>
         <p>The platform draws on experience spanning global strategy consulting, venture capital, institutional market research and product development. These perspectives reflect years spent producing the kinds of analysis traditionally delivered to institutional clients at significant cost — but rarely accessible to independent builders at any price point.</p>
-        <p>NicheLab exists because its founders understood what institutional-grade intelligence looks like — and chose to make that level of insight accessible at a different price point.</p>
+        <p>Kroneberg & Co. exists because its founders understood what institutional-grade intelligence looks like — and chose to make that level of insight accessible at a different price point.</p>
         <p><em>Institutional-grade intelligence, re-engineered for independent builders.</em></p>
       </div>
     </div>
@@ -1517,8 +1513,8 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
   </div>
 
   <div class="addr-notice" style="max-width:1200px;margin:0 auto;padding:28px 56px 60px">
-    <p><strong>Discretion Policy:</strong> All NicheLab correspondence locations operate within secure, controlled-access residential or commercial estates. For operational security and privacy protection purposes, specific unit identifiers, internal building numbers, or detailed facility information are not publicly disclosed. Access to any correspondence location is strictly restricted. Visitors are not received without a prior written appointment confirmation. Physical mail without a confirmed reference identifier will not be accepted. All official correspondence should be initiated through official contact channels before any physical correspondence is attempted.</p>
-    <p style="margin-top:10px">The geographic references above represent regional research coverage areas and correspondence coordination points. Unless explicitly stated in official corporate filings, such locations should not be interpreted as permanent operational offices, registered corporate branches, or legal headquarters. NicheLab operates as a distributed digital research platform coordinating analytical activities through remote infrastructure, research partners, and secure digital communication systems across multiple jurisdictions.</p>
+    <p><strong>Discretion Policy:</strong> All Kroneberg & Co. correspondence locations operate within secure, controlled-access residential or commercial estates. For operational security and privacy protection purposes, specific unit identifiers, internal building numbers, or detailed facility information are not publicly disclosed. Access to any correspondence location is strictly restricted. Visitors are not received without a prior written appointment confirmation. Physical mail without a confirmed reference identifier will not be accepted. All official correspondence should be initiated through official contact channels before any physical correspondence is attempted.</p>
+    <p style="margin-top:10px">The geographic references above represent regional research coverage areas and correspondence coordination points. Unless explicitly stated in official corporate filings, such locations should not be interpreted as permanent operational offices, registered corporate branches, or legal headquarters. Kroneberg & Co. operates as a distributed digital research platform coordinating analytical activities through remote infrastructure, research partners, and secure digital communication systems across multiple jurisdictions.</p>
   </div>
 
 </div><!-- /about -->
@@ -1533,18 +1529,18 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
     </div>
 <div class="lpanel on" id="lp-terms">
   <h1>Terms of Service</h1>
-  <p class="legal-dt">Last updated: January 1, 2025 &nbsp;·&nbsp; NicheLab Research Ltd.</p>
+  <p class="legal-dt">Last updated: January 1, 2025 &nbsp;·&nbsp; Kroneberg & Co.</p>
 
-  <p>These Terms of Service, together with any policies, licenses, disclaimers, and supplemental terms incorporated by reference (collectively, the “Terms”), constitute a legally binding agreement between NicheLab Research Ltd. (“NicheLab”, “Company”, “we”, “our”, or “us”) and any individual, entity, organization, representative, or automated system accessing or using the Platform (“User”, “you”, or “your”).</p>
+  <p>These Terms of Service, together with any policies, licenses, disclaimers, and supplemental terms incorporated by reference (collectively, the “Terms”), constitute a legally binding agreement between Kroneberg & Co. (“Kroneberg & Co.”, “Company”, “we”, “our”, or “us”) and any individual, entity, organization, representative, or automated system accessing or using the Platform (“User”, “you”, or “your”).</p>
 
-  <p>By accessing, browsing, registering for, subscribing to, downloading from, interacting with, or otherwise using any part of the NicheLab platform, services, reports, datasets, APIs, exports, analytical systems, or related technologies (collectively, the “Platform”), you acknowledge that you have read, understood, and agreed to be bound by these Terms. If you do not agree, you must immediately discontinue use of the Platform.</p>
+  <p>By accessing, browsing, registering for, subscribing to, downloading from, interacting with, or otherwise using any part of the Kroneberg & Co. platform, services, reports, datasets, APIs, exports, analytical systems, or related technologies (collectively, the “Platform”), you acknowledge that you have read, understood, and agreed to be bound by these Terms. If you do not agree, you must immediately discontinue use of the Platform.</p>
 
   <p>The Platform may operate through web interfaces, APIs, databases, cloud infrastructure, distributed data storage systems, algorithmic analytics engines, automated research systems, machine-readable outputs, and artificial intelligence-assisted methodologies.</p>
 
   <hr>
 
   <h2>1. Nature of the Platform</h2>
-  <p>NicheLab operates as a digital research and informational intelligence platform designed to provide structured informational content relating to entrepreneurial ecosystems, market opportunities, technological developments, strategic business insights, and related commercial subject matter.</p>
+  <p>Kroneberg & Co. operates as a digital research and informational intelligence platform designed to provide structured informational content relating to entrepreneurial ecosystems, market opportunities, technological developments, strategic business insights, and related commercial subject matter.</p>
 
   <p>The Platform may provide, generate, aggregate, transform, or distribute informational materials including:</p>
   <ul>
@@ -1585,7 +1581,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
     <li>regulated professional advisory services.</li>
   </ul>
 
-  <p>NicheLab is not registered, licensed, or authorized as:</p>
+  <p>Kroneberg & Co. is not registered, licensed, or authorized as:</p>
   <ul>
     <li>an investment advisor</li>
     <li>a broker-dealer</li>
@@ -1613,7 +1609,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
     <li>model-based assumptions.</li>
   </ul>
 
-  <p>NicheLab makes no representation or warranty that any material:</p>
+  <p>Kroneberg & Co. makes no representation or warranty that any material:</p>
   <ul>
     <li>predicts future market performance</li>
     <li>guarantees business success</li>
@@ -1648,12 +1644,12 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
     <li>internal implementation.</li>
   </ul>
 
-  <p>NicheLab is not responsible for financial loss, business failure, lost opportunity, reputational harm, operational setbacks, or adverse commercial outcomes resulting directly or indirectly from your decisions or actions.</p>
+  <p>Kroneberg & Co. is not responsible for financial loss, business failure, lost opportunity, reputational harm, operational setbacks, or adverse commercial outcomes resulting directly or indirectly from your decisions or actions.</p>
 
   <hr>
 
   <h2>6. Membership, Billing, and Subscription Terms</h2>
-  <p>NicheLab may offer membership or subscription access tiers, including:</p>
+  <p>Kroneberg & Co. may offer membership or subscription access tiers, including:</p>
   <ul>
     <li>Starter: $36/month or $299/year — 10 research briefs per week, full 15-section methodology, PDF and Word export</li>
     <li>Pro: $84/month or $699/year — unrestricted global intelligence access, Pro-tier executive summaries, priority algorithmic processing, direct analyst correspondence, and advance intelligence on emerging verticals.</li>
@@ -1663,7 +1659,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
 
   <p>All subscriptions are billed through Stripe or another designated payment provider. Subscriptions renew automatically on the selected billing cycle unless cancelled in accordance with Platform procedures. Fees are charged in advance.</p>
 
-  <p>Unless required by mandatory applicable law, NicheLab does not provide pro-rated refunds, partial refunds, retroactive downgrades, or reimbursement for unused time.</p>
+  <p>Unless required by mandatory applicable law, Kroneberg & Co. does not provide pro-rated refunds, partial refunds, retroactive downgrades, or reimbursement for unused time.</p>
 
   <p>You are responsible for maintaining accurate billing details.</p>
 
@@ -1691,7 +1687,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
     <li>data pipelines</li>
   </ul>
 
-  <p>is owned by, controlled by, or licensed to NicheLab and protected by copyright, database rights, trade secret law, and other applicable intellectual property laws.</p>
+  <p>is owned by, controlled by, or licensed to Kroneberg & Co. and protected by copyright, database rights, trade secret law, and other applicable intellectual property laws.</p>
 
   <p>You are granted a limited, non-exclusive, non-transferable, non-sublicensable, revocable license to access and use the Platform solely for personal use or internal business evaluation.</p>
 
@@ -1738,9 +1734,9 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
   <hr>
 
   <h2>9. Competitive Use Restriction and Data Moat Protection</h2>
-  <p>The Platform’s materials, datasets, reports, and analytical outputs constitute proprietary informational assets and part of NicheLab’s protected data infrastructure.</p>
+  <p>The Platform’s materials, datasets, reports, and analytical outputs constitute proprietary informational assets and part of Kroneberg & Co.’s protected data infrastructure.</p>
 
-  <p>You may not use the Platform or its outputs in any manner that would replicate, substitute for, emulate, undermine, or compete with NicheLab.</p>
+  <p>You may not use the Platform or its outputs in any manner that would replicate, substitute for, emulate, undermine, or compete with Kroneberg & Co..</p>
 
   <p>Prohibited uses include:</p>
   <ul>
@@ -1774,7 +1770,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
 
   <p>Where applicable, Platform data is protected under database rights legislation and similar legal protections.</p>
 
-  <p>NicheLab reserves the right to deploy technological countermeasures and monitoring systems to prevent unauthorized extraction or inference attacks.</p>
+  <p>Kroneberg & Co. reserves the right to deploy technological countermeasures and monitoring systems to prevent unauthorized extraction or inference attacks.</p>
 
   <hr>
 
@@ -1796,7 +1792,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
     <li>violate applicable law, export controls, privacy law, database rights, or intellectual property law.</li>
   </ul>
 
-  <p>NicheLab may suspend, restrict, investigate, or terminate accounts engaged in prohibited conduct, with or without notice where legally permissible.</p>
+  <p>Kroneberg & Co. may suspend, restrict, investigate, or terminate accounts engaged in prohibited conduct, with or without notice where legally permissible.</p>
 
   <hr>
 
@@ -1827,7 +1823,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
   <hr>
 
   <h2>13. Data Accuracy, Forecasting, and Third-Party Sources</h2>
-  <p>NicheLab does not warrant that information on the Platform is complete, accurate, current, continuously available, or fit for a particular purpose.</p>
+  <p>Kroneberg & Co. does not warrant that information on the Platform is complete, accurate, current, continuously available, or fit for a particular purpose.</p>
 
   <p>Outputs may be affected by:</p>
   <ul>
@@ -1844,7 +1840,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
 
   <p>Certain Platform outputs may include forward-looking statements, scenario models, forecasting techniques, or probabilistic estimations. These are inherently speculative.</p>
 
-  <p>The Platform may incorporate data from third-party providers or public sources. NicheLab does not guarantee the accuracy, legality, completeness, or continued availability of such third-party data.</p>
+  <p>The Platform may incorporate data from third-party providers or public sources. Kroneberg & Co. does not guarantee the accuracy, legality, completeness, or continued availability of such third-party data.</p>
 
   <hr>
 
@@ -1869,7 +1865,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
     <li>create unapproved downstream redistribution systems.</li>
   </ul>
 
-  <p>NicheLab may suspend, restrict, or revoke API access at its sole discretion where misuse, security risk, suspicious behavior, or legal risk is detected.</p>
+  <p>Kroneberg & Co. may suspend, restrict, or revoke API access at its sole discretion where misuse, security risk, suspicious behavior, or legal risk is detected.</p>
 
   <hr>
 
@@ -1886,16 +1882,16 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
 
   <p>No digital infrastructure can guarantee absolute security.</p>
 
-  <p>You are responsible for protecting your credentials, devices, systems, authentication tokens, and account recovery methods. NicheLab is not responsible for losses caused by compromised credentials or insecure user-side systems.</p>
+  <p>You are responsible for protecting your credentials, devices, systems, authentication tokens, and account recovery methods. Kroneberg & Co. is not responsible for losses caused by compromised credentials or insecure user-side systems.</p>
 
   <hr>
 
   <h2>16. Platform Availability, Changes, and Termination</h2>
-  <p>The Platform is provided on an “as is” and “as available” basis. NicheLab does not guarantee uninterrupted, secure, or error-free availability.</p>
+  <p>The Platform is provided on an “as is” and “as available” basis. Kroneberg & Co. does not guarantee uninterrupted, secure, or error-free availability.</p>
 
-  <p>NicheLab may modify, suspend, restrict, discontinue, replace, restructure, or remove any service, feature, plan, export, data category, infrastructure component, or functionality at any time.</p>
+  <p>Kroneberg & Co. may modify, suspend, restrict, discontinue, replace, restructure, or remove any service, feature, plan, export, data category, infrastructure component, or functionality at any time.</p>
 
-  <p>NicheLab may terminate or restrict access where:</p>
+  <p>Kroneberg & Co. may terminate or restrict access where:</p>
   <ul>
     <li>these Terms are violated</li>
     <li>misuse of data occurs</li>
@@ -1910,7 +1906,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
   <hr>
 
   <h2>17. Force Majeure</h2>
-  <p>NicheLab is not liable for delay, disruption, or failure of performance caused by events beyond its reasonable control, including:</p>
+  <p>Kroneberg & Co. is not liable for delay, disruption, or failure of performance caused by events beyond its reasonable control, including:</p>
   <ul>
     <li>infrastructure failure</li>
     <li>cyber incidents</li>
@@ -1931,7 +1927,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
   <hr>
 
   <h2>18. Indemnification</h2>
-  <p>You agree to indemnify, defend, and hold harmless NicheLab and its affiliates, officers, directors, employees, contractors, licensors, vendors, processors, infrastructure providers, and agents from and against claims, liabilities, damages, losses, costs, and expenses, including reasonable legal fees, arising from:</p>
+  <p>You agree to indemnify, defend, and hold harmless Kroneberg & Co. and its affiliates, officers, directors, employees, contractors, licensors, vendors, processors, infrastructure providers, and agents from and against claims, liabilities, damages, losses, costs, and expenses, including reasonable legal fees, arising from:</p>
   <ul>
     <li>your misuse of the Platform</li>
     <li>your breach of these Terms</li>
@@ -1944,7 +1940,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
   <hr>
 
   <h2>19. Limitation of Liability</h2>
-  <p>To the fullest extent permitted by law, NicheLab and its affiliates shall not be liable for:</p>
+  <p>To the fullest extent permitted by law, Kroneberg & Co. and its affiliates shall not be liable for:</p>
   <ul>
     <li>direct damages</li>
     <li>indirect damages</li>
@@ -1970,14 +1966,14 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
   <hr>
 
   <h2>20. Maximum Aggregate Liability</h2>
-  <p>To the extent liability cannot be fully excluded, NicheLab’s maximum aggregate liability shall not exceed the total amount actually paid by you to NicheLab during the twelve (12) months preceding the event giving rise to the claim.</p>
+  <p>To the extent liability cannot be fully excluded, Kroneberg & Co.’s maximum aggregate liability shall not exceed the total amount actually paid by you to Kroneberg & Co. during the twelve (12) months preceding the event giving rise to the claim.</p>
 
   <p>If no payment has been made, maximum liability shall be zero to the fullest extent permitted by law.</p>
 
   <hr>
 
   <h2>21. Enterprise Liability Shield</h2>
-  <p>To the maximum extent permitted by law, NicheLab shall not be liable for losses arising from:</p>
+  <p>To the maximum extent permitted by law, Kroneberg & Co. shall not be liable for losses arising from:</p>
   <ul>
     <li>reliance on informational insights</li>
     <li>startup creation</li>
@@ -1995,7 +1991,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
   <hr>
 
   <h2>22. Copyright Complaints</h2>
-  <p>NicheLab respects intellectual property rights. If you believe protected material has been used on the Platform without authorization, you may submit a notice including:</p>
+  <p>Kroneberg & Co. respects intellectual property rights. If you believe protected material has been used on the Platform without authorization, you may submit a notice including:</p>
   <ul>
     <li>identification of the protected work</li>
     <li>identification of the allegedly infringing material</li>
@@ -2005,7 +2001,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
     <li>a statement of accuracy and authority where legally required.</li>
   </ul>
 
-  <p>NicheLab may investigate and remove or restrict access to the relevant material.</p>
+  <p>Kroneberg & Co. may investigate and remove or restrict access to the relevant material.</p>
 
   <hr>
 
@@ -2022,7 +2018,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
     <li>tax and commercial law.</li>
   </ul>
 
-  <p>NicheLab does not represent that the Platform is lawful or suitable in every jurisdiction.</p>
+  <p>Kroneberg & Co. does not represent that the Platform is lawful or suitable in every jurisdiction.</p>
 
   <hr>
 
@@ -2048,9 +2044,9 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
   <hr>
 
   <h2>26. Injunctive Relief</h2>
-  <p>You acknowledge that unauthorized use of Platform data, systems, reports, or intellectual property may cause irreparable harm to NicheLab for which monetary damages may be insufficient.</p>
+  <p>You acknowledge that unauthorized use of Platform data, systems, reports, or intellectual property may cause irreparable harm to Kroneberg & Co. for which monetary damages may be insufficient.</p>
 
-  <p>NicheLab may therefore seek injunctive relief, equitable relief, protective orders, temporary restraining orders, specific performance, and other urgent judicial remedies in addition to any other available remedies.</p>
+  <p>Kroneberg & Co. may therefore seek injunctive relief, equitable relief, protective orders, temporary restraining orders, specific performance, and other urgent judicial remedies in addition to any other available remedies.</p>
 
   <hr>
 
@@ -2065,14 +2061,14 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
   <hr>
 
   <h2>29. Amendments</h2>
-  <p>NicheLab may amend, update, restate, replace, or modify these Terms at any time. Updated versions may be published on the Platform and, where appropriate, communicated by email or account notice.</p>
+  <p>Kroneberg & Co. may amend, update, restate, replace, or modify these Terms at any time. Updated versions may be published on the Platform and, where appropriate, communicated by email or account notice.</p>
 
   <p>Continued use of the Platform after the effective date of revised Terms constitutes acceptance of the revised version.</p>
 
   <hr>
 
   <h2>30. Entire Agreement</h2>
-  <p>These Terms constitute the entire agreement between you and NicheLab concerning access to and use of the Platform and supersede prior understandings relating to the same subject matter, except where an additional written agreement expressly supplements these Terms.</p>
+  <p>These Terms constitute the entire agreement between you and Kroneberg & Co. concerning access to and use of the Platform and supersede prior understandings relating to the same subject matter, except where an additional written agreement expressly supplements these Terms.</p>
 
   <hr>
 
@@ -2082,9 +2078,9 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
 
 <div class="lpanel" id="lp-privacy">
   <h1>Privacy Policy</h1>
-  <p class="legal-dt">Last updated: January 1, 2025 &nbsp;·&nbsp; NicheLab Research Ltd.</p>
+  <p class="legal-dt">Last updated: January 1, 2025 &nbsp;·&nbsp; Kroneberg & Co.</p>
 
-  <p>NicheLab is committed to processing personal data with care, discretion, and in accordance with applicable data protection law, including where applicable the General Data Protection Regulation (EU) 2016/679 (“GDPR”).</p>
+  <p>Kroneberg & Co. is committed to processing personal data with care, discretion, and in accordance with applicable data protection law, including where applicable the General Data Protection Regulation (EU) 2016/679 (“GDPR”).</p>
 
   <p>This Privacy Policy explains what personal data we collect, how we use it, the legal bases for processing, how long we retain it, who we share it with, and the rights available to you.</p>
 
@@ -2133,7 +2129,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
   </ul>
 
   <h3>1.5 Payment Metadata</h3>
-  <p>Billing and payment processing is handled by Stripe or another designated payment processor. NicheLab may retain only transaction-related metadata such as:</p>
+  <p>Billing and payment processing is handled by Stripe or another designated payment processor. Kroneberg & Co. may retain only transaction-related metadata such as:</p>
   <ul>
     <li>payment status</li>
     <li>transaction identifiers</li>
@@ -2142,7 +2138,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
     <li>billing event records.</li>
   </ul>
 
-  <p>NicheLab does not store full payment card details unless explicitly stated otherwise through lawful payment processing arrangements.</p>
+  <p>Kroneberg & Co. does not store full payment card details unless explicitly stated otherwise through lawful payment processing arrangements.</p>
 
   <hr>
 
@@ -2168,7 +2164,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
   <ul>
     <li>performance of a contract</li>
     <li>compliance with legal obligations</li>
-    <li>legitimate interests pursued by NicheLab</li>
+    <li>legitimate interests pursued by Kroneberg & Co.</li>
     <li>consent, where consent is specifically required.</li>
   </ul>
 
@@ -2187,7 +2183,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
     <li>security logging.</li>
   </ul>
 
-  <p>Although NicheLab uses reasonable technical and organizational safeguards, no digital system can guarantee absolute security.</p>
+  <p>Although Kroneberg & Co. uses reasonable technical and organizational safeguards, no digital system can guarantee absolute security.</p>
 
   <hr>
 
@@ -2206,7 +2202,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
   <h3>5.4 Authorities and Legal Recipients</h3>
   <p>Courts, regulators, law enforcement agencies, or governmental authorities where disclosure is required by law, regulation, or binding legal process.</p>
 
-  <p>NicheLab does not sell, rent, or trade your personal data.</p>
+  <p>Kroneberg & Co. does not sell, rent, or trade your personal data.</p>
 
   <hr>
 
@@ -2228,7 +2224,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
   <hr>
 
   <h2>8. Cookies and Similar Technologies</h2>
-  <p>NicheLab may use cookies, session identifiers, and related technologies for:</p>
+  <p>Kroneberg & Co. may use cookies, session identifiers, and related technologies for:</p>
   <ul>
     <li>authentication</li>
     <li>session management</li>
@@ -2246,14 +2242,14 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
     <li>limited analytics or performance-monitoring technologies where lawfully used.</li>
   </ul>
 
-  <p>Where stated, NicheLab uses only technically essential cookies and does not use advertising cookies, third-party ad networks, or cross-site behavioral advertising technologies unless separately disclosed and lawfully consented to where required.</p>
+  <p>Where stated, Kroneberg & Co. uses only technically essential cookies and does not use advertising cookies, third-party ad networks, or cross-site behavioral advertising technologies unless separately disclosed and lawfully consented to where required.</p>
 
 <p>You may manage cookie preferences through your browser settings, although disabling certain cookies may impair Platform functionality.</p>
 
   <hr>
 
   <h2>9. Minors</h2>
-  <p>NicheLab does not knowingly collect personal data from, or provide services to, individuals under the age of 18. If we become aware that such data has been collected unlawfully, we may take steps to delete it.</p>
+  <p>Kroneberg & Co. does not knowingly collect personal data from, or provide services to, individuals under the age of 18. If we become aware that such data has been collected unlawfully, we may take steps to delete it.</p>
 
   <hr>
 
@@ -2275,12 +2271,12 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
   <hr>
 
   <h2>11. Data Controller</h2>
-  <p>Unless otherwise specified, NicheLab Research Ltd. is the data controller for personal data processed through the Platform.</p>
+  <p>Unless otherwise specified, Kroneberg & Co. is the data controller for personal data processed through the Platform.</p>
 
   <hr>
 
   <h2>12. Policy Updates</h2>
-  <p>NicheLab may update this Privacy Policy from time to time to reflect changes in law, infrastructure, data practices, or operational requirements. Updated versions may be published on the Platform and, where appropriate, communicated by email or account notice.</p>
+  <p>Kroneberg & Co. may update this Privacy Policy from time to time to reflect changes in law, infrastructure, data practices, or operational requirements. Updated versions may be published on the Platform and, where appropriate, communicated by email or account notice.</p>
   <p>Continued use of the Platform after the effective date of an updated Privacy Policy constitutes acknowledgment of the revised policy to the extent permitted by law.</p>
 
   <hr>
@@ -2326,7 +2322,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
   </div>
 </div>
     <div class="ft-bot">
-      <div class="ft-copy">© 2025 NicheLab Research Ltd. · Global Research Infrastructure · All rights reserved</div>
+      <div class="ft-copy">© 2025 Kroneberg & Co. · Global Research Infrastructure · All rights reserved</div>
       <div class="ft-ll">
         <button onclick="go('legal');showLegal('terms')">Terms</button>
         <button onclick="go('legal');showLegal('privacy')">Privacy</button>
@@ -2482,7 +2478,7 @@ async function submitContact() {
     ['fc-n','fc-e','fc-o','fc-m'].forEach(id=>document.getElementById(id).value='');
     document.getElementById('fc-s').value='';
   } catch(err) {
-    setFb('err','An error occurred. Please email us directly at hello@nichelab.io');
+    setFb('err','An error occurred. Please email us directly at hello@kronebergco.com');
     toast('err','\u2715','Failed to send');
   } finally { btn.disabled=false; lbl.textContent='Send Enquiry'; arr.textContent='\u2192'; }
 }

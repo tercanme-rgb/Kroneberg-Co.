@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NicheLab — Admin Console</title>
+<title>Kroneberg &amp; Co. — Admin Console</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Syne+Mono&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -28,7 +28,8 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 #preview-panel{grid-row:2;background:var(--surface);border-left:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
 #console-bar{grid-column:1/-1;background:var(--bg);border-top:1px solid var(--border);overflow:hidden;display:flex;flex-direction:column}
 /* ── Topbar ── */
-.logo{font-family:var(--font-head);font-weight:800;font-size:15px;letter-spacing:0.5px;color:var(--accent)}
+.logo{display:flex;align-items:center;gap:10px;color:var(--accent);font-family:var(--font-head);font-weight:800;font-size:15px;letter-spacing:0.5px}
+.logo img{height:30px;width:auto;object-fit:contain;display:block}
 .logo span{color:var(--text2);font-weight:400}
 .topbar-spacer{flex:1}
 .status-dot{width:7px;height:7px;border-radius:50%;background:var(--text3)}
@@ -147,7 +148,7 @@ label{display:block;font-size:10px;font-family:var(--font-mono);color:var(--text
 
   <!-- ── Topbar ── -->
   <div id="topbar">
-    <div class="logo">NicheLab <span>/ Admin</span></div>
+    <div class="logo"><img src="kroneberg-logo.png" alt="Kroneberg &amp; Co. logo" /><span>/ Admin</span></div>
     <div id="supabase-status">
       <div class="status-dot" id="sb-dot"></div>
       <span id="sb-label">Not connected</span>
@@ -634,7 +635,7 @@ async function callProvider(provider, key, systemPrompt, userPrompt, temperature
   if(provider==='openrouter'){
     const res = await fetch('https://openrouter.ai/api/v1/chat/completions',{
       method:'POST',
-      headers:{'Content-Type':'application/json','Authorization':`Bearer ${key}`,'HTTP-Referer':'https://nichelab.io','X-Title':'NicheLab'},
+      headers:{'Content-Type':'application/json','Authorization':`Bearer ${key}`,'HTTP-Referer':'https://nichelab.io','X-Title':'Kroneberg & Co.'},
       body:JSON.stringify({
         model:'meta-llama/llama-3.3-70b-instruct',
         messages:[...(systemPrompt?[{role:'system',content:systemPrompt}]:[]),{role:'user',content:userPrompt}],
@@ -1377,7 +1378,7 @@ function exportPDF(){
 
   html2pdf().set({
     margin:[20,20,20,20],
-    filename:`NicheLab_${item.niche.replace(/[^a-z0-9]/gi,'_').substring(0,40)}_${item.analystCode}.pdf`,
+    filename:`Kroneberg_and_Co_${item.niche.replace(/[^a-z0-9]/gi,'_').substring(0,40)}_${item.analystCode}.pdf`,
     image:{type:'jpeg',quality:0.97},
     html2canvas:{scale:2,useCORS:true},
     jsPDF:{unit:'mm',format:'a4',orientation:'portrait'},
@@ -1755,7 +1756,7 @@ function init(){
   }
 
   const totalKeys = Object.values(state.keys).flat().filter(k=>k.trim()).length;
-  log(`NicheLab Admin Console v2.0 initialized`, 'accent');
+  log(`Kroneberg & Co. Admin Console v2.0 initialized`, 'accent');
   log(`API keys loaded: ${totalKeys} keys across providers`, totalKeys>0?'success':'warning');
   if(!sbUrl) log('No Supabase connection — open Settings to configure', 'warning');
 }

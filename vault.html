@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NicheLab — Intelligence Vault</title>
+  <title>Kroneberg & Co. — Intelligence Vault</title>
   <link rel="icon" href="data:,">
 
   <!-- Supabase v2 CDN -->
@@ -99,34 +99,12 @@
       text-decoration: none;
     }
 
-    .brand-mark {
-      width: 36px;
-      height: 36px;
-      border-radius: 8px;
-      background: #11110f;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--mono);
-      font-size: 1.45rem;
-      font-weight: 500;
-      line-height: 1;
-      color: #c59a17;
+    .brand-logo {
+      height: 42px;
+      width: auto;
+      object-fit: contain;
+      display: block;
       flex-shrink: 0;
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.04);
-    }
-
-    .brand-name {
-      font-family: Georgia, 'Times New Roman', serif;
-      font-size: 1.08rem;
-      font-weight: 400;
-      color: #24211d;
-      letter-spacing: -0.015em;
-      line-height: 1;
-    }
-    .brand-name em {
-      color: inherit;
-      font-style: normal;
     }
 
     /* Nav vault title — aligned to homepage design language */
@@ -1151,8 +1129,7 @@
   ════════════════════════════════════════════ -->
   <nav>
     <a class="nav-brand" href="index.html">
-      <div class="brand-mark">N</div>
-      <span class="brand-name">Niche<em>Lab</em></span>
+      <img class="brand-logo" src="kroneberg-logo.png" alt="Kroneberg &amp; Co. logo" />
     </a>
 
     <span class="nav-vault-title">Intelligence Vault</span>
@@ -1300,7 +1277,7 @@
         </div>
 
         <div style="font-size:0.68rem;color:var(--text-2);line-height:1.75;border-left:2px solid var(--border-gold);padding-left:1rem;">
-          Submit a direct briefing request to the NicheLab analyst team. Requests are reviewed within 48 hours. Please be specific about the market, sector, or intelligence gap you wish to investigate.
+          Submit a direct briefing request to the Kroneberg & Co. analyst team. Requests are reviewed within 48 hours. Please be specific about the market, sector, or intelligence gap you wish to investigate.
         </div>
 
         <form id="analyst-form" style="display:flex;flex-direction:column;gap:1.2rem;"
@@ -1351,7 +1328,7 @@
         <div>
           <div class="modal-title">My Account</div>
           <div class="modal-meta" style="margin-top:0.6rem">
-            <span class="modal-meta-tag">NicheLab Intelligence Platform</span>
+            <span class="modal-meta-tag">Kroneberg & Co. Intelligence Platform</span>
             <span class="modal-meta-tag" id="acct-tier-meta">—</span>
           </div>
         </div>
@@ -1422,7 +1399,7 @@
   <div class="bottom-strip">
     <div class="strip-group">
       <div class="status-dot"></div>
-      <span class="strip-item">NicheLab Intelligence Platform</span>
+      <span class="strip-item">Kroneberg & Co. Intelligence Platform</span>
       <div class="strip-sep"></div>
       <span class="strip-item">Secure Session Active</span>
     </div>
@@ -1696,7 +1673,7 @@
         if (countEl) countEl.textContent = `${_allReports.length} reports`;
 
       } catch (err) {
-        console.error('[NicheLab] Report fetch error:', err);
+        console.error('[Kroneberg & Co.] Report fetch error:', err);
         grid.innerHTML = `
           <div class="grid-state" style="color:var(--error)">
             Failed to load reports — ${escHtml(err.message)}
@@ -2189,7 +2166,7 @@
       if (!(_isAdmin || _userTier === 'starter' || _userTier === 'pro')) return;
       const modalBody = document.getElementById('modal-body');
       const printable = buildPrintableReport(
-        escHtml(modalBody.dataset.printTitle || 'NicheLab Report'),
+        escHtml(modalBody.dataset.printTitle || 'Kroneberg & Co. Report'),
         escHtml(modalBody.dataset.printMeta || ''),
         modalBody.dataset.printContent || modalBody.innerHTML
       );
@@ -2246,7 +2223,7 @@
       if (!subject || !message) return;
 
       const userEmail   = _currentUser ? _currentUser.email : '';
-      const mailSubject = encodeURIComponent(`[NicheLab Analyst Line] ${subject}`);
+      const mailSubject = encodeURIComponent(`[Kroneberg & Co. Analyst Line] ${subject}`);
       const mailBody    = encodeURIComponent(
         `From: ${userEmail}\n\n${message}`
       );

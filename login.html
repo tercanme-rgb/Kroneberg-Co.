@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NicheLab — Sign In</title>
+  <title>Kroneberg &amp; Co. — Sign In</title>
 
   <!-- Supabase v2 CDN -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -66,17 +66,16 @@
     }
 
     .nav-logo {
-      font-family: var(--sans);
-      font-size: 1.05rem;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--text);
-      text-decoration: none;
+      display:flex;
+      align-items:center;
+      text-decoration:none;
     }
 
-    .nav-logo span {
-      color: var(--gold);
+    .nav-logo img {
+      height: 40px;
+      width: auto;
+      object-fit: contain;
+      display:block;
     }
 
     .nav-links {
@@ -361,7 +360,7 @@
 
   <!-- ── NAVIGATION ──────────────────────────────────────────────── -->
   <nav>
-    <a class="nav-logo" href="#">Niche<span>Lab</span></a>
+    <a class="nav-logo" href="index.html"><img src="kroneberg-logo.png" alt="Kroneberg &amp; Co. logo" /></a>
     <ul class="nav-links">
       <li><a href="index.html#pricing">Pricing</a></li>
       <li><a href="index.html#about">About</a></li>
@@ -414,7 +413,7 @@
         <p id="status-msg" role="alert" aria-live="polite"></p>
 
         <div style="margin-top:16px;text-align:center;font-size:0.72rem;color:var(--muted);line-height:1.6;">
-          New to NicheLab? <a href="setup.html?tier=free" style="color:var(--text);text-decoration:underline;text-underline-offset:2px;font-weight:600;">Create Free Account</a>
+          New to Kroneberg &amp; Co.? <a href="setup.html?tier=free" style="color:var(--text);text-decoration:underline;text-underline-offset:2px;font-weight:600;">Create Free Account</a>
         </div>
       </div>
 
@@ -428,7 +427,7 @@
 
   <!-- ── BOTTOM BAR ──────────────────────────────────────────────── -->
   <div class="bottom-bar">
-    <p>© 2025 NicheLab Intelligence. All rights reserved.</p>
+    <p>© 2025 Kroneberg &amp; Co. Intelligence. All rights reserved.</p>
     <span class="ticker" id="live-time"></span>
   </div>
 
