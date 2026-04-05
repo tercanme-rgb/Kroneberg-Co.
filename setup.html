@@ -1,222 +1,817 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Complete Setup</title>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <style>
-    :root{
-      --bg:#0b0f14;
-      --card:#111823;
-      --line:rgba(255,255,255,.08);
-      --text:#f5f7fb;
-      --muted:#9aa4b2;
-      --accent:#c8a96b;
-      --ok:#1f9d55;
-      --err:#d64545;
-    }
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family:Arial, Helvetica, sans-serif;
-      background:var(--bg);
-      color:var(--text);
-      min-height:100vh;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:24px;
-    }
-    .card{
-      width:100%;
-      max-width:560px;
-      background:var(--card);
-      border:1px solid var(--line);
-      border-radius:18px;
-      padding:28px;
-      box-shadow:0 10px 40px rgba(0,0,0,.25);
-    }
-    h1{
-      margin:0 0 10px;
-      font-size:30px;
-      line-height:1.1;
-    }
-    p{
-      margin:0 0 18px;
-      color:var(--muted);
-      line-height:1.55;
-    }
-    .row{margin:0 0 14px}
-    label{
-      display:block;
-      margin:0 0 8px;
-      font-size:13px;
-      color:var(--muted);
-    }
-    input{
-      width:100%;
-      padding:14px 16px;
-      border-radius:12px;
-      border:1px solid var(--line);
-      background:#0d141d;
-      color:var(--text);
-      outline:none;
-      font-size:15px;
-    }
-    input[disabled]{opacity:.7}
-    button{
-      width:100%;
-      border:0;
-      border-radius:12px;
-      padding:14px 16px;
-      font-size:15px;
-      font-weight:700;
-      cursor:pointer;
-      background:var(--accent);
-      color:#111;
-      margin-top:8px;
-    }
-    .status{
-      margin-top:16px;
-      padding:12px 14px;
-      border-radius:12px;
-      display:none;
-      font-size:14px;
-      line-height:1.5;
-    }
-    .status.show{display:block}
-    .status.ok{background:rgba(31,157,85,.12); color:#c9f2d7; border:1px solid rgba(31,157,85,.35)}
-    .status.err{background:rgba(214,69,69,.12); color:#ffd5d5; border:1px solid rgba(214,69,69,.35)}
-    .meta{
-      margin-top:16px;
-      font-size:12px;
-      color:var(--muted);
-      word-break:break-word;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Account Configuration — Kroneberg & Co.</title>
+
+<!-- ─── Supabase v2 ─────────────────────────────────────── -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+
+<style>
+/* ═══════════════════════════════════════════════════════════
+   RESET & BASE
+═══════════════════════════════════════════════════════════ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg:        #F5F5F7;
+  --surface:   #FFFFFF;
+  --border:    #D1D1D6;
+  --border-dk: #A0A0A8;
+  --text-pri:  #0A0A0C;
+  --text-sec:  #4A4A52;
+  --text-ter:  #8A8A92;
+  --accent:    #0A0A0C;
+  --accent-dk: #000000;
+  --btn-dis:   #C7C7CC;
+  --error:     #C0392B;
+  --link:      #0A0A0C;
+}
+
+html, body {
+  min-height: 100%;
+  background: var(--bg);
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 13px;
+  color: var(--text-pri);
+  -webkit-font-smoothing: antialiased;
+}
+
+.page-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 16px;
+}
+
+.wordmark {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin-bottom:28px;
+}
+.brand-lockup{display:flex;align-items:center;gap:10px;text-decoration:none}
+.brand-lockup--tight{gap:8px}
+.brand-symbol{display:block;object-fit:contain;flex-shrink:0;background:transparent}
+.brand-symbol--nav{height:46px;width:auto}
+.brand-symbol--hero{height:98px;width:auto}
+.brand-text{display:flex;flex-direction:column;justify-content:center;line-height:1}
+.brand-text--nav{height:46px}
+.brand-text--hero{height:98px}
+.brand-name{font-family:var(--fd, Georgia, 'Times New Roman', serif);font-weight:500;letter-spacing:-0.025em;color:var(--ink, #2f3440);white-space:nowrap}
+.brand-sub{font-family:var(--fb, 'Helvetica Neue', Helvetica, Arial, sans-serif);text-transform:uppercase;white-space:nowrap;color:var(--ink-faint, #8b8478)}
+.brand-name--nav{font-size:18px;line-height:22px}
+.brand-sub--nav{font-size:8.5px;line-height:11px;letter-spacing:.30em;margin-top:3px}
+.brand-name--hero{font-size:46px;line-height:50px}
+.brand-sub--hero{font-size:12px;line-height:16px;letter-spacing:.34em;margin-top:6px}
+@media (max-width:768px){
+  .brand-symbol--nav{height:40px}
+  .brand-text--nav{height:40px}
+  .brand-name--nav{font-size:16px;line-height:19px}
+  .brand-sub--nav{font-size:7.4px;line-height:10px;letter-spacing:.24em}
+  .brand-symbol--hero{height:72px}
+  .brand-text--hero{height:72px}
+  .brand-name--hero{font-size:30px;line-height:33px}
+  .brand-sub--hero{font-size:8.6px;line-height:12px;letter-spacing:.24em}
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  width: 100%;
+  max-width: 450px;
+  padding: 40px 40px 36px;
+}
+
+.card-header {
+  margin-bottom: 32px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 24px;
+}
+
+.card-title {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-pri);
+  margin-bottom: 8px;
+}
+
+.card-sub {
+  font-size: 12px;
+  color: var(--text-sec);
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+.step-bar {
+  display: flex;
+  gap: 0;
+  margin-bottom: 28px;
+}
+
+.step-bar-item {
+  flex: 1;
+  height: 2px;
+  background: var(--border);
+}
+
+.step-bar-item.done {
+  background: var(--text-pri);
+}
+
+.step-label {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-ter);
+  margin-bottom: 22px;
+  font-weight: 600;
+}
+
+.step-label span {
+  color: var(--text-pri);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.field {
+  margin-bottom: 16px;
+}
+
+.field label {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--text-sec);
+  margin-bottom: 6px;
+}
+
+.field input[type="text"],
+.field input[type="email"],
+.field input[type="password"] {
+  width: 100%;
+  height: 38px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-pri);
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 13px;
+  padding: 0 11px;
+  outline: none;
+  transition: border-color 0.12s;
+  border-radius: 0;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.field input:focus {
+  border-color: var(--text-pri);
+}
+
+.field input.invalid {
+  border-color: var(--error);
+}
+
+.pw-indicator {
+  display: none;
+  font-size: 10px;
+  margin-top: 5px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+
+.pw-indicator.match {
+  display: block;
+  color: #1A7F37;
+}
+
+.pw-indicator.no-match {
+  display: block;
+  color: var(--error);
+}
+
+.legal-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 20px 0 24px;
+}
+
+.legal-checkbox {
+  position: relative;
+  flex-shrink: 0;
+  width: 15px;
+  height: 15px;
+  margin-top: 1px;
+}
+
+.legal-checkbox input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  margin: 0;
+}
+
+.legal-checkbox .box {
+  display: block;
+  width: 15px;
+  height: 15px;
+  border: 1.5px solid var(--border-dk);
+  background: var(--surface);
+  transition: all 0.1s;
+  pointer-events: none;
+}
+
+.legal-checkbox input:checked ~ .box {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.legal-checkbox .check-svg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.1s;
+}
+
+.legal-checkbox input:checked ~ .check-svg {
+  opacity: 1;
+}
+
+.legal-text {
+  font-size: 11.5px;
+  color: var(--text-sec);
+  line-height: 1.6;
+}
+
+.legal-text a {
+  color: var(--link);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  font-weight: 600;
+}
+
+.legal-text a:hover {
+  color: var(--text-ter);
+}
+
+.divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 0 0 24px;
+}
+
+.btn-submit {
+  width: 100%;
+  height: 42px;
+  border: none;
+  cursor: pointer;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: background 0.1s, color 0.1s, opacity 0.1s;
+  outline: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-submit:disabled {
+  background: var(--btn-dis);
+  color: #FFFFFF;
+  cursor: not-allowed;
+}
+
+.btn-submit:not(:disabled) {
+  background: var(--accent);
+  color: #FFFFFF;
+}
+
+.btn-submit:not(:disabled):hover {
+  background: var(--accent-dk);
+}
+
+.btn-submit.loading {
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+.spinner {
+  display: none;
+  width: 13px;
+  height: 13px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: #FFFFFF;
+  border-radius: 50%;
+  animation: spin 0.65s linear infinite;
+  flex-shrink: 0;
+}
+
+.btn-submit.loading .spinner {
+  display: block;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.error-block {
+  display: none;
+  margin-top: 14px;
+  padding: 11px 14px;
+  border: 1px solid var(--error);
+  background: #FEF2F2;
+}
+
+.error-block.visible {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+}
+
+.error-icon {
+  font-size: 13px;
+  flex-shrink: 0;
+  margin-top: 0px;
+  color: var(--error);
+}
+
+.error-text {
+  font-size: 12px;
+  color: var(--error);
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.success-block {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  padding: 36px 0 20px;
+  text-align: center;
+}
+
+.success-block.visible {
+  display: flex;
+}
+
+.success-mark {
+  width: 40px;
+  height: 40px;
+  border: 2px solid var(--text-pri);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+}
+
+.success-title {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text-pri);
+  margin-bottom: 8px;
+}
+
+.success-sub {
+  font-size: 12px;
+  color: var(--text-sec);
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.success-redirect-bar {
+  width: 100%;
+  height: 2px;
+  background: var(--border);
+  overflow: hidden;
+}
+
+.success-redirect-fill {
+  height: 100%;
+  background: var(--text-pri);
+  width: 0%;
+  transition: width 2.5s linear;
+}
+
+.page-footer {
+  margin-top: 20px;
+  font-size: 10.5px;
+  color: var(--text-ter);
+  letter-spacing: 0.04em;
+}
+
+.page-footer a {
+  color: var(--text-ter);
+  text-decoration: none;
+}
+
+.page-footer a:hover {
+  text-decoration: underline;
+}
+</style>
 </head>
+
 <body>
-  <div class="card">
-    <h1>Complete your setup</h1>
-    <p>Your account is almost ready. Confirm your details below to continue.</p>
+<div class="page-wrapper">
+  <div class="wordmark"><a class="brand-lockup brand-lockup--tight" href="index.html">
+      <img src="kroneberg-gold-symbol-transparent.png" alt="Kroneberg &amp; Co." class="brand-symbol brand-symbol--nav">
+      <span class="brand-text brand-text--nav">
+        <span class="brand-name brand-name--nav">Kroneberg &amp; Co.</span>
+        <span class="brand-sub brand-sub--nav">Intelligence · Analytica</span>
+      </span>
+    </a></div>
 
-    <div class="row">
-      <label>Email</label>
-      <input id="email" type="email" disabled />
+  <div class="card" id="card-main">
+    <div class="card-header">
+      <div class="card-title">Account Configuration</div>
+      <div class="card-sub">Finalize your professional credentials to access the Intelligence Vault.</div>
     </div>
 
-    <div class="row">
-      <label>Your referral code</label>
-      <input id="referral_code" type="text" disabled />
+    <div style="margin-bottom:6px;">
+      <div class="step-bar">
+        <div class="step-bar-item done"></div>
+        <div class="step-bar-item done"></div>
+        <div class="step-bar-item done"></div>
+      </div>
+    </div>
+    <div class="step-label">Step <span>3 of 3</span> — Create Account</div>
+
+    <div id="form-body">
+      <div class="form-row">
+        <div class="field">
+          <label for="f-first">First Name</label>
+          <input type="text" id="f-first" placeholder="Jane" autocomplete="given-name">
+        </div>
+        <div class="field">
+          <label for="f-last">Last Name</label>
+          <input type="text" id="f-last" placeholder="Smith" autocomplete="family-name">
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="f-email">Email Address</label>
+        <input type="email" id="f-email" placeholder="you@company.com" autocomplete="email">
+      </div>
+
+      <div class="field">
+        <label for="f-pw">Password</label>
+        <input type="password" id="f-pw" placeholder="Minimum 8 characters" autocomplete="new-password">
+      </div>
+
+      <div class="field">
+        <label for="f-pw2">Confirm Password</label>
+        <input type="password" id="f-pw2" placeholder="Re-enter password" autocomplete="new-password">
+        <div class="pw-indicator" id="pw-match-msg"></div>
+      </div>
+
+      <hr class="divider">
+
+      <div class="legal-row">
+        <label class="legal-checkbox">
+          <input type="checkbox" id="f-legal">
+          <span class="box"></span>
+          <svg class="check-svg" width="9" height="7" viewBox="0 0 9 7" fill="none">
+            <path d="M1 3.5L3.5 6L8 1" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </label>
+        <div class="legal-text">
+          I agree to the <a href="index.html#legal" target="_blank">Terms of Service</a>
+          and <a href="index.html#legal" target="_blank">Privacy Policy</a>.
+        </div>
+      </div>
+
+      <button class="btn-submit" id="btn-submit" disabled onclick="handleSubmit()">
+        <div class="spinner" id="spinner"></div>
+        <span id="btn-label">Create Account &amp; Enter Vault</span>
+      </button>
+
+      <div class="error-block" id="error-block">
+        <div class="error-icon">⚠</div>
+        <div class="error-text" id="error-text"></div>
+      </div>
     </div>
 
-    <div class="row">
-      <label>Referred by</label>
-      <input id="referred_by_code" type="text" disabled />
+    <div class="success-block" id="success-block">
+      <div class="success-mark">
+        <svg width="18" height="14" viewBox="0 0 18 14" fill="none">
+          <path d="M1.5 7L6.5 12L16.5 1.5" stroke="#0A0A0C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="success-title">Account Created</div>
+      <div class="success-sub">Your credentials have been confirmed.<br>Redirecting to the Intelligence Vault…</div>
+      <div class="success-redirect-bar">
+        <div class="success-redirect-fill" id="redirect-fill"></div>
+      </div>
     </div>
-
-    <button id="finishBtn">Continue to Vault</button>
-
-    <div id="status" class="status"></div>
-    <div id="meta" class="meta"></div>
   </div>
 
-  <script>
-    const SUPABASE_URL = 'https://btiwdulcqtvkdupsotnx.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ0aXdkdWxjcXR2a2R1cHNvdG54Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3NzY2NjcsImV4cCI6MjA5MDM1MjY2N30.RawdFhi84Zq95eZ29w8QwXPcBT9VDffFcHMB3fAzITA';
-    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  <div class="page-footer">
+    Secured connection &nbsp;·&nbsp; <a href="index.html">Kroneberg &amp; Co.</a>
+  </div>
+</div>
 
-    const emailEl = document.getElementById('email');
-    const referralCodeEl = document.getElementById('referral_code');
-    const referredByCodeEl = document.getElementById('referred_by_code');
-    const statusEl = document.getElementById('status');
-    const metaEl = document.getElementById('meta');
-    const finishBtn = document.getElementById('finishBtn');
+<script>
+'use strict';
 
-    let currentUser = null;
-    let incomingRef = '';
+const SUPABASE_URL = 'https://btiwdulcqtvkdupsotnx.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ0aXdkdWxjcXR2a2R1cHNvdG54Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3NzY2NjcsImV4cCI6MjA5MDM1MjY2N30.RawdFhi84Zq95eZ29w8QwXPcBT9VDffFcHMB3fAzITA';
 
-    function showStatus(message, type = 'ok') {
-      statusEl.className = `status show ${type}`;
-      statusEl.textContent = message;
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+  auth: { storage: window.localStorage }
+});
+
+const $first    = document.getElementById('f-first');
+const $last     = document.getElementById('f-last');
+const $email    = document.getElementById('f-email');
+const $pw       = document.getElementById('f-pw');
+const $pw2      = document.getElementById('f-pw2');
+const $legal    = document.getElementById('f-legal');
+const $btn      = document.getElementById('btn-submit');
+const $btnLabel = document.getElementById('btn-label');
+const $pwMsg    = document.getElementById('pw-match-msg');
+const $errBlock = document.getElementById('error-block');
+const $errText  = document.getElementById('error-text');
+const $formBody = document.getElementById('form-body');
+const $success  = document.getElementById('success-block');
+const $fill     = document.getElementById('redirect-fill');
+
+const params = new URLSearchParams(window.location.search);
+
+(function captureReferralCode() {
+  try {
+    const ref = params.get('ref');
+    if (ref && ref.trim()) {
+      localStorage.setItem('referral_code', ref.trim());
+      console.log('Referral code captured:', ref.trim());
+    }
+  } catch (err) {
+    console.warn('Referral capture failed:', err);
+  }
+})();
+
+(function prefillEmail() {
+  try {
+    const emailParam = params.get('email') || params.get('prefill_email');
+    if (emailParam && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailParam)) {
+      $email.value = decodeURIComponent(emailParam);
+    }
+  } catch (_) {}
+})();
+
+function isValid() {
+  const first  = $first.value.trim();
+  const last   = $last.value.trim();
+  const email  = $email.value.trim();
+  const pw     = $pw.value;
+  const pw2    = $pw2.value;
+  const agreed = $legal.checked;
+
+  return (
+    first.length > 0 &&
+    last.length  > 0 &&
+    email.length > 0 &&
+    pw.length    >= 8 &&
+    pw === pw2   &&
+    agreed
+  );
+}
+
+function updatePasswordIndicator() {
+  const pw  = $pw.value;
+  const pw2 = $pw2.value;
+  if (!pw2.length) {
+    $pwMsg.className = 'pw-indicator';
+    $pwMsg.textContent = '';
+    return;
+  }
+  if (pw === pw2) {
+    $pwMsg.className = 'pw-indicator match';
+    $pwMsg.textContent = '✓ Passwords match';
+  } else {
+    $pwMsg.className = 'pw-indicator no-match';
+    $pwMsg.textContent = 'Passwords do not match';
+  }
+}
+
+function checkForm() {
+  $btn.disabled = !isValid();
+}
+
+[$first, $last, $email, $pw, $pw2].forEach(el => {
+  el.addEventListener('input', checkForm);
+  el.addEventListener('change', checkForm);
+});
+
+$pw.addEventListener('input', updatePasswordIndicator);
+$pw2.addEventListener('input', updatePasswordIndicator);
+$legal.addEventListener('change', checkForm);
+
+function showError(msg) {
+  $errText.textContent = msg;
+  $errBlock.classList.add('visible');
+}
+
+function clearError() {
+  $errBlock.classList.remove('visible');
+  $errText.textContent = '';
+}
+
+function setLoading(on) {
+  if (on) {
+    $btn.classList.add('loading');
+    $btn.disabled = true;
+    $btnLabel.textContent = 'Creating Account…';
+  } else {
+    $btn.classList.remove('loading');
+    $btnLabel.textContent = 'Create Account & Enter Vault';
+    checkForm();
+  }
+}
+
+async function waitForProfile(userId, maxAttempts = 12, delayMs = 1000) {
+  for (let i = 0; i < maxAttempts; i++) {
+    const { data, error } = await sb
+      .from('profiles')
+      .select('id')
+      .eq('id', userId)
+      .maybeSingle();
+
+    if (!error && data?.id) {
+      console.log('Profile row detected for user:', userId);
+      return true;
     }
 
-    function makeOwnReferralCode(user) {
-      const base =
-        (user.email || 'member')
-          .split('@')[0]
-          .replace(/[^a-zA-Z0-9]/g, '')
-          .toUpperCase()
-          .slice(0, 6) || 'MEMBER';
+    await new Promise(resolve => setTimeout(resolve, delayMs));
+  }
 
-      const tail = (user.id || '')
-        .replace(/-/g, '')
-        .slice(0, 6)
-        .toUpperCase();
+  console.warn('Profile row was not detected within wait window for user:', userId);
+  return false;
+}
 
-      return `${base}-${tail}`;
-    }
+async function applyReferralIfPresent() {
+  try {
+    const referralCode = localStorage.getItem('referral_code');
+    if (!referralCode) return { success: false, skipped: true, reason: 'no_referral_code' };
 
-    async function loadUser() {
-      const { data, error } = await supabaseClient.auth.getUser();
+    const { data: sessionData, error: sessionError } = await sb.auth.getSession();
+    if (sessionError) throw sessionError;
+    if (!sessionData?.session) return { success: false, skipped: true, reason: 'no_session' };
 
-      if (error || !data?.user) {
-        showStatus('No active user session found. Please sign in again.', 'err');
-        finishBtn.disabled = true;
-        return null;
-      }
-
-      return data.user;
-    }
-
-    async function saveProfile(user, refCodeFromUrl) {
-      const ownReferralCode = makeOwnReferralCode(user);
-
-      const payload = {
-        id: user.id,
-        email: user.email,
-        referral_code: ownReferralCode,
-        referred_by_code: refCodeFromUrl || null
-      };
-
-      const { error } = await supabaseClient
-        .from('profiles')
-        .upsert(payload, { onConflict: 'id' });
-
-      if (error) throw error;
-
-      return payload;
-    }
-
-    async function init() {
-      try {
-        const params = new URLSearchParams(window.location.search);
-        incomingRef = (params.get('ref') || '').trim().toUpperCase();
-
-        currentUser = await loadUser();
-        if (!currentUser) return;
-
-        const saved = await saveProfile(currentUser, incomingRef);
-
-        emailEl.value = saved.email || '';
-        referralCodeEl.value = saved.referral_code || '';
-        referredByCodeEl.value = saved.referred_by_code || '';
-
-        metaEl.textContent = `User ID: ${currentUser.id}`;
-        showStatus('Setup completed successfully. Your profile has been saved.', 'ok');
-      } catch (err) {
-        console.error(err);
-        showStatus(err.message || 'Setup failed.', 'err');
-        finishBtn.disabled = true;
-      }
-    }
-
-    finishBtn.addEventListener('click', () => {
-      window.location.href = 'vault.html';
+    const { data, error } = await sb.functions.invoke('apply-referral', {
+      body: { referral_code: referralCode }
     });
 
-    init();
-  </script>
+    if (error) {
+      console.error('Referral apply error:', error);
+      return { success: false, skipped: false, reason: error.message || 'invoke_failed' };
+    }
+
+    console.log('Referral apply result:', data);
+
+    const message = String(data?.message || '').toLowerCase();
+
+    if (
+      data?.success ||
+      message.includes('already assigned') ||
+      message.includes('already recorded')
+    ) {
+      localStorage.removeItem('referral_code');
+    }
+
+    return data || { success: false };
+  } catch (err) {
+    console.error('applyReferralIfPresent failed:', err);
+    return { success: false, skipped: false, reason: err?.message || String(err) };
+  }
+}
+
+async function handleSubmit() {
+  clearError();
+
+  const firstName = $first.value.trim();
+  const lastName  = $last.value.trim();
+  const email     = $email.value.trim().toLowerCase();
+  const password  = $pw.value;
+
+  if (!firstName || !lastName || !email || password.length < 8 || password !== $pw2.value || !$legal.checked) {
+    showError('Please complete all fields correctly before submitting.');
+    return;
+  }
+
+  setLoading(true);
+
+  try {
+    let finalUser = null;
+
+    const { data: signUpData, error: signUpError } = await sb.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          first_name: firstName,
+          last_name: lastName,
+          full_name: `${firstName} ${lastName}`
+        }
+      }
+    });
+
+    if (signUpError) {
+      const signUpMessage = signUpError.message || '';
+
+      if (/already registered|already exists|user already/i.test(signUpMessage)) {
+        const { data: signInData, error: signInError } = await sb.auth.signInWithPassword({
+          email,
+          password
+        });
+
+        if (signInError) {
+          throw new Error('An account with this email already exists. Please sign in with the same password you used previously, or reset your password from the Vault login screen.');
+        }
+
+        finalUser = signInData?.user || null;
+      } else {
+        throw signUpError;
+      }
+    } else {
+      finalUser = signUpData?.user || null;
+    }
+
+    if (!finalUser) {
+      const { data: userData, error: userError } = await sb.auth.getUser();
+      if (userError) throw userError;
+      finalUser = userData?.user || null;
+    }
+
+    if (!finalUser) {
+      throw new Error('User could not be resolved after account creation.');
+    }
+
+    console.log('Account created. Waiting for profile row before referral processing.');
+    await waitForProfile(finalUser.id);
+
+    const referralResult = await applyReferralIfPresent();
+    console.log('Referral processing result:', referralResult);
+
+    $formBody.style.display = 'none';
+    $success.classList.add('visible');
+
+    requestAnimationFrame(() => {
+      $fill.style.width = '100%';
+    });
+
+    setTimeout(() => {
+      window.location.href = 'vault.html';
+    }, 2800);
+
+  } catch (err) {
+    setLoading(false);
+
+    const raw = err?.message || '';
+
+    if (/password.*characters|too short/i.test(raw)) {
+      showError('Password must be at least 8 characters.');
+    } else if (/invalid email/i.test(raw)) {
+      showError('Please enter a valid email address.');
+    } else if (/rate limit/i.test(raw)) {
+      showError('Too many requests. Please wait a moment and try again.');
+    } else if (/already exists|already registered/i.test(raw)) {
+      showError('An account with this email address already exists. Please sign in using the same password, or reset your password from the Vault login screen.');
+    } else if (raw) {
+      showError(raw);
+    } else {
+      showError('An unexpected error occurred. Please try again.');
+    }
+  }
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && !$btn.disabled) {
+    handleSubmit();
+  }
+});
+</script>
 </body>
 </html>
