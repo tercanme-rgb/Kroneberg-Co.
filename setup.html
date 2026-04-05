@@ -42,9 +42,6 @@ html, body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* ═══════════════════════════════════════════════════════════
-   PAGE WRAPPER
-═══════════════════════════════════════════════════════════ */
 .page-wrapper {
   min-height: 100vh;
   display: flex;
@@ -54,16 +51,12 @@ html, body {
   padding: 40px 16px;
 }
 
-/* ═══════════════════════════════════════════════════════════
-   WORDMARK
-═══════════════════════════════════════════════════════════ */
 .wordmark {
   display:flex;
   align-items:center;
   justify-content:center;
   margin-bottom:28px;
 }
-/* ─── KRONEBERG BRAND LOCKUP ───────────────────────────── */
 .brand-lockup{display:flex;align-items:center;gap:10px;text-decoration:none}
 .brand-lockup--tight{gap:8px}
 .brand-symbol{display:block;object-fit:contain;flex-shrink:0;background:transparent}
@@ -89,9 +82,6 @@ html, body {
   .brand-sub--hero{font-size:8.6px;line-height:12px;letter-spacing:.24em}
 }
 
-/* ═══════════════════════════════════════════════════════════
-   CARD
-═══════════════════════════════════════════════════════════ */
 .card {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -100,9 +90,6 @@ html, body {
   padding: 40px 40px 36px;
 }
 
-/* ═══════════════════════════════════════════════════════════
-   HEADER
-═══════════════════════════════════════════════════════════ */
 .card-header {
   margin-bottom: 32px;
   border-bottom: 1px solid var(--border);
@@ -124,9 +111,6 @@ html, body {
   font-weight: 400;
 }
 
-/* ═══════════════════════════════════════════════════════════
-   STEP INDICATOR
-═══════════════════════════════════════════════════════════ */
 .step-bar {
   display: flex;
   gap: 0;
@@ -156,9 +140,6 @@ html, body {
   color: var(--text-pri);
 }
 
-/* ═══════════════════════════════════════════════════════════
-   FORM
-═══════════════════════════════════════════════════════════ */
 .form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -205,7 +186,6 @@ html, body {
   border-color: var(--error);
 }
 
-/* Password match indicator */
 .pw-indicator {
   display: none;
   font-size: 10px;
@@ -224,9 +204,6 @@ html, body {
   color: var(--error);
 }
 
-/* ═══════════════════════════════════════════════════════════
-   LEGAL CHECKBOX
-═══════════════════════════════════════════════════════════ */
 .legal-row {
   display: flex;
   align-items: flex-start;
@@ -297,18 +274,12 @@ html, body {
   color: var(--text-ter);
 }
 
-/* ═══════════════════════════════════════════════════════════
-   DIVIDER
-═══════════════════════════════════════════════════════════ */
 .divider {
   border: none;
   border-top: 1px solid var(--border);
   margin: 0 0 24px;
 }
 
-/* ═══════════════════════════════════════════════════════════
-   SUBMIT BUTTON
-═══════════════════════════════════════════════════════════ */
 .btn-submit {
   width: 100%;
   height: 42px;
@@ -347,7 +318,6 @@ html, body {
   opacity: 0.85;
 }
 
-/* Spinner */
 .spinner {
   display: none;
   width: 13px;
@@ -367,9 +337,6 @@ html, body {
   to { transform: rotate(360deg); }
 }
 
-/* ═══════════════════════════════════════════════════════════
-   ERROR BLOCK
-═══════════════════════════════════════════════════════════ */
 .error-block {
   display: none;
   margin-top: 14px;
@@ -398,9 +365,6 @@ html, body {
   line-height: 1.5;
 }
 
-/* ═══════════════════════════════════════════════════════════
-   SUCCESS STATE
-═══════════════════════════════════════════════════════════ */
 .success-block {
   display: none;
   flex-direction: column;
@@ -452,9 +416,6 @@ html, body {
   transition: width 2.5s linear;
 }
 
-/* ═══════════════════════════════════════════════════════════
-   FOOTER META
-═══════════════════════════════════════════════════════════ */
 .page-footer {
   margin-top: 20px;
   font-size: 10.5px;
@@ -475,8 +436,6 @@ html, body {
 
 <body>
 <div class="page-wrapper">
-
-  <!-- Wordmark -->
   <div class="wordmark"><a class="brand-lockup brand-lockup--tight" href="index.html">
       <img src="kroneberg-gold-symbol-transparent.png" alt="Kroneberg &amp; Co." class="brand-symbol brand-symbol--nav">
       <span class="brand-text brand-text--nav">
@@ -485,16 +444,12 @@ html, body {
       </span>
     </a></div>
 
-  <!-- Card -->
   <div class="card" id="card-main">
-
-    <!-- Header -->
     <div class="card-header">
       <div class="card-title">Account Configuration</div>
       <div class="card-sub">Finalize your professional credentials to access the Intelligence Vault.</div>
     </div>
 
-    <!-- Step indicator -->
     <div style="margin-bottom:6px;">
       <div class="step-bar">
         <div class="step-bar-item done"></div>
@@ -504,10 +459,7 @@ html, body {
     </div>
     <div class="step-label">Step <span>3 of 3</span> — Create Account</div>
 
-    <!-- Form -->
     <div id="form-body">
-
-      <!-- Name row -->
       <div class="form-row">
         <div class="field">
           <label for="f-first">First Name</label>
@@ -519,19 +471,16 @@ html, body {
         </div>
       </div>
 
-      <!-- Email -->
       <div class="field">
         <label for="f-email">Email Address</label>
         <input type="email" id="f-email" placeholder="you@company.com" autocomplete="email">
       </div>
 
-      <!-- Password -->
       <div class="field">
         <label for="f-pw">Password</label>
         <input type="password" id="f-pw" placeholder="Minimum 8 characters" autocomplete="new-password">
       </div>
 
-      <!-- Confirm Password -->
       <div class="field">
         <label for="f-pw2">Confirm Password</label>
         <input type="password" id="f-pw2" placeholder="Re-enter password" autocomplete="new-password">
@@ -540,7 +489,6 @@ html, body {
 
       <hr class="divider">
 
-      <!-- Legal -->
       <div class="legal-row">
         <label class="legal-checkbox">
           <input type="checkbox" id="f-legal">
@@ -555,21 +503,17 @@ html, body {
         </div>
       </div>
 
-      <!-- Submit -->
       <button class="btn-submit" id="btn-submit" disabled onclick="handleSubmit()">
         <div class="spinner" id="spinner"></div>
         <span id="btn-label">Create Account &amp; Enter Vault</span>
       </button>
 
-      <!-- Error -->
       <div class="error-block" id="error-block">
         <div class="error-icon">⚠</div>
         <div class="error-text" id="error-text"></div>
       </div>
+    </div>
 
-    </div><!-- /form-body -->
-
-    <!-- Success state (hidden until submit succeeds) -->
     <div class="success-block" id="success-block">
       <div class="success-mark">
         <svg width="18" height="14" viewBox="0 0 18 14" fill="none">
@@ -582,24 +526,16 @@ html, body {
         <div class="success-redirect-fill" id="redirect-fill"></div>
       </div>
     </div>
+  </div>
 
-  </div><!-- /card -->
-
-  <!-- Page footer -->
   <div class="page-footer">
     Secured connection &nbsp;·&nbsp; <a href="index.html">Kroneberg &amp; Co.</a>
   </div>
+</div>
 
-</div><!-- /page-wrapper -->
-
-
-<!-- ═══════════════════════════════════════════════════════
-     SCRIPT
-════════════════════════════════════════════════════════ -->
 <script>
 'use strict';
 
-/* ── Supabase credentials ───────────────────────────────── */
 const SUPABASE_URL = 'https://btiwdulcqtvkdupsotnx.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ0aXdkdWxjcXR2a2R1cHNvdG54Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3NzY2NjcsImV4cCI6MjA5MDM1MjY2N30.RawdFhi84Zq95eZ29w8QwXPcBT9VDffFcHMB3fAzITA';
 
@@ -607,7 +543,6 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
   auth: { storage: window.localStorage }
 });
 
-/* ── DOM refs ──────────────────────────────────────────── */
 const $first    = document.getElementById('f-first');
 const $last     = document.getElementById('f-last');
 const $email    = document.getElementById('f-email');
@@ -624,16 +559,7 @@ const $success  = document.getElementById('success-block');
 const $fill     = document.getElementById('redirect-fill');
 
 const params = new URLSearchParams(window.location.search);
-const rawTier = (params.get('tier') || 'free').toLowerCase().trim();
-const tierMap = {
-  free: 'free',
-  core: 'core',
-  elite: 'elite',
-  starter: 'core',
-  pro: 'elite'
-};
 
-/* ── Referral capture ─────────────────────────────────── */
 (function captureReferralCode() {
   try {
     const ref = params.get('ref');
@@ -646,7 +572,6 @@ const tierMap = {
   }
 })();
 
-/* ── URL param email pre-fill ─────────────────────────── */
 (function prefillEmail() {
   try {
     const emailParam = params.get('email') || params.get('prefill_email');
@@ -656,7 +581,6 @@ const tierMap = {
   } catch (_) {}
 })();
 
-/* ── Validation ────────────────────────────────────────── */
 function isValid() {
   const first  = $first.value.trim();
   const last   = $last.value.trim();
@@ -696,7 +620,6 @@ function checkForm() {
   $btn.disabled = !isValid();
 }
 
-/* ── Event listeners ───────────────────────────────────── */
 [$first, $last, $email, $pw, $pw2].forEach(el => {
   el.addEventListener('input', checkForm);
   el.addEventListener('change', checkForm);
@@ -706,7 +629,6 @@ $pw.addEventListener('input', updatePasswordIndicator);
 $pw2.addEventListener('input', updatePasswordIndicator);
 $legal.addEventListener('change', checkForm);
 
-/* ── Error display ──────────────────────────────────────── */
 function showError(msg) {
   $errText.textContent = msg;
   $errBlock.classList.add('visible');
@@ -717,7 +639,6 @@ function clearError() {
   $errText.textContent = '';
 }
 
-/* ── Loading state ──────────────────────────────────────── */
 function setLoading(on) {
   if (on) {
     $btn.classList.add('loading');
@@ -730,8 +651,26 @@ function setLoading(on) {
   }
 }
 
+async function waitForProfile(userId, maxAttempts = 12, delayMs = 1000) {
+  for (let i = 0; i < maxAttempts; i++) {
+    const { data, error } = await sb
+      .from('profiles')
+      .select('id')
+      .eq('id', userId)
+      .maybeSingle();
 
-/* ── Referral apply ───────────────────────────────────── */
+    if (!error && data?.id) {
+      console.log('Profile row detected for user:', userId);
+      return true;
+    }
+
+    await new Promise(resolve => setTimeout(resolve, delayMs));
+  }
+
+  console.warn('Profile row was not detected within wait window for user:', userId);
+  return false;
+}
+
 async function applyReferralIfPresent() {
   try {
     const referralCode = localStorage.getItem('referral_code');
@@ -768,7 +707,7 @@ async function applyReferralIfPresent() {
     return { success: false, skipped: false, reason: err?.message || String(err) };
   }
 }
-/* ── Submit handler ─────────────────────────────────────── */
+
 async function handleSubmit() {
   clearError();
 
@@ -787,7 +726,6 @@ async function handleSubmit() {
   try {
     let finalUser = null;
 
-    /* ── Step 1: Try sign up ───────────────────────────── */
     const { data: signUpData, error: signUpError } = await sb.auth.signUp({
       email,
       password,
@@ -831,14 +769,12 @@ async function handleSubmit() {
       throw new Error('User could not be resolved after account creation.');
     }
 
-    /* ── Step 2: Profile row is created by DB trigger ── */
-    console.log('Account created. Profile row will be created by DB trigger.');
+    console.log('Account created. Waiting for profile row before referral processing.');
+    await waitForProfile(finalUser.id);
 
-    /* ── Step 2.5: Apply referral if present ──────────── */
     const referralResult = await applyReferralIfPresent();
     console.log('Referral processing result:', referralResult);
 
-    /* ── Step 3: Success → redirect ───────────────────── */
     $formBody.style.display = 'none';
     $success.classList.add('visible');
 
@@ -871,13 +807,11 @@ async function handleSubmit() {
   }
 }
 
-/* ── Enter key support ──────────────────────────────────── */
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Enter' && !$btn.disabled) {
     handleSubmit();
   }
 });
 </script>
-
 </body>
 </html>
