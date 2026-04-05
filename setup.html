@@ -752,7 +752,13 @@ async function applyReferralIfPresent() {
 
     console.log('Referral apply result:', data);
 
-    if (data?.success || /already assigned/i.test(data?.error || '')) {
+    const message = String(data?.message || '').toLowerCase();
+
+    if (
+      data?.success ||
+      message.includes('already assigned') ||
+      message.includes('already recorded')
+    ) {
       localStorage.removeItem('referral_code');
     }
 
@@ -762,7 +768,6 @@ async function applyReferralIfPresent() {
     return { success: false, skipped: false, reason: err?.message || String(err) };
   }
 }
-
 /* ── Submit handler ─────────────────────────────────────── */
 async function handleSubmit() {
   clearError();
