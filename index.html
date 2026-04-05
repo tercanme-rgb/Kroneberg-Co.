@@ -284,6 +284,70 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
 .ft-ll button{font-size:13px;color:var(--ink-faint);cursor:pointer;background:none;border:none;font-family:var(--fb);transition:color .18s}
 .ft-ll button:hover{color:var(--gold)}
 
+
+
+/* HOW IT WORKS */
+.hiw{padding:92px 0 88px;background:var(--bg)}
+.hiw-head{text-align:center;max-width:860px;margin:0 auto 54px}
+.hiw-title{font-family:var(--fd);font-size:clamp(40px,5vw,68px);font-weight:400;line-height:1.04;letter-spacing:-1.7px;color:var(--ink)}
+.hiw-title em{display:block;font-style:italic;color:var(--gold)}
+.hiw-grid{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:18px;align-items:start;margin-top:10px}
+.hiw-card{background:var(--bg-card);border:1px solid var(--border);border-radius:20px;padding:30px 30px 34px;min-height:360px;box-shadow:var(--shadow-sm)}
+.hiw-num{font-family:var(--fm);font-size:11px;letter-spacing:2px;color:var(--gold);margin-bottom:28px}
+.hiw-ico{font-size:34px;line-height:1;margin-bottom:20px}
+.hiw-card h3{font-family:var(--fd);font-size:19px;font-weight:500;line-height:1.28;color:var(--ink);margin-bottom:12px;max-width:240px}
+.hiw-card p{font-size:14px;color:var(--ink-muted);line-height:1.9;font-weight:300;max-width:290px}
+.hiw-arrow{display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:28px;color:rgba(184,134,11,.55);padding-top:116px;user-select:none}
+
+/* FAQ PAGE */
+.faq-wrap{max-width:920px;margin:0 auto;padding:64px 56px 96px}
+.faq-hero{margin-bottom:34px}
+.faq-hero h1{font-family:var(--fd);font-size:clamp(40px,5vw,60px);font-weight:400;line-height:1.05;letter-spacing:-1.5px;margin-bottom:14px}
+.faq-hero p{font-size:16px;color:var(--ink-muted);line-height:1.8;font-weight:300;max-width:720px}
+.faq-list{display:flex;flex-direction:column;gap:14px}
+.faq-item{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--rlg);box-shadow:var(--shadow-sm);overflow:hidden;transition:border-color .2s,box-shadow .2s,transform .2s}
+.faq-item:hover{border-color:var(--gold-border);box-shadow:var(--shadow-md);transform:translateY(-1px)}
+.faq-item.open{border-color:var(--gold-border);box-shadow:var(--shadow-md)}
+.faq-q{width:100%;display:flex;align-items:center;justify-content:space-between;gap:18px;padding:22px 26px;background:transparent;border:none;text-align:left;font-family:var(--fb);font-size:16px;font-weight:500;line-height:1.45;color:var(--ink);cursor:pointer}
+.faq-q span{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;flex-shrink:0;color:var(--gold);font-size:20px;line-height:1;transition:transform .22s ease}
+.faq-item.open .faq-q span{transform:rotate(45deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .28s ease}
+.faq-a p{padding:0 26px 24px;font-size:14.5px;color:var(--ink-muted);line-height:1.82;font-weight:300}
+
+/* FOOTER REBUILD */
+.site-footer{background:var(--bg-card);border-top:1px solid var(--border);padding:52px 56px 28px}
+.footer-shell{max-width:1200px;margin:0 auto}
+.footer-top{display:grid;grid-template-columns:2.2fr 1fr 1fr 1fr;gap:44px;padding-bottom:42px;border-bottom:1px solid var(--border)}
+.footer-brand-copy{font-size:14px;color:var(--ink-muted);line-height:1.78;font-weight:300;max-width:360px;margin-top:22px}
+.footer-socials{display:flex;gap:10px;margin-top:22px}
+.footer-social{width:34px;height:34px;border:1px solid var(--border-md);border-radius:8px;display:inline-flex;align-items:center;justify-content:center;color:var(--ink-faint);transition:all .18s;background:transparent}
+.footer-social:hover{color:var(--gold);border-color:var(--gold-border);background:var(--gold-tint)}
+.footer-head{font-family:var(--fm);font-size:10px;letter-spacing:2.2px;text-transform:uppercase;color:var(--ink-faint);margin-bottom:16px}
+.footer-links{display:flex;flex-direction:column;gap:10px}
+.footer-link{font-size:14px;color:var(--ink-muted);background:none;border:none;padding:0;text-align:left;font-family:var(--fb);cursor:pointer;transition:color .18s}
+.footer-link:hover{color:var(--gold)}
+.footer-bottom{padding-top:22px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.footer-copy,.footer-meta{font-family:var(--fm);font-size:10.5px;color:var(--ink-faint);letter-spacing:.35px}
+.footer-meta{margin-left:auto}
+
+@media(max-width:1024px){
+  .hiw-grid{grid-template-columns:1fr;gap:18px}
+  .hiw-arrow{display:none}
+  .hiw-card{min-height:auto}
+  .site-footer{padding-left:32px;padding-right:32px}
+  .footer-top{grid-template-columns:1fr 1fr 1fr}
+  .footer-brand{grid-column:1/-1}
+  .faq-wrap{padding-left:32px;padding-right:32px}
+}
+@media(max-width:768px){
+  .hiw{padding:76px 0 72px}
+  .site-footer{padding:42px 24px 28px}
+  .footer-top{grid-template-columns:1fr;gap:28px;padding-bottom:32px}
+  .footer-bottom{align-items:flex-start}
+  .footer-meta{margin-left:0}
+  .faq-wrap{padding:48px 24px 72px}
+}
+
 /* TOAST */
 .toast{position:fixed;bottom:28px;right:28px;z-index:9999;padding:13px 22px;background:var(--bg-card);border:1px solid var(--border-md);border-radius:var(--rmd);font-size:14px;color:var(--ink);display:flex;align-items:center;gap:10px;transform:translateY(80px);opacity:0;transition:all .3s cubic-bezier(.34,1.56,.64,1);pointer-events:none;box-shadow:var(--shadow-lg)}
 .toast.show{transform:translateY(0);opacity:1}
@@ -666,7 +730,6 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
     <button class="nl" data-pg="pricing"   onclick="go('home','membership-tiers')">Pricing</button>
     <button class="nl" data-pg="about"     onclick="go('about')">About Us</button>
     <button class="nl" data-pg="contact"   onclick="go('contact')">Contact</button>
-    <button class="nl" data-pg="legal"     onclick="go('legal')">Legal</button>
   </div>
 
   <div class="nav-right">
@@ -687,7 +750,6 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
   <button class="nl" onclick="go('home','membership-tiers');closeMob()">Pricing</button>
   <button class="nl" onclick="go('about');closeMob()">About Us</button>
   <button class="nl" onclick="go('contact');closeMob()">Contact</button>
-  <button class="nl" onclick="go('legal');closeMob()">Legal</button>
   <div class="mob-div"></div>
   <a href="login.html" id="mobMembersBtn" class="btn-console" style="align-self:flex-start"><div class="cdot"></div>Members Access</a>
 </div>
@@ -755,6 +817,41 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
     <div class="stat"><div class="stat-n">20+<span class="g">pg</span></div><div class="stat-d">Average depth per<br>research deliverable</div></div>
     <div class="stat"><div class="stat-n">APA<span class="g" style="font-size:32px;letter-spacing:-1px">7</span></div><div class="stat-d">Citation standard on all<br>references and sources</div></div>
   </div>
+
+
+
+  <hr class="hr" />
+
+  <section id="how-it-works" class="hiw">
+    <div class="wrap">
+      <div class="hiw-head rv">
+        <div class="eyebrow" style="justify-content:center"><div class="eyebrow-ln"></div>How It Works<div class="eyebrow-ln"></div></div>
+        <h2 class="hiw-title">Research on day one.<em>Insight every day after.</em></h2>
+      </div>
+      <div class="hiw-grid rv rv-d1">
+        <article class="hiw-card">
+          <div class="hiw-num">01</div>
+          <div class="hiw-ico">🔐</div>
+          <h3>Choose your plan and join</h3>
+          <p>Select Starter or Pro, complete payment via Stripe, and receive your login credentials within minutes. No manual approval. No waiting period. Your Research Vault opens immediately.</p>
+        </article>
+        <div class="hiw-arrow" aria-hidden="true">→</div>
+        <article class="hiw-card">
+          <div class="hiw-num">02</div>
+          <div class="hiw-ico">📡</div>
+          <h3>A new brief lands every working day</h3>
+          <p>Each morning, a fresh 15-section intelligence brief is published to your vault. Every brief covers a different niche, surfaced from monitored sources, cited to APA-7, and structured for immediate action. Past briefs stay accessible for the life of your membership.</p>
+        </article>
+        <div class="hiw-arrow" aria-hidden="true">→</div>
+        <article class="hiw-card">
+          <div class="hiw-num">03</div>
+          <div class="hiw-ico">📄</div>
+          <h3>Read, export, and act</h3>
+          <p>Open any brief directly in the vault or export it as a formatted PDF or Word document — board-ready, APA-7 cited, and print-optimised. Pro members can also request specific topic coverage through direct analyst correspondence.</p>
+        </article>
+      </div>
+    </div>
+  </section>
 
   <section id="infrastructure" class="infra">
 
@@ -1364,7 +1461,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
   </div>
 
   <!-- Global Locations -->
-  <div class="addr-section">
+  <div class="addr-section" id="global-coverage">
     <div class="eyebrow" style="margin-bottom:12px"><div class="eyebrow-ln"></div>Global Research Network</div>
     <h2 class="headline" style="font-size:clamp(32px,3.5vw,46px);margin-bottom:10px">Research coverage.<br><em>Six continents.</em></h2>
     <p class="sub" style="max-width:540px;margin-bottom:0">Our correspondence coordination network spans six strategic locations. All locations operate as research coverage zones within our distributed global analytical infrastructure.</p>
@@ -2174,6 +2271,202 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
   </div><!-- /legal-wrap -->
 </div><!-- /page-legal -->
 
+
+
+<div class="page" id="page-faq">
+  <div class="faq-wrap">
+    <div class="faq-hero">
+      <div class="eyebrow"><div class="eyebrow-ln"></div>FAQ</div>
+      <h1>Frequently asked <em style="font-style:italic;color:var(--gold)">questions.</em></h1>
+      <p>Answers covering membership access, research delivery, methodology, billing, security, and platform structure.</p>
+    </div>
+
+    <div class="faq-list" id="faqList">
+      <div class="faq-item">
+        <button class="faq-q">What is Kroneberg &amp; Co.? <span>+</span></button>
+        <div class="faq-a">
+          <p>Kroneberg &amp; Co. is a market intelligence platform built for founders, operators, investors, and strategic decision-makers who need structured, high-signal research without the cost base of a traditional research firm.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">What does Kroneberg &amp; Co. provide? <span>+</span></button>
+        <div class="faq-a">
+          <p>Kroneberg &amp; Co. provides intelligence briefings focused on market opportunities, emerging sectors, underserved customer demand, competitor gaps, and commercially relevant business ideas. The goal is to turn fragmented market signals into decision-ready analysis.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">How often is new research published? <span>+</span></button>
+        <div class="faq-a">
+          <p>New intelligence reports are published daily. The research library is updated continuously to reflect new developments, category shifts, and evolving market opportunities.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">How does the daily research rotation work? <span>+</span></button>
+        <div class="faq-a">
+          <p>A new intelligence brief is published every working day. Each brief covers a different niche market opportunity across our primary verticals — from Micro-SaaS and B2B Services to Creator Economy and Deep Tech. All published briefs remain accessible in your Research Vault for as long as your membership is active.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">Who is the platform designed for? <span>+</span></button>
+        <div class="faq-a">
+          <p>Kroneberg &amp; Co. is designed for independent builders, founders, operators, consultants, small investment teams, and professionals who need institutional-style research in a more accessible format.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">What is included in a membership? <span>+</span></button>
+        <div class="faq-a">
+          <p>Membership includes access to the Research Vault, where intelligence briefings are organised by category and updated on an ongoing basis. Depending on the plan, members can browse reports, unlock full briefings, and access higher-tier research features.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">What is the real difference between Starter and Pro? <span>+</span></button>
+        <div class="faq-a">
+          <p>Starter gives you full access to the daily brief rotation with PDF export — everything needed to evaluate markets efficiently. Pro unlocks unrestricted Vault access, Pro-tier executive summaries with deeper financial modelling, direct analyst correspondence for topic requests, and priority processing on emerging verticals before they enter the standard rotation.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">What is the difference between Free, Starter, and Pro? <span>+</span></button>
+        <div class="faq-a">
+          <p>The Free tier allows users to enter the platform and explore available research categories, but full report access is restricted. Starter provides structured access to the active research library. Pro provides the broadest access level, including premium research capabilities and higher-priority support features.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">Can I access the platform before subscribing? <span>+</span></button>
+        <div class="faq-a">
+          <p>Yes. Users can explore the platform environment before upgrading. Full report access and advanced features are unlocked based on membership tier.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">What happens immediately after I subscribe? <span>+</span></button>
+        <div class="faq-a">
+          <p>After payment, you will receive a confirmation email with your login credentials and a direct link to the Members Console. Access to the Research Vault is typically granted within minutes. Your tier is applied automatically, with no manual approval required.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">Can I request a specific research topic? <span>+</span></button>
+        <div class="faq-a">
+          <p>Pro members have access to Direct Analyst Correspondence, which includes the ability to surface specific sectors, sub-niches, or market theses for prioritisation. Starter members receive the daily research rotation. For bespoke research mandates, use the Contact page to request a custom briefing.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">What makes the research different? <span>+</span></button>
+        <div class="faq-a">
+          <p>Kroneberg &amp; Co. does not rely on surface-level trend commentary. The platform is built to transform fragmented market signals into structured, decision-ready analysis that helps members evaluate commercial potential more efficiently.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">How is the research produced? <span>+</span></button>
+        <div class="faq-a">
+          <p>Each brief is produced through a proprietary synthesis methodology that draws from 47 monitored sources spanning institutional databases, public filings, academic research, funding data, and behavioural signals. AI-powered synthesis tools are used to condense extensive source monitoring into a structured, analyst-reviewed 15-section brief. Every substantive claim is cited to APA-7 standard.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">Are the analysts publicly listed? <span>+</span></button>
+        <div class="faq-a">
+          <p>No. Kroneberg &amp; Co. operates under a deliberate discretion policy. Public-facing profiles reflect relevant experience areas, not a complete public roster of contributors.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">Which sectors and verticals do you cover? <span>+</span></button>
+        <div class="faq-a">
+          <p>Current primary verticals include Micro-SaaS &amp; Developer Tools, B2B Services, FinTech &amp; Payments, Creator Economy, Web3 &amp; Digital Assets, Deep Tech &amp; AI Infrastructure, Health Tech, E-commerce &amp; Retail, EdTech, and Climate &amp; Sustainability. Coverage evolves based on funding signals, search velocity, and emerging market data.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">Do you cover only startups and SaaS? <span>+</span></button>
+        <div class="faq-a">
+          <p>No. Kroneberg &amp; Co. covers a broader set of commercially relevant opportunities, including software, services, operational models, vertical B2B categories, emerging consumer sectors, and infrastructure-led themes.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">Is this financial or investment advice? <span>+</span></button>
+        <div class="faq-a">
+          <p>No. All content is provided for informational and research purposes only. Nothing on the platform constitutes investment, legal, tax, or financial advice.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">Are reports downloadable? <span>+</span></button>
+        <div class="faq-a">
+          <p>Selected membership tiers include document export or premium delivery features such as PDF access. Availability depends on the plan associated with your membership.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">Is my data and research vault secure? <span>+</span></button>
+        <div class="faq-a">
+          <p>Yes. The platform uses AES-256 encryption at rest, TLS 1.3 in transit, and Row Level Security at the database layer, meaning each member can only access the content their tier permits. Payments are processed entirely by Stripe, and no card details are stored on our systems. The platform is designed to operate in line with GDPR compliance requirements.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">How do billing and renewals work? <span>+</span></button>
+        <div class="faq-a">
+          <p>Memberships are billed through Stripe on the selected billing cycle. Unless cancelled before renewal, subscriptions renew automatically according to the plan chosen at checkout.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">Are prices inclusive of VAT? <span>+</span></button>
+        <div class="faq-a">
+          <p>No. Prices shown on the site exclude VAT unless stated otherwise. VAT, where applicable, is calculated and added at checkout based on the customer’s location and tax status.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">Can businesses add a VAT ID? <span>+</span></button>
+        <div class="faq-a">
+          <p>Yes. Eligible business customers may provide a VAT ID during checkout where supported.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">What is the cancellation and refund policy? <span>+</span></button>
+        <div class="faq-a">
+          <p>You may cancel your subscription at any time through your account settings. Access continues until the end of the current billing period. Subscriptions are not pro-rated, and partial periods are not refunded. Annual plans are billed upfront. For specific billing concerns, use the Contact page.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">Can I cancel my membership? <span>+</span></button>
+        <div class="faq-a">
+          <p>Yes. You can cancel your membership before the next billing cycle to prevent future charges. Cancellation stops renewal but does not retroactively refund previously billed periods unless required by applicable law.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">Is my payment information stored by Kroneberg &amp; Co.? <span>+</span></button>
+        <div class="faq-a">
+          <p>No. Payments are processed securely by Stripe. Kroneberg &amp; Co. does not store full card details on its own systems.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">Is the platform suitable for institutional users? <span>+</span></button>
+        <div class="faq-a">
+          <p>Yes. The platform is designed with an institutional research mindset but delivered in a more accessible format for independent professionals, operators, and small teams.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="page" id="page-contact">
   <div class="wrap" style="padding-top:64px;padding-bottom:100px">
     <div class="ct-layout">
@@ -2208,13 +2501,66 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
     </div>
   </div>
 </div>
-    <div class="ft-bot">
-      <div class="ft-copy">© 2024 Kroneberg & Co. · Global Research Infrastructure · All rights reserved</div>
-      <div class="ft-ll">
-        <button onclick="go('legal');showLegal('terms')">Terms</button>
-        <button onclick="go('legal');showLegal('privacy')">Privacy</button>
-        <button onclick="go('contact')">Contact</button>
+
+<footer class="site-footer">
+  <div class="footer-shell">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="brand-lockup brand-lockup--tight" onclick="go('home')" style="cursor:pointer">
+          <img src="kroneberg-gold-symbol-transparent.png" alt="Kroneberg &amp; Co." class="brand-symbol brand-symbol--nav">
+          <span class="brand-text brand-text--nav">
+            <span class="brand-name brand-name--nav">Kroneberg &amp; Co.</span>
+            <span class="brand-sub brand-sub--nav">Intelligence</span>
+          </span>
+        </div>
+        <p class="footer-brand-copy">Institutional-grade niche market research — published every working day for founders, operators, and investment professionals worldwide.</p>
+        <div class="footer-socials">
+          <a class="footer-social" href="#" aria-label="Instagram">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="2.5" width="19" height="19" rx="5"></rect><circle cx="12" cy="12" r="4.25"></circle><circle cx="18" cy="6" r="1"></circle></svg>
+          </a>
+          <a class="footer-social" href="#" aria-label="LinkedIn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6.94 8.5H3.56V20h3.38V8.5ZM5.25 3A2 2 0 1 0 5.3 7a2 2 0 0 0-.05-4ZM20.44 20h-3.37v-5.59c0-1.33-.03-3.03-1.85-3.03-1.85 0-2.13 1.45-2.13 2.94V20H9.72V8.5h3.24v1.57H13c.45-.85 1.55-1.75 3.2-1.75 3.42 0 4.05 2.25 4.05 5.18V20Z"></path></svg>
+          </a>
+          <a class="footer-social" href="#" aria-label="X">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 3H21l-6.57 7.5L22 21h-5.96l-4.67-6.1L6.02 21H3.9l7.03-8.03L2 3h6.11l4.22 5.59L18.9 3Zm-1.05 16.2h1.17L7.44 4.74H6.18L17.85 19.2Z"></path></svg>
+          </a>
+        </div>
       </div>
+
+      <div>
+        <div class="footer-head">Platform</div>
+        <div class="footer-links">
+          <button class="footer-link" onclick="go('home')">Home</button>
+          <button class="footer-link" onclick="go('home','membership-tiers')">Pricing</button>
+          <button class="footer-link" onclick="go('home','how-it-works')">How It Works</button>
+          <button class="footer-link" onclick="go('home','idea-of-the-day')">Live Intelligence</button>
+          <button class="footer-link" onclick="go('faq')">FAQ</button>
+          <a class="footer-link" href="login.html">Members Access</a>
+        </div>
+      </div>
+
+      <div>
+        <div class="footer-head">Company</div>
+        <div class="footer-links">
+          <button class="footer-link" onclick="go('about')">About Us</button>
+          <button class="footer-link" onclick="go('contact')">Contact</button>
+          <button class="footer-link" onclick="go('home','methodology')">Research Methodology</button>
+          <button class="footer-link" onclick="go('about','global-coverage')">Global Coverage</button>
+        </div>
+      </div>
+
+      <div>
+        <div class="footer-head">Legal</div>
+        <div class="footer-links">
+          <button class="footer-link" onclick="go('legal');showLegal('terms')">Terms of Service</button>
+          <button class="footer-link" onclick="go('legal');showLegal('privacy')">Privacy Policy</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2024 Kroneberg &amp; Co. · Global Research Infrastructure · All rights reserved</div>
+      <div class="footer-meta">Institutional research platform · Est. 2024 · London UK</div>
     </div>
   </div>
 </footer>
@@ -2270,7 +2616,7 @@ try { if (SB_KEY && SB_KEY.length > 20) db = window.supabase.createClient(SB_URL
 })();
 
 /* ── ROUTER ── */
-const PAGES = ['home','legal','contact','about'];
+const PAGES = ['home','legal','contact','about','faq'];
 function go(pg, anch) {
   if (!PAGES.includes(pg)) pg = 'home';
   document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
@@ -2282,6 +2628,7 @@ function go(pg, anch) {
   if (anch) setTimeout(() => { const el = document.getElementById(anch); if(el) el.scrollIntoView({behavior:'smooth',block:'start'}); }, 80);
   history.pushState(null,'','#' + (anch ? pg+'/'+anch : pg));
   setTimeout(initRv, 40);
+  setTimeout(initFaqAccordion, 60);
 }
 function resolveHash() {
   const raw = location.hash.replace('#','').trim();
@@ -2337,6 +2684,30 @@ document.addEventListener('DOMContentLoaded', () => {
   if (lblM) lblM.classList.remove('on');
   if (lblY) lblY.classList.add('on');
 });
+
+
+
+/* ── FAQ ACCORDION ── */
+function initFaqAccordion(){
+  document.querySelectorAll('.faq-item').forEach(item => {
+    const btn = item.querySelector('.faq-q');
+    const ans = item.querySelector('.faq-a');
+    if (!btn || !ans) return;
+    ans.style.maxHeight = item.classList.contains('open') ? ans.scrollHeight + 'px' : '0px';
+    btn.onclick = () => {
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(openItem => {
+        if (openItem !== item) {
+          openItem.classList.remove('open');
+          const openAns = openItem.querySelector('.faq-a');
+          if (openAns) openAns.style.maxHeight = '0px';
+        }
+      });
+      item.classList.toggle('open', !isOpen);
+      ans.style.maxHeight = !isOpen ? ans.scrollHeight + 'px' : '0px';
+    };
+  });
+}
 
 
 /* ── CONTACT ── */
@@ -2534,6 +2905,7 @@ if (db) {
 window.addEventListener('load', () => {
   resolveHash();
   initRv();
+  initFaqAccordion();
   setTimeout(cycleRM, 2400);
   resolveUserTier();
 });
