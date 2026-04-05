@@ -459,6 +459,48 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
   .iotd-metrics{gap:6px}
 }
 
+
+/* ── BLOG PAGE ── */
+.blog-hero{padding:64px 56px 42px;max-width:1200px;margin:0 auto}
+.blog-tagline{font-family:var(--fd);font-size:clamp(36px,4.8vw,58px);font-weight:400;line-height:1.06;letter-spacing:-1.6px;margin-bottom:20px}
+.blog-tagline em{font-style:italic;color:var(--gold)}
+.blog-lead{font-size:17px;color:var(--ink-muted);line-height:1.82;font-weight:300;max-width:760px}
+.blog-shell{max-width:1200px;margin:0 auto;padding:0 56px 92px}
+.blog-topbar{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;padding:28px 0 32px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin-bottom:34px}
+.blog-topbar-copy{max-width:640px}
+.blog-topbar-label{font-family:var(--fm);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+.blog-topbar-text{font-size:14px;color:var(--ink-muted);line-height:1.8;font-weight:300}
+.blog-topbar-note{font-family:var(--fm);font-size:11px;color:var(--ink-faint);letter-spacing:.4px}
+.blog-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}
+.blog-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--rlg);padding:30px;box-shadow:var(--shadow-sm);transition:border-color .22s,box-shadow .22s,transform .22s;display:flex;flex-direction:column;min-height:100%}
+.blog-card:hover{border-color:var(--gold-border);box-shadow:var(--shadow-md);transform:translateY(-2px)}
+.blog-meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.blog-chip{display:inline-flex;align-items:center;padding:4px 10px;border-radius:100px;background:var(--gold-tint);border:1px solid var(--gold-border);font-family:var(--fm);font-size:9.5px;letter-spacing:1px;text-transform:uppercase;color:var(--gold)}
+.blog-date{font-family:var(--fm);font-size:10.5px;color:var(--ink-faint);letter-spacing:.4px}
+.blog-title{font-family:var(--fd);font-size:28px;font-weight:500;line-height:1.16;letter-spacing:-.6px;color:var(--ink);margin-bottom:14px}
+.blog-excerpt{font-size:14.5px;color:var(--ink-muted);line-height:1.84;font-weight:300;margin-bottom:18px}
+.blog-points{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:24px}
+.blog-points li{position:relative;padding-left:18px;font-size:13.5px;color:var(--ink-muted);line-height:1.72;font-weight:300}
+.blog-points li::before{content:'•';position:absolute;left:0;top:0;color:var(--gold)}
+.blog-cta{margin-top:auto;display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;padding-top:16px;border-top:1px solid var(--border)}
+.blog-link{display:inline-flex;align-items:center;gap:8px;color:var(--gold);font-size:13px;font-weight:500}
+.blog-link:hover{text-decoration:underline}
+.blog-tagline-sm{font-family:var(--fm);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink-faint)}
+.blog-seo-note{background:var(--ink);margin-top:34px;border-radius:var(--rlg);padding:34px 32px;display:grid;grid-template-columns:1.2fr 1fr;gap:28px;align-items:start}
+.blog-seo-note h3{font-family:var(--fd);font-size:28px;font-weight:400;line-height:1.14;color:#fff;letter-spacing:-.7px;margin-bottom:10px}
+.blog-seo-note p{font-size:14px;color:rgba(255,255,255,.58);line-height:1.82;font-weight:300}
+.blog-seo-list{list-style:none;display:flex;flex-direction:column;gap:10px}
+.blog-seo-list li{padding-left:18px;position:relative;font-size:13.5px;color:rgba(255,255,255,.62);line-height:1.72;font-weight:300}
+.blog-seo-list li::before{content:'•';position:absolute;left:0;top:0;color:var(--gold-bright)}
+@media(max-width:1024px){
+  .blog-hero,.blog-shell{padding-left:32px;padding-right:32px}
+}
+@media(max-width:768px){
+  .blog-hero,.blog-shell{padding-left:24px;padding-right:24px}
+  .blog-grid{grid-template-columns:1fr}
+  .blog-seo-note{grid-template-columns:1fr;padding:28px 24px}
+}
+
 /* ── ABOUT US PAGE ── */
 .about-hero{padding:64px 56px 52px;max-width:1200px;margin:0 auto}
 .about-tagline{font-family:var(--fd);font-size:clamp(36px,4.5vw,54px);font-weight:400;line-height:1.08;letter-spacing:-1.5px;margin-bottom:22px}
@@ -729,6 +771,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
     <button class="nl" data-pg="services"  onclick="go('home','services')">Services</button>
     <button class="nl" data-pg="pricing"   onclick="go('home','membership-tiers')">Pricing</button>
     <button class="nl" data-pg="about"     onclick="go('about')">About Us</button>
+    <button class="nl" data-pg="blog"      onclick="go('blog')">Weekly Insights</button>
     <button class="nl" data-pg="contact"   onclick="go('contact')">Contact</button>
   </div>
 
@@ -749,6 +792,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
   <button class="nl" onclick="go('home','services');closeMob()">Services</button>
   <button class="nl" onclick="go('home','membership-tiers');closeMob()">Pricing</button>
   <button class="nl" onclick="go('about');closeMob()">About Us</button>
+  <button class="nl" onclick="go('blog');closeMob()">Weekly Insights</button>
   <button class="nl" onclick="go('contact');closeMob()">Contact</button>
   <div class="mob-div"></div>
   <a href="login.html" id="mobMembersBtn" class="btn-console" style="align-self:flex-start"><div class="cdot"></div>Members Access</a>
@@ -2466,6 +2510,108 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
   </div>
 </div>
 
+
+<div class="page" id="page-blog">
+  <div class="blog-hero">
+    <div class="eyebrow" style="margin-bottom:22px"><div class="eyebrow-ln"></div>Journal</div>
+    <h1 class="blog-tagline">Weekly insights designed to capture<br><em>search intent and conversion.</em></h1>
+    <p class="blog-lead">This page is structured as a compact search-intent layer for organic acquisition. Publish weekly insight cards around founder, operator, and investor keywords, then route qualified readers into memberships, report pages, and briefing requests.</p>
+  </div>
+
+  <div class="blog-shell">
+    <div class="blog-topbar">
+      <div class="blog-topbar-copy">
+        <div class="blog-topbar-label">Weekly Insights Framework</div>
+        <div class="blog-topbar-text">Use this section for compact, keyword-led insight cards. Headlines should target intent-rich queries, communicate concrete commercial value, and naturally direct readers toward your paid intelligence products.</div>
+      </div>
+      <div class="blog-topbar-note">Format: compact insight cards for weekly publishing</div>
+    </div>
+
+    <div class="blog-grid">
+      <article class="blog-card">
+        <div class="blog-meta">
+          <span class="blog-chip">Validation</span>
+          <span class="blog-date">Weekly insight card</span>
+        </div>
+        <h2 class="blog-title">How to validate a micro-SaaS idea in 48 hours</h2>
+        <p class="blog-excerpt">A practical framework for testing demand before you write product code: problem interviews, landing-page signal checks, pricing probes, and early purchase intent.</p>
+        <ul class="blog-points">
+          <li>Interview structure for uncovering real pain instead of polite feedback</li>
+          <li>Keyword, Reddit, and competitor checks to estimate demand velocity</li>
+          <li>What counts as a meaningful validation signal in the first 48 hours</li>
+        </ul>
+        <div class="blog-cta">
+          <span class="blog-tagline-sm">Search-intent entry point</span>
+        </div>
+      </article>
+
+      <article class="blog-card">
+        <div class="blog-meta">
+          <span class="blog-chip">Market Research</span>
+          <span class="blog-date">Weekly insight card</span>
+        </div>
+        <h2 class="blog-title">How to spot underserved B2B niches before they become crowded</h2>
+        <p class="blog-excerpt">A search-led post explaining how to triangulate weak competition, recurring complaints, low-content SERPs, and commercial urgency before a niche becomes obvious.</p>
+        <ul class="blog-points">
+          <li>How to read weak SERPs and fragmented demand as early opportunity signals</li>
+          <li>Which customer complaints indicate monetisable workflow friction</li>
+          <li>When a niche is still early enough for a solo operator to enter</li>
+        </ul>
+        <div class="blog-cta">
+          <span class="blog-tagline-sm">Search-intent entry point</span>
+        </div>
+      </article>
+
+      <article class="blog-card">
+        <div class="blog-meta">
+          <span class="blog-chip">Founder Strategy</span>
+          <span class="blog-date">Weekly insight card</span>
+        </div>
+        <h2 class="blog-title">What makes a niche market worth entering in 2026?</h2>
+        <p class="blog-excerpt">An educational piece built for founders comparing TAM myths against sharper indicators such as buyer urgency, acquisition efficiency, repeat demand, and operational defensibility.</p>
+        <ul class="blog-points">
+          <li>Why broad TAM often hides weak near-term commercial reality</li>
+          <li>The difference between interesting markets and investable markets</li>
+          <li>Metrics that make a niche more suitable for bootstrapped entry</li>
+        </ul>
+        <div class="blog-cta">
+          <span class="blog-tagline-sm">Search-intent entry point</span>
+        </div>
+      </article>
+
+      <article class="blog-card">
+        <div class="blog-meta">
+          <span class="blog-chip">Opportunity Mapping</span>
+          <span class="blog-date">Weekly insight card</span>
+        </div>
+        <h2 class="blog-title">7 signals that a niche deserves deeper research</h2>
+        <p class="blog-excerpt">A bottom-of-funnel article designed to bridge public educational content with your paid research vault by showing readers when lightweight validation is no longer enough.</p>
+        <ul class="blog-points">
+          <li>Search growth, buyer pain, funding activity, and competitor weakness</li>
+          <li>How to know when desk research should become structured intelligence work</li>
+          <li>Natural CTAs into custom briefings and paid market analysis</li>
+        </ul>
+        <div class="blog-cta">
+          <span class="blog-tagline-sm">Search-intent entry point</span>
+        </div>
+      </article>
+    </div>
+
+    <div class="blog-seo-note">
+      <div>
+        <h3>Why this page can strengthen organic acquisition</h3>
+        <p>Right now the site sells well, but it has limited search surface area. A dedicated blog increases indexable pages, gives you targets for founder-intent keywords, and creates internal linking routes into pricing, reports, and contact conversion paths.</p>
+      </div>
+      <ul class="blog-seo-list">
+        <li>Target query patterns such as “how to validate a micro-SaaS idea” or “best way to research niche markets”.</li>
+        <li>Link every article to one report preview, one pricing CTA, and one contact CTA.</li>
+        <li>Keep titles practical and outcome-driven rather than abstract thought-leadership headlines.</li>
+        <li>Use one clear article per intent cluster instead of mixing multiple topics into one post.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
 <div class="page" id="page-contact">
   <div class="wrap" style="padding-top:64px;padding-bottom:100px">
     <div class="ct-layout">
@@ -2542,6 +2688,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
         <div class="footer-head">Company</div>
         <div class="footer-links">
           <button class="footer-link" onclick="go('about')">About Us</button>
+          <button class="footer-link" onclick="go('blog')">Weekly Insights</button>
           <button class="footer-link" onclick="go('contact')">Contact</button>
           <button class="footer-link" onclick="go('home','methodology')">Research Methodology</button>
           <button class="footer-link" onclick="go('about','global-coverage')">Global Coverage</button>
@@ -2615,7 +2762,7 @@ try { if (SB_KEY && SB_KEY.length > 20) db = window.supabase.createClient(SB_URL
 })();
 
 /* ── ROUTER ── */
-const PAGES = ['home','legal','contact','about','faq'];
+const PAGES = ['home','legal','contact','about','blog','faq'];
 function go(pg, anch) {
   if (!PAGES.includes(pg)) pg = 'home';
   document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
