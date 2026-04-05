@@ -2678,11 +2678,38 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
           <select class="fctl" id="fc-s">
             <option value="">Select a category…</option>
             <option value="membership">Membership Enquiry</option>
+            <option value="custom-briefing">Custom Briefing Request</option>
+            <option value="research-collaboration">Research Collaboration</option>
             <option value="legal">Legal or Compliance</option>
+            <option value="media">Media or Press</option>
             <option value="other">Other</option>
           </select>
         </div>
-        <div class="fg"><label class="flbl" for="fc-m">Message *</label><textarea class="fctl" id="fc-m" placeholder="Please describe your enquiry..."></textarea></div>
+        <div class="f-row2">
+          <div class="fg"><label class="flbl" for="fc-sector">Sector / Focus Area</label><input class="fctl" type="text" id="fc-sector" placeholder="e.g. FinTech, B2B SaaS, AI Infrastructure" /></div>
+          <div class="fg"><label class="flbl" for="fc-need">Core Research Need</label><input class="fctl" type="text" id="fc-need" placeholder="e.g. market sizing, competitor mapping, demand validation" /></div>
+        </div>
+        <div class="f-row2">
+          <div class="fg"><label class="flbl" for="fc-out">Preferred Output</label>
+            <select class="fctl" id="fc-out">
+              <option value="">Select a format…</option>
+              <option value="briefing">Structured Briefing</option>
+              <option value="sector-scan">Sector Scan</option>
+              <option value="competitive-landscape">Competitive Landscape</option>
+              <option value="custom">Not Sure Yet</option>
+            </select>
+          </div>
+          <div class="fg"><label class="flbl" for="fc-time">Timeline / Urgency</label>
+            <select class="fctl" id="fc-time">
+              <option value="">Select timing…</option>
+              <option value="immediate">Immediate / ASAP</option>
+              <option value="this-week">Within This Week</option>
+              <option value="this-month">Within This Month</option>
+              <option value="flexible">Flexible</option>
+            </select>
+          </div>
+        </div>
+        <div class="fg"><label class="flbl" for="fc-m">Message *</label><textarea class="fctl" id="fc-m" placeholder="Please describe your enquiry, context, and the decision you are trying to support..."></textarea></div>
         <button class="btn-send" id="sendBtn" onclick="submitContact()">
           <span id="sendLbl">Send Enquiry</span><span id="sendArr">→</span>
         </button>
@@ -2907,6 +2934,10 @@ async function submitContact() {
   const email = document.getElementById('fc-e').value.trim();
   const org  = document.getElementById('fc-o').value.trim();
   const subj = document.getElementById('fc-s').value;
+  const sector = document.getElementById('fc-sector').value.trim();
+  const need = document.getElementById('fc-need').value.trim();
+  const output = document.getElementById('fc-out').value;
+  const timeframe = document.getElementById('fc-time').value;
   const msg  = document.getElementById('fc-m').value.trim();
   const btn  = document.getElementById('sendBtn');
   const lbl  = document.getElementById('sendLbl');
@@ -2916,20 +2947,28 @@ async function submitContact() {
   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setFb('err','Please provide a valid email address.'); return; }
   if (!subj)  { setFb('err','Please select an enquiry type.'); return; }
   if (!msg)   { setFb('err','Please write your message before sending.'); return; }
-  btn.disabled=true; lbl.textContent='Sending\u2026'; arr.textContent='\u23F3'; fb.className='ffb';
+  const structuredMessage = [
+    sector ? `Sector / Focus Area: ${sector}` : null,
+    need ? `Core Research Need: ${need}` : null,
+    output ? `Preferred Output: ${output}` : null,
+    timeframe ? `Timeline / Urgency: ${timeframe}` : null,
+    '',
+    msg
+  ].filter(Boolean).join('\n');
+  btn.disabled=true; lbl.textContent='Sending…'; arr.textContent='⏳'; fb.className='ffb';
   try {
     if (db) {
-      const {error} = await db.from('contact_messages').insert([{name,email,organisation:org||null,subject:subj,message:msg,created_at:new Date().toISOString()}]);
+      const {error} = await db.from('contact_messages').insert([{name,email,organisation:org||null,subject:subj,message:structuredMessage,created_at:new Date().toISOString()}]);
       if (error) throw error;
     } else { await new Promise(r=>setTimeout(r,1200)); }
-    setFb('ok','\u2713 Enquiry received. We will respond within one business day.');
-    toast('ok','\u2713','Enquiry sent successfully');
-    ['fc-n','fc-e','fc-o','fc-m'].forEach(id=>document.getElementById(id).value='');
-    document.getElementById('fc-s').value='';
+    setFb('ok','✓ Enquiry received. We will respond within one business day.');
+    toast('ok','✓','Enquiry sent successfully');
+    ['fc-n','fc-e','fc-o','fc-sector','fc-need','fc-m'].forEach(id=>document.getElementById(id).value='');
+    ['fc-s','fc-out','fc-time'].forEach(id=>document.getElementById(id).value='');
   } catch(err) {
     setFb('err','An error occurred. Please email us directly at hello@kroneberg.io');
-    toast('err','\u2715','Failed to send');
-  } finally { btn.disabled=false; lbl.textContent='Send Enquiry'; arr.textContent='\u2192'; }
+    toast('err','✕','Failed to send');
+  } finally { btn.disabled=false; lbl.textContent='Send Enquiry'; arr.textContent='→'; }
 }
 function setFb(t,x){const el=document.getElementById('ffb');el.textContent=x;el.className='ffb '+t;}
 
