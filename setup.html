@@ -673,7 +673,7 @@ async function waitForProfile(userId, maxAttempts = 12, delayMs = 1000) {
 
 async function applyReferralIfPresent() {
   try {
-    const referralCode = localStorage.getItem('referral_code');
+    const referralCode = (new URLSearchParams(window.location.search).get('ref') || '').trim() || null;
     if (!referralCode) return { success: false, skipped: true, reason: 'no_referral_code' };
 
     const { data: sessionData, error: sessionError } = await sb.auth.getSession();
