@@ -2850,10 +2850,20 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
 
 
 <script>
-const SB_URL = 'https://btiwdulcqtvkdupsotnx.supabase.co';
-const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ0aXdkdWxjcXR2a2R1cHNvdG54Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3NzY2NjcsImV4cCI6MjA5MDM1MjY2N30.RawdFhi84Zq95eZ29w8QwXPcBT9VDffFcHMB3fAzITA'; // ← Same key as vault.html and login.html
+const SUPABASE_URL = 'https://btiwdulcqtvkdupsotnx.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ0aXdkdWxjcXR2a2R1cHNvdG54Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3NzY2NjcsImV4cCI6MjA5MDM1MjY2N30.RawdFhi84Zq95eZ29w8QwXPcBT9VDffFcHMB3fAzITA';
+const SB_URL = SUPABASE_URL;
+const SB_KEY = SUPABASE_ANON_KEY;
 let db = null;
-try { if (SB_KEY && SB_KEY.length > 20) db = window.supabase.createClient(SB_URL, SB_KEY, { auth: { storage: window.localStorage, persistSession: true } }); } catch(e){}
+try {
+  if (SUPABASE_ANON_KEY && SUPABASE_ANON_KEY.length > 20) {
+    db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+      auth: { storage: window.localStorage, persistSession: true }
+    });
+  }
+} catch (e) {
+  console.error('Supabase client init failed:', e);
+}
 
 // ─── SMART NAV BUTTON ──────────────────────────────────────────
 // Checks if the user is already logged in.
@@ -3022,27 +3032,41 @@ async function submitContact() {
   ].filter(Boolean).join('\n');
   btn.disabled=true; lbl.textContent='Sending…'; arr.textContent='⏳'; fb.className='ffb';
   try {
-    if (db) {
-      const {error} = await db.from('contact_messages').insert([{name,email,organisation:org||null,subject:subj,message:structuredMessage,created_at:new Date().toISOString()}]);
-      if (error) throw error;
-    } else { await new Promise(r=>setTimeout(r,1200)); }
+    if (!db) {
+      throw new Error('Supabase client is not available.');
+    }
+
+    const { error } = await db.from('contact_messages').insert([{
+      name,
+      email,
+      organisation: org || null,
+      subject: subj,
+      message: structuredMessage
+    }]);
+
+    if (error) throw error;
+
     setFb('ok','✓ Enquiry received. We will respond within one business day.');
     toast('ok','✓','Enquiry sent successfully');
     ['fc-n','fc-e','fc-o','fc-sector','fc-need','fc-m'].forEach(id=>document.getElementById(id).value='');
     ['fc-s','fc-out','fc-time'].forEach(id=>document.getElementById(id).value='');
   } catch(err) {
-    setFb('err','An error occurred. Please email us directly at hello@kroneberg.io');
-    toast('err','✕','Failed to send');
+    console.error('Contact form submission failed:', err);
+    setFb('err','Submission failed. Please try again after the Supabase contact table or permissions are corrected.');
+    toast('err','✕','Failed to send enquiry');
   } finally { btn.disabled=false; lbl.textContent='Send Enquiry'; arr.textContent='→'; }
 }
-function setFb(t,x){const el=document.getElementById('ffb');el.textContent=x;el.className='ffb '+t;}
+function setFb(t,x){const el=document.getElementById('ffb');if(!el)return;el.textContent=x;el.className='ffb '+t;}
 
 /* ── TOAST ── */
 let toastT=null;
 function toast(t,ico,msg){
-  document.getElementById('toastIco').textContent=ico;
-  document.getElementById('toastMsg').textContent=msg;
+  const icoEl=document.getElementById('toastIco');
+  const msgEl=document.getElementById('toastMsg');
   const el=document.getElementById('toastEl');
+  if(!icoEl||!msgEl||!el){console.error('Toast elements not found');return;}
+  icoEl.textContent=ico;
+  msgEl.textContent=msg;
   el.className='toast '+t+' show';
   clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove('show'),3800);
 }
@@ -3206,6 +3230,10 @@ window.addEventListener('load', () => {
 });
 </script>
 
+<div id="toastEl" class="toast" aria-live="polite" aria-atomic="true">
+  <span id="toastIco"></span>
+  <span id="toastMsg"></span>
+</div>
 
 <div class="ref-modal" id="referralTermsModal" aria-hidden="true">
   <div class="ref-modal-box" role="dialog" aria-modal="true" aria-labelledby="referralTermsTitle">
