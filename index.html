@@ -2806,7 +2806,7 @@ function cycleRM(){
 }
 
 /* ── TIER GATING — IDEA OF THE DAY ── */
-// States: 'guest' | 'core' | 'pro' | 'admin'
+// States: 'guest' | 'core' | 'elite' | 'admin'
 let _userTier = 'guest';
 let _authResolved = false;
 
@@ -2842,7 +2842,7 @@ async function resolveUserTier() {
 
         if (profile) {
           _userTier = (profile.role === 'admin')   ? 'admin'
-                    : (profile.tier === 'pro')     ? 'pro'
+                    : (profile.tier === 'elite')     ? 'elite'
                     : (profile.tier === 'core') ? 'core'
                     : 'free';
         } else {
@@ -2852,7 +2852,7 @@ async function resolveUserTier() {
         // Show nav badge for authenticated users
         if (badge && badgeLbl) {
           badgeLbl.textContent = _userTier === 'admin'   ? 'ADMIN'
-                               : _userTier === 'pro'     ? 'PRO'
+                               : _userTier === 'elite'     ? 'ELITE'
                                : _userTier === 'core' ? 'CORE'
                                : 'FREE';
           badge.classList.add('show');
@@ -2880,7 +2880,7 @@ function applyIotdGating(tier) {
   // Hide skeleton
   if (skeleton) skeleton.style.display = 'none';
 
-  if (tier === 'pro' || tier === 'admin') {
+  if (tier === 'elite' || tier === 'admin') {
     // Pro / Admin: show block but overlay the lock card (they can still see the teaser)
     if (block) block.style.display = 'block';
     if (lock)  lock.classList.add('show');
