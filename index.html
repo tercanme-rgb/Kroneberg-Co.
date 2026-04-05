@@ -2883,16 +2883,35 @@ try { if (SB_KEY && SB_KEY.length > 20) db = window.supabase.createClient(SB_URL
 const PAGES = ['home','legal','contact','about','blog','faq'];
 function go(pg, anch) {
   if (!PAGES.includes(pg)) pg = 'home';
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
-  document.getElementById('page-' + pg).classList.add('on');
+
+  document.querySelectorAll('.page').forEach(page => page.classList.remove('on'));
+  const nextPage = document.getElementById('page-' + pg);
+  if (nextPage) nextPage.classList.add('on');
+
   document.querySelectorAll('.nl').forEach(l => l.classList.remove('on'));
   const m = document.querySelector('.nl[data-pg="' + pg + '"]');
   if (m) m.classList.add('on');
-  window.scrollTo({top:0,behavior:'instant'});
-  if (anch) setTimeout(() => { const el = document.getElementById(anch); if(el) el.scrollIntoView({behavior:'smooth',block:'start'}); }, 80);
-  history.pushState(null,'','#' + (anch ? pg+'/'+anch : pg));
-  setTimeout(initRv, 40);
-  setTimeout(initFaqAccordion, 60);
+
+  const targetHash = '#' + (anch ? pg + '/' + anch : pg);
+  if (location.hash !== targetHash) history.pushState(null, '', targetHash);
+
+  window.scrollTo(0, 0);
+  document.documentElement.scrollTop = 0;
+  document.body.scrollTop = 0;
+
+  requestAnimationFrame(() => {
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+
+    if (anch) {
+      const el = document.getElementById(anch);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    initRv();
+    initFaqAccordion();
+  });
 }
 function resolveHash() {
   const raw = location.hash.replace('#','').trim();
