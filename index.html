@@ -833,7 +833,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
           <div class="hiw-num">01</div>
           <div class="hiw-ico">🔐</div>
           <h3>Choose your plan and join</h3>
-          <p>Select Starter or Pro, complete payment via Stripe, and receive your login credentials within minutes. No manual approval. No waiting period. Your Research Vault opens immediately.</p>
+          <p>Select Core or Elite, complete payment via Stripe, and receive your login credentials within minutes. No manual approval. No waiting period. Your Research Vault opens immediately.</p>
         </article>
         <div class="hiw-arrow" aria-hidden="true">→</div>
         <article class="hiw-card">
@@ -1349,9 +1349,9 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
           <a id="lnk-p" href="https://buy.stripe.com/bJe00kbeLc547pJgdaebu02" target="_blank" rel="noopener" class="btn-pg-gold">Begin Pro Membership →</a>
         </div>
 
-        <!-- ── STARTER TIER ── -->
+        <!-- ── CORE TIER ── -->
         <div class="pc">
-          <div class="pc-tier">Starter</div>
+          <div class="pc-tier">Core</div>
           <div class="pc-price">$<span id="v-s">36</span></div>
           <div class="pc-cycle" id="c-s">per month</div>
           <ul class="pc-feats">
@@ -1363,7 +1363,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
             <li>Encrypted Research Environment</li>
             <li>Rigorous APA-7 Citation Standard</li>
           </ul>
-          <a id="lnk-s" href="https://buy.stripe.com/9B63cw0A72uufWf5ywebu00" target="_blank" rel="noopener" class="btn-pg">Begin Starter Membership</a>
+          <a id="lnk-s" href="https://buy.stripe.com/9B63cw0A72uufWf5ywebu00" target="_blank" rel="noopener" class="btn-pg">Begin Core Membership</a>
         </div>
 
       </div>
@@ -1635,7 +1635,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
   <h2>6. Membership, Billing, and Subscription Terms</h2>
   <p>Kroneberg & Co. may offer membership or subscription access tiers, including:</p>
   <ul>
-    <li>Starter: $36/month or $299/year — 10 research briefs per week, full 15-section methodology, PDF and Word export</li>
+    <li>Core: $36/month or $299/year — 10 research briefs per week, full 15-section methodology, PDF and Word export</li>
     <li>Pro: $84/month or $699/year — unrestricted global intelligence access, Pro-tier executive summaries, priority algorithmic processing, direct analyst correspondence, and advance intelligence on emerging verticals.</li>
   </ul>
 
@@ -2325,16 +2325,16 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
       </div>
 
       <div class="faq-item">
-        <button class="faq-q">What is the real difference between Starter and Pro? <span>+</span></button>
+        <button class="faq-q">What is the real difference between Core and Pro? <span>+</span></button>
         <div class="faq-a">
-          <p>Starter gives you full access to the daily brief rotation with PDF export — everything needed to evaluate markets efficiently. Pro unlocks unrestricted Vault access, Pro-tier executive summaries with deeper financial modelling, direct analyst correspondence for topic requests, and priority processing on emerging verticals before they enter the standard rotation.</p>
+          <p>Core gives you full access to the daily brief rotation with PDF export — everything needed to evaluate markets efficiently. Pro unlocks unrestricted Vault access, Pro-tier executive summaries with deeper financial modelling, direct analyst correspondence for topic requests, and priority processing on emerging verticals before they enter the standard rotation.</p>
         </div>
       </div>
 
       <div class="faq-item">
-        <button class="faq-q">What is the difference between Free, Starter, and Pro? <span>+</span></button>
+        <button class="faq-q">What is the difference between Free, Core, and Pro? <span>+</span></button>
         <div class="faq-a">
-          <p>The Free tier allows users to enter the platform and explore available research categories, but full report access is restricted. Starter provides structured access to the active research library. Pro provides the broadest access level, including premium research capabilities and higher-priority support features.</p>
+          <p>The Free tier allows users to enter the platform and explore available research categories, but full report access is restricted. Core provides structured access to the active research library. Pro provides the broadest access level, including premium research capabilities and higher-priority support features.</p>
         </div>
       </div>
 
@@ -2355,7 +2355,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
       <div class="faq-item">
         <button class="faq-q">Can I request a specific research topic? <span>+</span></button>
         <div class="faq-a">
-          <p>Pro members have access to Direct Analyst Correspondence, which includes the ability to surface specific sectors, sub-niches, or market theses for prioritisation. Starter members receive the daily research rotation. For bespoke research mandates, use the Contact page to request a custom briefing.</p>
+          <p>Pro members have access to Direct Analyst Correspondence, which includes the ability to surface specific sectors, sub-niches, or market theses for prioritisation. Core members receive the daily research rotation. For bespoke research mandates, use the Contact page to request a custom briefing.</p>
         </div>
       </div>
 
@@ -2570,7 +2570,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
   <div class="upm-box">
     <div class="upm-icon">🔒</div>
     <h2 class="upm-title">Upgrade to Unlock</h2>
-    <p class="upm-sub">Full 15-section market intelligence briefs are available on the <strong style="color:var(--gold)">Starter</strong> and <strong style="color:var(--gold)">Pro</strong> plans. Choose the tier that matches your research cadence.</p>
+    <p class="upm-sub">Full 15-section market intelligence briefs are available on the <strong style="color:var(--gold)">Core</strong> and <strong style="color:var(--gold)">Pro</strong> plans. Choose the tier that matches your research cadence.</p>
     <div class="upm-chips">
       <span class="upm-chip">15-Section Deep Analysis</span>
       <span class="upm-chip">Financial Projections</span>
@@ -2780,7 +2780,7 @@ document.addEventListener('keydown', e => {
 function handleReportAction() {
   if (_userTier === 'free') {
     openUpgradeModal();
-  } else if (_userTier === 'starter' || _userTier === 'admin') {
+  } else if (_userTier === 'core' || _userTier === 'admin') {
     window.location.href = 'engine.html';
   } else {
     // guest — take to pricing
@@ -2806,7 +2806,7 @@ function cycleRM(){
 }
 
 /* ── TIER GATING — IDEA OF THE DAY ── */
-// States: 'guest' | 'starter' | 'pro' | 'admin'
+// States: 'guest' | 'core' | 'pro' | 'admin'
 let _userTier = 'guest';
 let _authResolved = false;
 
@@ -2843,7 +2843,7 @@ async function resolveUserTier() {
         if (profile) {
           _userTier = (profile.role === 'admin')   ? 'admin'
                     : (profile.tier === 'pro')     ? 'pro'
-                    : (profile.tier === 'starter') ? 'starter'
+                    : (profile.tier === 'core') ? 'core'
                     : 'free';
         } else {
           _userTier = 'free';
@@ -2853,7 +2853,7 @@ async function resolveUserTier() {
         if (badge && badgeLbl) {
           badgeLbl.textContent = _userTier === 'admin'   ? 'ADMIN'
                                : _userTier === 'pro'     ? 'PRO'
-                               : _userTier === 'starter' ? 'STARTER'
+                               : _userTier === 'core' ? 'CORE'
                                : 'FREE';
           badge.classList.add('show');
         }
@@ -2887,7 +2887,7 @@ function applyIotdGating(tier) {
     // Dim the section label to signal it's not the relevant action for them
     section.style.opacity = '0.7';
   } else {
-    // Guest / Starter: full visibility, no lock
+    // Guest / Core: full visibility, no lock
     if (block) block.style.display = 'block';
     if (lock)  lock.classList.remove('show');
     section.style.opacity = '1';
