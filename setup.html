@@ -769,11 +769,30 @@ async function handleSubmit() {
       throw new Error('User could not be resolved after account creation.');
     }
 
-    console.log('Account created. Waiting for profile row before referral processing.');
-    await waitForProfile(finalUser.id);
+    const rawTier = (params.get('tier') || 'free').toLowerCase().trim();
+    const resolvedTier =
+      rawTier === 'starter' ? 'core' :
+      rawTier === 'pro' ? 'elite' :
+      ['free', 'core', 'elite'].includes(rawTier) ? rawTier : 'free';
 
-    const referralResult = await applyReferralIfPresent();
-    console.log('Referral processing result:', referralResult);
+    const referralCode = localStorage.getItem('referral_code');
+
+    const { error: profileError } = await sb
+      .from('profiles')
+      .upsert({
+        id: finalUser.id,
+        email: finalUser.email || email,
+        first_name: firstName,
+        last_name: lastName,
+        full_name: `${firstName} ${lastName}`,
+        tier: resolvedTier,
+        referred_by_code: referralCode || null,
+        updated_at: new Date().toISOString()
+      }, { onConflict: 'id' });
+
+    if (profileError) throw profileError;
+
+    console.log('Profile upsert completed for user:', finalUser.id);
 
     $formBody.style.display = 'none';
     $success.classList.add('visible');
