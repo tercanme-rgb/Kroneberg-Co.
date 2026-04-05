@@ -629,20 +629,37 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
 .src-badge{font-family:var(--fm);font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:2px 7px;border-radius:100px}
 .src-badge.inst{background:rgba(184,134,11,.1);color:var(--gold);border:1px solid var(--gold-border)}
 .src-badge.pub{background:#F0FDF4;color:#15803d;border:1px solid rgba(34,197,94,.2)}
-.infra-why{background:#fff;padding:52px 56px}
+.infra-why{background:#0F1117;padding:68px 56px;border-top:1px solid rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.05)}
 .infra-why-in{max-width:1200px;margin:0 auto}
-.why-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:36px}
-.why-col{border-radius:14px;padding:32px}
-.why-col.bad{background:#FEF2F2;border:1px solid #FECACA}
-.why-col.good{background:#F0FDF4;border:1px solid #BBF7D0}
-.why-col-head{display:flex;align-items:center;gap:10px;margin-bottom:20px}
+.why-band-head{text-align:center;max-width:860px;margin:0 auto 34px}
+.why-band-head .eyebrow{justify-content:center;color:var(--gold-bright)}
+.why-band-head .eyebrow-ln{background:rgba(245,197,24,.55)}
+.why-band-title{font-family:var(--fd);font-size:clamp(24px,2.9vw,34px);font-weight:400;letter-spacing:-.6px;line-height:1.16;color:#fff;max-width:760px;margin:0 auto}
+.why-band-title em{font-style:italic;color:var(--gold-bright);font-size:.96em}
+.why-band-sub{margin:16px auto 0;max-width:760px;font-size:15px;line-height:1.82;color:rgba(255,255,255,.62);font-weight:300}
+.pain-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:26px}
+.pain-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:26px 24px 24px;box-shadow:0 18px 40px rgba(0,0,0,.18);min-height:340px;display:flex;flex-direction:column}
+.pain-kicker{font-family:var(--fm);font-size:9px;letter-spacing:1.8px;text-transform:uppercase;color:rgba(245,197,24,.82);margin-bottom:10px}
+.pain-title{font-family:var(--fd);font-size:22px;line-height:1.12;font-weight:500;letter-spacing:-.4px;color:#fff;margin-bottom:12px}
+.pain-copy{font-size:13.5px;line-height:1.78;color:rgba(255,255,255,.62);font-weight:300}
+.why-embed{margin-top:24px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:22px 24px 18px;box-shadow:0 22px 56px rgba(0,0,0,.22);min-height:340px}
+.why-embed-top{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,.08)}
+.why-embed-title{font-family:var(--fd);font-size:clamp(20px,2.3vw,28px);font-weight:400;line-height:1.05;letter-spacing:-.6px;color:#fff}
+.why-embed-title em{font-style:italic;color:var(--gold-bright)}
+.why-embed-note{font-family:var(--fm);font-size:10px;letter-spacing:1.3px;text-transform:uppercase;color:rgba(255,255,255,.35)}
+.why-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+.why-col{border-radius:16px;padding:18px 18px 16px}
+.why-col.bad{background:rgba(127,29,29,.18);border:1px solid rgba(248,113,113,.22)}
+.why-col.good{background:rgba(5,46,22,.22);border:1px solid rgba(74,222,128,.18)}
+.why-col-head{display:flex;align-items:center;gap:10px;margin-bottom:12px}
 .why-mark{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0}
-.why-mark.x{background:#FEE2E2;color:#DC2626}
-.why-mark.ok{background:#DCFCE7;color:#16A34A}
-.why-col-title{font-family:var(--fd);font-size:18px;font-weight:500;color:#111827}
-.why-item{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid rgba(0,0,0,.06);font-size:14px;color:#374151;line-height:1.55}
+.why-mark.x{background:rgba(248,113,113,.14);color:#FCA5A5}
+.why-mark.ok{background:rgba(74,222,128,.14);color:#86EFAC}
+.why-col-title{font-family:var(--fd);font-size:18px;font-weight:500;color:#fff}
+.why-item{display:flex;align-items:flex-start;gap:10px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.08);font-size:13px;color:rgba(255,255,255,.66);line-height:1.42}
 .why-item:last-child{border-bottom:none}
 .why-item-ico{font-size:13px;flex-shrink:0;margin-top:1px}
+.why-band-foot{display:none}
 .infra-disclaimer{background:#F9FAFB;border-top:1px solid #E5E7EB;padding:20px 56px;text-align:center;font-size:11.5px;color:#9CA3AF;font-style:italic;max-width:100%}
 .infra-disclaimer-in{max-width:900px;margin:0 auto}
 
@@ -741,6 +758,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
 @media(max-width:1024px){
   .infra-price-band,.infra-sources,.infra-why,.infra-disclaimer,.infra-hero{padding-left:32px;padding-right:32px}
   .testi-in,.report-anat-in{padding-left:32px;padding-right:32px}
+  .pain-strip{grid-template-columns:1fr}
   .infra-price-grid{grid-template-columns:repeat(2,1fr)}
   .src-grid{grid-template-columns:repeat(2,1fr)}
   .ra-layout{grid-template-columns:1fr;gap:44px}
@@ -749,7 +767,8 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
   .infra-price-band,.infra-sources,.infra-why,.infra-disclaimer,.infra-hero{padding-left:24px;padding-right:24px}
   .testi-in,.report-anat-in{padding-left:24px;padding-right:24px}
   .testi-grid{grid-template-columns:1fr}
-  .why-grid{grid-template-columns:1fr}
+  .pain-strip,.why-grid{grid-template-columns:1fr}
+  .why-embed{padding:22px}
   .src-grid{grid-template-columns:1fr}
   .infra-price-grid{grid-template-columns:1fr 1fr}
 }
@@ -1014,35 +1033,64 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
 
     <div class="infra-why">
       <div class="infra-why-in">
-        <div class="rv" style="text-align:center;margin-bottom:36px">
-          <div class="eyebrow" style="justify-content:center"><div class="eyebrow-ln"></div>Why Kroneberg & Co.<div class="eyebrow-ln"></div></div>
-          <h3 style="font-family:var(--fd);font-size:clamp(28px,3.5vw,42px);font-weight:400;letter-spacing:-1px;color:#0F172A">The conventional approach<br>vs. <em style="color:var(--gold);font-style:italic">the Kroneberg & Co. standard.</em></h3>
+        <div class="why-band-head rv">
+          <div class="eyebrow"><div class="eyebrow-ln"></div>Problem — The Existing Reality<div class="eyebrow-ln"></div></div>
+          <h3 class="why-band-title">Most people are forced into one of three bad options.</h3>
+          <p class="why-band-sub">The detail belongs below: slow research, expensive infrastructure, or decisions made without a credible evidence layer.</p>
         </div>
-        <div class="why-grid rv rv-d1">
-          <div class="why-col bad">
-            <div class="why-col-head">
-              <div class="why-mark x">✕</div>
-              <div class="why-col-title">The Conventional Approach</div>
-            </div>
-            <div class="why-item"><span class="why-item-ico">💬</span>Twitter / X hot takes and social sentiment noise</div>
-            <div class="why-item"><span class="why-item-ico">🤖</span>LLM brainstorming with no real-world citation layer</div>
-            <div class="why-item"><span class="why-item-ico">📅</span>3–6 months of manual research per market thesis</div>
-            <div class="why-item"><span class="why-item-ico">🤔</span>Gut feelings and founder echo chambers</div>
-            <div class="why-item"><span class="why-item-ico">📊</span>Rounded, estimated market figures with no sourcing</div>
-            <div class="why-item"><span class="why-item-ico">💸</span>$27,000+/yr for a single terminal subscription</div>
+
+        <div class="pain-strip rv rv-d1">
+          <div class="pain-card">
+            <div class="pain-kicker">Pain Point 01</div>
+            <div class="pain-title">3–6 months of manual research.</div>
+            <div class="pain-copy">Weeks disappear into scattered tabs, fragmented sources, and slow validation before a market thesis is even usable.<br><br>Instead of moving toward a decision, most teams burn time collecting screenshots, comparing conflicting numbers, and restarting the same research loop from scratch.</div>
           </div>
-          <div class="why-col good">
-            <div class="why-col-head">
-              <div class="why-mark ok">✓</div>
-              <div class="why-col-title">The Kroneberg & Co. Standard</div>
-            </div>
-            <div class="why-item"><span class="why-item-ico">📡</span>47 monitored real-world sources — every claim cited</div>
-            <div class="why-item"><span class="why-item-ico">⏱</span>200+ hours of research condensed into a 15-minute read</div>
-            <div class="why-item"><span class="why-item-ico">💹</span>Investment-grade TAM/SAM/SOM with non-rounded figures</div>
-            <div class="why-item"><span class="why-item-ico">📋</span>30-day execution plan with milestone-mapped actions</div>
-            <div class="why-item"><span class="why-item-ico">📎</span>APA-7 sourcing standard on every report, every time</div>
-            <div class="why-item"><span class="why-item-ico">💎</span>Elite membership from $84/month — no terminal contract</div>
+          <div class="pain-card">
+            <div class="pain-kicker">Pain Point 02</div>
+            <div class="pain-title">$27K terminal access.</div>
+            <div class="pain-copy">Institutional-grade data tools are priced for funds and corporate teams, not independent operators or lean firms.<br><br>The result is a distorted choice: either overpay for access you cannot fully use, or work without the depth, structure, and confidence those systems were designed to provide.</div>
           </div>
+          <div class="pain-card">
+            <div class="pain-kicker">Pain Point 03</div>
+            <div class="pain-title">Guessing without real evidence.</div>
+            <div class="pain-copy">Without a credible source layer, most market decisions rest on recycled opinions, rounded estimates, and unverified conviction.<br><br>That usually leads to weak market selection, false demand signals, and strategy built on persuasive language rather than hard evidence.</div>
+          </div>
+        </div>
+
+        <div class="why-embed rv rv-d2">
+          <div class="why-embed-top">
+            <div class="why-embed-title">What that usually looks like<br>vs. <em>the Kroneberg &amp; Co. standard.</em></div>
+            <div class="why-embed-note">Integrated comparison — not a standalone section</div>
+          </div>
+
+          <div class="why-grid">
+            <div class="why-col bad">
+              <div class="why-col-head">
+                <div class="why-mark x">✕</div>
+                <div class="why-col-title">The Conventional Approach</div>
+              </div>
+              <div class="why-item"><span class="why-item-ico">💬</span>Twitter / X hot takes and social sentiment noise</div>
+              <div class="why-item"><span class="why-item-ico">🤖</span>LLM brainstorming with no real-world citation layer</div>
+              <div class="why-item"><span class="why-item-ico">📅</span>3–6 months of manual research per market thesis</div>
+              <div class="why-item"><span class="why-item-ico">🤔</span>Gut feelings and founder echo chambers</div>
+              <div class="why-item"><span class="why-item-ico">📊</span>Rounded, estimated market figures with no sourcing</div>
+              <div class="why-item"><span class="why-item-ico">💸</span>$27,000+/yr for a single terminal subscription</div>
+            </div>
+            <div class="why-col good">
+              <div class="why-col-head">
+                <div class="why-mark ok">✓</div>
+                <div class="why-col-title">The Kroneberg &amp; Co. Standard</div>
+              </div>
+              <div class="why-item"><span class="why-item-ico">📡</span>47 monitored real-world sources — every claim cited</div>
+              <div class="why-item"><span class="why-item-ico">⏱</span>200+ hours of research condensed into a 15-minute read</div>
+              <div class="why-item"><span class="why-item-ico">💹</span>Investment-grade TAM/SAM/SOM with non-rounded figures</div>
+              <div class="why-item"><span class="why-item-ico">📋</span>30-day execution plan with milestone-mapped actions</div>
+              <div class="why-item"><span class="why-item-ico">📎</span>APA-7 sourcing standard on every report, every time</div>
+              <div class="why-item"><span class="why-item-ico">💎</span>Elite membership from $84/month — no terminal contract</div>
+            </div>
+          </div>
+
+          <div class="why-band-foot">Existing “Why Kroneberg vs Conventional” comparison has been absorbed into the pain-led block so the narrative now starts with visitor pain before moving into differentiation.</div>
         </div>
       </div>
     </div>
