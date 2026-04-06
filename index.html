@@ -233,7 +233,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .ltab.on{color:var(--gold);border-bottom-color:var(--gold);font-weight:500}
 .lpanel{display:none}
 .lpanel.on{display:block}
-.lpanel h1{font-family:var(--fd);font-size:46px;font-weight:400;letter-spacing:-1.5px;margin-bottom:6px;line-height:1.05}
+.lpanel .legal-title{font-family:var(--fd);font-size:46px;font-weight:400;letter-spacing:-1.5px;margin-bottom:6px;line-height:1.05}
 .legal-dt{font-family:var(--fm);font-size:10.5px;letter-spacing:1px;color:var(--ink-faint);margin-bottom:48px}
 .lpanel h2{font-family:var(--fd);font-size:21px;font-weight:500;margin:44px 0 14px;color:var(--ink)}
 .lpanel p{font-size:15px;color:var(--ink-muted);line-height:1.88;margin-bottom:14px;font-weight:300}
@@ -247,8 +247,8 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 
 /* CONTACT */
 .ct-layout{display:grid;grid-template-columns:5fr 7fr;gap:80px;align-items:start}
-.ct-layout h1{font-family:var(--fd);font-size:clamp(38px,4.5vw,52px);font-weight:400;line-height:1.07;letter-spacing:-1.5px;margin-bottom:20px}
-.ct-layout h1 em{font-style:italic;color:var(--gold)}
+.ct-layout h2{font-family:var(--fd);font-size:clamp(38px,4.5vw,52px);font-weight:400;line-height:1.07;letter-spacing:-1.5px;margin-bottom:20px}
+.ct-layout h2 em{font-style:italic;color:var(--gold)}
 .ct-intro{font-size:15px;color:var(--ink-muted);line-height:1.80;font-weight:300;margin-bottom:44px}
 .ct-item{display:flex;align-items:flex-start;gap:16px;padding:18px 0;border-top:1px solid var(--border)}
 .ct-item:last-child{border-bottom:1px solid var(--border)}
@@ -305,7 +305,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
 /* FAQ PAGE */
 .faq-wrap{max-width:920px;margin:0 auto;padding:64px 56px 96px}
 .faq-hero{margin-bottom:34px}
-.faq-hero h1{font-family:var(--fd);font-size:clamp(40px,5vw,60px);font-weight:400;line-height:1.05;letter-spacing:-1.5px;margin-bottom:14px}
+.faq-hero h2{font-family:var(--fd);font-size:clamp(40px,5vw,60px);font-weight:400;line-height:1.05;letter-spacing:-1.5px;margin-bottom:14px}
 .faq-hero p{font-size:16px;color:var(--ink-muted);line-height:1.8;font-weight:300;max-width:720px}
 .faq-list{display:flex;flex-direction:column;gap:14px}
 .faq-item{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--rlg);box-shadow:var(--shadow-sm);overflow:hidden;transition:border-color .2s,box-shadow .2s,transform .2s}
@@ -801,11 +801,11 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
 <body>
 
 <!-- NAV -->
-<nav class="nav" id="mainNav">
+<header class="nav" id="mainNav">
   <div class="brand-lockup brand-lockup--tight" onclick="go('home')">
     <img src="kroneberg-gold-symbol-transparent.png" alt="Kroneberg &amp; Co." class="brand-symbol brand-symbol--nav">
     <span class="brand-text brand-text--nav">
-      <span class="brand-name brand-name--nav">Kroneberg &amp; Co.</span>
+      <h1 class="brand-name brand-name--nav">Kroneberg &amp; Co.</h1>
       <span class="brand-sub brand-sub--nav">Intelligence</span>
     </span>
   </div>
@@ -829,7 +829,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
       <span></span><span></span><span></span>
     </button>
   </div>
-</nav>
+</header>
 
 <div class="mob-menu" id="mobMenu">
   <button class="nl" onclick="go('home');closeMob()">Home</button>
@@ -844,7 +844,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
 
 
 <!-- PAGE: HOME -->
-<div class="page on" id="page-home">
+<main class="page on" id="page-home">
 
   <div style="background:var(--bg)">
     <div class="hero">
@@ -852,7 +852,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
       <div class="hero-inner">
         <div>
           <div class="hero-badge"><span class="badge-pill">Est. 2024</span>Premium Market Strategy Firm</div>
-          <h1>Intelligence that<br><em>moves markets.</em></h1>
+          <h2>Intelligence that<br><em>moves markets.</em></h2>
           <p class="hero-desc">Kroneberg & Co. is a premier niche intelligence and market strategy firm delivering institutional-grade niche market intelligence and daily reports for founders, operators, and early-stage investors who need faster clarity, more credible signals, and stronger conviction than traditional research can provide.</p>
           <div class="hero-act">
             <button class="btn-gold" onclick="go('home','membership-tiers')">View Membership Plans →</button>
@@ -1109,12 +1109,12 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
         <p class="sub" style="margin-top:18px;max-width:520px">Our methodology draws from institutional research frameworks — structured, sourced, and strategically actionable from cover to conclusion.</p>
       </div>
       <div class="svc-grid rv rv-d1">
-        <div class="svc-card"><div class="svc-num">01 ——</div><div class="svc-ico">📊</div><div class="svc-t">Niche Market Briefs</div><p class="svc-d">15-section intelligence briefs covering executive summaries, market sizing, competitor landscapes, financial projections, and exit strategies — structured like a McKinsey engagement.</p><span class="svc-tag">15+ pages guaranteed</span></div>
-        <div class="svc-card"><div class="svc-num">02 ——</div><div class="svc-ico">🎯</div><div class="svc-t">Opportunity Discovery</div><p class="svc-d">Identify 10 defensible sub-niche opportunities within any of our 10 primary verticals. From Micro-SaaS to Web3, B2B Services to Creator Economy — we surface what others miss.</p><span class="svc-tag">10 verticals · unlimited depth</span></div>
-        <div class="svc-card"><div class="svc-num">03 ——</div><div class="svc-ico">💼</div><div class="svc-t">Competitive Intelligence</div><p class="svc-d">Institutional-grade competitor profiling: positioning maps, revenue model analysis, distribution channels, and strategic vulnerabilities. The intelligence layer before every major move.</p><span class="svc-tag">Analyst-grade sourcing</span></div>
-        <div class="svc-card"><div class="svc-num">04 ——</div><div class="svc-ico">📈</div><div class="svc-t">Financial Modelling</div><p class="svc-d">Non-rounded financial figures, realistic growth curves, and ROI projections supported by market data. Every model reflects sector-specific assumptions, not generic templates.</p><span class="svc-tag">Non-rounded projections</span></div>
-        <div class="svc-card"><div class="svc-num">05 ——</div><div class="svc-ico">📄</div><div class="svc-t">Client-Ready PDF Reports</div><p class="svc-d">Every brief exports as a professionally styled A4 PDF with CSS-counted page numbers, branded headers, and APA-7 citations. Suitable for board decks and investor materials.</p><span class="svc-tag">A4 · APA-7 · Print-ready</span></div>
-        <div class="svc-card"><div class="svc-num">06 ——</div><div class="svc-ico">🔐</div><div class="svc-t">Secure Research Vault</div><p class="svc-d">Your research library is secured with enterprise-grade authentication, encrypted at rest and in transit. Tier-based access ensures each member sees only what their engagement level grants.</p><span class="svc-tag">Encrypted · Tier-gated</span></div>
+        <article class="svc-card"><div class="svc-num">01 ——</div><div class="svc-ico">📊</div><div class="svc-t">Niche Market Briefs</div><p class="svc-d">15-section intelligence briefs covering executive summaries, market sizing, competitor landscapes, financial projections, and exit strategies — structured like a McKinsey engagement.</p><span class="svc-tag">15+ pages guaranteed</span></article>
+        <article class="svc-card"><div class="svc-num">02 ——</div><div class="svc-ico">🎯</div><div class="svc-t">Opportunity Discovery</div><p class="svc-d">Identify 10 defensible sub-niche opportunities within any of our 10 primary verticals. From Micro-SaaS to Web3, B2B Services to Creator Economy — we surface what others miss.</p><span class="svc-tag">10 verticals · unlimited depth</span></article>
+        <article class="svc-card"><div class="svc-num">03 ——</div><div class="svc-ico">💼</div><div class="svc-t">Competitive Intelligence</div><p class="svc-d">Institutional-grade competitor profiling: positioning maps, revenue model analysis, distribution channels, and strategic vulnerabilities. The intelligence layer before every major move.</p><span class="svc-tag">Analyst-grade sourcing</span></article>
+        <article class="svc-card"><div class="svc-num">04 ——</div><div class="svc-ico">📈</div><div class="svc-t">Financial Modelling</div><p class="svc-d">Non-rounded financial figures, realistic growth curves, and ROI projections supported by market data. Every model reflects sector-specific assumptions, not generic templates.</p><span class="svc-tag">Non-rounded projections</span></article>
+        <article class="svc-card"><div class="svc-num">05 ——</div><div class="svc-ico">📄</div><div class="svc-t">Client-Ready PDF Reports</div><p class="svc-d">Every brief exports as a professionally styled A4 PDF with CSS-counted page numbers, branded headers, and APA-7 citations. Suitable for board decks and investor materials.</p><span class="svc-tag">A4 · APA-7 · Print-ready</span></article>
+        <article class="svc-card"><div class="svc-num">06 ——</div><div class="svc-ico">🔐</div><div class="svc-t">Secure Research Vault</div><p class="svc-d">Your research library is secured with enterprise-grade authentication, encrypted at rest and in transit. Tier-based access ensures each member sees only what their engagement level grants.</p><span class="svc-tag">Encrypted · Tier-gated</span></article>
       </div>
     </div>
   </section>
@@ -1398,7 +1398,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
             <div class="iotd-lock-title">You're a Pro Member</div>
             <p class="iotd-lock-sub">You have full access to every intelligence brief in the vault — including today's complete 15-section report. Head to the Members Console to open it.</p>
             <a href="index.html" class="btn-gold" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-size:14px;padding:11px 24px">
-              Open Members Console →
+              Open Research Vault →
             </a>
           </div>
         </div>
@@ -1431,7 +1431,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
       <div class="pc-grid rv rv-d2">
 
         <!-- ── FREE TIER ── -->
-        <div class="pc">
+        <article class="pc">
           <div class="pc-tier">Free</div>
           <div class="pc-price">$<span>0</span></div>
           <div class="pc-cycle">per month</div>
@@ -1442,10 +1442,10 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
             <li class="locked">PDF Exports</li>
           </ul>
           <a href="setup.html?tier=free" class="btn-pg" id="btn-free">Sign Up Free →</a>
-        </div>
+        </article>
 
         <!-- ── ELITE TIER (center — featured) ── -->
-        <div class="pc feat">
+        <article class="pc feat">
           <div class="pc-tier">Elite</div>
           <div class="pc-price">$<span id="v-p">84</span></div>
           <div class="pc-cycle" id="c-p">per month</div>
@@ -1464,10 +1464,10 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
             <li>Advance Intelligence on Emerging Verticals</li>
           </ul>
           <a id="lnk-p" href="https://buy.stripe.com/bJe00kbeLc547pJgdaebu02" target="_blank" rel="noopener" class="btn-pg-gold">Begin Elite Membership →</a>
-        </div>
+        </article>
 
         <!-- ── CORE TIER ── -->
-        <div class="pc">
+        <article class="pc">
           <div class="pc-tier">Core</div>
           <div class="pc-price">$<span id="v-s">36</span></div>
           <div class="pc-cycle" id="c-s">per month</div>
@@ -1481,7 +1481,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
             <li>Rigorous APA-7 Citation Standard</li>
           </ul>
           <a id="lnk-s" href="https://buy.stripe.com/9B63cw0A72uufWf5ywebu00" target="_blank" rel="noopener" class="btn-pg">Begin Core Membership</a>
-        </div>
+        </article>
 
       </div>
 
@@ -1525,7 +1525,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
     </div>
   </div>
 
-</div><!-- /home -->
+</main><!-- /home -->
 
 
 <!-- PAGE: ABOUT -->
@@ -1533,7 +1533,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
 
   <div class="about-hero">
     <div class="eyebrow" style="margin-bottom:22px"><div class="eyebrow-ln"></div>Who We Are</div>
-    <h1 class="about-tagline">Built by who have<br>been <em>inside.</em></h1>
+    <h2 class="about-tagline">Built by who have<br>been <em>inside.</em></h2>
     <p class="about-lead">Kroneberg & Co. is a digitally distributed intelligence infrastructure providing institutional-grade research. With a global research coordination network spanning London, Dubai, Lisbon, Los Angeles, Tokyo, and The Hague, we deliver strategic market opportunity mapping for professional investors.</p>
     <div style="display:flex;gap:12px;flex-wrap:wrap">
       <button class="btn-gold" onclick="go('home','membership-tiers')">View Membership Plans →</button>
@@ -1563,30 +1563,30 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
     <p class="sub" style="max-width:520px;margin-bottom:0">Team members are not publicly named by choice. In a market intelligence business, the methodology matters more than the biography. We let the work speak.</p>
 
     <div class="team-grid">
-      <div class="team-card">
+      <article class="team-card">
         <div class="tc-num">01 ——</div>
         <div class="tc-role">Strategy &amp; Market Intelligence Lead</div>
         <p class="tc-bio">Former engagement manager at a global top-3 strategy consultancy. Led market entry and competitive intelligence projects across 12 markets. Wharton MBA.</p>
         <div class="tc-tags"><span class="tc-tag">McKinsey-tier</span><span class="tc-tag">Market Entry</span><span class="tc-tag">Wharton</span></div>
-      </div>
-      <div class="team-card">
+      </article>
+      <article class="team-card">
         <div class="tc-num">02 ——</div>
         <div class="tc-role">Venture &amp; Startup Intelligence</div>
         <p class="tc-bio">Former analyst at a Tier 1 VC fund. Evaluated 400+ startups annually across SaaS, fintech and consumer. Prior stint at PwC Deals. London Business School.</p>
         <div class="tc-tags"><span class="tc-tag">Tier 1 VC</span><span class="tc-tag">Big Four</span><span class="tc-tag">LBS</span></div>
-      </div>
-      <div class="team-card">
+      </article>
+      <article class="team-card">
         <div class="tc-num">03 ——</div>
         <div class="tc-role">Data &amp; Product Architecture</div>
         <p class="tc-bio">Previously led data products at a Series B fintech. Built market signal pipelines used by institutional clients. MIT Computer Science.</p>
         <div class="tc-tags"><span class="tc-tag">Signal Systems</span><span class="tc-tag">Fintech</span><span class="tc-tag">MIT</span></div>
-      </div>
-      <div class="team-card">
+      </article>
+      <article class="team-card">
         <div class="tc-num">04 ——</div>
         <div class="tc-role">Editorial &amp; Research Standards</div>
         <p class="tc-bio">Former researcher at a top-5 global think tank. Published in FT, The Economist and Harvard Business Review. Oxford PPE.</p>
         <div class="tc-tags"><span class="tc-tag">Think Tank</span><span class="tc-tag">HBR Published</span><span class="tc-tag">Oxford</span></div>
-      </div>
+      </article>
     </div>
   </div>
 
@@ -1601,36 +1601,36 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
     <p class="sub" style="max-width:540px;margin-bottom:0">Our correspondence coordination network spans six strategic locations. All locations operate as research coverage zones within our distributed global analytical infrastructure.</p>
 
     <div class="addr-grid" style="margin-top:24px">
-      <div class="addr-card">
+      <article class="addr-card">
         <div class="addr-flag">🇬🇧</div>
         <div class="addr-city">London</div>
         <div class="addr-region">UK Market Coverage</div>
-      </div>
-      <div class="addr-card">
+      </article>
+      <article class="addr-card">
         <div class="addr-flag">🇦🇪</div>
         <div class="addr-city">Dubai</div>
         <div class="addr-region">Middle East &amp; North Africa</div>
-      </div>
-      <div class="addr-card">
+      </article>
+      <article class="addr-card">
         <div class="addr-flag">🇵🇹</div>
         <div class="addr-city">Lisbon</div>
         <div class="addr-region">European Research Coordination</div>
-      </div>
-      <div class="addr-card">
+      </article>
+      <article class="addr-card">
         <div class="addr-flag">🇺🇸</div>
         <div class="addr-city">Los Angeles</div>
         <div class="addr-region">Americas Research Coverage</div>
-      </div>
-      <div class="addr-card">
+      </article>
+      <article class="addr-card">
         <div class="addr-flag">🇯🇵</div>
         <div class="addr-city">Tokyo</div>
         <div class="addr-region">Asia-Pacific Research Coverage</div>
-      </div>
-      <div class="addr-card">
+      </article>
+      <article class="addr-card">
         <div class="addr-flag">🇳🇱</div>
         <div class="addr-city">The Hague</div>
         <div class="addr-region">European Policy &amp; Regulatory</div>
-      </div>
+      </article>
     </div>
   </div>
 
@@ -1646,7 +1646,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
       <button class="ltab"    id="lt-privacy" onclick="showLegal('privacy',this)">Privacy Policy</button>
     </div>
 <div class="lpanel on" id="lp-terms">
-  <h1>Terms of Service</h1>
+  <h2 class="legal-title">Terms of Service</h2>
   <p class="legal-dt">Last updated: January 1, 2025 &nbsp;·&nbsp; Kroneberg & Co.</p>
 
   <p>These Terms of Service, together with any policies, licenses, disclaimers, and supplemental terms incorporated by reference (collectively, the “Terms”), constitute a legally binding agreement between Kroneberg & Co. (“Kroneberg & Co.”, “Company”, “we”, “our”, or “us”) and any individual, entity, organization, representative, or automated system accessing or using the Platform (“User”, “you”, or “your”).</p>
@@ -2195,7 +2195,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
 </div>
 
 <div class="lpanel" id="lp-privacy">
-  <h1>Privacy Policy</h1>
+  <h2 class="legal-title">Privacy Policy</h2>
   <p class="legal-dt">Last updated: January 1, 2025 &nbsp;·&nbsp; Kroneberg & Co.</p>
 
   <p>Kroneberg & Co. is committed to processing personal data with care, discretion, and in accordance with applicable data protection law, including where applicable the General Data Protection Regulation (EU) 2016/679 (“GDPR”).</p>
@@ -2411,7 +2411,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
   <div class="faq-wrap">
     <div class="faq-hero">
       <div class="eyebrow"><div class="eyebrow-ln"></div>FAQ</div>
-      <h1>Frequently asked <em style="font-style:italic;color:var(--gold)">questions.</em></h1>
+      <h2>Frequently asked <em style="font-style:italic;color:var(--gold)">questions.</em></h2>
       <p>Answers covering membership access, research delivery, methodology, billing, security, and platform structure.</p>
     </div>
 
@@ -2605,7 +2605,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
 <div class="page" id="page-blog">
   <div class="blog-hero">
     <div class="eyebrow" style="margin-bottom:22px"><div class="eyebrow-ln"></div>Journal</div>
-    <h1 class="blog-tagline">Kroneberg Intelligence:<br><em>Strategic Market Reports & Niche Analysis</em></h1>
+    <h2 class="blog-tagline">Kroneberg Intelligence:<br><em>Strategic Market Reports &amp; Niche Analysis</em></h2>
     <p class="blog-lead">Access professional-grade market intelligence powered by our proprietary 15-layer methodology. We identify high-growth corridors and provide actionable data for the next generation of digital assets.</p>
   </div>
 
@@ -2708,7 +2708,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
     <div class="ct-layout">
       <div>
         <div class="eyebrow" style="margin-bottom:24px"><div class="eyebrow-ln"></div>Get in Touch</div>
-        <h1>Let's discuss your<br><em>research agenda.</em></h1>
+        <h2>Let's discuss your<br><em>research agenda.</em></h2>
         <p class="ct-intro">Whether you're exploring membership, requesting a custom briefing, or have a question about our methodology — use the form to connect with our research team.</p>
       </div>
       
@@ -2765,7 +2765,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
   </div>
 </div>
 
-<footer class="site-footer">
+<footer class="footer site-footer">
   <div class="footer-shell">
     <div class="footer-top">
       <div class="footer-brand">
